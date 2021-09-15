@@ -1,0 +1,30 @@
+fragment User on User {
+  id
+  name
+  description
+  email
+  image
+  country
+  keystrokes
+  badge
+  testsCompleted
+  wordsWritten
+  accuracy {
+    id
+    amount
+    createdAt
+  }
+  charsPerMinute {
+    id
+    amount
+    createdAt
+  }
+  wordsPerMinute {
+    id
+    amount
+    createdAt
+  }
+  testPresets {
+    ...TestPreset
+  }
+}

@@ -1,0 +1,5 @@
+mutation createTestPresetUser($data: CreateTestPresetInput!) {
+  createTestPresetUser(data: $data) {
+    ...TestPreset
+  }
+}

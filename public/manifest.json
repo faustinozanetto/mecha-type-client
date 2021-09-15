@@ -1,0 +1,7 @@
+{
+  "short_name": "MechaType",
+  "name": "The only place to type",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#111827"
+}

@@ -1,0 +1,3 @@
+query followsUser($userId: String!, $targetUserId: String!) {
+  followsUser(userId: $userId, targetUserId: $targetUserId)
+}

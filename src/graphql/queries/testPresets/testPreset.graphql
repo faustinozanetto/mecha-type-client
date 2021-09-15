@@ -1,0 +1,5 @@
+query testPreset($id: String!) {
+  testPreset(id: $id) {
+    ...TestPreset
+  }
+}

@@ -1,0 +1,8 @@
+fragment FilteredUsersResponse on FilteredUsersResponse {
+  filteredUsers {
+    ...FilteredUser
+  }
+  errors {
+    ...ErrorResponse
+  }
+}

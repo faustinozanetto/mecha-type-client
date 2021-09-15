@@ -1,0 +1,11 @@
+fragment TestPreset on TestPreset {
+  id
+  userId
+  type
+  time
+  language
+  words
+  creatorImage
+  createdAt
+  updatedAt
+}

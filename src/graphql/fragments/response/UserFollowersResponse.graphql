@@ -1,0 +1,8 @@
+fragment UserFollowersResponse on UserFollowersResponse {
+  users {
+    ...UserFollower
+  }
+  errors {
+    ...ErrorResponse
+  }
+}

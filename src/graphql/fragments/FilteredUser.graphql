@@ -1,0 +1,7 @@
+fragment FilteredUser on FilteredUser {
+  id
+  name
+  image
+  country
+  value
+}

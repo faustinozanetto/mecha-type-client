@@ -1,0 +1,6 @@
+fragment UserFollower on UserFollower {
+  id
+  name
+  email
+  image
+}

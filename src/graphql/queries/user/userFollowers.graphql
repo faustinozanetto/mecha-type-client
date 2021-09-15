@@ -1,0 +1,5 @@
+query userFollowers($userId: String!) {
+  userFollowers(userId: $userId) {
+    ...UserFollowersResponse
+  }
+}
