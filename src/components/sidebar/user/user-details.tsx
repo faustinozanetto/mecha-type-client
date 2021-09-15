@@ -1,10 +1,10 @@
 import React from 'react';
 import { FiUser } from 'react-icons/fi';
 import { SidebarButton } from '..';
-import { User } from 'generated/graphql';
+import { UserFragment } from 'generated/graphql';
 
 interface UserDetailsProps {
-  user: User;
+  user: UserFragment;
 }
 
 export const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {

@@ -55,7 +55,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   }, [targetUser?.user, data?.user]);
 
   return (
-    <PageWrapper user={data?.user.user as User}>
+    <PageWrapper user={data?.user?.user!}>
       <NextSeo
         title={`${targetUser?.user?.user?.name ?? IDFromRoute} | Mecha Type`}
         description={`${

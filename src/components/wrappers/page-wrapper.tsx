@@ -1,11 +1,13 @@
 import React from 'react';
 import { Footer } from '@components/footer/page-footer';
 import { Sidebar } from '@components/sidebar';
-import { User } from '@generated/graphql';
 import { Flex, Grid, Box, useColorModeValue } from '@chakra-ui/react';
+import { UserFragment } from '@generated/graphql';
 
 interface PageWrapperProps {
-  user: User;
+  /** User data */
+  user: UserFragment;
+  /** Children */
   children: React.ReactNode;
 }
 

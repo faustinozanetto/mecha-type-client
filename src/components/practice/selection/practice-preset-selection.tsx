@@ -64,7 +64,7 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
       </Container>
       {/* Presets */}
       {presets && presets.length > 0 ? (
-        <SimpleGrid backgroundColor={bgColor} rounded="2rem" columns={3} rows={3} m={4}>
+        <SimpleGrid backgroundColor={bgColor} rounded="2rem" columns={[1, 1, 2, 3, 3]} rows="auto" m={4}>
           {presets.map((preset, index) => {
             return <PracticePresetCard key={index} presetData={preset} />;
           })}

@@ -3,7 +3,7 @@ import { AiOutlineDashboard } from 'react-icons/ai';
 import { BiLogIn } from 'react-icons/bi';
 import { FaKeyboard } from 'react-icons/fa';
 import { FiHome, FiStar } from 'react-icons/fi';
-import { User } from 'generated/graphql';
+import { UserFragment } from 'generated/graphql';
 import { SidebarButton } from '.';
 import { LogoutButton, UserDetails } from './user';
 import useMediaQuery from '@hooks/general/useMediaQuery';
@@ -41,7 +41,8 @@ const sidebarLinks: ISidebarLink[] = [
 ];
 
 interface SidebarProps {
-  user: User;
+  /** User data */
+  user: UserFragment;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
@@ -76,13 +77,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       {/* User details */}
       <Flex flexDir="column" flexGrow={0} alignItems="center">
         <SidebarThemeToggler />
-        {user && (
+        {user ? (
           <>
             <UserDetails user={user} />
             <LogoutButton />
           </>
+        ) : (
+          <SidebarButton icon={BiLogIn} label="Login" href={`${__URI__}/api/auth/signin`} />
         )}
-        {!user && <SidebarButton icon={BiLogIn} label="Login" href={`${__URI__}/api/auth/signin`} />}
       </Flex>
     </Flex>
   );
