@@ -6,8 +6,8 @@ export const useIsAuth = () => {
   const { data, status } = useSession();
   const router = useRouter();
   useEffect(() => {
-    if (status === 'unauthenticated' && !data?.user?.name) {
-      signIn();
+    if (status !== 'loading') {
+      if (status === 'unauthenticated' && !data?.user?.name) signIn();
     }
   }, [status, data, router]);
 };

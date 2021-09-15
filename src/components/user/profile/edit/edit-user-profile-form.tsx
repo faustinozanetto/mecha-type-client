@@ -4,10 +4,10 @@ import { Formik, FormikProps } from 'formik';
 import { User, useUpdateUserMutation } from '@generated/graphql';
 import { HStack, Flex, VStack, useToast, Text } from '@chakra-ui/react';
 import { FormTextArea } from '@components/ui/forms/chakra/form-text-area';
-import { EditProfileSubmitButton } from './edit-profile-submit-button';
-import { EditProfileCancelButton } from './edit-profile-cancel-button';
 import { FormSelectInput } from '@components/ui/forms/chakra/form-select-input';
 import { CountryEntry } from '@pages/user/[id]';
+import { FormSubmitButton } from '@components/forms/form-submit-button';
+import { FormCancelButton } from '@components/forms/form-cancel-button';
 
 interface EditUserProfileFormProps {
   /** User to retrieve data from. */
@@ -105,18 +105,6 @@ export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, 
                       );
                     })}
                 </FormSelectInput>
-                {/* {currentCountry && (
-                  <Image
-                    src={
-                      countries.find((country) => {
-                        return country.name === currentCountry;
-                      })?.flag!
-                    }
-                    alt="Flag"
-                    height={25}
-                    width={25}
-                  />
-                )} */}
               </HStack>
 
               {/* Description Input */}
@@ -125,10 +113,10 @@ export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, 
             {/* Submit Form */}
             <HStack>
               {/* Submit button */}
-              <EditProfileSubmitButton width="50%">Submit</EditProfileSubmitButton>
-              <EditProfileCancelButton width="50%" onClick={() => onUpdatedCallback()}>
+              <FormSubmitButton width="50%">Submit</FormSubmitButton>
+              <FormCancelButton width="50%" onClick={() => onUpdatedCallback()}>
                 Cancel
-              </EditProfileCancelButton>
+              </FormCancelButton>
             </HStack>
           </Flex>
         );

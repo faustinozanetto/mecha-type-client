@@ -5,7 +5,7 @@ import { PracticePresetCard } from './preset-card/practice-preset-card';
 import { PresetCreation } from './preset-creation';
 import { Loading } from '@components/loading/loading';
 import { GridContainer } from '@components/ui/container/GridContainer';
-import { Flex, Container, Text, SimpleGrid, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button } from '@chakra-ui/react';
 
 interface PracticePresetSelectionProps {
   /** Current logged in user. */
@@ -14,6 +14,7 @@ interface PracticePresetSelectionProps {
 
 export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = ({ user }) => {
   const bgColor = useColorModeValue('gray.300', 'gray.900');
+  const [creatingPreset, setCreatingPreset] = useState(false);
   const [presets, setPresets] = useState<TestPreset[]>([]);
   const { data: testPresets, loading } = useTestPresetsQuery({
     variables: {
@@ -30,6 +31,17 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
       setPresets(filteredPresets);
     }
   }, [loading, testPresets]);
+
+  if (creatingPreset) {
+    return (
+      <PresetCreation
+        user={user}
+        onCreatedCallback={() => {
+          setCreatingPreset(false);
+        }}
+      />
+    );
+  }
 
   return (
     <Flex flexDir="column" justifyContent="center" alignItems="center">
@@ -52,15 +64,7 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
       </Container>
       {/* Presets */}
       {presets && presets.length > 0 ? (
-        <SimpleGrid
-          backgroundColor={bgColor}
-          rounded="2rem"
-          templateColumns={`repeat(${presets.length}, 1fr)`}
-          m={4}
-          width="max-content"
-          alignContent="center"
-          justifyContent="center"
-        >
+        <SimpleGrid backgroundColor={bgColor} rounded="2rem" columns={3} rows={3} m={4}>
           {presets.map((preset, index) => {
             return <PracticePresetCard key={index} presetData={preset} />;
           })}
@@ -92,15 +96,25 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
         m={4}
         p={4}
       >
-        <Text as="h2" fontWeight={600} fontSize="2xl">
+        <Text as="h2" fontWeight={600} fontSize="3xl">
           What about creating your own?
         </Text>
-        <Text as="p" fontWeight={400} fontSize="md" textAlign="center">
+        <Text as="p" fontWeight={400} fontSize="md" mx={12} textAlign="center">
           If you feel like no preset fits you, you can have a try at creating your own custom preset. You can use it
           later, as it is saved to your profile!.
         </Text>
+        <Button
+          my={4}
+          colorScheme="twitter"
+          rounded="xl"
+          size="lg"
+          onClick={() => {
+            setCreatingPreset(true);
+          }}
+        >
+          Start Creating
+        </Button>
       </Container>
-      <PresetCreation user={user} />
     </Flex>
   );
 };

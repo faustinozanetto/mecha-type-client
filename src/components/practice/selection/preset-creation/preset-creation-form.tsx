@@ -1,51 +1,15 @@
 import React from 'react';
-import styled from 'styled-components';
 import * as Yup from 'yup';
-import { FormInputs } from '@components/forms/user/FormComponents';
-import { FormControl, FormLabel, FormError } from '@components/ui/forms';
-import { FormInput } from '@components/ui/forms/FormInput';
 import { Formik, FormikProps } from 'formik';
 import { TestLanguage, TestType, useCreateTestPresetUserMutation, User } from '@generated/graphql';
-import { Button } from '@components/ui/buttons';
-import { FormSelect } from '@components/ui/forms/FormSelect';
 import { useRouter } from 'next/router';
-import { useToast } from '@chakra-ui/react';
+import { Flex, useToast, Text, VStack, HStack } from '@chakra-ui/react';
+import { FormSelectInput } from '@components/ui/forms/chakra/form-select-input';
+import { FormNumberInput } from '@components/ui/forms/chakra/form-number-input';
+import { FormCancelButton } from '@components/forms/form-cancel-button';
+import { FormSubmitButton } from '@components/forms/form-submit-button';
 
-const FormWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: #0f172a;
-  border-radius: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  width: 25rem;
-  padding: 1.25rem;
-
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  padding-top: 1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-bottom: 0.25rem;
-`;
-
-const Title = styled.h2`
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #fff;
-  text-align: center;
-  margin: 0;
-`;
-
-interface IFormValues {
+interface PresetCreationFormValues {
   type: TestType;
   language: TestLanguage;
   words: number;
@@ -66,131 +30,121 @@ const validationSchema = Yup.object().shape({
 interface PresetCreationFormProps {
   /** Current logged in user. */
   user: User;
+  /** Method to call when the preset was created */
+  onCreatedCallback: () => void;
 }
 
-export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user }) => {
+export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, onCreatedCallback }) => {
   const router = useRouter();
   const toast = useToast();
   const [createTestPresetUser] = useCreateTestPresetUserMutation();
-  const initialValues: IFormValues = {
+  const initialFormValues: PresetCreationFormValues = {
     type: TestType.Words,
     language: TestLanguage.English,
     words: 25,
     time: 60,
   };
   return (
-    <FormWrapper>
-      {/* Title */}
-      <TitleContainer>
-        <Title>Create your own preset!</Title>
-      </TitleContainer>
-      {/* Form */}
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={async (values, {}) => {
-          // If save preset is true, we save it to the user.
-          const response = await createTestPresetUser({
-            variables: {
-              data: {
-                type: values.type,
-                words: values.words,
-                time: values.time,
-                language: values.language,
-                userId: user.id,
-                creatorImage: user.image,
-              },
+    <Formik
+      initialValues={initialFormValues}
+      validationSchema={validationSchema}
+      onSubmit={async (values) => {
+        // Making sure the values are numbers and not strings.
+        let words = 0;
+        if (typeof values.words === 'string') {
+          words = Number.parseInt(values.words);
+        }
+
+        let time = 0;
+        if (typeof values.time === 'string') {
+          time = Number.parseInt(values.time);
+        }
+        // If save preset is true, we save it to the user.
+        const response = await createTestPresetUser({
+          variables: {
+            data: {
+              type: values.type,
+              words: words,
+              time: time,
+              language: values.language,
+              userId: user.id,
+              creatorImage: user.image,
             },
+          },
+        });
+        // Error
+        if (response.errors) {
+          toast({
+            title: 'Something went wrong!',
+            description: response.errors[0].message,
+            status: 'error',
+            position: 'bottom-right',
           });
-          // Error
-          if (response.errors) {
-            toast({
-              title: 'Something went wrong!',
-              description: response.errors[0].message,
-              status: 'error',
-              position: 'bottom-right',
-            });
-            return;
-          } else if (response.data?.createTestPresetUser) {
-            // Success
-            toast({
-              title: 'Success!',
-              description: 'Preset created successfully.',
-              status: 'success',
-              position: 'bottom-right',
-            });
-            router.push(`/practice/play/${response.data.createTestPresetUser.id}`);
-          }
-        }}
-      >
-        {(props: FormikProps<IFormValues>) => {
-          const { isSubmitting, handleSubmit, errors } = props;
+          return;
+        } else if (response.data?.createTestPresetUser) {
+          // Success
+          toast({
+            title: 'Success!',
+            description: 'Preset created successfully.',
+            status: 'success',
+            position: 'bottom-right',
+          });
+          router.push(`/practice/play/${response.data.createTestPresetUser.id}`);
+        }
+      }}
+    >
+      {(props: FormikProps<PresetCreationFormValues>) => {
+        const { handleSubmit } = props;
 
-          return (
-            <form onSubmit={handleSubmit}>
-              <FormInputs>
-                <FormControl id="type">
-                  <FormLabel style={{ color: '#fff', opacity: 1, fontSize: '1.1rem', fontWeight: 600 }}>Type</FormLabel>
-                  <FormSelect type="text" name="type">
-                    <option>Select option</option>
-                    <option value={TestType.Time}>Time</option>
-                    <option value={TestType.Words}>Words</option>
-                  </FormSelect>
-                  <FormError>{errors.type}</FormError>
-                </FormControl>
-
-                <FormControl id="language">
-                  <FormLabel style={{ color: '#fff', opacity: 1, fontSize: '1.1rem', fontWeight: 600 }}>
-                    Language
-                  </FormLabel>
-                  <FormSelect type="text" name="language">
-                    <option>Select option</option>
-                    <option value={TestLanguage.English}>English</option>
-                    <option value={TestLanguage.Spanish}>Spanish</option>
-                  </FormSelect>
-                  <FormError>{errors.language}</FormError>
-                </FormControl>
-
-                <FormControl id="words">
-                  <FormLabel style={{ color: '#fff', opacity: 1, fontSize: '1.1rem', fontWeight: 600 }}>
-                    Words Amount
-                  </FormLabel>
-                  <FormInput type="number" name="words" placeholder={initialValues.words.toString()} />
-                  <FormError>{errors.words}</FormError>
-                </FormControl>
-
-                <FormControl id="time">
-                  <FormLabel style={{ color: '#fff', opacity: 1, fontSize: '1.1rem', fontWeight: 600 }}>
-                    Time (s)
-                  </FormLabel>
-                  <FormInput type="number" name="time" placeholder={initialValues.time.toString()} />
-                  <FormError>{errors.time}</FormError>
-                </FormControl>
-              </FormInputs>
-
-              {/* Submit button */}
-              <Button
-                backgroundColor="#1D4ED8"
-                hoverBackgroundColor="#1E40AF"
-                color="#fff"
-                hoverColor="#fff"
-                borderRadius="md"
-                fontSize="1.25rem"
-                width="100%"
-                height="3.25rem"
-                type="submit"
-                size="lg"
-                margin="1rem 0 1rem 0"
-                variant="solid"
-                justifyContent="center"
-                disabled={isSubmitting}
+        return (
+          <Flex as="form" flexDir="column" width="full" my={4} onSubmit={handleSubmit as any}>
+            {/* Form Content */}
+            <VStack alignItems="center" mb={4}>
+              <Text as="h2" fontSize="4xl" fontWeight={700} textAlign="center">
+                Preset Creation
+              </Text>
+              {/* Type input */}
+              <FormSelectInput
+                name="type"
+                label="Test Type"
+                selectProps={{
+                  placeholder: 'Select Type',
+                }}
               >
-                Create
-              </Button>
-            </form>
-          );
-        }}
-      </Formik>
-    </FormWrapper>
+                <option value={TestType.Time}>Time</option>
+                <option value={TestType.Words}>Words</option>
+              </FormSelectInput>
+
+              {/* Language input */}
+              <FormSelectInput
+                name="language"
+                label="Test Language"
+                selectProps={{
+                  placeholder: 'Select Language',
+                }}
+              >
+                <option value={TestLanguage.English}>English</option>
+                <option value={TestLanguage.Spanish}>Spanish</option>
+              </FormSelectInput>
+
+              {/* Words input */}
+              <FormNumberInput name="words" label="Words Amount" />
+
+              {/* Time input */}
+              <FormNumberInput name="time" label="Test Time" />
+            </VStack>
+
+            {/* Submit Form */}
+            <HStack>
+              {/* Submit button */}
+              <FormSubmitButton width="50%">Submit</FormSubmitButton>
+              <FormCancelButton width="50%" onClick={() => onCreatedCallback()}>
+                Cancel
+              </FormCancelButton>
+            </HStack>
+          </Flex>
+        );
+      }}
+    </Formik>
   );
 };

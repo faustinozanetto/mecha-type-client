@@ -16,12 +16,12 @@ export const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetDa
   const bgColor = useColorModeValue('gray.200', 'gray.800');
 
   return (
-    <Flex flexDir="column" backgroundColor={bgColor} borderRadius="2rem" maxWidth="300px" overflow="hidden" m={4}>
+    <Flex flexDir="column" backgroundColor={bgColor} borderRadius="2rem" maxWidth="250px" overflow="hidden" m={4}>
       {/* Banner */}
-      <Flex flexDir="row" justifyContent="center" alignItems="flex-end" height="6rem" backgroundColor="gray.600">
+      <Flex flexDir="row" justifyContent="center" alignItems="flex-end" height="5rem" backgroundColor="gray.600">
         <Flex
-          width="8rem"
-          height="8rem"
+          width="6rem"
+          height="6rem"
           borderRadius="50%"
           backgroundColor="#fff"
           boxShadow="0 0.5rem 1rem rgb(0 0 0 / 30%)"
@@ -30,24 +30,24 @@ export const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetDa
           <Image src={presetData?.creatorImage!} alt="Created by" borderRadius="full" />
         </Flex>
       </Flex>
-      {/* Badge */}
-      <Flex position="relative" top="-80px" right="-245px">
+      {/* Badge
+      <Flex position="relative" top="-60px" right="-200px">
         <Badge colorScheme="red" fontSize="0.85rem">
           Hot
         </Badge>
-      </Flex>
-      <Flex width="100%" height="4.5rem" padding={2}></Flex>
+      </Flex> */}
+      <Flex width="100%" height="3.5rem" padding={2}></Flex>
       {/* Name */}
-      <HStack justify="center" padding="0 2rem 0.5rem">
-        <Text as="span" fontSize="lg" fontWeight={600} textAlign="center" opacity="0.75" margin="0">
+      <HStack justify="center" padding="0 1rem 0.5rem">
+        <Text as="span" fontSize="md" fontWeight={600} textAlign="center" opacity="0.75" margin="0">
           by
         </Text>
-        <Text as="h2" fontSize="2xl" fontWeight={600} textAlign="center" margin="0">
+        <Text as="h2" fontSize="xl" fontWeight={600} textAlign="center" margin="0">
           Mecha Type
         </Text>
       </HStack>
       {/* Details */}
-      <Flex flexDir="column" padding="0 2rem 1.2rem">
+      <Flex flexDir="column" padding="0 1rem 0.5rem">
         {/* Top */}
         <Wrap spacing={4} justify="center">
           <PracticePresetCardStat text={presetData?.type?.toString()!} />
@@ -56,13 +56,13 @@ export const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetDa
           {presetData?.type === TestType.Words && <PracticePresetCardStat text={`${presetData?.words} words`} />}
         </Wrap>
       </Flex>
-      <HStack padding="0 2rem 0.75rem">
+      <HStack padding="0 1rem 0.75rem">
         <Button
           as="a"
           variant="solid"
           borderRadius="lg"
           colorScheme="telegram"
-          size="lg"
+          size="md"
           my={2}
           width="full"
           href={`/practice/play/${presetData.id}`}

@@ -106,7 +106,7 @@ export const generateWords = (presetData: TestPreset): string => {
     // Getting previous word
     const previousWord = wordsList[i - 1];
     // TODO: add support for customizing punctuation mode.
-    const punctuation = true;
+    const punctuation = false;
     // eslint-disable-next-line no-unmodified-loop-condition
     while (randomWord === previousWord || (!punctuation && randomWord === 'I') || randomWord.indexOf(' ') > -1) {
       randomWord = language.words[Math.floor(Math.random() * language.words.length)];
