@@ -4,10 +4,10 @@ import { Formik, FormikProps } from 'formik';
 import { TestLanguage, TestType, useCreateTestPresetUserMutation, User } from '@generated/graphql';
 import { useRouter } from 'next/router';
 import { Flex, useToast, Text, VStack, HStack } from '@chakra-ui/react';
-import { FormSelectInput } from '@components/ui/forms/chakra/form-select-input';
-import { FormNumberInput } from '@components/ui/forms/chakra/form-number-input';
 import { FormCancelButton } from '@components/forms/form-cancel-button';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
+import { FormSelectInput } from '@components/ui/forms/form-select-input';
+import { FormNumberInput } from '@components/ui/forms/form-number-input';
 
 interface PresetCreationFormValues {
   type: TestType;

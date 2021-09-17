@@ -1,9 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import { capitalizeFirstLetter } from '@lib/words/helperFunctions';
 import { TestPreset, TestType } from 'generated/graphql';
-import { Flex, Image, Box, Text, HStack, Button, useColorModeValue, Wrap, Badge } from '@chakra-ui/react';
+import { Flex, Image, Text, HStack, Button, useColorModeValue, Wrap } from '@chakra-ui/react';
 // import Image from 'next/image';
 import { PracticePresetCardStat } from './practice-preset-card-stat';
 

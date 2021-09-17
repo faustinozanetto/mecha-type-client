@@ -1,37 +1,7 @@
-import { useColorModeValue } from '@chakra-ui/color-mode';
 import React from 'react';
-import styled, { css } from 'styled-components';
+import { useColorModeValue, Text, TextProps } from '@chakra-ui/react';
 
-const Letter = styled.span<{ defaultColor: string; highlight?: boolean; correct?: boolean; incorrect?: boolean }>`
-  font-weight: 500;
-  color: #9ca3af;
-  color: ${(props) => props.defaultColor};
-  transition: all 100ms;
-
-  border-bottom-style: solid;
-  border-bottom-width: 0.05em;
-  border-bottom-color: transparent;
-
-  ${(props) =>
-    props.highlight &&
-    css`
-      color: black;
-      background-color: #fbbf24;
-    `}
-  ${(props) =>
-    props.incorrect &&
-    css`
-      color: #dc2626;
-      border-bottom: 2px solid #dc2626;
-    `}
-  ${(props) =>
-    props.correct &&
-    css`
-      color: ${useColorModeValue('#000', '#f3f4f6')};
-    `}
-`;
-
-interface PracticeVisualLetterProps extends React.HTMLAttributes<HTMLSpanElement> {
+interface PracticeVisualLetterProps extends TextProps {
   /** Should highlight word? */
   highlight?: boolean;
   /** Is the letter correct? */
@@ -40,20 +10,24 @@ interface PracticeVisualLetterProps extends React.HTMLAttributes<HTMLSpanElement
   incorrect?: boolean;
 }
 
-export const PracticeVisualLetter = React.forwardRef<HTMLSpanElement, PracticeVisualLetterProps>((props, ref) => {
+export const PracticeVisualLetter: React.FC<PracticeVisualLetterProps> = (props) => {
   const { highlight, correct, incorrect, children, ...rest } = props;
-  const letterColor = useColorModeValue('#1a1a1ad8', '#f3f4f6c8');
+  const letterColor = useColorModeValue('#161616d6', '#f3f4f6dd');
+
   return (
-    <Letter
-      ref={ref}
-      defaultColor={letterColor}
-      highlight={highlight}
-      correct={correct}
-      incorrect={incorrect}
+    <Text
+      as="span"
+      fontWeight={500}
+      color={highlight ? '#000' : incorrect ? '#dc2626' : correct ? letterColor : '#898d95'}
+      backgroundColor={highlight ? '#fbbf24' : ''}
+      transitionProperty="all"
+      transitionDuration="200ms"
+      borderBottomStyle="solid"
+      borderBottomWidth="2px"
+      borderBottomColor={incorrect ? '#dc2626' : 'transparent'}
       {...rest}
     >
       {children}
-    </Letter>
+    </Text>
   );
-});
-PracticeVisualLetter.displayName = 'PracticeVisualLetter';
+};

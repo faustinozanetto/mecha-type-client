@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { TestPreset, TestType } from 'generated/graphql';
 import { Button, Flex, Skeleton, Text } from '@chakra-ui/react';
 

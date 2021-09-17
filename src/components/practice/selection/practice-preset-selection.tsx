@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import styled, { css } from 'styled-components';
 import { TestPreset, User, useTestPresetsQuery } from 'generated/graphql';
 import { PracticePresetCard } from './preset-card/practice-preset-card';
 import { PresetCreation } from './preset-creation';
-import { Loading } from '@components/loading/loading';
-import { GridContainer } from '@components/ui/container/GridContainer';
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button } from '@chakra-ui/react';
 
 interface PracticePresetSelectionProps {
