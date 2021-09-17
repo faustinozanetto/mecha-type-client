@@ -42,7 +42,7 @@ export type CharsPerMinuteCreateInput = {
 };
 
 export type CreateTestPresetInput = {
-  creatorImage: Scalars['String'];
+  creatorImage?: Maybe<Scalars['String']>;
   language: TestLanguage;
   time: Scalars['Int'];
   type: TestType;
@@ -75,6 +75,12 @@ export type FilteredUsersResponse = {
   filteredUsers?: Maybe<Array<FilteredUser>>;
 };
 
+export type FollowUserResponse = {
+  __typename?: 'FollowUserResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  follow?: Maybe<Scalars['Boolean']>;
+};
+
 export type InputUpdateInput = {
   decrement?: Maybe<Scalars['Float']>;
   divide?: Maybe<Scalars['Float']>;
@@ -85,10 +91,10 @@ export type InputUpdateInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createTestPreset: TestPreset;
-  createTestPresetUser: TestPreset;
-  followUser: Scalars['Boolean'];
-  unfollowUser: Scalars['Boolean'];
+  createTestPreset: TestPresetResponse;
+  createTestPresetUser: TestPresetResponse;
+  followUser: FollowUserResponse;
+  unfollowUser: UnfollowUserResponse;
   updateUser: UserResponse;
 };
 
@@ -125,11 +131,11 @@ export type Query = {
   filterUsers: FilteredUsersResponse;
   followsUser: Scalars['Boolean'];
   helloWorld: Scalars['String'];
-  testPreset: TestPreset;
-  testPresets: Array<TestPreset>;
+  testPreset: TestPresetResponse;
+  testPresets: TestPresetsResponse;
   user: UserResponse;
   userFollowers: UserFollowersResponse;
-  userTestPresets: Array<TestPreset>;
+  userTestPresets: TestPresetsResponse;
   users: UsersResponse;
 };
 
@@ -196,6 +202,12 @@ export type TestPreset = {
   words?: Maybe<Scalars['Int']>;
 };
 
+export type TestPresetResponse = {
+  __typename?: 'TestPresetResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  testPreset?: Maybe<TestPreset>;
+};
+
 export type TestPresetWhereInput = {
   id?: Maybe<Scalars['String']>;
   language?: Maybe<TestLanguage>;
@@ -210,6 +222,12 @@ export type TestPresetsFindInput = {
   skip?: Maybe<Scalars['Int']>;
   take?: Maybe<Scalars['Int']>;
   where?: Maybe<TestPresetWhereInput>;
+};
+
+export type TestPresetsResponse = {
+  __typename?: 'TestPresetsResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  testPresets?: Maybe<Array<TestPreset>>;
 };
 
 /** Test Type */
@@ -227,6 +245,12 @@ export type TypingAccuracy = {
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['Date'];
   userId: Scalars['String'];
+};
+
+export type UnfollowUserResponse = {
+  __typename?: 'UnfollowUserResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  unfollow?: Maybe<Scalars['Boolean']>;
 };
 
 export type User = {
@@ -364,6 +388,14 @@ export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: strin
 
 export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', filteredUsers?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, name: string, image: string, country: string, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
+export type FollowUserResponseFragment = { __typename?: 'FollowUserResponse', follow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+
+export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+
+export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+
+export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+
 export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, name: string, email: string, image: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, name: string, description: string, email: string, image: string, country: string, keystrokes: number, badge: UserBadge, testsCompleted: number, wordsWritten: number, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
@@ -375,14 +407,14 @@ export type CreateTestPresetMutationVariables = Exact<{
 }>;
 
 
-export type CreateTestPresetMutation = { __typename?: 'Mutation', createTestPreset: { __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any } };
+export type CreateTestPresetMutation = { __typename?: 'Mutation', createTestPreset: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type CreateTestPresetUserMutationVariables = Exact<{
   data: CreateTestPresetInput;
 }>;
 
 
-export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any } };
+export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type FollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -390,7 +422,7 @@ export type FollowUserMutationVariables = Exact<{
 }>;
 
 
-export type FollowUserMutation = { __typename?: 'Mutation', followUser: boolean };
+export type FollowUserMutation = { __typename?: 'Mutation', followUser: { __typename?: 'FollowUserResponse', follow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UnfollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -398,7 +430,7 @@ export type UnfollowUserMutationVariables = Exact<{
 }>;
 
 
-export type UnfollowUserMutation = { __typename?: 'Mutation', unfollowUser: boolean };
+export type UnfollowUserMutation = { __typename?: 'Mutation', unfollowUser: { __typename?: 'UnfollowUserResponse', unfollow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UpdateUserMutationVariables = Exact<{
   where: UserWhereInput;
@@ -413,21 +445,21 @@ export type TestPresetQueryVariables = Exact<{
 }>;
 
 
-export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any } };
+export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type TestPresetsQueryVariables = Exact<{
   input: TestPresetsFindInput;
 }>;
 
 
-export type TestPresetsQuery = { __typename?: 'Query', testPresets: Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }> };
+export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UserTestPresetsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }> };
+export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type FilterUsersQueryVariables = Exact<{
   take: Scalars['Int'];
@@ -492,6 +524,57 @@ export const FilteredUsersResponseFragmentDoc = gql`
 }
     ${FilteredUserFragmentDoc}
 ${ErrorResponseFragmentDoc}`;
+export const FollowUserResponseFragmentDoc = gql`
+    fragment FollowUserResponse on FollowUserResponse {
+  follow
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${ErrorResponseFragmentDoc}`;
+export const TestPresetFragmentDoc = gql`
+    fragment TestPreset on TestPreset {
+  id
+  userId
+  type
+  time
+  language
+  words
+  creatorImage
+  createdAt
+  updatedAt
+}
+    `;
+export const TestPresetResponseFragmentDoc = gql`
+    fragment TestPresetResponse on TestPresetResponse {
+  testPreset {
+    ...TestPreset
+  }
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${TestPresetFragmentDoc}
+${ErrorResponseFragmentDoc}`;
+export const TestPresetsResponseFragmentDoc = gql`
+    fragment TestPresetsResponse on TestPresetsResponse {
+  testPresets {
+    ...TestPreset
+  }
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${TestPresetFragmentDoc}
+${ErrorResponseFragmentDoc}`;
+export const UnfollowUserResponseFragmentDoc = gql`
+    fragment UnfollowUserResponse on UnfollowUserResponse {
+  unfollow
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${ErrorResponseFragmentDoc}`;
 export const UserFollowerFragmentDoc = gql`
     fragment UserFollower on UserFollower {
   id
@@ -511,19 +594,6 @@ export const UserFollowersResponseFragmentDoc = gql`
 }
     ${UserFollowerFragmentDoc}
 ${ErrorResponseFragmentDoc}`;
-export const TestPresetFragmentDoc = gql`
-    fragment TestPreset on TestPreset {
-  id
-  userId
-  type
-  time
-  language
-  words
-  creatorImage
-  createdAt
-  updatedAt
-}
-    `;
 export const UserFragmentDoc = gql`
     fragment User on User {
   id
@@ -581,10 +651,10 @@ ${ErrorResponseFragmentDoc}`;
 export const CreateTestPresetDocument = gql`
     mutation createTestPreset($data: CreateTestPresetInput!) {
   createTestPreset(data: $data) {
-    ...TestPreset
+    ...TestPresetResponse
   }
 }
-    ${TestPresetFragmentDoc}`;
+    ${TestPresetResponseFragmentDoc}`;
 export type CreateTestPresetMutationFn = Apollo.MutationFunction<CreateTestPresetMutation, CreateTestPresetMutationVariables>;
 
 /**
@@ -614,10 +684,10 @@ export type CreateTestPresetMutationOptions = Apollo.BaseMutationOptions<CreateT
 export const CreateTestPresetUserDocument = gql`
     mutation createTestPresetUser($data: CreateTestPresetInput!) {
   createTestPresetUser(data: $data) {
-    ...TestPreset
+    ...TestPresetResponse
   }
 }
-    ${TestPresetFragmentDoc}`;
+    ${TestPresetResponseFragmentDoc}`;
 export type CreateTestPresetUserMutationFn = Apollo.MutationFunction<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>;
 
 /**
@@ -646,9 +716,11 @@ export type CreateTestPresetUserMutationResult = Apollo.MutationResult<CreateTes
 export type CreateTestPresetUserMutationOptions = Apollo.BaseMutationOptions<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>;
 export const FollowUserDocument = gql`
     mutation followUser($userId: String!, $targetUserId: String!) {
-  followUser(userId: $userId, targetUserId: $targetUserId)
+  followUser(userId: $userId, targetUserId: $targetUserId) {
+    ...FollowUserResponse
+  }
 }
-    `;
+    ${FollowUserResponseFragmentDoc}`;
 export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutation, FollowUserMutationVariables>;
 
 /**
@@ -678,9 +750,11 @@ export type FollowUserMutationResult = Apollo.MutationResult<FollowUserMutation>
 export type FollowUserMutationOptions = Apollo.BaseMutationOptions<FollowUserMutation, FollowUserMutationVariables>;
 export const UnfollowUserDocument = gql`
     mutation unfollowUser($userId: String!, $targetUserId: String!) {
-  unfollowUser(userId: $userId, targetUserId: $targetUserId)
+  unfollowUser(userId: $userId, targetUserId: $targetUserId) {
+    ...UnfollowUserResponse
+  }
 }
-    `;
+    ${UnfollowUserResponseFragmentDoc}`;
 export type UnfollowUserMutationFn = Apollo.MutationFunction<UnfollowUserMutation, UnfollowUserMutationVariables>;
 
 /**
@@ -745,10 +819,10 @@ export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMut
 export const TestPresetDocument = gql`
     query testPreset($id: String!) {
   testPreset(id: $id) {
-    ...TestPreset
+    ...TestPresetResponse
   }
 }
-    ${TestPresetFragmentDoc}`;
+    ${TestPresetResponseFragmentDoc}`;
 
 /**
  * __useTestPresetQuery__
@@ -780,10 +854,10 @@ export type TestPresetQueryResult = Apollo.QueryResult<TestPresetQuery, TestPres
 export const TestPresetsDocument = gql`
     query testPresets($input: TestPresetsFindInput!) {
   testPresets(input: $input) {
-    ...TestPreset
+    ...TestPresetsResponse
   }
 }
-    ${TestPresetFragmentDoc}`;
+    ${TestPresetsResponseFragmentDoc}`;
 
 /**
  * __useTestPresetsQuery__
@@ -815,10 +889,10 @@ export type TestPresetsQueryResult = Apollo.QueryResult<TestPresetsQuery, TestPr
 export const UserTestPresetsDocument = gql`
     query userTestPresets($userId: String!) {
   userTestPresets(userId: $userId) {
-    ...TestPreset
+    ...TestPresetsResponse
   }
 }
-    ${TestPresetFragmentDoc}`;
+    ${TestPresetsResponseFragmentDoc}`;
 
 /**
  * __useUserTestPresetsQuery__

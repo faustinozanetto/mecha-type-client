@@ -26,8 +26,8 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
   });
 
   useEffect(() => {
-    if (!loading && testPresets?.testPresets) {
-      const filteredPresets = testPresets.testPresets.filter((preset) => preset.userId === null);
+    if (!loading && testPresets?.testPresets?.testPresets) {
+      const filteredPresets = testPresets.testPresets.testPresets.filter((preset) => preset.userId === null);
       setPresets(filteredPresets);
     }
   }, [loading, testPresets]);

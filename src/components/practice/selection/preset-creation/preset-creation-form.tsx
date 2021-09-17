@@ -89,7 +89,7 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, on
             status: 'success',
             position: 'bottom-right',
           });
-          router.push(`/practice/play/${response.data.createTestPresetUser.id}`);
+          router.push(`/practice/play/${response.data?.createTestPresetUser?.testPreset?.id}`);
         }
       }}
     >

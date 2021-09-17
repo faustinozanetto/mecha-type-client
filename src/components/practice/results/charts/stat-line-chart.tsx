@@ -1,24 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Line } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
 import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game-input';
 import { useColorModeValue, Flex } from '@chakra-ui/react';
 
-const ChartContainer = styled.div`
-  background-color: #0f172a;
-  padding: 1.5rem;
-  border-radius: 20px;
-
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
-    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-
-  display: flex;
-
-  /* max-width: 350px; */
-  align-items: center;
-  margin-bottom: 1rem;
-`;
 
 interface StatLineChartProps {
   statsData: ITypingStat[];

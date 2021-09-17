@@ -40,8 +40,8 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) 
   });
 
   useEffect(() => {
-    if (testPreset?.testPreset && !loading) {
-      setText(generateWords(testPreset.testPreset));
+    if (testPreset?.testPreset?.testPreset && !loading) {
+      setText(generateWords(testPreset.testPreset.testPreset));
     }
   }, [loading, testPreset?.testPreset]);
 
@@ -58,12 +58,12 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) 
       <NextSeo
         title={`Practice | Mecha Type`}
         description={`Practice play page, test your skills on a specific Preset.`}
-        canonical={`${__URI__}/practice/play/${testPreset?.testPreset?.id}`}
+        canonical={`${__URI__}/practice/play/${testPreset?.testPreset?.testPreset?.id}`}
         openGraph={{
           type: 'website',
           images: [{ url: '/favicon.ico' }],
           locale: locale,
-          url: `${__URI__}/practice/play/${testPreset?.testPreset?.id}`,
+          url: `${__URI__}/practice/play/${testPreset?.testPreset?.testPreset?.id}`,
           site_name: 'Mecha Type',
         }}
       />
@@ -77,7 +77,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) 
         {!loading && text && (
           <PracticeGameInput
             loading={loading || userLoading}
-            testPreset={testPreset?.testPreset!}
+            testPreset={testPreset?.testPreset?.testPreset!}
             text={text as string}
             user={data?.user.user as User}
           />

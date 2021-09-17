@@ -1,3 +1,5 @@
 mutation unfollowUser($userId: String!, $targetUserId: String!) {
-  unfollowUser(userId: $userId, targetUserId: $targetUserId)
+  unfollowUser(userId: $userId, targetUserId: $targetUserId) {
+    ...UnfollowUserResponse
+  }
 }

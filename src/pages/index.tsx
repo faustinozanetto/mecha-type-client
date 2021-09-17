@@ -21,7 +21,9 @@ const Home: React.FC<IHomeProps> = ({ locale }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { data, loading: userLoading } = useUserQuery({
+  const { data } = useUserQuery({
+    skip: status === 'loading',
+    ssr: true,
     variables: {
       where: {
         email: session?.user?.email,

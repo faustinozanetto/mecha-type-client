@@ -10,8 +10,10 @@ interface FollowButtonProps {
   user: User;
   /** Target user to edit profile */
   targetUser: User;
+  followsUser: boolean;
   /** Wether the current logged in user is equal as the target one */
   sameUser: boolean;
+  followsUserRefetch: any;
   /**
    * Used to re fetch the followers list query
    */
@@ -23,35 +25,16 @@ interface FollowButtonProps {
 export const FollowButton: React.FC<FollowButtonProps> = ({
   user,
   targetUser,
+  followsUser,
   sameUser,
+  followsUserRefetch,
   followersRefetch,
   session,
 }) => {
   const { t } = useTranslation('user-profile');
-  const [alreadyFollows, setAlreadyFollows] = useState(false);
   const [followUser] = useFollowUserMutation();
   const [unfollowUser] = useUnfollowUserMutation();
   const toast = useToast();
-
-  const {
-    data: followsUserData,
-    loading: followsUserLoading,
-    refetch: followsUserRefetch,
-  } = useFollowsUserQuery({
-    skip: !user || !targetUser || user?.id === targetUser?.id,
-    variables: {
-      userId: user?.id!,
-      targetUserId: targetUser?.id,
-    },
-  });
-
-  useEffect(() => {
-    if (followsUserData?.followsUser) {
-      setAlreadyFollows(followsUserData?.followsUser?.valueOf()!);
-    } else {
-      setAlreadyFollows(false);
-    }
-  }, [followsUserData]);
 
   const handleFollow = async () => {
     if (session?.user?.email) {
@@ -63,7 +46,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
           duration: 3000,
           position: 'bottom-right',
         });
-      } else if (alreadyFollows && user && session?.user?.name) {
+      } else if (followsUser && user && session?.user?.name) {
         await unfollowUser({
           variables: {
             userId: user.id,
@@ -78,8 +61,10 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
           },
         });
       }
-      followsUserRefetch();
-      followersRefetch();
+      if (user.id !== targetUser.id) {
+        followsUserRefetch();
+        followersRefetch();
+      }
     } else {
       toast({
         title: 'An error occurred!',
@@ -93,7 +78,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
 
   return (
     <Button
-      colorScheme={alreadyFollows ? 'red' : 'green'}
+      colorScheme={followsUser ? 'red' : 'green'}
       variant="solid"
       size="lg"
       fontSize="lg"
@@ -101,12 +86,12 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       width={['100%', '100%', '100%']}
       minWidth="3rem"
       marginBottom="1rem"
-      leftIcon={alreadyFollows ? <RiUserUnfollowLine /> : <RiUserFollowLine />}
-      isLoading={followsUserLoading}
+      leftIcon={followsUser ? <RiUserUnfollowLine /> : <RiUserFollowLine />}
+      isLoading={followsUser}
       loadingText="Loading"
       onClick={handleFollow}
     >
-      {alreadyFollows ? t('unfollow-user') : t('follow-user')}
+      {followsUser ? t('unfollow-user') : t('follow-user')}
     </Button>
   );
 };

@@ -1,0 +1,6 @@
+fragment UnfollowUserResponse on UnfollowUserResponse {
+  unfollow
+  errors {
+    ...ErrorResponse
+  }
+}

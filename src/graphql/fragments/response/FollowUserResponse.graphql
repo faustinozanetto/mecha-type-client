@@ -1,0 +1,6 @@
+fragment FollowUserResponse on FollowUserResponse {
+  follow
+  errors {
+    ...ErrorResponse
+  }
+}

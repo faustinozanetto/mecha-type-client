@@ -8,7 +8,7 @@ export const __PROD__: boolean = process.env.NODE_ENV === 'production';
  */
 export const __BACKEND__: string = __PROD__
   ? 'https://mecha-type-api.herokuapp.com/graphql'
-  : 'http://localhost:4000/graphql';
+  : 'http://localhost:4000/mecha-api';
 
 export const __URI__: string = __PROD__ ? 'https://mecha-type.vercel.app' : 'http://localhost:3000';
 

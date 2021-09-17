@@ -1,0 +1,8 @@
+fragment TestPresetsResponse on TestPresetsResponse {
+  testPresets {
+    ...TestPreset
+  }
+  errors {
+    ...ErrorResponse
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, UserBadge, useUserFollowersQuery } from 'generated/graphql';
+import { useFollowsUserQuery, User, UserBadge, useUserFollowersQuery } from 'generated/graphql';
 import { FollowButton, SettingsButton } from '.';
 import { useTranslation } from 'next-i18next';
 import { UserAvatar } from './user-avatar';
@@ -55,6 +55,14 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
     },
   });
 
+  const { data: followsUserData, refetch: followsUserRefetch } = useFollowsUserQuery({
+    skip: user?.id === targetUser?.id,
+    variables: {
+      userId: user?.id! ?? '',
+      targetUserId: targetUser?.id ?? '',
+    },
+  });
+
   if (editing) {
     return (
       <EditUserProfile
@@ -107,8 +115,10 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
             <FollowButton
               user={user}
               targetUser={targetUser}
+              followsUser={followsUserData?.followsUser?.valueOf()!}
               sameUser={ownsPage}
               session={session}
+              followsUserRefetch={followsUserRefetch}
               followersRefetch={followersRefetch}
             />
             {ownsPage && (

@@ -10,6 +10,7 @@ import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
 import withApollo from '@lib/apollo';
 import { useRouter } from 'next/router';
+import { NotFoundError } from '@components/not-found';
 
 export type CountryEntry = {
   name: string;
@@ -27,6 +28,8 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const [IDFromRoute, _setIDFromRoute] = useState(router.query.id as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
   const { data, loading: userLoading } = useUserQuery({
+    skip: status === 'loading',
+    ssr: true,
     variables: {
       where: {
         email: session?.user?.email,
@@ -53,6 +56,10 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
     };
     setUserOwnsPage(userOwnsPage());
   }, [targetUser?.user, data?.user]);
+
+  if (!targetUserLoading && !targetUser?.user.user) {
+    return <NotFoundError />;
+  }
 
   return (
     <PageWrapper user={data?.user?.user!}>
