@@ -31,7 +31,7 @@
       "@public/*": ["..public/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "config/jest/jest-dom-extend-expect.js", "next.config.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "config/jest/jest-dom-extend-expect.js", "next.config.js", ".d.ts"],
   "exclude": ["node_modules", "dist", ".next", "out", "next.config.ts", ".babelrc", "bundles", "coverage", "test/*"],
   "ts-node": {
     "compilerOptions": {

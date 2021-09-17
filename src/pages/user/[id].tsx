@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { User, useUserQuery } from 'generated/graphql';
-import { UserProfile } from '@components/user/profile/page/user';
 import { GetServerSideProps } from 'next';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -11,6 +11,8 @@ import { __URI__ } from '@utils/constants';
 import withApollo from '@lib/apollo';
 import { useRouter } from 'next/router';
 import { NotFoundError } from '@components/not-found';
+
+const UserProfile = dynamic(() => import('@components/user/profile/page/user/user-profile'));
 
 export type CountryEntry = {
   name: string;

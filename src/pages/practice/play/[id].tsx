@@ -4,7 +4,6 @@ import { PracticeGameInput } from '@components/practice/game/types';
 import { generateWords } from '@lib/words/helperFunctions';
 import { User, useTestPresetQuery, useUserQuery } from 'generated/graphql';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
-import { Loading } from '@components/loading/loading';
 import { useIsAuth } from '@utils/useIsAuth';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { Container } from '@chakra-ui/react';
@@ -48,10 +47,6 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) 
   if (!userLoading && !data?.user) {
     return <NotFoundError />;
   }
-
-  // if (loading && text === '') {
-  //   return <Loading />;
-  // }
 
   return (
     <PageWrapper user={data?.user.user as User}>

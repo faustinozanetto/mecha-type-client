@@ -1,5 +1,5 @@
 import React from 'react';
-import { FiSettings } from 'react-icons/fi';
+import FiSettings from '@meronex/icons/fi/FiSettings';
 import { useRouter } from 'next/router';
 import { User } from 'generated/graphql';
 import { useTranslation } from 'next-i18next';

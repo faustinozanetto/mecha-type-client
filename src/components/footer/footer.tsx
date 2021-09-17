@@ -3,7 +3,7 @@ import { VStack, Text, Flex } from '@chakra-ui/react';
 
 interface FooterProps {}
 
-export const Footer: React.FC<FooterProps> = ({}) => {
+const Footer: React.FC<FooterProps> = ({}) => {
   return (
     <Flex
       as="footer"
@@ -38,3 +38,5 @@ export const Footer: React.FC<FooterProps> = ({}) => {
     </Flex>
   );
 };
+
+export default Footer;

@@ -1,6 +1,6 @@
 import React from 'react';
-import { FiUser } from 'react-icons/fi';
-import { SidebarButton } from '..';
+import FiUser from '@meronex/icons/fi/FiUser';
+import { SidebarButton } from '../sidebar-button';
 import { UserFragment } from 'generated/graphql';
 
 interface UserDetailsProps {

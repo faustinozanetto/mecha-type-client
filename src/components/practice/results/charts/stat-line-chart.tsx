@@ -4,7 +4,6 @@ import { defaults } from 'react-chartjs-2';
 import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game-input';
 import { useColorModeValue, Flex } from '@chakra-ui/react';
 
-
 interface StatLineChartProps {
   statsData: ITypingStat[];
   statType?: ETypingStatType;
@@ -90,6 +89,7 @@ export const StatLineChart: React.FC<StatLineChartProps> = ({ statsData, statTyp
 
   return (
     <Flex>
+      {/* @ts-ignore */}
       <Line data={data} options={options} />
     </Flex>
   );

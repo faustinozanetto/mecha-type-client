@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { RiUserFollowLine } from 'react-icons/ri';
-import { RiUserUnfollowLine } from 'react-icons/ri';
-import { useFollowsUserQuery, useFollowUserMutation, User, useUnfollowUserMutation } from 'generated/graphql';
+import React from 'react';
+import FiUserX from '@meronex/icons/fi/FiUserX';
+import FiUserPlus from '@meronex/icons/fi/FiUserPlus';
+import { useFollowUserMutation, User, useUnfollowUserMutation } from 'generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { Button, useToast } from '@chakra-ui/react';
 
@@ -86,7 +86,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       width={['100%', '100%', '100%']}
       minWidth="3rem"
       marginBottom="1rem"
-      leftIcon={followsUser ? <RiUserUnfollowLine /> : <RiUserFollowLine />}
+      leftIcon={followsUser ? <FiUserPlus /> : <FiUserX />}
       isLoading={followsUser}
       loadingText="Loading"
       onClick={handleFollow}

@@ -3,10 +3,10 @@ import { Box, SimpleGrid, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
 import { UserStatCard } from '@components/user/stats';
 import { calculateAverageWPM, calculateAverageCPM, calculateAverageAccuracy } from '@lib/user/userHelper';
-import { BiBullseye } from 'react-icons/bi';
-import { BiCrown } from 'react-icons/bi';
-import { FaKeyboard } from 'react-icons/fa';
-import { GrTest } from 'react-icons/gr';
+import BiBullseye from '@meronex/icons/bi/BiBullseye';
+import BiCrown from '@meronex/icons/bi/BiCrown';
+import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
+import GrTest from '@meronex/icons/gr/GrTest';
 import { User } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 

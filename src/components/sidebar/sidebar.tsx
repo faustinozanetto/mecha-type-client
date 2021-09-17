@@ -1,10 +1,12 @@
 import React from 'react';
-import { AiOutlineDashboard } from 'react-icons/ai';
-import { BiLogIn } from 'react-icons/bi';
-import { FaKeyboard } from 'react-icons/fa';
-import { FiHome, FiStar } from 'react-icons/fi';
+import AiOutlineDashboard from '@meronex/icons/ai/AiOutlineDashboard';
+import FiLogIn from '@meronex/icons/fi/FiLogIn';
+import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
+import FiHome from '@meronex/icons/fi/FiHome';
+import FiStar from '@meronex/icons/fi/FiStar';
+
 import { UserFragment } from 'generated/graphql';
-import { SidebarButton } from '.';
+import { SidebarButton } from './sidebar-button';
 import { LogoutButton, UserDetails } from './user';
 import useMediaQuery from '@hooks/general/useMediaQuery';
 import { Text, Flex } from '@chakra-ui/react';
@@ -45,7 +47,7 @@ interface SidebarProps {
   user: UserFragment;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
+const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
   const isSmallOrLess = useMediaQuery('(max-width: 30em)');
 
@@ -83,9 +85,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ user }) => {
             <LogoutButton />
           </>
         ) : (
-          <SidebarButton icon={BiLogIn} label="Login" href={`${__URI__}/api/auth/signin`} />
+          <SidebarButton icon={FiLogIn} label="Login" href={`${__URI__}/api/auth/signin`} />
         )}
       </Flex>
     </Flex>
   );
 };
+
+export default Sidebar;

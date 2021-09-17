@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { BiTime } from 'react-icons/bi';
-import { BiBullseye } from 'react-icons/bi';
-import { FaKeyboard } from 'react-icons/fa';
+import FiClock from '@meronex/icons/fi/FiClock';
+import BiBullseye from '@meronex/icons/bi/BiBullseye';
+import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
 import { ITypingStat, ETypingStatType } from '../game/types/practice-game-input';
 import { ChartSelectButton, StatLineChart } from './charts';
 import { UserStatCard } from '@components/user/stats/user-stat-card';
@@ -74,7 +74,7 @@ export const PracticeResults: React.FC<PracticeResultsProps> = ({
             icon={BiBullseye}
             backgroundColor="#6B21A8"
           />
-          <UserStatCard title="Duration" amount={duration} icon={BiTime} backgroundColor="#86198F" />
+          <UserStatCard title="Duration" amount={duration} icon={FiClock} backgroundColor="#86198F" />
         </SimpleGrid>
       </Box>
       <Box>

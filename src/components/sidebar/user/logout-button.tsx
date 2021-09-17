@@ -1,7 +1,7 @@
 import React from 'react';
-import { FiLogOut } from 'react-icons/fi';
+import FiLogOut from '@meronex/icons/fi/FiLogOut';
 import { signOut } from 'next-auth/react';
-import { SidebarButton } from '..';
+import { SidebarButton } from '../sidebar-button';
 
 export const LogoutButton: React.FC<{}> = ({}) => {
   return (

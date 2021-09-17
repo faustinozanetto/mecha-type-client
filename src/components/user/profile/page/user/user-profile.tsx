@@ -36,14 +36,7 @@ interface IUserProfileProps {
   countries: CountryEntry[];
 }
 
-export const UserProfile: React.FC<IUserProfileProps> = ({
-  user,
-  targetUser,
-  loading,
-  ownsPage,
-  session,
-  countries,
-}) => {
+const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, session, countries }) => {
   const { t } = useTranslation('user-profile');
   const [editing, setEditing] = useState(false);
   const topBg = useColorModeValue('gray.300', 'gray.700');
@@ -147,3 +140,5 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
     </Container>
   );
 };
+
+export default UserProfile;
