@@ -11,8 +11,7 @@ interface UserProfilePresetsProps {
   /** Wether content is loading or not */
   loading: boolean;
 }
-
-export const UserProfilePresets: React.FC<UserProfilePresetsProps> = ({ presets, loading }) => {
+const UserProfilePresets: React.FC<UserProfilePresetsProps> = ({ presets, loading }) => {
   const { t } = useTranslation('user-profile');
   return (
     <Box marginTop="0.5rem" marginBottom="0.5rem">
@@ -23,3 +22,5 @@ export const UserProfilePresets: React.FC<UserProfilePresetsProps> = ({ presets,
     </Box>
   );
 };
+
+export default UserProfilePresets;

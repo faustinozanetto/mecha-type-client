@@ -1,12 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import { Flex, Skeleton, Text } from '@chakra-ui/react';
-import { User } from '@generated/graphql';
+import { UserFollowerFragment } from '@generated/graphql';
 import { UserAvatar } from '../../user/user-avatar';
 
 interface UserFollowerCardProps {
   /** Follower Data */
-  follower: User;
+  follower: UserFollowerFragment;
   /** Wether content is loading or not */
   loading: boolean;
 }

@@ -3,16 +3,16 @@ import { UserFollowerCard } from './user-follower-card';
 import { Flex, Text } from '@chakra-ui/layout';
 import { Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
-import { User } from '@generated/graphql';
+import { UserFollowerFragment } from '@generated/graphql';
 
 interface UserFollowersProps {
   /** User followers data */
-  followers: User[];
+  followers: UserFollowerFragment[];
   /** Wether content is loading or not */
   loading: boolean;
 }
 
-export const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => {
+const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => {
   const { t } = useTranslation('user-profile');
   const textColor = useColorModeValue('black', 'white');
   return (
@@ -39,10 +39,12 @@ export const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading
       {followers && followers.length > 0 && (
         <VStack spacing="0.5rem" px={4} marginBottom="1rem" width="100%">
           {followers.map((follower) => {
-            return <UserFollowerCard key={follower.id} follower={follower} loading={loading}/>;
+            return <UserFollowerCard key={follower.id} follower={follower} loading={loading} />;
           })}
         </VStack>
       )}
     </Flex>
   );
 };
+
+export default UserFollowers;

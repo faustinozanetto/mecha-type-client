@@ -1,23 +1,23 @@
 import React from 'react';
 import { Box, SimpleGrid, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
-import { UserStatCard } from '@components/user/stats';
+import { UserStatCard } from '@components/user/profile/page/stats';
 import { calculateAverageWPM, calculateAverageCPM, calculateAverageAccuracy } from '@lib/user/userHelper';
 import BiBullseye from '@meronex/icons/bi/BiBullseye';
 import BiCrown from '@meronex/icons/bi/BiCrown';
 import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
 import GrTest from '@meronex/icons/gr/GrTest';
-import { User } from '@generated/graphql';
+import { UserFragment } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 
 interface UserProfileStatsProps {
   /** User data to retrieve data from */
-  user: User;
+  user: UserFragment;
   /** Loading state */
   loading: boolean;
 }
 
-export const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) => {
+const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) => {
   const { t } = useTranslation('user-profile');
   return (
     <Box marginTop="0.5rem" marginBottom="0.5rem">
@@ -81,3 +81,5 @@ export const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loadin
     </Box>
   );
 };
+
+export default UserProfileStats;

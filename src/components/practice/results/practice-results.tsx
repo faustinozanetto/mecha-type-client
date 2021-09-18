@@ -5,7 +5,7 @@ import BiBullseye from '@meronex/icons/bi/BiBullseye';
 import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
 import { ITypingStat, ETypingStatType } from '../game/types/practice-game-input';
 import { ChartSelectButton, StatLineChart } from './charts';
-import { UserStatCard } from '@components/user/stats/user-stat-card';
+import { UserStatCard } from '@components/user/profile/page/stats/user-stat-card';
 import { Flex, Text, SimpleGrid, Button, Box, useColorModeValue } from '@chakra-ui/react';
 
 interface PracticeResultsProps {

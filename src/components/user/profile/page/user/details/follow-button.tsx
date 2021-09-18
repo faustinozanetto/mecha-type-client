@@ -1,28 +1,32 @@
 import React from 'react';
 import FiUserX from '@meronex/icons/fi/FiUserX';
 import FiUserPlus from '@meronex/icons/fi/FiUserPlus';
-import { useFollowUserMutation, User, useUnfollowUserMutation } from 'generated/graphql';
+import { useFollowUserMutation, UserFragment, useUnfollowUserMutation } from 'generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { Button, useToast } from '@chakra-ui/react';
 
 import { Session } from 'next-auth';
 interface FollowButtonProps {
-  user: User;
+  /** Wether content is loading or not */
+  loading: boolean;
+  /** Current logged in user */
+  user: UserFragment;
   /** Target user to edit profile */
-  targetUser: User;
+  targetUser: UserFragment;
+  /** Wether the user already follows the target user or not. */
   followsUser: boolean;
   /** Wether the current logged in user is equal as the target one */
   sameUser: boolean;
+  /** Used to re fetch the user follows query */
   followsUserRefetch: any;
-  /**
-   * Used to re fetch the followers list query
-   */
+  /** Used to re fetch the followers list query */
   followersRefetch: any;
   /** Session object */
   session: Session;
 }
 
-export const FollowButton: React.FC<FollowButtonProps> = ({
+const FollowButton: React.FC<FollowButtonProps> = ({
+  loading,
   user,
   targetUser,
   followsUser,
@@ -87,7 +91,7 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
       minWidth="3rem"
       marginBottom="1rem"
       leftIcon={followsUser ? <FiUserPlus /> : <FiUserX />}
-      isLoading={followsUser}
+      isLoading={loading}
       loadingText="Loading"
       onClick={handleFollow}
     >
@@ -95,3 +99,5 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
     </Button>
   );
 };
+
+export default FollowButton;

@@ -14,3 +14,6 @@ declare module '@meronex/icons/gr/GrTest';
 declare module '@meronex/icons/ai/AiOutlineDashboard';
 declare module '@meronex/icons/bi/BiBullseye';
 declare module '@meronex/icons/fa/FaKeyboard';
+declare module '@meronex/icons/bi/BilGoogle';
+declare module '@meronex/icons/bi/BilGithub';
+declare module '@meronex/icons/bi/BilDiscord';

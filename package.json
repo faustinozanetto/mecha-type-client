@@ -27,7 +27,7 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "@meronex/icons": "^4.0.0",
-    "@next-auth/prisma-adapter": "^0.5.2-next.5",
+    "@next-auth/prisma-adapter": "^0.5.2-next.10",
     "@next/bundle-analyzer": "^11.1.2",
     "@nexus/schema": "^0.20.1",
     "@prisma/client": "^3.0.2",

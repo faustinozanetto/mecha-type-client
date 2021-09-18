@@ -12,6 +12,7 @@ import useMediaQuery from '@hooks/general/useMediaQuery';
 import { Text, Flex } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { SidebarThemeToggler } from './sidebar-theme-toggler';
+import { useRouter } from 'next/router';
 
 interface ISidebarLink {
   name: string;
@@ -48,8 +49,21 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ user }) => {
+  const router = useRouter();
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
   const isSmallOrLess = useMediaQuery('(max-width: 30em)');
+
+  /**
+   *
+   * @returns the combined uri of the auth sign in and set next query
+   * to the current page, so when sign in is completed it redirects to
+   * the current page.
+   */
+  const generateSignInHref = (): string => {
+    const base = '/auth/signin';
+    const currentUri = router.asPath;
+    return base.concat(`?next=${currentUri}`);
+  };
 
   return (
     <Flex
@@ -85,7 +99,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
             <LogoutButton />
           </>
         ) : (
-          <SidebarButton icon={FiLogIn} label="Login" href={`${__URI__}/api/auth/signin`} />
+          <SidebarButton icon={FiLogIn} label="Login" href={generateSignInHref()} />
         )}
       </Flex>
     </Flex>

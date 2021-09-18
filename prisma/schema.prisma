@@ -46,7 +46,7 @@ enum UserBadge {
 }
 
 model User {
-  id             String           @id @default(uuid())
+  id             String           @id @default(cuid())
   name           String           @unique
   description    String           @default("")
   email          String           @unique
@@ -78,7 +78,7 @@ model VerificationToken {
 }
 
 model UserOnUser {
-  id      String @id @default(uuid())
+  id      String @id @default(cuid())
   child   User   @relation("following", fields: [childId], references: [id])
   childId String
 
@@ -90,7 +90,7 @@ model UserOnUser {
 }
 
 model WordsPerMinute {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   amount    Float    @default(0)
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?
@@ -108,7 +108,7 @@ model CharsPerMinute {
 }
 
 model TypingAccuracy {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   amount    Float    @default(0)
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?

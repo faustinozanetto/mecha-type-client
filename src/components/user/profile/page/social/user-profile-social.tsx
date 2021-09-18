@@ -1,18 +1,18 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/layout';
-import { User } from '@generated/graphql';
+import { UserFollowerFragment } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
-import { UserFollowers } from './followers';
 import { useColorModeValue } from '@chakra-ui/react';
+import UserFollowers from './followers/user-followers';
 
 interface UserProfileSocialProps {
   /** Followers data to retrieve data from */
-  followersData: User[];
+  followersData: UserFollowerFragment[];
   /** Wether content is loading or not */
   loading: boolean;
 }
 
-export const UserProfileSocial: React.FC<UserProfileSocialProps> = ({ followersData, loading }) => {
+const UserProfileSocial: React.FC<UserProfileSocialProps> = ({ followersData, loading }) => {
   const { t } = useTranslation('user-profile');
 
   return (
@@ -24,3 +24,5 @@ export const UserProfileSocial: React.FC<UserProfileSocialProps> = ({ followersD
     </Box>
   );
 };
+
+export default UserProfileSocial;

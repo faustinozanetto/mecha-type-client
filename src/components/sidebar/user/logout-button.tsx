@@ -10,7 +10,7 @@ export const LogoutButton: React.FC<{}> = ({}) => {
       icon={FiLogOut}
       href=""
       onClick={async () => {
-        signOut();
+        await signOut();
       }}
     />
   );

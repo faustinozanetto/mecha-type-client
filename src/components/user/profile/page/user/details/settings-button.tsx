@@ -1,18 +1,15 @@
 import React from 'react';
 import FiSettings from '@meronex/icons/fi/FiSettings';
-import { useRouter } from 'next/router';
-import { User } from 'generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { Button } from '@chakra-ui/react';
 
 interface SettingsButtonProps {
-  /** Target user to edit profile */
-  user: User;
+  /** Wether content is loading or not */
+  loading: boolean;
   onClick: () => void;
 }
 
-export const SettingsButton: React.FC<SettingsButtonProps> = ({ user, onClick }) => {
-  const router = useRouter();
+export const SettingsButton: React.FC<SettingsButtonProps> = ({ loading, onClick }) => {
   const { t } = useTranslation('user-profile');
   return (
     <Button
@@ -24,6 +21,8 @@ export const SettingsButton: React.FC<SettingsButtonProps> = ({ user, onClick })
       width={['100%', '100%', '100%']}
       minWidth="3rem"
       leftIcon={<FiSettings />}
+      isLoading={loading}
+      loadingText="Loading"
       onClick={onClick}
     >
       {t('user-settings')}
