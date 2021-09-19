@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { capitalizeFirstLetter } from '@lib/words/helperFunctions';
-import { TestPreset, TestType } from 'generated/graphql';
+import { TestPresetFragment, TestType } from 'generated/graphql';
 import { Flex, Image, Text, HStack, Button, useColorModeValue, Wrap } from '@chakra-ui/react';
 // import Image from 'next/image';
 import { PracticePresetCardStat } from './practice-preset-card-stat';
 
 interface PracticePresetCardProps {
   /** Data to fill the card information */
-  presetData: TestPreset;
+  presetData: TestPresetFragment;
 }
 
-export const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetData }) => {
+const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetData }) => {
   const bgColor = useColorModeValue('gray.200', 'gray.800');
 
   return (
@@ -72,3 +72,4 @@ export const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetDa
     </Flex>
   );
 };
+export default PracticePresetCard;

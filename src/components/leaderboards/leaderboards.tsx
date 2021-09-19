@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Flex,
   Heading,
@@ -25,6 +25,16 @@ interface LeaderboardsProps {
 }
 
 export const Leaderboards: React.FC<LeaderboardsProps> = ({ usersData, filterBy }) => {
+  const [users, setUsers] = useState<FilteredUserFragment[]>();
+
+  useEffect(() => {
+    if (usersData && usersData.length > 0) {
+      const sortingArray = [...usersData];
+      const sortedUsers = sortingArray.sort((a, b) => b.value - a.value);
+      setUsers(sortedUsers);
+    }
+  }, [usersData]);
+
   return (
     <Flex
       width="100%"
@@ -44,15 +54,15 @@ export const Leaderboards: React.FC<LeaderboardsProps> = ({ usersData, filterBy 
           </Tr>
         </Thead>
         <Tbody>
-          {usersData &&
-            usersData.map((user, index) => {
+          {users &&
+            users.map((user, index) => {
               return (
                 <Tr key={user.name + index}>
                   <Td>
                     <LeaderboardUser user={user} />
                   </Td>
                   <Td>{user.value}</Td>
-                  <Td># {usersData.indexOf(user) + 1}</Td>
+                  <Td># {index + 1}</Td>
                 </Tr>
               );
             })}

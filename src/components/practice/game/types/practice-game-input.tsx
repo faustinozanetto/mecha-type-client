@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { PracticeResults } from '@components/practice/results';
+import dynamic from 'next/dynamic';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
-import { User, useUpdateUserMutation } from '@generated/graphql';
-import { TestPreset } from 'generated/graphql';
-import { PracticeVisualLetter } from '../visual';
+import { TestPresetFragment, User, useUpdateUserMutation } from '@generated/graphql';
 import { Flex, SkeletonText, useColorModeValue, Input, useToast, Box } from '@chakra-ui/react';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@lib/general/math/math';
+
+const PracticeVisualLetter = dynamic(()=> import('@components/practice/game/visual/practice-visual-letter'))
+const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));
 
 export enum ETypingStatType {
   ERRORS = 'Errors',
@@ -52,7 +53,7 @@ export interface ITypingStat {
 interface PracticeGameInputProps {
   loading: boolean;
   /** Preset to take data from */
-  testPreset: TestPreset;
+  testPreset: TestPresetFragment;
   /** Previously generated text */
   text: string;
   /** Current logged in user. */

@@ -9,19 +9,19 @@ import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { Container } from '@chakra-ui/react';
 import { NotFoundError } from '@components/not-found';
 import { Session } from 'next-auth';
-import { getSession } from 'next-auth/react';
+import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
 
 interface PracticePlayPageProps {
-  session: Session;
   locale: string;
 }
 
-const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) => {
+const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
   useIsAuth();
+  const { data: session, status } = useSession();
   const [text, setText] = useState('');
 
   const { data, loading: userLoading } = useUserQuery({
@@ -40,7 +40,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) 
 
   useEffect(() => {
     if (testPreset?.testPreset?.testPreset && !loading) {
-      setText(generateWords(testPreset.testPreset.testPreset));
+      setText(generateWords(testPreset?.testPreset?.testPreset));
     }
   }, [loading, testPreset?.testPreset]);
 
@@ -69,10 +69,10 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) 
         minHeight="calc(100vh - 10rem)"
         centerContent
       >
-        {!loading && text && (
+        {!loading && text && testPreset?.testPreset?.testPreset && (
           <PracticeGameInput
             loading={loading || userLoading}
-            testPreset={testPreset?.testPreset?.testPreset!}
+            testPreset={testPreset.testPreset.testPreset}
             text={text as string}
             user={data?.user.user as User}
           />
@@ -84,13 +84,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ session, locale }) 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { locale } = context;
-  const session = await getSession(context);
-
-  if (!session) {
-    return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
-  }
-
-  return { props: { locale, session, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
+  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
 };
 
 export default withApollo()(PracticePlayPage);

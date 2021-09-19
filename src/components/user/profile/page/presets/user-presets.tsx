@@ -1,12 +1,12 @@
 import React from 'react';
 import { UserPresetCard } from './user-preset-card';
-import { TestPreset } from '@generated/graphql';
+import { TestPresetFragment } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
-import { Flex, Text, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Text, VStack, useColorModeValue, Skeleton } from '@chakra-ui/react';
 
 interface UserPresetsProps {
   /** Presets to retrieve data from */
-  presets: TestPreset[];
+  presets: TestPresetFragment[];
   /** Wether content is loading or not */
   loading: boolean;
 }
@@ -29,9 +29,11 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ presets, loading }) =>
       </Text>
 
       {presets && presets.length === 0 && (
-        <Text as="h3" fontSize="xl" color={textColor} fontWeight={500} marginTop={2} marginBottom={2}>
-          {t('no-presets')}
-        </Text>
+        <Skeleton isLoaded={!loading} height="auto">
+          <Text as="h3" fontSize="xl" color={textColor} fontWeight={500} marginTop={2} marginBottom={2}>
+            {t('no-presets')}
+          </Text>
+        </Skeleton>
       )}
 
       {presets && presets.length > 0 && (

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
-import { TestLanguage, TestType, useCreateTestPresetUserMutation, User } from '@generated/graphql';
+import { TestLanguage, TestType, useCreateTestPresetUserMutation, User, UserFragment } from '@generated/graphql';
 import { useRouter } from 'next/router';
 import { Flex, useToast, Text, VStack, HStack } from '@chakra-ui/react';
 import { FormCancelButton } from '@components/forms/form-cancel-button';
@@ -29,7 +29,7 @@ const validationSchema = Yup.object().shape({
 
 interface PresetCreationFormProps {
   /** Current logged in user. */
-  user: User;
+  user: UserFragment;
   /** Method to call when the preset was created */
   onCreatedCallback: () => void;
 }

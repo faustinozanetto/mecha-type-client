@@ -33,8 +33,8 @@ export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, 
   const toast = useToast();
   const [currentCountry, setCurrentCountry] = useState('');
   const initialFormValues: EditProfileFormValues = {
-    country: user.country,
-    description: user.description,
+    country: user.country ?? '',
+    description: user.description ?? '',
   };
 
   return (

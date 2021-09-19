@@ -1,8 +1,13 @@
 fragment FilteredUsersResponse on FilteredUsersResponse {
-  filteredUsers {
+  nodes {
     ...FilteredUser
   }
   errors {
     ...ErrorResponse
   }
+  nodeCount
+  pageCount
+  currentPage
+  nodesPerPage
+  hasMore
 }

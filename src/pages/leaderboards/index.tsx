@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { useSession } from 'next-auth/react';
-import { useFilterUsersQuery, User, UserFilterBy, useUserQuery } from 'generated/graphql';
+import { FilterUsersQuery, useFilterUsersQuery, User, UserFilterBy, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { Button, ButtonGroup, Container, Flex, Heading, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
@@ -18,6 +18,7 @@ interface LeaderboardsPageProps {
 const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
   const [filterBy, setFilterBy] = useState<UserFilterBy>(UserFilterBy.Accuracy);
   const { data: session, status } = useSession();
+  const [page, setPage] = useState(0);
   const { data } = useUserQuery({
     variables: {
       where: {
@@ -29,10 +30,11 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
   const {
     data: filteredUsers,
     loading: dataLoading,
+    fetchMore,
     refetch: refetchFilteredUsers,
   } = useFilterUsersQuery({
     variables: {
-      take: 10,
+      page: page,
       filterBy,
     },
   });
@@ -134,8 +136,23 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
           </Flex>
           {/* Table */}
           <Skeleton isLoaded={!dataLoading} width="100%">
-            <Leaderboards usersData={filteredUsers?.filterUsers?.filteredUsers!} filterBy={filterBy} />
+            <Leaderboards usersData={filteredUsers?.filterUsers?.nodes!} filterBy={filterBy} />
           </Skeleton>
+          {filteredUsers?.filterUsers && filteredUsers.filterUsers.hasMore && (
+            <Button
+              variant="solid"
+              onClick={() => {
+                setPage(page + 1);
+                fetchMore({
+                  variables: {
+                    page: page + 1,
+                  },
+                });
+              }}
+            >
+              Load More
+            </Button>
+          )}
         </VStack>
       </Container>
     </PageWrapper>

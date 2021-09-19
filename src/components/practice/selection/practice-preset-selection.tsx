@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { TestPreset, User, useTestPresetsQuery } from 'generated/graphql';
-import { PracticePresetCard } from './preset-card/practice-preset-card';
-import { PresetCreation } from './preset-creation';
+import { TestPresetFragment, UserFragment, useTestPresetsQuery } from 'generated/graphql';
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
+
+const PresetCreation = dynamic(()=> import('@components/practice/selection/preset-creation/preset-creation'))
+const PracticePresetCard = dynamic(() => import('@components/practice/selection/preset-card/practice-preset-card'));
 
 interface PracticePresetSelectionProps {
   /** Current logged in user. */
-  user: User;
+  user: UserFragment;
 }
 
 export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = ({ user }) => {
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const [creatingPreset, setCreatingPreset] = useState(false);
-  const [presets, setPresets] = useState<TestPreset[]>([]);
+  const [presets, setPresets] = useState<TestPresetFragment[]>([]);
   const { data: testPresets, loading } = useTestPresetsQuery({
     variables: {
       input: {

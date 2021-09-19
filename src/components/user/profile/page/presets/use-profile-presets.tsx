@@ -1,13 +1,13 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
-import { TestPreset } from '@generated/graphql';
+import { TestPresetFragment } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { UserPresets } from './user-presets';
 
 interface UserProfilePresetsProps {
   /** Presets data to retrieve data from */
-  presets: TestPreset[];
+  presets: TestPresetFragment[];
   /** Wether content is loading or not */
   loading: boolean;
 }

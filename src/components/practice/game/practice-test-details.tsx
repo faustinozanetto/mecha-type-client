@@ -1,10 +1,10 @@
 import React from 'react';
 import { Flex, useColorModeValue, Text, Skeleton } from '@chakra-ui/react';
-import { TestPreset } from '@generated/graphql';
+import { TestPresetFragment } from '@generated/graphql';
 
 interface PracticeTestDetailsProps {
   /** Test preset data */
-  practiceTest: TestPreset;
+  practiceTest: TestPresetFragment;
   /** Wether data is loading or not */
   loading: boolean;
   time: number;

@@ -1,4 +1,4 @@
-import { TestPreset } from 'generated/graphql';
+import { TestPresetFragment } from 'generated/graphql';
 import { words } from './wordList';
 
 /**
@@ -88,7 +88,7 @@ export const punctuateWord = (previousWord: string, currentWord: string, index: 
   return word;
 };
 
-export const generateWords = (presetData: TestPreset): string => {
+export const generateWords = (presetData: TestPresetFragment): string => {
   if (presetData === undefined) return '';
   let text = '';
   const wordsList: string[] = [];

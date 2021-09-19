@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import { UserFollowerFragment } from '@generated/graphql';
 import { UserAvatar } from '../../user/user-avatar';
 
@@ -18,7 +18,7 @@ export const UserFollowerCard: React.FC<UserFollowerCardProps> = ({ follower, lo
     <Flex
       as="a"
       flexDir="row"
-      backgroundColor="#1a202c"
+      backgroundColor={useColorModeValue('gray.400', 'gray.800')}
       alignContent="flex-start"
       justifyContent="flex-start"
       alignItems="center"
@@ -31,7 +31,7 @@ export const UserFollowerCard: React.FC<UserFollowerCardProps> = ({ follower, lo
     >
       <UserAvatar imageUrl={follower?.image!} size={50} loading={loading} />
       <Skeleton isLoaded={!loading} height="auto" ml={4}>
-        <Text fontSize="lg" fontWeight="semibold" color="white">
+        <Text fontSize="lg" fontWeight="semibold" color={useColorModeValue('black', 'white')}>
           {follower?.name}
         </Text>
       </Skeleton>

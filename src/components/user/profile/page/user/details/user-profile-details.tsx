@@ -66,7 +66,7 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
             </Skeleton>
             {targetUser?.badge !== UserBadge.Default && (
               <Badge colorScheme={targetUser?.badge === UserBadge.Pro ? 'yellow' : 'red'}>
-                {targetUser?.badge.toUpperCase()}
+                {targetUser?.badge?.toUpperCase()}
               </Badge>
             )}
           </HStack>

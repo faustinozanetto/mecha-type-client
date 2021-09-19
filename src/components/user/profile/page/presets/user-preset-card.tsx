@@ -1,10 +1,10 @@
 import React from 'react';
-import { TestPreset, TestType } from 'generated/graphql';
+import { TestPresetFragment, TestType } from 'generated/graphql';
 import { Button, Flex, Skeleton, Text } from '@chakra-ui/react';
 
 interface UserPresetCardProps {
   /** Preset data to retrieve info from. */
-  preset: TestPreset;
+  preset: TestPresetFragment;
   /** Wether content is loading or not */
   loading: boolean;
 }

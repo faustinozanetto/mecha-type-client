@@ -22,7 +22,7 @@ interface PracticeResultsProps {
   statsData: ITypingStat[];
 }
 
-export const PracticeResults: React.FC<PracticeResultsProps> = ({
+const PracticeResults: React.FC<PracticeResultsProps> = ({
   showStats = false,
   keystrokes = 0,
   wordsPerMinute = 0,
@@ -103,3 +103,5 @@ export const PracticeResults: React.FC<PracticeResultsProps> = ({
     </Flex>
   );
 };
+
+export default PracticeResults;
