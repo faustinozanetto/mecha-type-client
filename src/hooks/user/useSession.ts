@@ -1,3 +1,4 @@
+import { __BACKEND__ } from '@utils/constants';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -14,7 +15,7 @@ const useSession = () => {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get<UserSession>(`http://localhost:4000/api/auth/status`, {
+        .get<UserSession>(`${__BACKEND__}/auth/status`, {
           withCredentials: true,
         })
         .then((response) => {

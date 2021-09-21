@@ -4,7 +4,7 @@ import { __BACKEND__ } from '@utils/constants';
 import { FilteredUsersResponse } from '@generated/graphql';
 
 export const apolloClient = new ApolloClient({
-  uri: __BACKEND__,
+  uri: `${__BACKEND__}/graphql`,
   cache: new InMemoryCache({
     typePolicies: {
       Query: {
