@@ -57,7 +57,7 @@ export const Leaderboards: React.FC<LeaderboardsProps> = ({ usersData, filterBy 
           {users &&
             users.map((user, index) => {
               return (
-                <Tr key={user.name + index}>
+                <Tr key={user.username + index}>
                   <Td>
                     <LeaderboardUser user={user} />
                   </Td>

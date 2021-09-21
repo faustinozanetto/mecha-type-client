@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import { UserFollowerFragment } from '@generated/graphql';
 import { UserAvatar } from '../../user/user-avatar';
+import { generateAvatarURl } from '@lib/user/userHelper';
 
 interface UserFollowerCardProps {
   /** Follower Data */
@@ -27,12 +28,12 @@ export const UserFollowerCard: React.FC<UserFollowerCardProps> = ({ follower, lo
       borderRadius="lg"
       width={['auto', 'auto', 'auto', '100%', '100%']}
       cursor="pointer"
-      href={`/user/${follower.name}`}
+      href={`/user/${follower.username}`}
     >
-      <UserAvatar imageUrl={follower?.image!} size={50} loading={loading} />
+      <UserAvatar imageUrl={generateAvatarURl(follower)} size={50} loading={loading} />
       <Skeleton isLoaded={!loading} height="auto" ml={4}>
         <Text fontSize="lg" fontWeight="semibold" color={useColorModeValue('black', 'white')}>
-          {follower?.name}
+          {follower?.username}
         </Text>
       </Skeleton>
     </Flex>

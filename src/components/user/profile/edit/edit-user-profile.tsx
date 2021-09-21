@@ -3,8 +3,9 @@ import { User } from 'generated/graphql';
 import { Flex, Text, GridItem, Grid, useColorModeValue } from '@chakra-ui/react';
 import { UserAvatar } from '../page/user/user-avatar';
 import { EditUserProfileForm } from './edit-user-profile-form';
-import { useSession } from 'next-auth/react';
 import { CountryEntry } from '@pages/user/[id]';
+import useSession from '@hooks/user/useSession';
+import { generateAvatarURl } from '@lib/user/userHelper';
 
 interface EditUserProfileProps {
   /** User to perform the edits */
@@ -22,7 +23,7 @@ export const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading,
   const topBg = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('black', 'white');
 
-  if (user.email !== session?.user?.email) {
+  if (user.id !== session?.id) {
     return <Text as="h2">UN AUTHORIZED</Text>;
   }
 
@@ -44,7 +45,7 @@ export const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading,
         </Flex>
       </GridItem>
       <GridItem display="flex">
-        <UserAvatar imageUrl={user?.image!} size={150} loading={loading} />
+        <UserAvatar imageUrl={generateAvatarURl(user)} size={150} loading={loading} />
       </GridItem>
     </Grid>
   );

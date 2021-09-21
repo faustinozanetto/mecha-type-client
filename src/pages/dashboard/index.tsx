@@ -1,21 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react';
 import Head from 'next/head';
-import { useIsAuth } from '@utils/useIsAuth';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
-import { getSession } from 'next-auth/react';
 import { UserDashboard } from '@components/dashboard';
 import { User, useUserQuery } from 'generated/graphql';
 import withApollo from '@lib/apollo';
-import { Session } from 'next-auth';
-import { GetServerSideProps } from 'next';
 import { Loading } from '@components/loading/loading';
 import { Container } from '@chakra-ui/react';
+import useSession from '@hooks/user/useSession';
 
-interface DashboardPageProps {
-  /** Session object gathered from server side props */
-  session: Session;
-}
+interface DashboardPageProps {}
 
 export interface IPositionEntry {
   // fieldType: FilterBy;
@@ -24,13 +18,13 @@ export interface IPositionEntry {
   total: number;
 }
 
-const DashboardPage: React.FC<DashboardPageProps> = ({ session }) => {
-  useIsAuth();
+const DashboardPage: React.FC<DashboardPageProps> = ({}) => {
   const [filteredUserStats, setFilteredUserStats] = useState<IPositionEntry[]>([]);
+  const { data: session } = useSession();
   // const { data: sortedUsers, loading } = useSortUsersByFieldsQuery();
   const { data: user, loading: userLoading } = useUserQuery({
     variables: {
-      where: { email: session?.user?.email },
+      where: { id: session?.id },
     },
   });
 
@@ -106,14 +100,6 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ session }) => {
       </Container>
     </PageWrapper>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session) {
-    return { props: {} };
-  }
-  return { props: { session } };
 };
 
 export default withApollo(DashboardPage);

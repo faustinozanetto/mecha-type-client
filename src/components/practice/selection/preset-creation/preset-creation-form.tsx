@@ -68,7 +68,7 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, on
               time: time,
               language: values.language,
               userId: user.id,
-              creatorImage: user.image,
+              creatorImage: user.avatar,
             },
           },
         });

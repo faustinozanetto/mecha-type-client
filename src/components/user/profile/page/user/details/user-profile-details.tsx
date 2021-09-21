@@ -4,8 +4,9 @@ import { UserFragment, UserBadge } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import { UserAvatar } from '../user-avatar';
-import { Session } from 'next-auth';
 import { SettingsButton } from './settings-button';
+import { UserSession } from '@hooks/user/useSession';
+import { generateAvatarURl } from '@lib/user/userHelper';
 
 const FollowButton = dynamic(() => import('@components/user/profile/page/user/details/follow-button'));
 
@@ -17,7 +18,7 @@ interface UserProfileDetailsProps {
   /** Wether content is loading or not */
   loading: boolean;
   /** Session object */
-  session: Session;
+  session: UserSession;
   /** If the current logged in user is the same as the profile page */
   ownsPage: boolean;
   /** Wether the user already follows or not the target user. */
@@ -50,7 +51,7 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
       backgroundColor={useColorModeValue('gray.300', 'gray.700')}
     >
       <Flex flexDir={['column', 'column', 'column', 'row', 'row']} justifyContent="space-between">
-        <UserAvatar imageUrl={targetUser?.image!} size={150} loading={loading} />
+        {targetUser && <UserAvatar imageUrl={generateAvatarURl(targetUser)} size={150} loading={loading} />}
         <Flex
           flexDir="column"
           flex="1"
@@ -61,7 +62,7 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
           <HStack alignContent="center" alignItems="center">
             <Skeleton isLoaded={!loading} height={loading ? '20px' : 'auto'}>
               <Text as="h1" fontSize="3xl" color={useColorModeValue('black', 'white')} fontWeight={700}>
-                {targetUser?.name}
+                {targetUser?.username}
               </Text>
             </Skeleton>
             {targetUser?.badge !== UserBadge.Default && (

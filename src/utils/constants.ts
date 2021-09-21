@@ -7,8 +7,8 @@ export const __PROD__: boolean = process.env.NODE_ENV === 'production';
  * @returns Backend URI used in Apollo Client
  */
 export const __BACKEND__: string = __PROD__
-  ? 'https://mecha-type-api.herokuapp.com/mecha-api'
-  : 'http://localhost:4000/mecha-api';
+  ? 'https://mecha-type-api.herokuapp.com/api/graphql'
+  : 'http://localhost:4000/api/graphql';
 
 /**
  * @returns the uri of the web app.
@@ -19,8 +19,3 @@ export const __URI__: string = __PROD__ ? 'https://mecha-type.vercel.app' : 'htt
  * @returns wether it is a server or not.
  */
 export const __SERVER__: boolean = typeof window === 'undefined';
-
-/**
- * @returns the access token to perform admin-only actions.
- */
-export const __ADMIN_TOKEN__: string = process.env.ADMIN_TOKEN as string;

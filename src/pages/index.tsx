@@ -9,9 +9,9 @@ import { useRouter } from 'next/router';
 import { Container } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
-import { useSession } from 'next-auth/react';
 import { useUserQuery } from '@generated/graphql';
 import { Loading } from '@components/loading/loading';
+import useSession from '@hooks/user/useSession';
 
 interface IHomeProps {
   locale: string;
@@ -20,18 +20,18 @@ interface IHomeProps {
 const Home: React.FC<IHomeProps> = ({ locale }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data: session, loading } = useSession();
   const { data } = useUserQuery({
-    skip: status === 'loading',
+    skip: loading,
     ssr: true,
     variables: {
       where: {
-        email: session?.user?.email,
+        id: session?.id,
       },
     },
   });
 
-  if (status === 'loading') {
+  if (loading) {
     return <Loading />;
   }
 

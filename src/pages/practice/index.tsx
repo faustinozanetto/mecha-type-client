@@ -2,26 +2,26 @@ import React from 'react';
 import withApollo from '@lib/apollo';
 import { PracticePresetSelection } from '@components/practice/selection';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
-import { useIsAuth } from '@utils/useIsAuth';
 import { User, useUserQuery } from '@generated/graphql';
 import { GetServerSideProps } from 'next';
-import { useSession } from 'next-auth/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Container } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
+import useSession from '@hooks/user/useSession';
+import { useRouter } from 'next/router';
 
 interface PracticePageProps {
   locale: string;
 }
 
 const PracticePage: React.FC<PracticePageProps> = ({ locale }) => {
-  useIsAuth();
-  const { data: session, status } = useSession();
-  const { data, loading: userLoading } = useUserQuery({
+  const router = useRouter();
+  const { data: session, loading, error } = useSession();
+  const { data } = useUserQuery({
     variables: {
       where: {
-        email: session?.user?.email,
+        id: session?.id,
       },
     },
   });

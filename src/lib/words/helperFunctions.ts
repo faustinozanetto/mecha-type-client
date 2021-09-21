@@ -89,7 +89,6 @@ export const punctuateWord = (previousWord: string, currentWord: string, index: 
 };
 
 export const generateWords = (presetData: TestPresetFragment): string => {
-  if (presetData === undefined) return '';
   let text = '';
   const wordsList: string[] = [];
 

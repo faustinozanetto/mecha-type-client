@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, VStack, Text, useColorModeValue, Box, Flex, Button, Divider } from '@chakra-ui/react';
+import { Heading, VStack, Text, useColorModeValue, Box, Flex, Button } from '@chakra-ui/react';
 import { ProviderType } from '@pages/auth/signin';
 import { SignInOption } from './sing-in-option';
 import { useRouter } from 'next/router';
@@ -36,8 +36,8 @@ export const UserSignIn: React.FC<UserSignInProps> = ({ providers }) => {
       {/* Options */}
       <VStack width="100%" spacing={4} rounded="2xl">
         {providers &&
-          providers.map((provider, index) => {
-            return <SignInOption key={provider.id} provider={provider} />;
+          providers?.map((provider, index) => {
+            return <SignInOption key={provider.id + index} provider={provider} />;
           })}
         {/* Go back button */}
         <Button as="a" variant="solid" colorScheme="blue" size="lg" width="90%" mt={4} href={getGoBackHref()}>

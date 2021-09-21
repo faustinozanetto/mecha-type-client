@@ -8,5 +8,5 @@ interface UserDetailsProps {
 }
 
 export const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
-  return <SidebarButton icon={FiUser} label={`Hi, ${user?.name}`} href={`/user/${user?.name}`} />;
+  return <SidebarButton icon={FiUser} label={`Hi, ${user?.username}`} href={`/user/${user?.username}`} />;
 };

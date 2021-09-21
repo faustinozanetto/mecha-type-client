@@ -1,12 +1,13 @@
 fragment User on User {
   id
-  name
+  oauthId
+  username
   description
-  email
-  image
+  avatar
   country
   keystrokes
   badge
+  authProvider
   testsCompleted
   wordsWritten
   accuracy {

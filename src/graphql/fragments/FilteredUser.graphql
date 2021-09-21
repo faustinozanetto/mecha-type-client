@@ -1,7 +1,9 @@
 fragment FilteredUser on FilteredUser {
   id
-  name
-  image
+  username
+  avatar
   country
+  authProvider
+  oauthId
   value
 }

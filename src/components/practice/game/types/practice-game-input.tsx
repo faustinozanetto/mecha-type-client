@@ -7,7 +7,7 @@ import { Flex, SkeletonText, useColorModeValue, Input, useToast, Box } from '@ch
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@lib/general/math/math';
 
-const PracticeVisualLetter = dynamic(()=> import('@components/practice/game/visual/practice-visual-letter'))
+const PracticeVisualLetter = dynamic(() => import('@components/practice/game/visual/practice-visual-letter'));
 const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));
 
 export enum ETypingStatType {
@@ -137,7 +137,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
    * Updates the user data with the new test results
    */
   const updateUser = () => {
-    if (!user.email || phase !== 2 || !endTime || !startTime) {
+    if (!user.id || phase !== 2 || !endTime || !startTime) {
       toast({
         title: 'Something went wrong!',
         status: 'error',
@@ -147,7 +147,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
       updateUserData({
         variables: {
           where: {
-            email: user.email,
+            id: user.id,
           },
           data: {
             keystrokes: { increment: keystrokes },

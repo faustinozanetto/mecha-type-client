@@ -2,7 +2,7 @@ import React from 'react';
 import { PresetCreationForm } from './preset-creation-form';
 import { UserFragment } from '@generated/graphql';
 import { Text, Flex, useColorModeValue } from '@chakra-ui/react';
-import { useSession } from 'next-auth/react';
+import useSession from '@hooks/user/useSession';
 
 interface PresetCreationProps {
   /** Current logged in user. */
@@ -13,9 +13,9 @@ interface PresetCreationProps {
 
 const PresetCreation: React.FC<PresetCreationProps> = ({ user, onCreatedCallback }) => {
   const topBg = useColorModeValue('gray.300', 'gray.700');
-  const { data: session } = useSession();
+  const { data, loading } = useSession();
 
-  if (user?.email !== session?.user?.email) {
+  if (user?.id !== data?.id) {
     return <Text as="h2">UN AUTHORIZED</Text>;
   }
   return (

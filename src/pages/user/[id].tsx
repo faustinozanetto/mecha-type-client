@@ -4,13 +4,13 @@ import { User, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useSession } from 'next-auth/react';
 import { Container } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
 import withApollo from '@lib/apollo';
 import { useRouter } from 'next/router';
-import { NotFoundError } from '@components/not-found';
+import { generateAvatarURl } from '@lib/user/userHelper';
+import useSession from '@hooks/user/useSession';
 
 const UserProfile = dynamic(() => import('@components/user/profile/page/user/user-profile'));
 
@@ -26,15 +26,13 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const { data, loading } = useSession();
   const [IDFromRoute, _setIDFromRoute] = useState(router.query.id as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
-  const { data, loading: userLoading } = useUserQuery({
-    skip: status === 'loading',
-    ssr: true,
+  const { data: userData, loading: userLoading } = useUserQuery({
     variables: {
       where: {
-        email: session?.user?.email,
+        id: data?.id,
       },
     },
   });
@@ -43,7 +41,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
     skip: IDFromRoute === '',
     variables: {
       where: {
-        name: IDFromRoute,
+        username: IDFromRoute,
       },
     },
   });
@@ -51,31 +49,32 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   useEffect(() => {
     /** Check if the current logged user matches the target user. */
     const userOwnsPage = (): boolean => {
-      if (data?.user?.user && targetUser?.user?.user) {
-        return data.user.user.id === targetUser.user.user.id;
+      if (userData?.user?.user && targetUser?.user?.user) {
+        return userData.user.user.id === targetUser.user.user.id;
       }
       return false;
     };
     setUserOwnsPage(userOwnsPage());
-  }, [targetUser?.user, data?.user]);
-
-  if (!targetUserLoading && !targetUser?.user.user) {
-    return <NotFoundError />;
-  }
+  }, [targetUser?.user, userData?.user]);
 
   return (
-    <PageWrapper user={data?.user?.user!}>
+    <PageWrapper user={userData?.user?.user!}>
       <NextSeo
-        title={`${targetUser?.user?.user?.name ?? IDFromRoute} | Mecha Type`}
+        title={`${targetUser?.user?.user?.username ?? IDFromRoute} | Mecha Type`}
         description={`${
-          targetUser?.user?.user?.name ?? IDFromRoute
+          targetUser?.user?.user?.username ?? IDFromRoute
         }´s profile page, showing their stats and more information.`}
-        canonical={`${__URI__!}/user/${targetUser?.user?.user?.name}`}
+        canonical={`${__URI__!}/user/${targetUser?.user?.user?.username}`}
         openGraph={{
           type: 'website',
-          images: [{ url: targetUser?.user?.user?.image!, alt: `${targetUser?.user?.user?.name!} Profile Picture` }],
+          images: [
+            {
+              url: generateAvatarURl(targetUser?.user?.user!),
+              alt: `${targetUser?.user?.user?.username!} Profile Picture`,
+            },
+          ],
           locale: 'en_US',
-          url: `${__URI__!}/user/${targetUser?.user?.user?.name}`,
+          url: `${__URI__!}/user/${targetUser?.user?.user?.username}`,
           site_name: 'Mecha Type',
         }}
       />
@@ -87,11 +86,11 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
         centerContent
       >
         <UserProfile
-          user={data?.user.user as User}
+          user={userData?.user.user as User}
           targetUser={targetUser?.user.user as User}
-          loading={userLoading && targetUserLoading && status === 'loading'}
+          loading={userLoading && targetUserLoading && loading}
           ownsPage={userOwnsPage}
-          session={session!}
+          session={data!}
           countries={countries}
         />
       </Container>

@@ -1,13 +1,14 @@
+import useSession from '@hooks/user/useSession';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { signIn, useSession } from 'next-auth/react';
 
 export const useIsAuth = () => {
-  const { data, status } = useSession();
+  const { data, loading } = useSession();
   const router = useRouter();
+  console.log(data);
   useEffect(() => {
-    if (status !== 'loading') {
-      if (status === 'unauthenticated' && !data?.user?.name) signIn();
+    if (!loading) {
+      if (data === undefined) router.push('/auth/signin');
     }
-  }, [status, data, router]);
+  }, [loading, data, router]);
 };

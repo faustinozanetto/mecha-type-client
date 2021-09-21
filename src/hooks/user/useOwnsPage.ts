@@ -1,22 +1,21 @@
 /* eslint-disable no-unused-expressions */
 import { useEffect, useState } from 'react';
-import { getSession } from 'next-auth/react';
+import useSession from './useSession';
 
-const useOwnsPage = (userEmail: string) => {
+const useOwnsPage = (userId: string) => {
   const [ownsPage, setOwnsPage] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
-    if (userEmail) {
+    if (userId) {
       const validate = async () => {
-        const session = await getSession();
-
-        if (session?.user?.email) {
-          setOwnsPage(session.user.email === userEmail);
+        if (session?.id) {
+          setOwnsPage(session.id === userId);
         }
       };
       validate();
     }
-  }, [userEmail]);
+  }, [session?.id, userId]);
 
   return {
     ownsPage,

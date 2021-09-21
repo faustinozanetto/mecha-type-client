@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useFollowsUserQuery, User, UserFragment, useUserFollowersQuery } from 'generated/graphql';
-import { Session } from 'next-auth';
 import { Container } from '@chakra-ui/react';
 import { EditUserProfile } from '../../edit';
 import { CountryEntry } from '@pages/user/[id]';
+import { UserSession } from '@hooks/user/useSession';
 
 const UserProfileDetails = dynamic(() => import('@components/user/profile/page/user/details/user-profile-details'));
 
@@ -22,7 +22,7 @@ interface IUserProfileProps {
   /** If the current logged in user is the same as the profile page */
   ownsPage: boolean;
   /** Session object */
-  session: Session;
+  session: UserSession;
   /** Countries data */
   countries: CountryEntry[];
 }

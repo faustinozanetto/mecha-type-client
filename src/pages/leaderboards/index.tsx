@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import Head from 'next/head';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
-import { useSession } from 'next-auth/react';
-import { FilterUsersQuery, useFilterUsersQuery, User, UserFilterBy, useUserQuery } from 'generated/graphql';
+import { useFilterUsersQuery, User, UserFilterBy, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
-import { Button, ButtonGroup, Container, Flex, Heading, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Button, Container, Flex, Heading, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
 import withApollo from '@lib/apollo';
 import { Leaderboards } from '@components/leaderboards/leaderboards';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
+import useSession from '@hooks/user/useSession';
 
 interface LeaderboardsPageProps {
   locale: string;
@@ -17,12 +15,12 @@ interface LeaderboardsPageProps {
 
 const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
   const [filterBy, setFilterBy] = useState<UserFilterBy>(UserFilterBy.Accuracy);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [page, setPage] = useState(0);
   const { data } = useUserQuery({
     variables: {
       where: {
-        email: session?.user?.email,
+        id: session?.id,
       },
     },
   });

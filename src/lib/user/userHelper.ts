@@ -1,4 +1,4 @@
-import { UserFragment } from 'generated/graphql';
+import { AuthProvider, FilteredUserFragment, UserFollowerFragment, UserFragment } from 'generated/graphql';
 
 /**
  *
@@ -46,4 +46,36 @@ export const calculateAverageAccuracy = (user: Pick<UserFragment, 'accuracy'> | 
     return Number.parseFloat((sum / typingAccuracy.length).toFixed(2));
   }
   return 0;
+};
+
+/**
+ *
+ * @param user the user to retrieve data from
+ * @returns the generated avatar url based off the auth
+ * provider.
+ */
+export const generateAvatarURl = (user: UserFragment | FilteredUserFragment | UserFollowerFragment): string => {
+  let avatarURL = '';
+  if (user?.id) {
+    switch (user.authProvider) {
+      case AuthProvider.Default: {
+        avatarURL = '';
+        break;
+      }
+      case AuthProvider.Discord: {
+        avatarURL = `https://cdn.discordapp.com/avatars/${user.oauthId}/${user.avatar}.png`;
+        break;
+      }
+      case AuthProvider.Github: {
+        avatarURL = user.avatar ?? '';
+        break;
+      }
+      case AuthProvider.Google: {
+        avatarURL = user.avatar ?? '';
+        break;
+      }
+    }
+  }
+ 
+  return avatarURL;
 };

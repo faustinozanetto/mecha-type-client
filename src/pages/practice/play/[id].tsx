@@ -8,41 +8,39 @@ import { useIsAuth } from '@utils/useIsAuth';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { Container } from '@chakra-ui/react';
 import { NotFoundError } from '@components/not-found';
-import { Session } from 'next-auth';
-import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
+import useSession from '@hooks/user/useSession';
 
 interface PracticePlayPageProps {
   locale: string;
 }
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
-  useIsAuth();
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [text, setText] = useState('');
 
   const { data, loading: userLoading } = useUserQuery({
     variables: {
       where: {
-        email: session?.user?.email,
+        id: session?.id,
       },
     },
   });
 
-  const { data: testPreset, loading } = useTestPresetQuery({
+  const { data: testPreset } = useTestPresetQuery({
     variables: {
       id: useGetIDFromUrl(),
     },
   });
 
   useEffect(() => {
-    if (testPreset?.testPreset?.testPreset && !loading) {
+    if (testPreset?.testPreset?.testPreset) {
       setText(generateWords(testPreset?.testPreset?.testPreset));
     }
-  }, [loading, testPreset?.testPreset]);
+  }, [data, testPreset]);
 
   if (!userLoading && !data?.user) {
     return <NotFoundError />;
@@ -69,9 +67,9 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
         minHeight="calc(100vh - 10rem)"
         centerContent
       >
-        {!loading && text && testPreset?.testPreset?.testPreset && (
+        {text && testPreset?.testPreset?.testPreset && (
           <PracticeGameInput
-            loading={loading || userLoading}
+            loading={userLoading}
             testPreset={testPreset.testPreset.testPreset}
             text={text as string}
             user={data?.user.user as User}

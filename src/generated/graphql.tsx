@@ -23,6 +23,14 @@ export type AccuracyCreateInput = {
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
+/** User auth provider service */
+export enum AuthProvider {
+  Default = 'DEFAULT',
+  Discord = 'DISCORD',
+  Github = 'GITHUB',
+  Google = 'GOOGLE'
+}
+
 export type CharsPerMinute = {
   __typename?: 'CharsPerMinute';
   amount: Scalars['Float'];
@@ -58,14 +66,16 @@ export type ErrorResponse = {
 
 export type FilteredUser = {
   __typename?: 'FilteredUser';
+  authProvider?: Maybe<AuthProvider>;
+  avatar: Scalars['String'];
   country: Scalars['String'];
   /** Identifies the date and time when the object was created. */
   createdAt: Scalars['Date'];
   id: Scalars['String'];
-  image: Scalars['String'];
-  name: Scalars['String'];
+  oauthId?: Maybe<Scalars['String']>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['Date'];
+  username: Scalars['String'];
   value: Scalars['Float'];
 };
 
@@ -135,7 +145,7 @@ export type Query = {
   __typename?: 'Query';
   filterUsers: FilteredUsersResponse;
   followsUser: Scalars['Boolean'];
-  helloWorld: Scalars['String'];
+  me: UserResponse;
   testPreset: TestPresetResponse;
   testPresets: TestPresetsResponse;
   user: UserResponse;
@@ -262,24 +272,24 @@ export type UnfollowUserResponse = {
 export type User = {
   __typename?: 'User';
   accuracy?: Maybe<Array<TypingAccuracy>>;
+  authProvider?: Maybe<AuthProvider>;
+  avatar?: Maybe<Scalars['String']>;
   badge?: Maybe<UserBadge>;
   charsPerMinute?: Maybe<Array<CharsPerMinute>>;
   country?: Maybe<Scalars['String']>;
   /** Identifies the date and time when the object was created. */
   createdAt: Scalars['Date'];
   description?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  emailVerified?: Maybe<Scalars['Date']>;
   followedBy?: Maybe<Array<UserOnUser>>;
   following?: Maybe<Array<UserOnUser>>;
   id: Scalars['String'];
-  image?: Maybe<Scalars['String']>;
   keystrokes?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
+  oauthId?: Maybe<Scalars['String']>;
   testPresets?: Maybe<Array<TestPreset>>;
   testsCompleted?: Maybe<Scalars['Int']>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['Date'];
+  username?: Maybe<Scalars['String']>;
   wordsPerMinute?: Maybe<Array<WordsPerMinute>>;
   wordsWritten?: Maybe<Scalars['Int']>;
 };
@@ -302,14 +312,15 @@ export enum UserFilterBy {
 
 export type UserFollower = {
   __typename?: 'UserFollower';
+  authProvider?: Maybe<AuthProvider>;
+  avatar: Scalars['String'];
   /** Identifies the date and time when the object was created. */
   createdAt: Scalars['Date'];
-  email: Scalars['String'];
   id: Scalars['String'];
-  image: Scalars['String'];
-  name: Scalars['String'];
+  oauthId?: Maybe<Scalars['String']>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['Date'];
+  username: Scalars['String'];
 };
 
 export type UserFollowersResponse = {
@@ -353,9 +364,8 @@ export type UserUpdateInput = {
 };
 
 export type UserWhereInput = {
-  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
 };
 
 export type UsersResponse = {
@@ -382,17 +392,17 @@ export type WordsPerMinuteCreateInput = {
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
-export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, name: string, image: string, country: string, value: number };
+export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number };
 
 export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any };
 
-export type UserFragment = { __typename?: 'User', id: string, name: string, description?: Maybe<string>, email?: Maybe<string>, image?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> };
+export type UserFragment = { __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> };
 
-export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, name: string, email: string, image: string };
+export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string };
 
 export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: string, message: string };
 
-export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, name: string, image: string, country: string, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
 export type FollowUserResponseFragment = { __typename?: 'FollowUserResponse', follow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
@@ -402,11 +412,11 @@ export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', 
 
 export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, name: string, email: string, image: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type UserResponseFragment = { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, name: string, description?: Maybe<string>, email?: Maybe<string>, image?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type UserResponseFragment = { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, name: string, description?: Maybe<string>, email?: Maybe<string>, image?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
 export type CreateTestPresetMutationVariables = Exact<{
   data: CreateTestPresetInput;
@@ -444,7 +454,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, name: string, description?: Maybe<string>, email?: Maybe<string>, image?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type TestPresetQueryVariables = Exact<{
   id: Scalars['String'];
@@ -473,7 +483,7 @@ export type FilterUsersQueryVariables = Exact<{
 }>;
 
 
-export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, name: string, image: string, country: string, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type FollowsUserQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -488,28 +498,30 @@ export type UserQueryVariables = Exact<{
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, name: string, description?: Maybe<string>, email?: Maybe<string>, image?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UserFollowersQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, name: string, email: string, image: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UsersQueryVariables = Exact<{
   take: Scalars['Int'];
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, name: string, description?: Maybe<string>, email?: Maybe<string>, image?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export const FilteredUserFragmentDoc = gql`
     fragment FilteredUser on FilteredUser {
   id
-  name
-  image
+  username
+  avatar
   country
+  authProvider
+  oauthId
   value
 }
     `;
@@ -589,9 +601,10 @@ export const UnfollowUserResponseFragmentDoc = gql`
 export const UserFollowerFragmentDoc = gql`
     fragment UserFollower on UserFollower {
   id
-  name
-  email
-  image
+  username
+  authProvider
+  oauthId
+  avatar
 }
     `;
 export const UserFollowersResponseFragmentDoc = gql`
@@ -608,13 +621,14 @@ ${ErrorResponseFragmentDoc}`;
 export const UserFragmentDoc = gql`
     fragment User on User {
   id
-  name
+  oauthId
+  username
   description
-  email
-  image
+  avatar
   country
   keystrokes
   badge
+  authProvider
   testsCompleted
   wordsWritten
   accuracy {

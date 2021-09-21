@@ -4,8 +4,7 @@ import FiUserPlus from '@meronex/icons/fi/FiUserPlus';
 import { useFollowUserMutation, UserFragment, useUnfollowUserMutation } from 'generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { Button, useToast } from '@chakra-ui/react';
-
-import { Session } from 'next-auth';
+import { UserSession } from '@hooks/user/useSession';
 interface FollowButtonProps {
   /** Wether content is loading or not */
   loading: boolean;
@@ -22,7 +21,7 @@ interface FollowButtonProps {
   /** Used to re fetch the followers list query */
   followersRefetch: any;
   /** Session object */
-  session: Session;
+  session: UserSession;
 }
 
 const FollowButton: React.FC<FollowButtonProps> = ({
@@ -41,7 +40,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({
   const toast = useToast();
 
   const handleFollow = async () => {
-    if (session?.user?.email) {
+    if (session?.id) {
       if (sameUser) {
         toast({
           title: 'An error occurred!',
@@ -50,14 +49,14 @@ const FollowButton: React.FC<FollowButtonProps> = ({
           duration: 3000,
           position: 'bottom-right',
         });
-      } else if (followsUser && user && session?.user?.name) {
+      } else if (followsUser && user && session?.username) {
         await unfollowUser({
           variables: {
             userId: user.id,
             targetUserId: targetUser.id,
           },
         });
-      } else if (session?.user?.name && user) {
+      } else if (session?.username && user) {
         await followUser({
           variables: {
             userId: user.id,

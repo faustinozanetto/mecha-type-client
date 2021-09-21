@@ -1,6 +1,7 @@
 fragment UserFollower on UserFollower {
   id
-  name
-  email
-  image
+  username
+  authProvider
+  oauthId
+  avatar
 }
