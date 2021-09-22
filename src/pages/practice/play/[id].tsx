@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withApollo } from '@lib/apollo';
+import  withApollo  from '@lib/apollo';
 import { PracticeGameInput } from '@components/practice/game/types';
 import { generateWords } from '@lib/words/helperFunctions';
 import { useMeQuery, User, useTestPresetQuery } from 'generated/graphql';

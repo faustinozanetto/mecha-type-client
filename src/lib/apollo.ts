@@ -1,19 +1,29 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 import { __BACKEND__ } from '@utils/constants';
 import { FilteredUsersResponse } from '@generated/graphql';
 import { NextPageContext } from 'next';
-import { createWithApollo } from './createWithApollo';
+import { withApollo } from 'next-apollo';
 
-const httpLink = createHttpLink({ uri: `${__BACKEND__}/graphql`, credentials: 'include' });
+const apolloClient = (ctx: NextPageContext) => {
+  const setCookiesAfterware = new ApolloLink((operation, forward) =>
+    forward(operation).map((response) => {
+      ctx?.res?.setHeader('set-cookie', operation.getContext().response.headers.raw()['set-cookie'] || '');
+      return response;
+    })
+  );
 
-const createClient = (ctx: NextPageContext) =>
-  new ApolloClient({
-    link: httpLink,
-    credentials: 'include',
-    ssrMode: typeof window === 'undefined',
+  return new ApolloClient({
+    link: setCookiesAfterware.concat(
+      new HttpLink({
+        uri: `${__BACKEND__}/graphql`,
+        headers: { cookie: ctx?.req?.headers.cookie },
+        credentials: 'include',
+      })
+    ),
     headers: {
-      cookie: (typeof window === 'undefined' ? ctx?.req?.headers?.cookie : undefined) || '',
+      cookie: (typeof window === 'undefined' ? ctx?.req?.headers.cookie : undefined) || '',
     },
+    credentials: 'include',
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
@@ -35,5 +45,6 @@ const createClient = (ctx: NextPageContext) =>
       },
     }),
   });
+};
 
-export const withApollo = createWithApollo(createClient);
+export default withApollo(apolloClient);

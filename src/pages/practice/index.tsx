@@ -1,5 +1,5 @@
 import React from 'react';
-import { withApollo } from '@lib/apollo';
+import  withApollo from '@lib/apollo';
 import { PracticePresetSelection } from '@components/practice/selection';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { useMeQuery, User } from '@generated/graphql';

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { withApollo } from '@lib/apollo';
+import withApollo from '@lib/apollo';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';

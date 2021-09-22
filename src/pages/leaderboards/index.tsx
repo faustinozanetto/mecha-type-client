@@ -3,7 +3,7 @@ import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { useFilterUsersQuery, useMeQuery, UserFilterBy } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { Button, Container, Flex, Heading, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
-import { withApollo } from '@lib/apollo';
+import withApollo from '@lib/apollo';
 import { Leaderboards } from '@components/leaderboards/leaderboards';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';

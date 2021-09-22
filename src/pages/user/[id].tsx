@@ -7,7 +7,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Container } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
-import { withApollo } from '@lib/apollo';
+import withApollo from '@lib/apollo';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@lib/user/userHelper';
 const UserProfile = dynamic(() => import('@components/user/profile/page/user/user-profile'));
