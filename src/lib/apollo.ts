@@ -1,13 +1,16 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { __BACKEND__ } from '@utils/constants';
 import { FilteredUsersResponse } from '@generated/graphql';
 import { NextPageContext } from 'next';
 import { createWithApollo } from './createWithApollo';
 
+const httpLink = createHttpLink({ uri: `${__BACKEND__}/graphql`, credentials: 'include' });
+
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
-    uri: `${__BACKEND__}/graphql`,
+    link: httpLink,
     credentials: 'include',
+    ssrMode: typeof window === 'undefined',
     headers: {
       cookie: (typeof window === 'undefined' ? ctx?.req?.headers?.cookie : undefined) || '',
     },
