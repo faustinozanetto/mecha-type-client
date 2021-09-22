@@ -6,12 +6,12 @@ export const __PROD__: boolean = process.env.NODE_ENV === 'production';
 /**
  * @returns Backend URI used in Apollo Client
  */
-export const __BACKEND__: string = __PROD__ ? process.env.BACKEND_URL : 'http://localhost:4000/api';
+export const __BACKEND__: string = __PROD__ ? 'https://mecha-type-api.herokuapp.com/api' : 'http://localhost:4000/api';
 
 /**
  * @returns the uri of the web app.
  */
-export const __URI__: string = __PROD__ ? process.env.PRODUCTION_URL : 'http://localhost:3000';
+export const __URI__: string = __PROD__ ? 'https://mecha-type.vercel.app' : 'http://localhost:3000';
 
 /**
  * @returns wether it is a server or not.
