@@ -5,7 +5,6 @@ import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import { UserAvatar } from '../user-avatar';
 import { SettingsButton } from './settings-button';
-import { UserSession } from '@hooks/user/useSession';
 import { generateAvatarURl } from '@lib/user/userHelper';
 
 const FollowButton = dynamic(() => import('@components/user/profile/page/user/details/follow-button'));
@@ -17,8 +16,6 @@ interface UserProfileDetailsProps {
   targetUser: UserFragment;
   /** Wether content is loading or not */
   loading: boolean;
-  /** Session object */
-  session: UserSession;
   /** If the current logged in user is the same as the profile page */
   ownsPage: boolean;
   /** Wether the user already follows or not the target user. */
@@ -34,7 +31,6 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
   user,
   targetUser,
   loading,
-  session,
   ownsPage,
   followsUser,
   followsUserRefetch,
@@ -90,7 +86,6 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
             targetUser={targetUser}
             followsUser={followsUser}
             sameUser={ownsPage}
-            session={session}
             followsUserRefetch={followsUserRefetch}
             followersRefetch={followersRefetch}
           />

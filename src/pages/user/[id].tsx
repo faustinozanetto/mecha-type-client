@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { User, useUserQuery } from 'generated/graphql';
+import { useMeQuery, User, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Container } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
-import withApollo from '@lib/apollo';
+import { withApollo } from '@lib/apollo';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@lib/user/userHelper';
-import useSession from '@hooks/user/useSession';
-
 const UserProfile = dynamic(() => import('@components/user/profile/page/user/user-profile'));
 
 export type CountryEntry = {
@@ -26,15 +24,10 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const router = useRouter();
-  const { data, loading } = useSession();
   const [IDFromRoute, _setIDFromRoute] = useState(router.query.id as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
-  const { data: userData, loading: userLoading } = useUserQuery({
-    variables: {
-      where: {
-        id: data?.id,
-      },
-    },
+  const { data: userData, loading } = useMeQuery({
+    ssr: true,
   });
 
   const { data: targetUser, loading: targetUserLoading } = useUserQuery({
@@ -49,16 +42,16 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   useEffect(() => {
     /** Check if the current logged user matches the target user. */
     const userOwnsPage = (): boolean => {
-      if (userData?.user?.user && targetUser?.user?.user) {
-        return userData.user.user.id === targetUser.user.user.id;
+      if (userData?.me?.user && targetUser?.user?.user) {
+        return userData.me.user.id === targetUser.user.user.id;
       }
       return false;
     };
     setUserOwnsPage(userOwnsPage());
-  }, [targetUser?.user, userData?.user]);
+  }, [targetUser?.user, userData?.me]);
 
   return (
-    <PageWrapper user={userData?.user?.user!}>
+    <PageWrapper user={userData?.me?.user!}>
       <NextSeo
         title={`${targetUser?.user?.user?.username ?? IDFromRoute} | Mecha Type`}
         description={`${
@@ -86,11 +79,10 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
         centerContent
       >
         <UserProfile
-          user={userData?.user.user as User}
+          user={userData?.me.user as User}
           targetUser={targetUser?.user.user as User}
-          loading={userLoading && targetUserLoading && loading}
+          loading={loading && targetUserLoading && loading}
           ownsPage={userOwnsPage}
-          session={data!}
           countries={countries}
         />
       </Container>
@@ -112,4 +104,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { countries: names, ...(await serverSideTranslations(locale ?? 'en', ['user-profile'])) } };
 };
 
-export default withApollo()(UserPage);
+export default withApollo({ ssr: false })(UserPage);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Flex, useColorModeValue } from '@chakra-ui/react';
-import { UserSignIn } from '@components/auth/singin/user-sign-in';
+import { UserSignIn } from '@components/auth/signin/user-sign-in';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 import { __BACKEND__ } from '@utils/constants';
@@ -44,7 +44,7 @@ const SignIn: React.FC<PracticePageProps> = ({ providers }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   let providers: ProviderType[] = [];
-  await fetch(`${__BACKEND__}/auth/providers`, {
+  await fetch(`${__BACKEND__}/v1/auth/providers`, {
     method: 'GET',
   })
     .then((response) => {

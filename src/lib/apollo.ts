@@ -1,28 +1,36 @@
-import { withApollo } from 'next-apollo';
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { __BACKEND__ } from '@utils/constants';
 import { FilteredUsersResponse } from '@generated/graphql';
+import { NextPageContext } from 'next';
+import { createWithApollo } from './createWithApollo';
 
-export const apolloClient = new ApolloClient({
-  uri: `${__BACKEND__}/graphql`,
-  cache: new InMemoryCache({
-    typePolicies: {
-      Query: {
-        fields: {
-          filterUsers: {
-            keyArgs: [],
-            merge(existing: FilteredUsersResponse | undefined, incoming: FilteredUsersResponse): FilteredUsersResponse {
-              return {
-                ...incoming,
-                nodes: [...(existing?.nodes || []), ...(incoming?.nodes || [])],
-              };
+const createClient = (ctx: NextPageContext) =>
+  new ApolloClient({
+    uri: `${__BACKEND__}/graphql`,
+    credentials: 'include',
+    headers: {
+      cookie: (typeof window === 'undefined' ? ctx?.req?.headers?.cookie : undefined) || '',
+    },
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            filterUsers: {
+              keyArgs: [],
+              merge(
+                existing: FilteredUsersResponse | undefined,
+                incoming: FilteredUsersResponse
+              ): FilteredUsersResponse {
+                return {
+                  ...incoming,
+                  nodes: [...(existing?.nodes || []), ...(incoming?.nodes || [])],
+                };
+              },
             },
           },
         },
       },
-    },
-  }),
-  credentials: 'include',
-});
+    }),
+  });
 
-export default withApollo(apolloClient);
+export const withApollo = createWithApollo(createClient);

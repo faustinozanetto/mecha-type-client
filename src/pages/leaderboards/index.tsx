@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
-import { useFilterUsersQuery, User, UserFilterBy, useUserQuery } from 'generated/graphql';
+import { useFilterUsersQuery, useMeQuery, UserFilterBy } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { Button, Container, Flex, Heading, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
-import withApollo from '@lib/apollo';
+import { withApollo } from '@lib/apollo';
 import { Leaderboards } from '@components/leaderboards/leaderboards';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
-import useSession from '@hooks/user/useSession';
 
 interface LeaderboardsPageProps {
   locale: string;
@@ -15,15 +14,8 @@ interface LeaderboardsPageProps {
 
 const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
   const [filterBy, setFilterBy] = useState<UserFilterBy>(UserFilterBy.Accuracy);
-  const { data: session } = useSession();
   const [page, setPage] = useState(0);
-  const { data } = useUserQuery({
-    variables: {
-      where: {
-        id: session?.id,
-      },
-    },
-  });
+  const { data: userData, loading } = useMeQuery({});
 
   const {
     data: filteredUsers,
@@ -43,7 +35,7 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
   };
 
   return (
-    <PageWrapper user={data?.user?.user as User}>
+    <PageWrapper user={userData?.me?.user!}>
       <NextSeo
         title={`Leaderboards | Mecha Type`}
         description={`Leaderboards of Mecha Type, see who is the best at typing!`}
@@ -162,4 +154,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { locale } };
 };
 
-export default withApollo()(LeaderboardsPage);
+export default withApollo({ ssr: false })(LeaderboardsPage);

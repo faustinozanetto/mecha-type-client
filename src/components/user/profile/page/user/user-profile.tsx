@@ -4,7 +4,6 @@ import { useFollowsUserQuery, User, UserFragment, useUserFollowersQuery } from '
 import { Container } from '@chakra-ui/react';
 import { EditUserProfile } from '../../edit';
 import { CountryEntry } from '@pages/user/[id]';
-import { UserSession } from '@hooks/user/useSession';
 
 const UserProfileDetails = dynamic(() => import('@components/user/profile/page/user/details/user-profile-details'));
 
@@ -21,13 +20,11 @@ interface IUserProfileProps {
   loading: boolean;
   /** If the current logged in user is the same as the profile page */
   ownsPage: boolean;
-  /** Session object */
-  session: UserSession;
   /** Countries data */
   countries: CountryEntry[];
 }
 
-const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, session, countries }) => {
+const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, countries }) => {
   const [editing, setEditing] = useState(false);
 
   const { data: followersData, refetch: followersRefetch } = useUserFollowersQuery({
@@ -65,7 +62,6 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         user={user}
         targetUser={targetUser}
         loading={loading}
-        session={session}
         ownsPage={ownsPage}
         followsUser={followsUserData?.followsUser?.valueOf()!}
         followersRefetch={followersRefetch}

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
-import { TestPresetFragment, User, useUpdateUserMutation } from '@generated/graphql';
+import { TestPresetFragment, User, UserFragment, useUpdateUserMutation } from '@generated/graphql';
 import { Flex, SkeletonText, useColorModeValue, Input, useToast, Box } from '@chakra-ui/react';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@lib/general/math/math';
@@ -57,7 +57,7 @@ interface PracticeGameInputProps {
   /** Previously generated text */
   text: string;
   /** Current logged in user. */
-  user: User;
+  user: UserFragment;
 }
 
 export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset, text, user }) => {

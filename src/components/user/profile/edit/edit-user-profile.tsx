@@ -4,7 +4,6 @@ import { Flex, Text, GridItem, Grid, useColorModeValue } from '@chakra-ui/react'
 import { UserAvatar } from '../page/user/user-avatar';
 import { EditUserProfileForm } from './edit-user-profile-form';
 import { CountryEntry } from '@pages/user/[id]';
-import useSession from '@hooks/user/useSession';
 import { generateAvatarURl } from '@lib/user/userHelper';
 
 interface EditUserProfileProps {
@@ -19,13 +18,8 @@ interface EditUserProfileProps {
 }
 
 export const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading, onUpdatedCallback, countries }) => {
-  const { data: session } = useSession();
   const topBg = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('black', 'white');
-
-  if (user.id !== session?.id) {
-    return <Text as="h2">UN AUTHORIZED</Text>;
-  }
 
   return (
     <Grid

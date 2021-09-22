@@ -1,13 +1,13 @@
 import React from 'react';
-import { IPositionEntry } from 'pages/dashboard';
+
 import { Flex } from '@chakra-ui/react';
 
 interface StatCardProps {
-  statData: IPositionEntry;
+  // statData: IPositionEntry;
 }
 
 // TODO: Continue working on dashboard stat card
-export const StatCard: React.FC<StatCardProps> = ({ statData }) => {
+export const StatCard: React.FC<StatCardProps> = ({}) => {
   // const parseFieldType = (filterBy: FilterBy) => {
   //   switch (filterBy) {
   //     case FilterBy.AverageWpm:
@@ -20,10 +20,6 @@ export const StatCard: React.FC<StatCardProps> = ({ statData }) => {
   //       return 'Words Written';
   //   }
   // };
-
-  if (!statData) {
-    return <h3>Error</h3>;
-  }
 
   return <Flex flexDir="column" borderRadius="2rem" maxWidth="300px" overflow="hidden" m={4}></Flex>;
 };

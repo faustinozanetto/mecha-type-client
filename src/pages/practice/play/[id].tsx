@@ -1,34 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import withApollo from '@lib/apollo';
+import { withApollo } from '@lib/apollo';
 import { PracticeGameInput } from '@components/practice/game/types';
 import { generateWords } from '@lib/words/helperFunctions';
-import { User, useTestPresetQuery, useUserQuery } from 'generated/graphql';
+import { useMeQuery, User, useTestPresetQuery } from 'generated/graphql';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
-import { useIsAuth } from '@utils/useIsAuth';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { Container } from '@chakra-ui/react';
-import { NotFoundError } from '@components/not-found';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
-import useSession from '@hooks/user/useSession';
 
 interface PracticePlayPageProps {
   locale: string;
 }
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
-  const { data: session } = useSession();
   const [text, setText] = useState('');
-
-  const { data, loading: userLoading } = useUserQuery({
-    variables: {
-      where: {
-        id: session?.id,
-      },
-    },
-  });
+  const { data: userData, loading } = useMeQuery({});
 
   const { data: testPreset } = useTestPresetQuery({
     variables: {
@@ -40,14 +29,10 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
     if (testPreset?.testPreset?.testPreset) {
       setText(generateWords(testPreset?.testPreset?.testPreset));
     }
-  }, [data, testPreset]);
-
-  if (!userLoading && !data?.user) {
-    return <NotFoundError />;
-  }
+  }, [userData, testPreset]);
 
   return (
-    <PageWrapper user={data?.user.user as User}>
+    <PageWrapper user={userData?.me?.user as User}>
       <NextSeo
         title={`Practice | Mecha Type`}
         description={`Practice play page, test your skills on a specific Preset.`}
@@ -69,10 +54,10 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
       >
         {text && testPreset?.testPreset?.testPreset && (
           <PracticeGameInput
-            loading={userLoading}
+            loading={loading}
             testPreset={testPreset.testPreset.testPreset}
             text={text as string}
-            user={data?.user.user as User}
+            user={userData?.me?.user!}
           />
         )}
       </Container>
@@ -85,4 +70,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
 };
 
-export default withApollo()(PracticePlayPage);
+export default withApollo({ ssr: false })(PracticePlayPage);

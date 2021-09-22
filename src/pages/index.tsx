@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import withApollo from '@lib/apollo';
+import { withApollo } from '@lib/apollo';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
@@ -9,9 +9,8 @@ import { useRouter } from 'next/router';
 import { Container } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
-import { useUserQuery } from '@generated/graphql';
+import { useMeQuery } from '@generated/graphql';
 import { Loading } from '@components/loading/loading';
-import useSession from '@hooks/user/useSession';
 
 interface IHomeProps {
   locale: string;
@@ -20,15 +19,8 @@ interface IHomeProps {
 const Home: React.FC<IHomeProps> = ({ locale }) => {
   const { t } = useTranslation('common');
   const router = useRouter();
-  const { data: session, loading } = useSession();
-  const { data } = useUserQuery({
-    skip: loading,
+  const { data: userData, loading } = useMeQuery({
     ssr: true,
-    variables: {
-      where: {
-        id: session?.id,
-      },
-    },
   });
 
   if (loading) {
@@ -36,7 +28,7 @@ const Home: React.FC<IHomeProps> = ({ locale }) => {
   }
 
   return (
-    <PageWrapper user={data?.user?.user!}>
+    <PageWrapper user={userData?.me?.user!}>
       <NextSeo
         title={`Home | Mecha Type`}
         description={`Homepage for Mecha Type, usually shows information about updates and news.`}
@@ -74,4 +66,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
 };
 
-export default withApollo()(Home);
+export default withApollo({ ssr: false })(Home);

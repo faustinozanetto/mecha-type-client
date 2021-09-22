@@ -1,16 +1,16 @@
 import React from 'react';
 import { __SERVER__ } from '@utils/constants';
 import { StatCard } from './stats';
-import { IPositionEntry } from 'pages/dashboard';
+// import { IPositionEntry } from 'pages/dashboard';
 import { User } from 'generated/graphql';
 import { Flex } from '@chakra-ui/react';
 
 interface DashboardProps {
   user: User;
-  userStats: IPositionEntry[];
+  // userStats: IPositionEntry[];
 }
 
-export const UserDashboard: React.FC<DashboardProps> = ({ user, userStats }) => {
+export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
   /**
    *
    * @param filterBy Filter by parameter used to sort the stats.
