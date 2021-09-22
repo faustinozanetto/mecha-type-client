@@ -53,12 +53,26 @@ const FollowButton: React.FC<FollowButtonProps> = ({
             targetUserId: targetUser.id,
           },
         });
+        toast({
+          title: 'Success',
+          description: `You are now longer following ${targetUser.username}`,
+          status: 'success',
+          duration: 3000,
+          position: 'bottom-right',
+        });
       } else if (!followsUser && user.id) {
         await followUser({
           variables: {
             userId: user.id,
             targetUserId: targetUser.id,
           },
+        });
+        toast({
+          title: 'Success',
+          description: `You now following ${targetUser.username}`,
+          status: 'success',
+          duration: 3000,
+          position: 'bottom-right',
         });
       }
       if (user.id !== targetUser.id) {
