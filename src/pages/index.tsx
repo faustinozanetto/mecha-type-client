@@ -1,12 +1,11 @@
 import React from 'react';
-import Link from 'next/link';
 import withApollo from '@lib/apollo';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { useRouter } from 'next/router';
-import { Container } from '@chakra-ui/react';
+import { Container, Heading } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
 import { useMeQuery } from '@generated/graphql';
@@ -48,22 +47,22 @@ const Home: React.FC<IHomeProps> = ({ locale }) => {
         minHeight="calc(100vh - 10rem)"
         centerContent
       >
-        <h1>Welcome to Mecha Type</h1>
-        <h1>{t('test')}</h1>
-
-        <Link href="/" locale={router.locale === 'en' ? 'es' : 'en'} passHref>
-          <button>{t('change-locale')}</button>
-        </Link>
-        <h2>v0.0.4</h2>
+        <Heading as="h1" fontWeight={700}>
+          Welcome to Mecha Type
+        </Heading>
+        <Heading as="h2" fontSize="2xl">
+          {t('test')}
+        </Heading>
+        <Heading as="h3">v0.0.5</Heading>
       </Container>
     </PageWrapper>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
 
-  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
+  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
 export default withApollo({ ssr: false })(Home);

@@ -3,7 +3,7 @@ import  withApollo from '@lib/apollo';
 import { PracticePresetSelection } from '@components/practice/selection';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { useMeQuery, User } from '@generated/graphql';
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Container } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
@@ -43,9 +43,9 @@ const PracticePage: React.FC<PracticePageProps> = ({ locale }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
-  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
+  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
 export default withApollo({ ssr: false })(PracticePage);

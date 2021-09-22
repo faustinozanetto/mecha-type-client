@@ -42,6 +42,19 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
     },
   });
 
+  const getUserCountryData = (user: UserFragment): CountryEntry => {
+    const country = countries.find((country) => {
+      if (country.name) return country?.name === user?.country;
+    });
+    if (country) {
+      return country;
+    }
+    return {
+      name: undefined,
+      flag: undefined,
+    };
+  };
+
   // If editing, return the edit profile component.
   if (editing) {
     return (
@@ -63,6 +76,7 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         targetUser={targetUser}
         loading={loading}
         ownsPage={ownsPage}
+        country={getUserCountryData(user)}
         followsUser={followsUserData?.followsUser?.valueOf()!}
         followersRefetch={followersRefetch}
         followsUserRefetch={followsUserRefetch}

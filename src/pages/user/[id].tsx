@@ -10,11 +10,12 @@ import { __URI__ } from '@utils/constants';
 import withApollo from '@lib/apollo';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@lib/user/userHelper';
+import axios from 'axios';
 const UserProfile = dynamic(() => import('@components/user/profile/page/user/user-profile'));
 
 export type CountryEntry = {
-  name: string;
-  flag: string;
+  name?: string;
+  flag?: string;
 };
 
 interface UserPageProps {
@@ -93,15 +94,19 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { locale } = context;
   let names: CountryEntry[] = [];
-  try {
-    const res = await fetch('https://restcountries.eu/rest/v2/all');
-    const data = await res.json();
-    data.map((country: any) => {
-      names.push({ name: country.name, flag: country.alpha2Code });
-    });
-  } catch {}
+  type AxiosResponse = {
+    data: CountryEntry[];
+  };
 
-  return { props: { countries: names, ...(await serverSideTranslations(locale ?? 'en', ['user-profile'])) } };
+  const res = await axios.get<AxiosResponse>('https://countriesnow.space/api/v0.1/countries/flag/images');
+  const data = await res.data;
+  data.data.map((country: any) => {
+    names.push({ name: country.name, flag: country.flag });
+  });
+
+  return {
+    props: { countries: names, ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])) },
+  };
 };
 
 export default withApollo({ ssr: false })(UserPage);

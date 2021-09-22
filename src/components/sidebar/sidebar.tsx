@@ -13,6 +13,8 @@ import { Text, Flex } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { SidebarThemeToggler } from './sidebar-theme-toggler';
 import { useRouter } from 'next/router';
+import { SidebarLanguageSwitcher } from './sidebar-language-siwtcher';
+import { useTranslation } from 'react-i18next';
 
 interface ISidebarLink {
   name: string;
@@ -22,22 +24,22 @@ interface ISidebarLink {
 
 const sidebarLinks: ISidebarLink[] = [
   {
-    name: 'Home',
+    name: 'sidebar-home',
     href: '/',
     icon: FiHome,
   },
+  // {
+  //   name: 'sidebar-dashboard',
+  //   href: '/dashboard',
+  //   icon: AiOutlineDashboard,
+  // },
   {
-    name: 'Dashboard',
-    href: '/dashboard',
-    icon: AiOutlineDashboard,
-  },
-  {
-    name: 'Practice',
+    name: 'sidebar-practice',
     href: '/practice',
     icon: FaKeyboard,
   },
   {
-    name: 'Leaderboards',
+    name: 'sidebar-leaderboards',
     href: '/leaderboards',
     icon: FiStar,
   },
@@ -50,6 +52,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const router = useRouter();
+  const { t } = useTranslation('sidebar');
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
   const isSmallOrLess = useMediaQuery('(max-width: 30em)');
 
@@ -86,20 +89,25 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       {/* Buttons */}
       <Flex flexDirection="column" flexGrow={1} alignItems="center">
         {sidebarLinks.map((link, index) => {
-          return <SidebarButton key={index} icon={link.icon} label={link.name} href={link.href} />;
+          return <SidebarButton key={index} icon={link.icon} label={t(link.name)} href={link.href} />;
         })}
       </Flex>
 
       {/* User details */}
       <Flex flexDir="column" flexGrow={0} alignItems="center">
-        <SidebarThemeToggler />
+        <SidebarLanguageSwitcher
+          label={t('sidebar-language-switcher')}
+          englishLabel={t('sidebar-language-switcher-english')}
+          spanishLabel={t('sidebar-language-switcher-spanish')}
+        />
+        <SidebarThemeToggler label={t('sidebar-theme-switcher')} />
         {user ? (
           <>
             <UserDetails user={user} />
-            <LogoutButton />
+            <LogoutButton label={t('sidebar-logout')} />
           </>
         ) : (
-          <SidebarButton icon={FiLogIn} label="Login" href={generateSignInHref()} />
+          <SidebarButton icon={FiLogIn} label={t('sidebar-login')} href={generateSignInHref()} />
         )}
       </Flex>
     </Flex>

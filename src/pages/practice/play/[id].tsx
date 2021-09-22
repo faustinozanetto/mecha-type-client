@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import  withApollo  from '@lib/apollo';
+import withApollo from '@lib/apollo';
 import { PracticeGameInput } from '@components/practice/game/types';
 import { generateWords } from '@lib/words/helperFunctions';
 import { useMeQuery, User, useTestPresetQuery } from 'generated/graphql';
@@ -17,19 +17,19 @@ interface PracticePlayPageProps {
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
   const [text, setText] = useState('');
-  const { data: userData, loading } = useMeQuery({});
+  const { data: userData, loading: userLoading } = useMeQuery({});
 
-  const { data: testPreset } = useTestPresetQuery({
+  const { data: testPreset, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
       id: useGetIDFromUrl(),
     },
   });
 
   useEffect(() => {
-    if (testPreset?.testPreset?.testPreset) {
+    if (testPreset?.testPreset?.testPreset && !userLoading) {
       setText(generateWords(testPreset?.testPreset?.testPreset));
     }
-  }, [userData, testPreset]);
+  }, [userLoading, testPresetLoading, testPreset?.testPreset]);
 
   return (
     <PageWrapper user={userData?.me?.user as User}>
@@ -52,9 +52,9 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
         minHeight="calc(100vh - 10rem)"
         centerContent
       >
-        {text && testPreset?.testPreset?.testPreset && (
+        {!testPresetLoading && text && testPreset?.testPreset?.testPreset && (
           <PracticeGameInput
-            loading={loading}
+            loading={testPresetLoading || userLoading}
             testPreset={testPreset.testPreset.testPreset}
             text={text as string}
             user={userData?.me?.user!}
@@ -67,7 +67,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { locale } = context;
-  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common'])) } };
+  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
 export default withApollo({ ssr: false })(PracticePlayPage);

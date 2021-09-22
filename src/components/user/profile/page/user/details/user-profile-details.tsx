@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 import { UserAvatar } from '../user-avatar';
 import { SettingsButton } from './settings-button';
 import { generateAvatarURl } from '@lib/user/userHelper';
+import { CountryEntry } from '@pages/user/[id]';
+import { UserProfileCountry } from './user-profile-country';
 
 const FollowButton = dynamic(() => import('@components/user/profile/page/user/details/follow-button'));
 
@@ -18,6 +20,8 @@ interface UserProfileDetailsProps {
   loading: boolean;
   /** If the current logged in user is the same as the profile page */
   ownsPage: boolean;
+  /** Country data */
+  country: CountryEntry;
   /** Wether the user already follows or not the target user. */
   followsUser: boolean;
   /** Used to re fetch the user follows query */
@@ -32,6 +36,7 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
   targetUser,
   loading,
   ownsPage,
+  country,
   followsUser,
   followsUserRefetch,
   followersRefetch,
@@ -67,11 +72,7 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
               </Badge>
             )}
           </HStack>
-          <SkeletonText isLoaded={!loading} noOfLines={1} py={!loading ? 0 : 2}>
-            <Text as="p" fontSize="xl" color={useColorModeValue('black', 'white')} fontWeight={500}>
-              {targetUser?.country ? targetUser?.country : t('no-user-country')}
-            </Text>
-          </SkeletonText>
+          <UserProfileCountry countryData={country} loading={loading} />
           <SkeletonText isLoaded={!loading} noOfLines={2} py={!loading ? 0 : 2}>
             <Text as="p" fontSize="lg" color={useColorModeValue('black', 'white')} fontWeight={400}>
               {targetUser?.description ? targetUser?.description : t('no-user-description')}
