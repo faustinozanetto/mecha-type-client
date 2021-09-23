@@ -3,6 +3,7 @@ import Link from 'next/link';
 import useMediaQuery from '@hooks/general/useMediaQuery';
 import { Button, Tooltip, Text, HStack, Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react';
 import { AtSignIcon } from '@chakra-ui/icons';
+import { useRouter } from 'next/router';
 
 interface SidebarLanguageSwitcherProps {
   /** Label to show in the button */
@@ -16,6 +17,7 @@ export const SidebarLanguageSwitcher: React.FC<SidebarLanguageSwitcherProps> = (
   englishLabel,
   spanishLabel,
 }) => {
+  const router = useRouter();
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
 
   return (
@@ -44,16 +46,10 @@ export const SidebarLanguageSwitcher: React.FC<SidebarLanguageSwitcherProps> = (
         </MenuButton>
       </Tooltip>
       <MenuList>
-        <MenuItem>
-          <Link href="/" locale={'en'} passHref>
-            {englishLabel}
-          </Link>
-        </MenuItem>
-        <MenuItem>
-          <Link href="/" locale={'es'} passHref>
-            {spanishLabel}
-          </Link>
-        </MenuItem>
+        <MenuItem onClick={() => router.push(router.asPath, router.asPath, { locale: 'en' })}>{englishLabel}</MenuItem>
+        <Link href={router.asPath} locale={'es'}>
+          <MenuItem>{spanishLabel}</MenuItem>
+        </Link>
       </MenuList>
     </Menu>
   );
