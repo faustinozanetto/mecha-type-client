@@ -17,3 +17,4 @@ export const __URI__: string = __PROD__ ? 'https://mecha-type.vercel.app' : 'htt
  * @returns wether it is a server or not.
  */
 export const __SERVER__: boolean = typeof window === 'undefined';
+export const __BROWSER__: boolean = typeof window !== 'undefined';

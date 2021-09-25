@@ -1,51 +1,37 @@
 import React from 'react';
-import  withApollo from '@lib/apollo';
 import { PracticePresetSelection } from '@components/practice/selection';
-import { PageWrapper } from '@components/wrappers/page-wrapper';
-import { useMeQuery, User } from '@generated/graphql';
-import { GetServerSideProps, GetStaticProps } from 'next';
+import { useMeQuery } from '@generated/graphql';
+import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Container } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
-import { NextSeo } from 'next-seo';
+import LayoutCore from 'layouts/core/components/layout-core';
+import Footer from '@components/footer/footer';
+import Sidebar from '@components/sidebar/sidebar';
 
-interface PracticePageProps {
-  locale: string;
-}
+interface PracticePageProps {}
 
-const PracticePage: React.FC<PracticePageProps> = ({ locale }) => {
-  const { data: userData, loading } = useMeQuery({});
+const PracticePage: React.FC<PracticePageProps> = () => {
+  const { data: userData } = useMeQuery({});
 
   return (
-    <PageWrapper user={userData?.me?.user as User}>
-      <NextSeo
-        title={`Practice | Mecha Type`}
-        description={`Practice page where you can choose to use a created preset, or create one.`}
-        canonical={`${__URI__}/practice`}
-        openGraph={{
-          type: 'website',
-          images: [{ url: '/favicon.ico' }],
-          locale: locale,
-          url: `${__URI__}/practice`,
-          site_name: 'Mecha Type',
-        }}
-      />
-      <Container
-        maxW={['1xl', '2xl', '3xl', '4xl']}
-        paddingTop="1rem"
-        paddingBottom="1rem"
-        minHeight="calc(100vh - 10rem)"
-        centerContent
-      >
-        <PracticePresetSelection user={userData?.me?.user!} />
-      </Container>
-    </PageWrapper>
+    <LayoutCore
+      Footer={Footer}
+      Sidebar={Sidebar}
+      sidebarProps={{ user: userData?.me?.user! }}
+      headProps={{
+        seoTitle: 'Practice | Mecha Type',
+        seoDescription: 'Practice page where you can choose to use a created preset, or create one.',
+        seoUrl: `${__URI__}/practice`,
+      }}
+    >
+      <PracticePresetSelection user={userData?.me?.user!} />
+    </LayoutCore>
   );
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
-  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
+  return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
-export default withApollo({ ssr: false })(PracticePage);
+export default PracticePage;

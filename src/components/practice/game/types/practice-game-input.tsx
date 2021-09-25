@@ -5,7 +5,7 @@ import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
 import { TestPresetFragment, User, UserFragment, useUpdateUserMutation } from '@generated/graphql';
 import { Flex, SkeletonText, useColorModeValue, Input, useToast, Box } from '@chakra-ui/react';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
-import { roundTo2 } from '@lib/general/math/math';
+import { roundTo2 } from '@modules/core/math/math';
 
 const PracticeVisualLetter = dynamic(() => import('@components/practice/game/visual/practice-visual-letter'));
 const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));

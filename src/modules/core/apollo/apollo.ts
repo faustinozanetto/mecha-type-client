@@ -3,6 +3,12 @@ import { __BACKEND__ } from '@utils/constants';
 import { FilteredUsersResponse } from '@generated/graphql';
 import { NextPageContext } from 'next';
 import { withApollo } from 'next-apollo';
+import { createLogger } from '../logging/mecha-logger';
+
+const fileLabel = 'modules/core/apollo/apollo';
+const logger = createLogger({
+  fileLabel,
+});
 
 const apolloClient = (ctx: NextPageContext) => {
   const setCookiesAfterware = new ApolloLink((operation, forward) =>

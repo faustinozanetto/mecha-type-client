@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import withApollo from '@lib/apollo';
 import { PracticeGameInput } from '@components/practice/game/types';
 import { generateWords } from '@lib/words/helperFunctions';
 import { useMeQuery, User, useTestPresetQuery } from 'generated/graphql';
@@ -70,4 +69,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
-export default withApollo({ ssr: false })(PracticePlayPage);
+export default PracticePlayPage;

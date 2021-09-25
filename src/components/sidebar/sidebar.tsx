@@ -14,7 +14,7 @@ import { __URI__ } from '@utils/constants';
 import { SidebarThemeToggler } from './sidebar-theme-toggler';
 import { useRouter } from 'next/router';
 import { SidebarLanguageSwitcher } from './sidebar-language-siwtcher';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
 
 interface ISidebarLink {
   name: string;
@@ -45,7 +45,7 @@ const sidebarLinks: ISidebarLink[] = [
   },
 ];
 
-interface SidebarProps {
+export interface SidebarProps {
   /** User data */
   user: UserFragment;
 }

@@ -200,7 +200,7 @@ export const useTypingGame = (
       countErrors: 'everytime',
       ...options,
     }),
-    [options]
+    [options, text]
   );
 
   const [states, dispatch] = useReducer<Reducer<TypingStateType, ActionItemType>>(reducer, initialState);

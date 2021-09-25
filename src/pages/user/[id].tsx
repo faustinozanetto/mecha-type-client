@@ -7,7 +7,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Container } from '@chakra-ui/react';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
-import withApollo from '@lib/apollo';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@lib/user/userHelper';
 import axios from 'axios';
@@ -109,4 +108,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default withApollo({ ssr: false })(UserPage);
+export default UserPage;

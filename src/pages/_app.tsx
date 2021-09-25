@@ -6,12 +6,13 @@ import { ChakraProvider } from '@chakra-ui/react';
 import GlobalStyles from '@styles/global-styles';
 import { useRouter } from 'next/router';
 import * as gtag from '@lib/google/gtag';
-import { Provider } from 'react-redux';
-import withRedux from 'next-redux-wrapper';
+import { ApolloProvider } from '@apollo/client';
+import { useApollo } from '@modules/core/apollo/apollo-client';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
   const router = useRouter();
+  const apolloClient = useApollo(pageProps);
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
@@ -24,7 +25,7 @@ const MechaApp = (props: AppProps) => {
   }, [router.events]);
 
   return (
-    <Provider store={store}>
+    <ApolloProvider client={apolloClient}>
       <ChakraProvider>
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <Script
@@ -48,8 +49,8 @@ const MechaApp = (props: AppProps) => {
         <GlobalStyles />
         <Component {...pageProps} />
       </ChakraProvider>
-    </Provider>
+    </ApolloProvider>
   );
 };
 
-export default withRedux(appWithTranslation(MechaApp));
+export default appWithTranslation(MechaApp);
