@@ -1,6 +1,7 @@
 import React from 'react';
 import NextHead from 'next/head';
 import { SUPPORTED_LOCALES } from '@modules/core/i18n/i18n';
+import { fontConfigurations, fontsBasePath } from '@modules/core/fonts/fonts';
 
 export interface LayoutCoreHeadProps {
   /**
@@ -55,6 +56,22 @@ const LayoutCoreHead: React.FC<LayoutCoreHeadProps> = (props): JSX.Element => {
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="icon" href={seoFavIcon} />
       <link rel="canonical" href={seoCanonicalUrl} />
+
+      {/* Preload the font */}
+      {fontConfigurations
+        .find((font) => font.fontName === 'Poppins')
+        .fontWeights.map((weight) => {
+          return (
+            <link
+              key={`font-${weight}`}
+              rel="preload"
+              href={`${fontsBasePath}/Poppins/poppins-latin-${weight}.woff2`}
+              as="font"
+              type={`font/woff2`}
+              crossOrigin="anonymous"
+            />
+          );
+        })}
 
       {/* Languages */}
       {SUPPORTED_LOCALES.map((locale) => {

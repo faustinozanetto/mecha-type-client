@@ -1,36 +1,50 @@
 /* eslint-disable @next/next/no-document-import-in-page */
 import React from 'react';
 import { ColorModeScript } from '@chakra-ui/react';
-import Document, { Html, Head, Main, NextScript, DocumentContext, DocumentInitialProps } from 'next/document';
+import NextCookies from 'next-cookies';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+  DocumentInitialProps,
+  DocumentProps,
+} from 'next/document';
+import { Cookies } from '@modules/core/cookies/types/cookies.types';
 import theme from '../styles/theme';
 
-class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
-    const originalRenderPage = ctx.renderPage;
+/**
+ * Additional props depending on our App
+ *
+ * Must be returned by getInitialProps and will be available in render function
+ */
+type Props = {
+  locale: string;
+};
 
-    ctx.renderPage = () =>
-      originalRenderPage({
-        // useful for wrapping the whole react tree
-        enhanceApp: (App) => App,
-        // useful for wrapping in a per-page basis
-        enhanceComponent: (Component) => Component,
-      });
+type DocumentGetInitialPropsOutput = Props & DocumentInitialProps;
+type DocumentRenderProps = Props & DocumentProps;
 
-    // Run the parent `getInitialProps`, it now includes the custom `renderPage`
-    const initialProps = await Document.getInitialProps(ctx);
+class AppDocument extends Document<DocumentRenderProps> {
+  static async getInitialProps(context: DocumentContext): Promise<DocumentGetInitialPropsOutput> {
+    const { query, req } = context;
+    const initialProps: DocumentInitialProps = await Document.getInitialProps(context);
 
-    return initialProps;
+    const readonlyCookies: Cookies = NextCookies(context); // Parses Next.js cookies in a universal way (server + client)
+    const locale = context.locale;
+
+    return {
+      ...initialProps,
+      locale,
+    };
   }
 
   render() {
+    const { locale }: DocumentRenderProps = this.props;
     return (
-      <Html lang="en">
-        <Head>
-          <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-            rel="stylesheet"
-          />
-        </Head>
+      <Html lang={locale}>
+        <Head />
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
@@ -41,4 +55,4 @@ class MyDocument extends Document {
   }
 }
 
-export default MyDocument;
+export default AppDocument;
