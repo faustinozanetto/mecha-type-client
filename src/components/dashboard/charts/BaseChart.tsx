@@ -1,6 +1,6 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import Chart from 'chart.js';
+import type Chart from 'chart.js';
 
 interface BaseChartProps {}
 
@@ -13,7 +13,6 @@ const datapoints = [0, 20, 20, 60, 60, 40, 20, 50, 55, 66, 45, 85];
 
 const data: Chart.ChartData = {
   labels: labels,
-
   datasets: [
     {
       label: 'Words per Minute',
@@ -29,7 +28,6 @@ const data: Chart.ChartData = {
 
 const options: Chart.ChartOptions = {
   responsive: true,
-
   plugins: {
     title: {
       display: true,

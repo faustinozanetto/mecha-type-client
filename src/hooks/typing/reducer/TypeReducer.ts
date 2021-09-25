@@ -1,5 +1,5 @@
-import { Reducer, useReducer, useCallback, useMemo } from "react";
-import { ActionItemType, ActionType, END, RESET, SETCURRENTINDEX, TYPINGDELETE, TYPINGINSERT } from "./actions";
+import { Reducer, useReducer, useCallback, useMemo } from 'react';
+import { ActionItemType, ActionType, END, RESET, SETCURRENTINDEX, TYPINGDELETE, TYPINGINSERT } from './actions';
 
 /**
  * Constants for different phases.
@@ -39,7 +39,7 @@ export enum CharStateType {
   Incorrect = 2,
 }
 
-type countErrorTypes = "everytime" | "once";
+type countErrorTypes = 'everytime' | 'once';
 
 export interface TypingOptionsType {
   /**
@@ -179,7 +179,7 @@ const reducer: Reducer<TypingStateType, ActionItemType> = (state, action) => {
  */
 export const useTypingGame = (
   text: string,
-  options: Partial<TypingOptionsType> = {},
+  options: Partial<TypingOptionsType> = {}
 ): { states: TypingStateType; actions: TypingActionType } => {
   const initialState = useMemo<TypingStateType>(
     () => ({
@@ -189,7 +189,7 @@ export const useTypingGame = (
       charsState: new Array(text.length).fill(0),
       length: text.length,
       currIndex: -1,
-      currChar: "",
+      currChar: '',
       correctChar: 0,
       errorChar: 0,
       spaceChar: 0,
@@ -197,15 +197,15 @@ export const useTypingGame = (
       phase: 0,
       skipCurrentWordOnSpace: true,
       pauseOnError: false,
-      countErrors: "everytime",
+      countErrors: 'everytime',
       ...options,
     }),
-    [options],
+    [options]
   );
 
   const [states, dispatch] = useReducer<Reducer<TypingStateType, ActionItemType>>(reducer, initialState);
 
-  const getDuration = useCallback<TypingActionType["getDuration"]>(() => {
+  const getDuration = useCallback<TypingActionType['getDuration']>(() => {
     switch (states.phase) {
       case PhaseType.NotStarted: {
         return 0;
@@ -219,14 +219,14 @@ export const useTypingGame = (
     }
   }, [states.phase, states.startTime, states.endTime]);
 
-  const resetTyping = useCallback<TypingActionType["resetTyping"]>(
+  const resetTyping = useCallback<TypingActionType['resetTyping']>(
     () => dispatch({ type: ActionType.RESET }),
-    [dispatch],
+    [dispatch]
   );
 
-  const endTyping = useCallback<TypingActionType["endTyping"]>(() => dispatch({ type: ActionType.END }), [dispatch]);
+  const endTyping = useCallback<TypingActionType['endTyping']>(() => dispatch({ type: ActionType.END }), [dispatch]);
 
-  const insertTyping = useCallback<TypingActionType["insertTyping"]>(
+  const insertTyping = useCallback<TypingActionType['insertTyping']>(
     (letter: string | undefined) => {
       const payload = letter ? letter[0] : null;
       dispatch({
@@ -234,20 +234,20 @@ export const useTypingGame = (
         payload,
       });
     },
-    [dispatch],
+    [dispatch]
   );
 
-  const deleteTyping = useCallback<TypingActionType["deleteTyping"]>(
+  const deleteTyping = useCallback<TypingActionType['deleteTyping']>(
     (deleteWord = false) => {
       dispatch({
         type: ActionType.TYPINGDELETE,
         payload: deleteWord || false,
       });
     },
-    [dispatch],
+    [dispatch]
   );
 
-  const setCurrIndex = useCallback<TypingActionType["setCurrIndex"]>(
+  const setCurrIndex = useCallback<TypingActionType['setCurrIndex']>(
     (num: number) => {
       if (num < -1 || num >= states.length || states.phase !== 2) {
         return false;
@@ -258,7 +258,7 @@ export const useTypingGame = (
       });
       return true;
     },
-    [dispatch, states.length, states.phase],
+    [dispatch, states.length, states.phase]
   );
 
   return {

@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  mecha-client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mecha-client
+    restart: always
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    env_file:
+      - .env

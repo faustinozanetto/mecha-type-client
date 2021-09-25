@@ -6,6 +6,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import GlobalStyles from '@styles/global-styles';
 import { useRouter } from 'next/router';
 import * as gtag from '@lib/google/gtag';
+import { Provider } from 'react-redux';
+import withRedux from 'next-redux-wrapper';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -22,19 +24,18 @@ const MechaApp = (props: AppProps) => {
   }, [router.events]);
 
   return (
-    <ChakraProvider>
-      {/* Global Site Tag (gtag.js) - Google Analytics */}
-      <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`} />
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8808387532349652"
-        crossOrigin="anonymous"
-      />
-      <Script
-        id="gtag"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
+    <Provider store={store}>
+      <ChakraProvider>
+        {/* Global Site Tag (gtag.js) - Google Analytics */}
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+        />
+        <Script
+          id="gtag"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -42,12 +43,13 @@ const MechaApp = (props: AppProps) => {
               page_path: window.location.pathname,
             });
           `,
-        }}
-      />
-      <GlobalStyles />
-      <Component {...pageProps} />
-    </ChakraProvider>
+          }}
+        />
+        <GlobalStyles />
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </Provider>
   );
 };
 
-export default appWithTranslation(MechaApp);
+export default withRedux(appWithTranslation(MechaApp));
