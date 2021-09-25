@@ -2,6 +2,7 @@ import React from 'react';
 import NextHead from 'next/head';
 import { SUPPORTED_LOCALES } from '@modules/core/i18n/i18n';
 import { fontConfigurations, fontsBasePath } from '@modules/core/fonts/fonts';
+import { __URI__ } from '@utils/constants';
 
 export interface LayoutCoreHeadProps {
   /**
@@ -76,7 +77,12 @@ const LayoutCoreHead: React.FC<LayoutCoreHeadProps> = (props): JSX.Element => {
       {/* Languages */}
       {SUPPORTED_LOCALES.map((locale) => {
         return (
-          <link key={locale.name} rel="alternate" hrefLang={locale?.lang || 'en'} href={`/${locale?.lang || 'en'}`} />
+          <link
+            key={locale.name}
+            rel="alternate"
+            hrefLang={locale?.lang || 'en'}
+            href={`${__URI__}/ ${locale?.lang || 'en'}`}
+          />
         );
       })}
 

@@ -10,6 +10,9 @@ import { Heading } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { useMeQuery } from '@generated/graphql';
 import { Loading } from '@components/loading/loading';
+import { Adsense } from '@ctrl/react-adsense';
+import GoogleAdsense from 'next-google-ads';
+import AdBanner from '@components/AdBanner';
 
 interface IHomeProps {
   locale: string;
@@ -44,6 +47,8 @@ const Home: React.FC<IHomeProps> = () => {
         {t('test')}
       </Heading>
       <Heading as="h3">v0.0.5</Heading>
+      {/* <GoogleAdsense client="ca-pub-8808387532349652" slot="5518576177" responsive="true" /> */}
+      <AdBanner />
     </LayoutCore>
   );
 };

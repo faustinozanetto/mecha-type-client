@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Script from 'next/script';
 import { appWithTranslation } from 'next-i18next';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -8,6 +7,8 @@ import { useRouter } from 'next/router';
 import * as gtag from '@lib/google/gtag';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '@modules/core/apollo/apollo-client';
+import AdSenseConnection from '@modules/core/adsense/adsense-connection';
+import Script from 'next/script';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -27,25 +28,8 @@ const MechaApp = (props: AppProps) => {
   return (
     <ApolloProvider client={apolloClient}>
       <ChakraProvider>
-        {/* Global Site Tag (gtag.js) - Google Analytics */}
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-        />
-        <Script
-          id="gtag"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gtag.GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-          }}
-        />
+        {/* Global AdSense */}
+
         <GlobalStyles />
         <Component {...pageProps} />
       </ChakraProvider>

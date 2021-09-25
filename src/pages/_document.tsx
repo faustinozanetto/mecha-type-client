@@ -13,6 +13,8 @@ import Document, {
 } from 'next/document';
 import { Cookies } from '@modules/core/cookies/types/cookies.types';
 import theme from '../styles/theme';
+// eslint-disable-next-line @next/next/no-script-in-document
+import Script from 'next/script';
 
 /**
  * Additional props depending on our App
@@ -44,7 +46,20 @@ class AppDocument extends Document<DocumentRenderProps> {
     const { locale }: DocumentRenderProps = this.props;
     return (
       <Html lang={locale}>
-        <Head />
+        <Head>
+          <Script
+            id="google-adsense"
+            src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+            data-ad-client="ca-pub-8808387532349652"
+            onLoad={() => {
+              if (typeof window !== 'undefined') {
+                window.onload = () => {
+                  ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+                };
+              }
+            }}
+          />
+        </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />

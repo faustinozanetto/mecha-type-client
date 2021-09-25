@@ -22,6 +22,11 @@ export const fontConfigurations: FontConfiguration[] = [
 
 export const fontsBasePath = '/static/fonts';
 
+/**
+ *
+ * @param fontFamily font family to create the inject css code
+ * @returns the complete code to use in a css
+ */
 export const injectFontFamily = (fontFamily: FontConfiguration): string => {
   switch (fontFamily.fontName) {
     case 'Poppins': {
