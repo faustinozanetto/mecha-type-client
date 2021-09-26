@@ -83,13 +83,14 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
 
   const bgColor = useColorModeValue('gray.300', 'gray.900');
 
-  const { typeSounds } = useUserPractice();
+  const { typeSounds, noBackspace, pauseOnError, blindMode } = useUserPractice();
 
   const {
     states: { charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping },
   } = useTypingGame(text, {
     skipCurrentWordOnSpace: false,
+    pauseOnError: pauseOnError,
   });
 
   // Caret cursor positioning
@@ -254,15 +255,18 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
 
   const handleKeyDown = (letter: string, control: boolean) => {
     if (phase !== 2) {
-      if (typeSounds) {
-        play();
-      }
       if (letter === 'Escape') {
         resetTyping();
-      } else if (letter === 'Backspace') {
+      } else if (letter === 'Backspace' && !noBackspace) {
         deleteTyping(control);
+        if (typeSounds) {
+          play();
+        }
       } else if (letter.length === 1) {
         insertTyping(letter);
+        if (typeSounds) {
+          play();
+        }
       }
     }
   };
@@ -297,6 +301,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
               return (
                 <PracticeVisualLetter
                   key={letter + index}
+                  shouldShowErrors={!blindMode}
                   correct={state === 1}
                   incorrect={state === 2}
                   highlight={false}

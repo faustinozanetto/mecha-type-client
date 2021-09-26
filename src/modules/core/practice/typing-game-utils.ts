@@ -91,9 +91,10 @@ export const punctuateWord = (previousWord: string, currentWord: string, index: 
 /**
  *
  * @param presetData Test Preset data to get data from
+ * @param shouldPunctuate Wether words should be punctuated or not
  * @returns the string containing all the generated text
  */
-export const generateWords = (presetData: TestPresetFragment): string => {
+export const generateWords = (presetData: TestPresetFragment, shouldPunctuate: boolean): string => {
   let text = '';
   const wordsList: string[] = [];
 
@@ -107,13 +108,12 @@ export const generateWords = (presetData: TestPresetFragment): string => {
     // Getting previous word
     const previousWord = wordsList[i - 1];
     // TODO: add support for customizing punctuation mode.
-    const punctuation = false;
     // eslint-disable-next-line no-unmodified-loop-condition
-    while (randomWord === previousWord || (!punctuation && randomWord === 'I') || randomWord.indexOf(' ') > -1) {
+    while (randomWord === previousWord || (!shouldPunctuate && randomWord === 'I') || randomWord.indexOf(' ') > -1) {
       randomWord = language.words[Math.floor(Math.random() * language.words.length)];
     }
     // Punctuate word if enabled
-    if (punctuation) {
+    if (shouldPunctuate) {
       randomWord = punctuateWord(previousWord, randomWord, i, presetData?.words!);
     }
     wordsList.push(randomWord);

@@ -8,10 +8,12 @@ interface PracticeVisualLetterProps extends TextProps {
   correct?: boolean;
   /** Is the letter incorrect? */
   incorrect?: boolean;
+  /** Wether error colors should be shown or not */
+  shouldShowErrors?: boolean;
 }
 
 const PracticeVisualLetter: React.FC<PracticeVisualLetterProps> = (props) => {
-  const { highlight, correct, incorrect, children, ...rest } = props;
+  const { highlight, correct, incorrect, shouldShowErrors, children, ...rest } = props;
   const letterColor = useColorModeValue('#161616d6', '#b6b6b6dd');
   const correctColor = useColorModeValue('#000000f8', '#f3f3f3');
 
@@ -21,13 +23,13 @@ const PracticeVisualLetter: React.FC<PracticeVisualLetterProps> = (props) => {
       lineHeight="1.75rem"
       fontSize="1.3rem"
       fontWeight={500}
-      color={highlight ? '#000' : incorrect ? '#dc2626' : correct ? correctColor : letterColor}
+      color={highlight ? '#000' : incorrect && shouldShowErrors ? '#dc2626' : correct ? correctColor : letterColor}
       backgroundColor={highlight ? '#fbbf24' : ''}
       transitionProperty="all"
       transitionDuration="100ms"
       borderBottomStyle="solid"
       borderBottomWidth="2.25px"
-      borderBottomColor={incorrect ? '#dc2626' : 'transparent'}
+      borderBottomColor={shouldShowErrors && incorrect ? '#dc2626' : 'transparent'}
       {...rest}
     >
       {children}

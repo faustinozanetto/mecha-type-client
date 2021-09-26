@@ -18,19 +18,19 @@ interface PracticePlayPageProps {
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
   const [text, setText] = useState('');
-  const { typeSounds } = useUserPractice();
   const { data: userData, loading: userLoading } = useMeQuery({});
   const { data: testPreset, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
       id: useGetIDFromUrl(),
     },
   });
+  const { punctuateWords } = useUserPractice();
 
   useEffect(() => {
     if (testPreset?.testPreset?.testPreset && !userLoading) {
-      setText(generateWords(testPreset?.testPreset?.testPreset));
+      setText(generateWords(testPreset?.testPreset?.testPreset, punctuateWords));
     }
-  }, [userLoading, testPresetLoading, testPreset?.testPreset]);
+  }, [userLoading, testPresetLoading, testPreset?.testPreset, punctuateWords]);
 
   return (
     <PageWrapper user={userData?.me?.user as User}>
