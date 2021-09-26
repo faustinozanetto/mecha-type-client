@@ -1,1 +1,1 @@
-export { PracticeGameInput } from "./practice-game-input";
+export { PracticeGameInput } from "./practice-game";

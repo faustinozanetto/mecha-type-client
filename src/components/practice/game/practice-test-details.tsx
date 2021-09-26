@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, useColorModeValue, Text, Skeleton } from '@chakra-ui/react';
+import { Flex, useColorModeValue, Text, Skeleton, HStack, Switch } from '@chakra-ui/react';
 import { TestPresetFragment } from '@generated/graphql';
 
 interface PracticeTestDetailsProps {

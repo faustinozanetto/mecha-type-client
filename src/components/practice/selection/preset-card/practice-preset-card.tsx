@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { capitalizeFirstLetter } from '@lib/words/helperFunctions';
 import { TestPresetFragment, TestType } from 'generated/graphql';
 import { Flex, Image, Text, HStack, Button, useColorModeValue, Wrap } from '@chakra-ui/react';
 // import Image from 'next/image';
 import { PracticePresetCardStat } from './practice-preset-card-stat';
+import { capitalizeFirstLetter } from '@modules/core/typing-game/typing-game-utils';
 
 interface PracticePresetCardProps {
   /** Data to fill the card information */

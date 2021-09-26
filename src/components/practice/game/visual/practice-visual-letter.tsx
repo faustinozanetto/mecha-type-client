@@ -12,18 +12,21 @@ interface PracticeVisualLetterProps extends TextProps {
 
 const PracticeVisualLetter: React.FC<PracticeVisualLetterProps> = (props) => {
   const { highlight, correct, incorrect, children, ...rest } = props;
-  const letterColor = useColorModeValue('#161616d6', '#f3f4f6dd');
+  const letterColor = useColorModeValue('#161616d6', '#b6b6b6dd');
+  const correctColor = useColorModeValue('#000000f8', '#f3f3f3');
 
   return (
     <Text
       as="span"
+      lineHeight="1.75rem"
+      fontSize="1.3rem"
       fontWeight={500}
-      color={highlight ? '#000' : incorrect ? '#dc2626' : correct ? letterColor : letterColor}
+      color={highlight ? '#000' : incorrect ? '#dc2626' : correct ? correctColor : letterColor}
       backgroundColor={highlight ? '#fbbf24' : ''}
       transitionProperty="all"
-      transitionDuration="200ms"
+      transitionDuration="100ms"
       borderBottomStyle="solid"
-      borderBottomWidth="2px"
+      borderBottomWidth="2.25px"
       borderBottomColor={incorrect ? '#dc2626' : 'transparent'}
       {...rest}
     >

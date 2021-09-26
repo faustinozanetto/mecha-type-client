@@ -1,5 +1,5 @@
-import { TestPresetFragment } from 'generated/graphql';
-import { words } from './wordList';
+import { TestPresetFragment } from '@generated/graphql';
+import { wordsBank } from './word-bank';
 
 /**
  *
@@ -88,15 +88,17 @@ export const punctuateWord = (previousWord: string, currentWord: string, index: 
   return word;
 };
 
+/**
+ *
+ * @param presetData Test Preset data to get data from
+ * @returns the string containing all the generated text
+ */
 export const generateWords = (presetData: TestPresetFragment): string => {
   let text = '';
   const wordsList: string[] = [];
 
   // TODO: add support for selecting language.
-  const language = words.filter((word) => word.language === presetData?.language?.toLowerCase())[0];
-
-  // Practice mode -> WORDS OR TIME
-  // let wordsBound = config.mode == 'time' ? 60 : config.words;
+  const language = wordsBank.filter((word) => word.language === presetData?.language?.toLowerCase())[0];
 
   // Generating random word list from words file.
   for (let i = 0; i < presetData?.words!; i++) {

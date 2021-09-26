@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
-import { generateWords } from '@lib/words/helperFunctions';
 import { useMeQuery, User, useTestPresetQuery } from 'generated/graphql';
 import { PageWrapper } from '@components/wrappers/page-wrapper';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
@@ -9,6 +8,8 @@ import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
+import { generateWords } from '@modules/core/typing-game/typing-game-utils';
+import { TypingGameType } from '@modules/core/typing-game/types/typing-game.types';
 
 interface PracticePlayPageProps {
   locale: string;
@@ -16,6 +17,7 @@ interface PracticePlayPageProps {
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
   const [text, setText] = useState('');
+
   const { data: userData, loading: userLoading } = useMeQuery({});
 
   const { data: testPreset, loading: testPresetLoading } = useTestPresetQuery({

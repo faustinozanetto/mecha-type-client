@@ -3,7 +3,7 @@ import { TestPresetFragment, UserFragment, useTestPresetsQuery } from 'generated
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 
-const PresetCreation = dynamic(()=> import('@components/practice/selection/preset-creation/preset-creation'))
+const PresetCreation = dynamic(() => import('@components/practice/selection/preset-creation/preset-creation'));
 const PracticePresetCard = dynamic(() => import('@components/practice/selection/preset-card/practice-preset-card'));
 
 interface PracticePresetSelectionProps {
@@ -14,7 +14,6 @@ interface PracticePresetSelectionProps {
 export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = ({ user }) => {
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const [creatingPreset, setCreatingPreset] = useState(false);
-  const [presets, setPresets] = useState<TestPresetFragment[]>([]);
   const { data: testPresets, loading } = useTestPresetsQuery({
     variables: {
       input: {
@@ -23,13 +22,6 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
       },
     },
   });
-
-  useEffect(() => {
-    if (!loading && testPresets?.testPresets?.testPresets) {
-      const filteredPresets = testPresets.testPresets.testPresets.filter((preset) => preset.userId === null);
-      setPresets(filteredPresets);
-    }
-  }, [loading, testPresets]);
 
   if (creatingPreset) {
     return (
@@ -50,7 +42,7 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
         rounded="lg"
         alignItems="center"
         backgroundColor={bgColor}
-        maxWidth="2xl"
+        maxWidth="3xl"
         m={4}
         p={4}
       >
@@ -62,13 +54,21 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
         </Text>
       </Container>
       {/* Presets */}
-      {presets && presets.length > 0 ? (
-        <SimpleGrid backgroundColor={bgColor} rounded="2rem" columns={[1, 1, 2, 3, 3]} rows="auto" m={4}>
-          {presets.map((preset, index) => {
+      {testPresets?.testPresets?.testPresets && (
+        <SimpleGrid
+          backgroundColor={bgColor}
+          rounded="2rem"
+          maxWidth="3xl"
+          columns={[1, 1, 2, 2, 3, 3]}
+          rows="auto"
+          m={4}
+        >
+          {testPresets.testPresets.testPresets.map((preset, index) => {
             return <PracticePresetCard key={index} presetData={preset} />;
           })}
         </SimpleGrid>
-      ) : (
+      )}
+      {!testPresets?.testPresets?.testPresets && !loading && (
         <Flex
           flexDir="column"
           rounded="lg"
@@ -91,7 +91,7 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
         rounded="lg"
         alignItems="center"
         backgroundColor={bgColor}
-        maxWidth="2xl"
+        maxWidth="3xl"
         m={4}
         p={4}
       >

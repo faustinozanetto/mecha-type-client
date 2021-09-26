@@ -1,7 +1,7 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import { defaults } from 'react-chartjs-2';
-import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game-input';
+import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game';
 import { useColorModeValue, Flex } from '@chakra-ui/react';
 
 interface StatLineChartProps {

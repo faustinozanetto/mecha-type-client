@@ -26,7 +26,7 @@ import { Text } from '@chakra-ui/react';
 
 interface CaretProps extends React.HTMLAttributes<HTMLSpanElement> {}
 
-export const Caret: React.FC<CaretProps> = (props, ref) => {
+export const Caret: React.FC<CaretProps> = (props) => {
   const { children, ...rest } = props;
 
   return (
@@ -34,11 +34,12 @@ export const Caret: React.FC<CaretProps> = (props, ref) => {
       as="span"
       position="absolute"
       display="inline"
-      borderColor="#0ea5e9"
+      borderColor="#e9950e"
       borderLeftWidth="3px"
       sx={{}}
-      ref={ref}
       {...rest}
+      transitionProperty="all"
+      transitionDuration="100ms"
     >
       {children}
     </Text>

@@ -1,6 +1,6 @@
 import { Button } from '@chakra-ui/react';
 import React from 'react';
-import { ETypingStatType } from '../../game/types/practice-game-input';
+import { ETypingStatType } from '../../game/types/practice-game';
 
 interface ChartSelectButtonProps {
   /** Name to show in the button */

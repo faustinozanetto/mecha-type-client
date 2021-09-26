@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
@@ -6,6 +6,8 @@ import { TestPresetFragment, User, UserFragment, useUpdateUserMutation } from '@
 import { Flex, SkeletonText, useColorModeValue, Input, useToast, Box } from '@chakra-ui/react';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@modules/core/math/math';
+import { TypingGameType } from '@modules/core/typing-game/types/typing-game.types';
+import { Caret } from '@components/practice/caret';
 
 const PracticeVisualLetter = dynamic(() => import('@components/practice/game/visual/practice-visual-letter'));
 const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));
@@ -68,6 +70,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const [updateUserData] = useUpdateUserMutation();
   const [typingInput, setTypingInput] = useState('');
   const [currWordPos, setCurrWordPos] = useState([-1, -1]);
+  const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const letterElements = useRef<HTMLDivElement>(null);
   const toast = useToast();
@@ -76,10 +79,25 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
 
   const {
     states: { charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
-    actions: { insertTyping },
+    actions: { insertTyping, deleteTyping, resetTyping },
   } = useTypingGame(text, {
     skipCurrentWordOnSpace: false,
   });
+
+  // Caret cursor positioning
+  const pos = useMemo(() => {
+    if (currIndex !== -1 && letterElements.current) {
+      let spanRef: any = letterElements.current.children[currIndex];
+      let left = spanRef.offsetLeft + spanRef.offsetWidth - 2;
+      let top = spanRef.offsetTop + 4;
+      return { left, top };
+    } else {
+      return {
+        left: -2,
+        top: 2,
+      };
+    }
+  }, [currIndex]);
 
   // Checks whether the word is correct while the user is typing
   useEffect(() => {
@@ -221,6 +239,16 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
 
+  const handleKeyDown = (letter: string, control: boolean) => {
+    if (letter === 'Escape') {
+      resetTyping();
+    } else if (letter === 'Backspace') {
+      deleteTyping(control);
+    } else if (letter.length === 1) {
+      insertTyping(letter);
+    }
+  };
+
   return (
     <Flex flexDir="column">
       {/* Top container */}
@@ -235,11 +263,12 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         marginBottom={4}
         fontSize="lg"
         backgroundColor={bgColor}
-        onClick={() => {
-          if (inputRef.current) {
-            inputRef.current.focus();
-          }
-        }}
+        tabIndex={0}
+        userSelect="none"
+        outline="none"
+        onKeyDown={(e) => handleKeyDown(e.key, e.ctrlKey)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
       >
         <SkeletonText isLoaded={!loading} noOfLines={4}>
           {/* Words container */}
@@ -252,7 +281,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
                   key={letter + index}
                   correct={state === 1}
                   incorrect={state === 2}
-                  highlight={shouldHighlight}
+                  highlight={false}
                 >
                   {letter}
                 </PracticeVisualLetter>
@@ -261,37 +290,40 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
           </Box>
         </SkeletonText>
 
-        <Box width="100%" mt={2}>
-          <Input
-            type="text"
-            ref={inputRef}
-            variant="flushed"
-            fontWeight={500}
-            fontSize="lg"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                submitWord();
-              }
-            }}
-            onChange={(e) => {
-              setTypingInput(e.target.value);
-            }}
-            focusBorderColor={!typingInput.length ? '#94A3B8' : typedWrong ? 'red' : 'green'}
-            borderColor={!typingInput.length ? '#94A3B8' : typedWrong ? 'red' : 'green'}
-            borderBottomWidth={2}
-            value={typingInput}
-            disabled={phase === 2}
-            autoCorrect="off"
-            autoCapitalize="off"
-            spellCheck={false}
-            placeholder={phase !== 1 ? 'Type here... (Press enter or space to submit word)' : ''}
-          />
-        </Box>
+        {/* Show input filed if typing game is of type input
+        {writeInputType === TypingGameType.INPUT && (
+          <Box width="100%" mt={2}>
+            <Input
+              type="text"
+              ref={inputRef}
+              variant="flushed"
+              fontWeight={500}
+              fontSize="lg"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  submitWord();
+                }
+              }}
+              onChange={(e) => {
+                setTypingInput(e.target.value);
+              }}
+              focusBorderColor={!typingInput.length ? '#94A3B8' : typedWrong ? 'red' : 'green'}
+              borderColor={!typingInput.length ? '#94A3B8' : typedWrong ? 'red' : 'green'}
+              borderBottomWidth={2}
+              value={typingInput}
+              disabled={phase === 2}
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck={false}
+              placeholder={phase !== 1 ? 'Type here... (Press enter or space to submit word)' : ''}
+            />
+          </Box>
+        )} */}
       </Flex>
 
       {/* Caret */}
-      {/* {phase !== 2 ? <Caret style={{ left: pos.left, top: pos.top }}>&nbsp;</Caret> : null} */}
+      {phase !== 2 && <Caret style={{ left: pos.left, top: pos.top }}>&nbsp;</Caret>}
 
       {/* Stats container */}
       {phase === 2 && startTime && endTime && (

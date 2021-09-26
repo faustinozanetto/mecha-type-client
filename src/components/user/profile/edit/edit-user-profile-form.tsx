@@ -33,8 +33,8 @@ export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, 
   const toast = useToast();
   const [currentCountry, setCurrentCountry] = useState('');
   const initialFormValues: EditProfileFormValues = {
-    country: user.country ?? '',
-    description: user.description ?? '',
+    country: user?.country ?? '',
+    description: user?.description ?? '',
   };
 
   return (
@@ -113,7 +113,7 @@ export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, 
             {/* Submit Form */}
             <HStack>
               {/* Submit button */}
-              <FormSubmitButton width="50%">Submit</FormSubmitButton>
+              <FormSubmitButton width="50%">Save Changes</FormSubmitButton>
               <FormCancelButton width="50%" onClick={() => onUpdatedCallback()}>
                 Cancel
               </FormCancelButton>

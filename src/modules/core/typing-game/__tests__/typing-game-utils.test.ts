@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter, getLastChar, roundedToFixed } from '../helperFunctions';
+import { getLastChar, capitalizeFirstLetter, roundedToFixed } from '../typing-game-utils';
 
 test('It should return the last char of a given word', () => {
   const lastChar = getLastChar('Typescript');
