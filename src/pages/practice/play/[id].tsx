@@ -8,8 +8,9 @@ import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
-import { generateWords } from '@modules/core/typing-game/typing-game-utils';
-import { TypingGameType } from '@modules/core/typing-game/types/typing-game.types';
+import { generateWords } from '@modules/core/practice/typing-game-utils';
+import { TypingGameType } from '@modules/core/practice/types/typing-game.types';
+import useUserPractice from '@modules/core/practice/use-user-practice';
 
 interface PracticePlayPageProps {
   locale: string;
@@ -17,9 +18,8 @@ interface PracticePlayPageProps {
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
   const [text, setText] = useState('');
-
+  const { typeSounds } = useUserPractice();
   const { data: userData, loading: userLoading } = useMeQuery({});
-
   const { data: testPreset, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
       id: useGetIDFromUrl(),

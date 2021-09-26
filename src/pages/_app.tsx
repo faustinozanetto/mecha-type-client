@@ -5,6 +5,8 @@ import GlobalStyles from '@styles/global-styles';
 import { useRouter } from 'next/router';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '@modules/core/apollo/apollo-client';
+import userPracticeContext from '@modules/core/practice/user-practice-context';
+import { getPracticeConfig } from '@modules/core/practice/practice-config-manager';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -13,12 +15,12 @@ const MechaApp = (props: AppProps) => {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ChakraProvider>
-        {/* Global AdSense */}
-
-        <GlobalStyles />
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <userPracticeContext.Provider value={{ ...getPracticeConfig() }}>
+        <ChakraProvider>
+          <GlobalStyles />
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </userPracticeContext.Provider>
     </ApolloProvider>
   );
 };

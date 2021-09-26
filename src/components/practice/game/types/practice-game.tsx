@@ -6,8 +6,12 @@ import { TestPresetFragment, User, UserFragment, useUpdateUserMutation } from '@
 import { Flex, SkeletonText, useColorModeValue, Input, useToast, Box } from '@chakra-ui/react';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@modules/core/math/math';
-import { TypingGameType } from '@modules/core/typing-game/types/typing-game.types';
+import { TypingGameType } from '@modules/core/practice/types/typing-game.types';
 import { Caret } from '@components/practice/caret';
+import { useSound } from '@modules/core/sound/use-sound-hook';
+import { SoundType } from '@modules/core/sound/types/sound.types';
+import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
+import useUserPractice from '@modules/core/practice/use-user-practice';
 
 const PracticeVisualLetter = dynamic(() => import('@components/practice/game/visual/practice-visual-letter'));
 const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));
@@ -74,8 +78,12 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const inputRef = useRef<HTMLInputElement>(null);
   const letterElements = useRef<HTMLDivElement>(null);
   const toast = useToast();
+  const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
+  const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
 
   const bgColor = useColorModeValue('gray.300', 'gray.900');
+
+  const { typeSounds } = useUserPractice();
 
   const {
     states: { charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
@@ -97,6 +105,11 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         top: 2,
       };
     }
+  }, [currIndex]);
+
+  // Use a random type sound on every key press
+  useEffect(() => {
+    setTypeSound(selectRandomTypeSound());
   }, [currIndex]);
 
   // Checks whether the word is correct while the user is typing
@@ -240,12 +253,17 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   }, [time]);
 
   const handleKeyDown = (letter: string, control: boolean) => {
-    if (letter === 'Escape') {
-      resetTyping();
-    } else if (letter === 'Backspace') {
-      deleteTyping(control);
-    } else if (letter.length === 1) {
-      insertTyping(letter);
+    if (phase !== 2) {
+      if (typeSounds) {
+        play();
+      }
+      if (letter === 'Escape') {
+        resetTyping();
+      } else if (letter === 'Backspace') {
+        deleteTyping(control);
+      } else if (letter.length === 1) {
+        insertTyping(letter);
+      }
     }
   };
 

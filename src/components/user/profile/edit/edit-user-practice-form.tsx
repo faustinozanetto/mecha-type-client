@@ -7,6 +7,7 @@ import { CountryEntry } from '@pages/user/[id]';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormCancelButton } from '@components/forms/form-cancel-button';
 import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
+import { getPracticeConfig, setPracticeConfig } from '@modules/core/practice/practice-config-manager';
 
 interface EditUserPracticeFormProps {
   /** Method to call when data was updated */
@@ -18,24 +19,27 @@ export const EditPracticeFormSchema = Yup.object().shape({
   blindMode: Yup.boolean().required('Blind Mode is required!'),
   pauseOnError: Yup.boolean().required('Pause on Error is required!'),
   noBackspace: Yup.boolean().required('No Backspace is required!'),
+  typeSounds: Yup.boolean().required('Type Sounds is required!'),
 });
 
 export interface EditUserPracticeFormValues {
   punctuateWords: boolean;
+  blindMode: boolean;
+  pauseOnError: boolean;
+  noBackspace: boolean;
+  typeSounds: boolean;
 }
 
 export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onUpdatedCallback }) => {
   const toast = useToast();
-  const initialFormValues: EditUserPracticeFormValues = {
-    punctuateWords: false,
-  };
+  const initialFormValues: EditUserPracticeFormValues = getPracticeConfig();
 
   return (
     <Formik
       initialValues={initialFormValues}
       validationSchema={EditPracticeFormSchema}
       onSubmit={async (values) => {
-        console.log(values);
+        setPracticeConfig(values);
       }}
     >
       {(props: FormikProps<EditUserPracticeFormValues>) => {
@@ -85,6 +89,16 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onUp
                 </Text>
                 <FormCheckboxInput name="noBackspace" sx={{ margin: '0.25rem !important' }}>
                   No Backspace
+                </FormCheckboxInput>
+              </VStack>
+
+              {/* Type Sounds Input */}
+              <VStack>
+                <Text as="p" fontSize="md" fontWeight={400}>
+                  If enabled, a keypress sound will be played on key press.
+                </Text>
+                <FormCheckboxInput name="typeSounds" sx={{ margin: '0.25rem !important' }}>
+                  Type Sound
                 </FormCheckboxInput>
               </VStack>
             </VStack>
