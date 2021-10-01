@@ -80,7 +80,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
   const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
 
-  const bgColor = useColorModeValue('gray.300', '#111827');
+  const bgColor = useColorModeValue('gray.300', 'gray.900');
   const practiceConfig = useMechaStore((state) => state.practiceConfig);
 
   const {
@@ -167,37 +167,39 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
    * Updates the user data with the new test results
    */
   const updateUser = () => {
-    if (!user.id || phase !== 2 || !endTime || !startTime) {
-      toast({
-        title: 'Something went wrong!',
-        status: 'error',
-        position: 'bottom-right',
-      });
-    } else {
-      updateUserData({
-        variables: {
-          where: {
-            id: user.id,
+    if (user) {
+      if (!user.id || phase !== 2 || !endTime || !startTime) {
+        toast({
+          title: 'Something went wrong!',
+          status: 'error',
+          position: 'bottom-right',
+        });
+      } else {
+        updateUserData({
+          variables: {
+            where: {
+              id: user.id,
+            },
+            data: {
+              keystrokes: { increment: keystrokes },
+              wordsWritten: { set: 0 },
+              testsCompleted: { increment: 1 },
+              wordsPerMinute: {
+                createdAt: new Date(),
+                amount: roundTo2((correctChar * (60 / time)) / 5) ?? 0,
+              },
+              charsPerMinute: {
+                createdAt: new Date(),
+                amount: Math.round((60 / time) * correctChar) ?? 0,
+              },
+              accuracy: {
+                createdAt: new Date(),
+                amount: roundTo2((correctChar / (correctChar + errorChar)) * 100 ?? 0),
+              },
+            },
           },
-          data: {
-            keystrokes: { increment: keystrokes },
-            wordsWritten: { set: 0 },
-            testsCompleted: { increment: 1 },
-            wordsPerMinute: {
-              createdAt: new Date(),
-              amount: roundTo2((correctChar * (60 / time)) / 5) ?? 0,
-            },
-            charsPerMinute: {
-              createdAt: new Date(),
-              amount: Math.round((60 / time) * correctChar) ?? 0,
-            },
-            accuracy: {
-              createdAt: new Date(),
-              amount: roundTo2((correctChar / (correctChar + errorChar)) * 100 ?? 0),
-            },
-          },
-        },
-      });
+        });
+      }
     }
   };
 

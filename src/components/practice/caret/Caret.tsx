@@ -45,8 +45,8 @@ export const Caret: React.FC<CaretProps> = (props) => {
       as="span"
       position="absolute"
       display="inline"
-      borderColor="#ffffff9b"
-      borderLeftWidth="13px"
+      borderColor="#ffb300"
+      borderLeftWidth="3px"
       height="1.5rem"
       {...rest}
       animation={`${flash} 1s infinite`}
