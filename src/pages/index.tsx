@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
+import withApollo from '@modules/core/apollo/apollo';
 import { Heading } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { useMeQuery } from '@generated/graphql';
@@ -58,4 +59,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
-export default Home;
+export default withApollo({})(Home);

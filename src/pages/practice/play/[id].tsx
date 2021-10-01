@@ -9,6 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
 import { generateWords } from '@modules/core/practice/typing-game-utils';
+import withApollo from '@modules/core/apollo/apollo';
 import useMechaStore from 'state/store';
 
 interface PracticePlayPageProps {
@@ -70,4 +71,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
-export default PracticePlayPage;
+export default withApollo({})(PracticePlayPage);

@@ -9,6 +9,8 @@ import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@lib/user/userHelper';
+import withApollo from '@modules/core/apollo/apollo';
+
 import axios from 'axios';
 const UserProfile = dynamic(() => import('@components/user/profile/page/user/user-profile'));
 
@@ -108,4 +110,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default UserPage;
+export default withApollo({})(UserPage);

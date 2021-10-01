@@ -5,6 +5,8 @@ import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/layout-core';
+import withApollo from '@modules/core/apollo/apollo';
+
 import Footer from '@components/footer/footer';
 import Sidebar from '@components/sidebar/sidebar';
 
@@ -34,4 +36,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
-export default PracticePage;
+export default withApollo({})(PracticePage);
