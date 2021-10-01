@@ -74,7 +74,8 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "uuid": "^8.3.2",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "zustand": "^3.5.10"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",

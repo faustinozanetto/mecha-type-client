@@ -9,8 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { NextSeo } from 'next-seo';
 import { generateWords } from '@modules/core/practice/typing-game-utils';
-import { TypingGameType } from '@modules/core/practice/types/typing-game.types';
-import useUserPractice from '@modules/core/practice/use-user-practice';
+import useMechaStore from 'state/store';
 
 interface PracticePlayPageProps {
   locale: string;
@@ -24,13 +23,13 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
       id: useGetIDFromUrl(),
     },
   });
-  const { punctuateWords } = useUserPractice();
+  const practiceConfig = useMechaStore((state) => state.practiceConfig);
 
   useEffect(() => {
     if (testPreset?.testPreset?.testPreset && !userLoading) {
-      setText(generateWords(testPreset?.testPreset?.testPreset, punctuateWords));
+      setText(generateWords(testPreset?.testPreset?.testPreset, practiceConfig.punctuateWords));
     }
-  }, [userLoading, testPresetLoading, testPreset?.testPreset, punctuateWords]);
+  }, [userLoading, testPresetLoading, testPreset?.testPreset]);
 
   return (
     <PageWrapper user={userData?.me?.user as User}>

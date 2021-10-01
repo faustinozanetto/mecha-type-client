@@ -2,16 +2,15 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
-import { TestPresetFragment, User, UserFragment, useUpdateUserMutation } from '@generated/graphql';
-import { Flex, SkeletonText, useColorModeValue, Input, useToast, Box } from '@chakra-ui/react';
+import { TestPresetFragment, UserFragment, useUpdateUserMutation } from '@generated/graphql';
+import { Flex, SkeletonText, useColorModeValue, useToast, Box } from '@chakra-ui/react';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@modules/core/math/math';
-import { TypingGameType } from '@modules/core/practice/types/typing-game.types';
 import { Caret } from '@components/practice/caret';
 import { useSound } from '@modules/core/sound/use-sound-hook';
 import { SoundType } from '@modules/core/sound/types/sound.types';
 import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
-import useUserPractice from '@modules/core/practice/use-user-practice';
+import useMechaStore from 'state/store';
 
 const PracticeVisualLetter = dynamic(() => import('@components/practice/game/visual/practice-visual-letter'));
 const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));
@@ -81,23 +80,22 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
   const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
 
-  const bgColor = useColorModeValue('gray.300', 'gray.900');
-
-  const { typeSounds, noBackspace, pauseOnError, blindMode } = useUserPractice();
+  const bgColor = useColorModeValue('gray.300', '#111827');
+  const practiceConfig = useMechaStore((state) => state.practiceConfig);
 
   const {
     states: { charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping },
   } = useTypingGame(text, {
     skipCurrentWordOnSpace: false,
-    pauseOnError: pauseOnError,
+    pauseOnError: practiceConfig.pauseOnError,
   });
 
   // Caret cursor positioning
   const pos = useMemo(() => {
     if (currIndex !== -1 && letterElements.current) {
       let spanRef: any = letterElements.current.children[currIndex];
-      let left = spanRef.offsetLeft + spanRef.offsetWidth - 2;
+      let left = spanRef.offsetLeft + spanRef.offsetWidth - 1;
       let top = spanRef.offsetTop + 4;
       return { left, top };
     } else {
@@ -257,14 +255,14 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     if (phase !== 2) {
       if (letter === 'Escape') {
         resetTyping();
-      } else if (letter === 'Backspace' && !noBackspace) {
+      } else if (letter === 'Backspace' && !practiceConfig.noBackspace) {
         deleteTyping(control);
-        if (typeSounds) {
+        if (practiceConfig.typeSounds) {
           play();
         }
       } else if (letter.length === 1) {
         insertTyping(letter);
-        if (typeSounds) {
+        if (practiceConfig.typeSounds) {
           play();
         }
       }
@@ -294,14 +292,14 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
       >
         <SkeletonText isLoaded={!loading} noOfLines={4}>
           {/* Words container */}
-          <Box display="block" mb={2} ref={letterElements}>
+          <Box display="block" mb={2} ref={letterElements} transition="all 0.25s ease 0s" blur="4px">
             {text.split('').map((letter, index) => {
               const state = charsState[index];
               const shouldHighlight = index >= currWordPos[0] && index <= currWordPos[1];
               return (
                 <PracticeVisualLetter
                   key={letter + index}
-                  shouldShowErrors={!blindMode}
+                  shouldShowErrors={!practiceConfig.blindMode}
                   correct={state === 1}
                   incorrect={state === 2}
                   highlight={false}

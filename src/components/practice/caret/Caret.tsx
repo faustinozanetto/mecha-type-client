@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@chakra-ui/react';
+import { Box, keyframes, Text } from '@chakra-ui/react';
 
 // const CaretElement = styled.span`
 //   position: absolute;
@@ -24,6 +24,17 @@ import { Text } from '@chakra-ui/react';
 //   }
 // `;
 
+const flash = keyframes`
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+`;
+
 interface CaretProps extends React.HTMLAttributes<HTMLSpanElement> {}
 
 export const Caret: React.FC<CaretProps> = (props) => {
@@ -34,10 +45,12 @@ export const Caret: React.FC<CaretProps> = (props) => {
       as="span"
       position="absolute"
       display="inline"
-      borderColor="#e9950e"
-      borderLeftWidth="3px"
-      sx={{}}
+      borderColor="#ffffff9b"
+      borderLeftWidth="13px"
+      height="1.5rem"
       {...rest}
+      animation={`${flash} 1s infinite`}
+      transition="0.12s"
       transitionProperty="all"
       transitionDuration="100ms"
     >

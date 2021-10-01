@@ -6,6 +6,7 @@ export type PracticeConfig = {
   pauseOnError: boolean;
   noBackspace: boolean;
   typeSounds: boolean;
+  typeSoundsVolume: number;
 };
 
 const useLocalStorageState = (defaultValue, key) => {
@@ -31,11 +32,20 @@ export const getPracticeConfig = (): PracticeConfig => {
     const config = window.localStorage.getItem('practice-config');
     if (config !== null) {
       return JSON.parse(config);
+    } else {
+      return {
+        blindMode: false,
+        typeSoundsVolume: 1.0,
+        typeSounds: true,
+        punctuateWords: true,
+        pauseOnError: false,
+        noBackspace: false,
+      };
     }
   }
 };
 
-export const setPracticeConfig = (updatedConfig: PracticeConfig) => {
+export const updatePracticeConfig = (updatedConfig: PracticeConfig) => {
   if (typeof window !== 'undefined') {
     window.localStorage.setItem('practice-config', JSON.stringify(updatedConfig));
   }

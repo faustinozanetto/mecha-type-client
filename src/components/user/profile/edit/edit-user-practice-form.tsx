@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
-import { User } from '@generated/graphql';
 import { HStack, Flex, VStack, useToast, Text } from '@chakra-ui/react';
-import { CountryEntry } from '@pages/user/[id]';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormCancelButton } from '@components/forms/form-cancel-button';
 import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
-import { getPracticeConfig, setPracticeConfig } from '@modules/core/practice/practice-config-manager';
+import { getPracticeConfig } from '@modules/core/practice/practice-config-manager';
+import FormSliderInput from '@components/ui/forms/form-slider-input';
+import { roundTo2 } from '@modules/core/math/math';
+import useMechaStore from 'state/store';
 
 interface EditUserPracticeFormProps {
   /** Method to call when data was updated */
@@ -20,6 +21,10 @@ export const EditPracticeFormSchema = Yup.object().shape({
   pauseOnError: Yup.boolean().required('Pause on Error is required!'),
   noBackspace: Yup.boolean().required('No Backspace is required!'),
   typeSounds: Yup.boolean().required('Type Sounds is required!'),
+  typeSoundsVolume: Yup.number()
+    .min(0.1, 'Volume must be greater than 0.1')
+    .max(5, 'Volume must be lower than 5')
+    .required('Volume is required'),
 });
 
 export interface EditUserPracticeFormValues {
@@ -28,18 +33,27 @@ export interface EditUserPracticeFormValues {
   pauseOnError: boolean;
   noBackspace: boolean;
   typeSounds: boolean;
+  typeSoundsVolume: number;
 }
 
 export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onUpdatedCallback }) => {
   const toast = useToast();
-  const initialFormValues: EditUserPracticeFormValues = getPracticeConfig();
+  const practiceConfig = useMechaStore((state) => state.practiceConfig);
+  const [typeSoundValue, setTypeSoundValue] = useState(practiceConfig.typeSoundsVolume);
+  const setPracticeConfig = useMechaStore((state) => state.setPracticeConfig);
+  const initialFormValues: EditUserPracticeFormValues = practiceConfig;
 
   return (
     <Formik
       initialValues={initialFormValues}
       validationSchema={EditPracticeFormSchema}
       onSubmit={async (values) => {
-        setPracticeConfig(values);
+        try {
+          setPracticeConfig(values);
+        } catch (error) {
+          console.log(error);
+        }
+        onUpdatedCallback();
       }}
     >
       {(props: FormikProps<EditUserPracticeFormValues>) => {
@@ -100,6 +114,31 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onUp
                 <FormCheckboxInput name="typeSounds" sx={{ margin: '0.25rem !important' }}>
                   Type Sound
                 </FormCheckboxInput>
+              </VStack>
+
+              {/* Type Sounds Volume Input */}
+              <VStack>
+                <Text as="p" fontSize="md" fontWeight={400}>
+                  Controls the volume of the type sounds in a scale 0.1 to 5
+                </Text>
+                <HStack width="100%">
+                  <FormSliderInput
+                    name="typeSoundsVolume"
+                    sliderProps={{
+                      min: 0.1,
+                      step: 0.0001,
+                      max: 5,
+                      value: initialFormValues.typeSoundsVolume,
+                      onChangeStart: (value) => setTypeSoundValue(value),
+                    }}
+                    sx={{ margin: '0.25rem !important' }}
+                  >
+                    Type Sound Volume
+                  </FormSliderInput>
+                  <Text as="p" fontSize="md" fontWeight={400}>
+                    {roundTo2(typeSoundValue)}
+                  </Text>
+                </HStack>
               </VStack>
             </VStack>
             {/* Submit Form */}

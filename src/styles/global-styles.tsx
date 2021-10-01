@@ -25,6 +25,9 @@ const GlobalStyles: React.FC<GlobalStylesProps> = (props) => {
         text-rendering: optimizeLegibility;
         font-feature-settings: "kern";
       }
+      body {
+        transition: all 0.25s ease 0s
+      }
   `}
     />
   );
