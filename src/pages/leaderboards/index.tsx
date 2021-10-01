@@ -7,6 +7,7 @@ import { Leaderboards } from '@components/leaderboards/leaderboards';
 import { NextSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import withApollo from '@modules/core/apollo/apollo';
 
 interface LeaderboardsPageProps {
   locale: string;
@@ -154,4 +155,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['sidebar'])) } };
 };
 
-export default LeaderboardsPage;
+export default withApollo({})(LeaderboardsPage);

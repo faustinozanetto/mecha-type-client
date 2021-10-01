@@ -11,6 +11,8 @@ import { NextSeo } from 'next-seo';
 import { generateWords } from '@modules/core/practice/typing-game-utils';
 import withApollo from '@modules/core/apollo/apollo';
 import useMechaStore from 'state/store';
+import { NotFoundError } from '@components/not-found';
+import { useRouter } from 'next/router';
 
 interface PracticePlayPageProps {
   locale: string;
@@ -18,6 +20,7 @@ interface PracticePlayPageProps {
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
   const [text, setText] = useState('');
+  const router = useRouter();
   const { data: userData, loading: userLoading } = useMeQuery({});
   const { data: testPreset, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
@@ -30,7 +33,11 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
     if (testPreset?.testPreset?.testPreset && !userLoading) {
       setText(generateWords(testPreset?.testPreset?.testPreset, practiceConfig.punctuateWords));
     }
-  }, [userLoading, testPresetLoading, testPreset?.testPreset]);
+  }, [testPresetLoading, testPreset?.testPreset]);
+
+  if (!userLoading && !userData?.me.user) {
+    router.push('/auth/signin');
+  }
 
   return (
     <PageWrapper user={userData?.me?.user as User}>
@@ -53,7 +60,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
         minHeight="calc(100vh - 10rem)"
         centerContent
       >
-        {!testPresetLoading && text && testPreset?.testPreset?.testPreset && (
+        {text && !testPresetLoading && (
           <PracticeGameInput
             loading={testPresetLoading || userLoading}
             testPreset={testPreset.testPreset.testPreset}
