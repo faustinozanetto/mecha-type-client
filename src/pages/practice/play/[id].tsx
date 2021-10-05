@@ -30,10 +30,10 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
   const practiceConfig = useMechaStore((state) => state.practiceConfig);
 
   useEffect(() => {
-    if (testPreset?.testPreset?.testPreset && !userLoading) {
-      setText(generateWords(testPreset?.testPreset?.testPreset, practiceConfig.punctuateWords));
+    if (testPreset?.testPreset?.testPreset) {
+      setText(generateWords(testPreset?.testPreset?.testPreset, practiceConfig.punctuateWords).trimEnd());
     }
-  }, [testPresetLoading, testPreset?.testPreset]);
+  }, [testPreset?.testPreset.testPreset]);
 
   if (!userLoading && !userData?.me.user) {
     router.push('/auth/signin');

@@ -94,7 +94,7 @@ export const punctuateWord = (previousWord: string, currentWord: string, index: 
  * @param shouldPunctuate Wether words should be punctuated or not
  * @returns the string containing all the generated text
  */
-export const generateWords = (presetData: TestPresetFragment, shouldPunctuate: boolean): string => {
+export const generateWords = (presetData: TestPresetFragment, shouldPunctuate?: boolean): string => {
   let text = '';
   const wordsList: string[] = [];
 

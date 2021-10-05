@@ -346,7 +346,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
       </Flex>
 
       {/* Caret */}
-      {phase !== 2 && <Caret style={{ left: pos.left, top: pos.top }}>&nbsp;</Caret>}
+      {phase !== 2 && currIndex >= 0 && <Caret style={{ left: pos.left, top: pos.top }}>&nbsp;</Caret>}
 
       {/* Stats container */}
       {phase === 2 && startTime && endTime && (

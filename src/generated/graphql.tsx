@@ -4,7 +4,7 @@ export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions = {};
+const defaultOptions =  {}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -28,7 +28,7 @@ export enum AuthProvider {
   Default = 'DEFAULT',
   Discord = 'DISCORD',
   Github = 'GITHUB',
-  Google = 'GOOGLE',
+  Google = 'GOOGLE'
 }
 
 export type CharsPerMinute = {
@@ -114,23 +114,28 @@ export type Mutation = {
   updateUser: UserResponse;
 };
 
+
 export type MutationCreateTestPresetArgs = {
   data: CreateTestPresetInput;
 };
 
+
 export type MutationCreateTestPresetUserArgs = {
   data: CreateTestPresetInput;
 };
+
 
 export type MutationFollowUserArgs = {
   targetUserId: Scalars['String'];
   userId: Scalars['String'];
 };
 
+
 export type MutationUnfollowUserArgs = {
   targetUserId: Scalars['String'];
   userId: Scalars['String'];
 };
+
 
 export type MutationUpdateUserArgs = {
   data: UserUpdateInput;
@@ -150,35 +155,43 @@ export type Query = {
   users: UsersResponse;
 };
 
+
 export type QueryFilterUsersArgs = {
   filterBy: UserFilterBy;
   page: Scalars['Int'];
 };
+
 
 export type QueryFollowsUserArgs = {
   targetUserId: Scalars['String'];
   userId: Scalars['String'];
 };
 
+
 export type QueryTestPresetArgs = {
   id: Scalars['String'];
 };
+
 
 export type QueryTestPresetsArgs = {
   input?: Maybe<TestPresetsFindInput>;
 };
 
+
 export type QueryUserArgs = {
   where: UserWhereInput;
 };
+
 
 export type QueryUserFollowersArgs = {
   userId: Scalars['String'];
 };
 
+
 export type QueryUserTestPresetsArgs = {
   userId: Scalars['String'];
 };
+
 
 export type QueryUsersArgs = {
   take: Scalars['Int'];
@@ -187,7 +200,7 @@ export type QueryUsersArgs = {
 /** Test Language */
 export enum TestLanguage {
   English = 'ENGLISH',
-  Spanish = 'SPANISH',
+  Spanish = 'SPANISH'
 }
 
 export type TestPreset = {
@@ -237,7 +250,7 @@ export type TestPresetsResponse = {
 /** Test Type */
 export enum TestType {
   Time = 'TIME',
-  Words = 'WORDS',
+  Words = 'WORDS'
 }
 
 export type TypingAccuracy = {
@@ -286,7 +299,7 @@ export type User = {
 export enum UserBadge {
   Default = 'DEFAULT',
   Pro = 'PRO',
-  Tester = 'TESTER',
+  Tester = 'TESTER'
 }
 
 /** Fields to filter Users By */
@@ -295,7 +308,7 @@ export enum UserFilterBy {
   Cpm = 'CPM',
   Keystrokes = 'KEYSTROKES',
   Testscompleted = 'TESTSCOMPLETED',
-  Wpm = 'WPM',
+  Wpm = 'WPM'
 }
 
 export type UserFollower = {
@@ -380,800 +393,305 @@ export type WordsPerMinuteCreateInput = {
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
-export type FilteredUserFragment = {
-  __typename?: 'FilteredUser';
-  id: string;
-  username: string;
-  avatar: string;
-  country: string;
-  authProvider?: Maybe<AuthProvider>;
-  oauthId?: Maybe<string>;
-  value: number;
-};
+export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number };
 
-export type TestPresetFragment = {
-  __typename?: 'TestPreset';
-  id: string;
-  userId?: Maybe<string>;
-  type?: Maybe<TestType>;
-  time?: Maybe<number>;
-  language?: Maybe<TestLanguage>;
-  words?: Maybe<number>;
-  creatorImage?: Maybe<string>;
-  createdAt: any;
-  updatedAt: any;
-};
+export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any };
 
-export type UserFragment = {
-  __typename?: 'User';
-  id: string;
-  oauthId?: Maybe<string>;
-  username?: Maybe<string>;
-  description?: Maybe<string>;
-  avatar?: Maybe<string>;
-  country?: Maybe<string>;
-  keystrokes?: Maybe<number>;
-  badge?: Maybe<UserBadge>;
-  authProvider?: Maybe<AuthProvider>;
-  testsCompleted?: Maybe<number>;
-  wordsWritten?: Maybe<number>;
-  accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy'; id: string; amount: number; createdAt: any }>>;
-  charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute'; id: string; amount: number; createdAt: any }>>;
-  wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute'; id: string; amount: number; createdAt: any }>>;
-  testPresets?: Maybe<
-    Array<{
-      __typename?: 'TestPreset';
-      id: string;
-      userId?: Maybe<string>;
-      type?: Maybe<TestType>;
-      time?: Maybe<number>;
-      language?: Maybe<TestLanguage>;
-      words?: Maybe<number>;
-      creatorImage?: Maybe<string>;
-      createdAt: any;
-      updatedAt: any;
-    }>
-  >;
-};
+export type UserFragment = { __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> };
 
-export type UserFollowerFragment = {
-  __typename?: 'UserFollower';
-  id: string;
-  username: string;
-  authProvider?: Maybe<AuthProvider>;
-  oauthId?: Maybe<string>;
-  avatar: string;
-};
+export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string };
 
-export type ErrorResponseFragment = { __typename?: 'ErrorResponse'; field: string; message: string };
+export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: string, message: string };
 
-export type FilteredUsersResponseFragment = {
-  __typename?: 'FilteredUsersResponse';
-  nodeCount?: Maybe<number>;
-  pageCount?: Maybe<number>;
-  currentPage?: Maybe<number>;
-  nodesPerPage?: Maybe<number>;
-  hasMore?: Maybe<boolean>;
-  nodes?: Maybe<
-    Array<{
-      __typename?: 'FilteredUser';
-      id: string;
-      username: string;
-      avatar: string;
-      country: string;
-      authProvider?: Maybe<AuthProvider>;
-      oauthId?: Maybe<string>;
-      value: number;
-    }>
-  >;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type FollowUserResponseFragment = {
-  __typename?: 'FollowUserResponse';
-  follow?: Maybe<boolean>;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type FollowUserResponseFragment = { __typename?: 'FollowUserResponse', follow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type TestPresetResponseFragment = {
-  __typename?: 'TestPresetResponse';
-  testPreset?: Maybe<{
-    __typename?: 'TestPreset';
-    id: string;
-    userId?: Maybe<string>;
-    type?: Maybe<TestType>;
-    time?: Maybe<number>;
-    language?: Maybe<TestLanguage>;
-    words?: Maybe<number>;
-    creatorImage?: Maybe<string>;
-    createdAt: any;
-    updatedAt: any;
-  }>;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type TestPresetsResponseFragment = {
-  __typename?: 'TestPresetsResponse';
-  testPresets?: Maybe<
-    Array<{
-      __typename?: 'TestPreset';
-      id: string;
-      userId?: Maybe<string>;
-      type?: Maybe<TestType>;
-      time?: Maybe<number>;
-      language?: Maybe<TestLanguage>;
-      words?: Maybe<number>;
-      creatorImage?: Maybe<string>;
-      createdAt: any;
-      updatedAt: any;
-    }>
-  >;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type UnfollowUserResponseFragment = {
-  __typename?: 'UnfollowUserResponse';
-  unfollow?: Maybe<boolean>;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type UserFollowersResponseFragment = {
-  __typename?: 'UserFollowersResponse';
-  users?: Maybe<
-    Array<{
-      __typename?: 'UserFollower';
-      id: string;
-      username: string;
-      authProvider?: Maybe<AuthProvider>;
-      oauthId?: Maybe<string>;
-      avatar: string;
-    }>
-  >;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type UserResponseFragment = {
-  __typename?: 'UserResponse';
-  user?: Maybe<{
-    __typename?: 'User';
-    id: string;
-    oauthId?: Maybe<string>;
-    username?: Maybe<string>;
-    description?: Maybe<string>;
-    avatar?: Maybe<string>;
-    country?: Maybe<string>;
-    keystrokes?: Maybe<number>;
-    badge?: Maybe<UserBadge>;
-    authProvider?: Maybe<AuthProvider>;
-    testsCompleted?: Maybe<number>;
-    wordsWritten?: Maybe<number>;
-    accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy'; id: string; amount: number; createdAt: any }>>;
-    charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute'; id: string; amount: number; createdAt: any }>>;
-    wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute'; id: string; amount: number; createdAt: any }>>;
-    testPresets?: Maybe<
-      Array<{
-        __typename?: 'TestPreset';
-        id: string;
-        userId?: Maybe<string>;
-        type?: Maybe<TestType>;
-        time?: Maybe<number>;
-        language?: Maybe<TestLanguage>;
-        words?: Maybe<number>;
-        creatorImage?: Maybe<string>;
-        createdAt: any;
-        updatedAt: any;
-      }>
-    >;
-  }>;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type UserResponseFragment = { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
-export type UsersResponseFragment = {
-  __typename?: 'UsersResponse';
-  users?: Maybe<
-    Array<{
-      __typename?: 'User';
-      id: string;
-      oauthId?: Maybe<string>;
-      username?: Maybe<string>;
-      description?: Maybe<string>;
-      avatar?: Maybe<string>;
-      country?: Maybe<string>;
-      keystrokes?: Maybe<number>;
-      badge?: Maybe<UserBadge>;
-      authProvider?: Maybe<AuthProvider>;
-      testsCompleted?: Maybe<number>;
-      wordsWritten?: Maybe<number>;
-      accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy'; id: string; amount: number; createdAt: any }>>;
-      charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      testPresets?: Maybe<
-        Array<{
-          __typename?: 'TestPreset';
-          id: string;
-          userId?: Maybe<string>;
-          type?: Maybe<TestType>;
-          time?: Maybe<number>;
-          language?: Maybe<TestLanguage>;
-          words?: Maybe<number>;
-          creatorImage?: Maybe<string>;
-          createdAt: any;
-          updatedAt: any;
-        }>
-      >;
-    }>
-  >;
-  errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-};
+export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
 
 export type CreateTestPresetMutationVariables = Exact<{
   data: CreateTestPresetInput;
 }>;
 
-export type CreateTestPresetMutation = {
-  __typename?: 'Mutation';
-  createTestPreset: {
-    __typename?: 'TestPresetResponse';
-    testPreset?: Maybe<{
-      __typename?: 'TestPreset';
-      id: string;
-      userId?: Maybe<string>;
-      type?: Maybe<TestType>;
-      time?: Maybe<number>;
-      language?: Maybe<TestLanguage>;
-      words?: Maybe<number>;
-      creatorImage?: Maybe<string>;
-      createdAt: any;
-      updatedAt: any;
-    }>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type CreateTestPresetMutation = { __typename?: 'Mutation', createTestPreset: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type CreateTestPresetUserMutationVariables = Exact<{
   data: CreateTestPresetInput;
 }>;
 
-export type CreateTestPresetUserMutation = {
-  __typename?: 'Mutation';
-  createTestPresetUser: {
-    __typename?: 'TestPresetResponse';
-    testPreset?: Maybe<{
-      __typename?: 'TestPreset';
-      id: string;
-      userId?: Maybe<string>;
-      type?: Maybe<TestType>;
-      time?: Maybe<number>;
-      language?: Maybe<TestLanguage>;
-      words?: Maybe<number>;
-      creatorImage?: Maybe<string>;
-      createdAt: any;
-      updatedAt: any;
-    }>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type FollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
   targetUserId: Scalars['String'];
 }>;
 
-export type FollowUserMutation = {
-  __typename?: 'Mutation';
-  followUser: {
-    __typename?: 'FollowUserResponse';
-    follow?: Maybe<boolean>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never }>;
+export type FollowUserMutation = { __typename?: 'Mutation', followUser: { __typename?: 'FollowUserResponse', follow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
-export type LogoutMutation = { __typename?: 'Mutation'; logout: boolean };
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type UnfollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
   targetUserId: Scalars['String'];
 }>;
 
-export type UnfollowUserMutation = {
-  __typename?: 'Mutation';
-  unfollowUser: {
-    __typename?: 'UnfollowUserResponse';
-    unfollow?: Maybe<boolean>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type UnfollowUserMutation = { __typename?: 'Mutation', unfollowUser: { __typename?: 'UnfollowUserResponse', unfollow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UpdateUserMutationVariables = Exact<{
   where: UserWhereInput;
   data: UserUpdateInput;
 }>;
 
-export type UpdateUserMutation = {
-  __typename?: 'Mutation';
-  updateUser: {
-    __typename?: 'UserResponse';
-    user?: Maybe<{
-      __typename?: 'User';
-      id: string;
-      oauthId?: Maybe<string>;
-      username?: Maybe<string>;
-      description?: Maybe<string>;
-      avatar?: Maybe<string>;
-      country?: Maybe<string>;
-      keystrokes?: Maybe<number>;
-      badge?: Maybe<UserBadge>;
-      authProvider?: Maybe<AuthProvider>;
-      testsCompleted?: Maybe<number>;
-      wordsWritten?: Maybe<number>;
-      accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy'; id: string; amount: number; createdAt: any }>>;
-      charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      testPresets?: Maybe<
-        Array<{
-          __typename?: 'TestPreset';
-          id: string;
-          userId?: Maybe<string>;
-          type?: Maybe<TestType>;
-          time?: Maybe<number>;
-          language?: Maybe<TestLanguage>;
-          words?: Maybe<number>;
-          creatorImage?: Maybe<string>;
-          createdAt: any;
-          updatedAt: any;
-        }>
-      >;
-    }>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type TestPresetQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
-export type TestPresetQuery = {
-  __typename?: 'Query';
-  testPreset: {
-    __typename?: 'TestPresetResponse';
-    testPreset?: Maybe<{
-      __typename?: 'TestPreset';
-      id: string;
-      userId?: Maybe<string>;
-      type?: Maybe<TestType>;
-      time?: Maybe<number>;
-      language?: Maybe<TestLanguage>;
-      words?: Maybe<number>;
-      creatorImage?: Maybe<string>;
-      createdAt: any;
-      updatedAt: any;
-    }>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type TestPresetsQueryVariables = Exact<{
   input: TestPresetsFindInput;
 }>;
 
-export type TestPresetsQuery = {
-  __typename?: 'Query';
-  testPresets: {
-    __typename?: 'TestPresetsResponse';
-    testPresets?: Maybe<
-      Array<{
-        __typename?: 'TestPreset';
-        id: string;
-        userId?: Maybe<string>;
-        type?: Maybe<TestType>;
-        time?: Maybe<number>;
-        language?: Maybe<TestLanguage>;
-        words?: Maybe<number>;
-        creatorImage?: Maybe<string>;
-        createdAt: any;
-        updatedAt: any;
-      }>
-    >;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UserTestPresetsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
-export type UserTestPresetsQuery = {
-  __typename?: 'Query';
-  userTestPresets: {
-    __typename?: 'TestPresetsResponse';
-    testPresets?: Maybe<
-      Array<{
-        __typename?: 'TestPreset';
-        id: string;
-        userId?: Maybe<string>;
-        type?: Maybe<TestType>;
-        time?: Maybe<number>;
-        language?: Maybe<TestLanguage>;
-        words?: Maybe<number>;
-        creatorImage?: Maybe<string>;
-        createdAt: any;
-        updatedAt: any;
-      }>
-    >;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type FilterUsersQueryVariables = Exact<{
   page: Scalars['Int'];
   filterBy: UserFilterBy;
 }>;
 
-export type FilterUsersQuery = {
-  __typename?: 'Query';
-  filterUsers: {
-    __typename?: 'FilteredUsersResponse';
-    nodeCount?: Maybe<number>;
-    pageCount?: Maybe<number>;
-    currentPage?: Maybe<number>;
-    nodesPerPage?: Maybe<number>;
-    hasMore?: Maybe<boolean>;
-    nodes?: Maybe<
-      Array<{
-        __typename?: 'FilteredUser';
-        id: string;
-        username: string;
-        avatar: string;
-        country: string;
-        authProvider?: Maybe<AuthProvider>;
-        oauthId?: Maybe<string>;
-        value: number;
-      }>
-    >;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type FollowsUserQueryVariables = Exact<{
   userId: Scalars['String'];
   targetUserId: Scalars['String'];
 }>;
 
-export type FollowsUserQuery = { __typename?: 'Query'; followsUser: boolean };
 
-export type MeQueryVariables = Exact<{ [key: string]: never }>;
+export type FollowsUserQuery = { __typename?: 'Query', followsUser: boolean };
 
-export type MeQuery = {
-  __typename?: 'Query';
-  me: {
-    __typename?: 'UserResponse';
-    user?: Maybe<{
-      __typename?: 'User';
-      id: string;
-      oauthId?: Maybe<string>;
-      username?: Maybe<string>;
-      description?: Maybe<string>;
-      avatar?: Maybe<string>;
-      country?: Maybe<string>;
-      keystrokes?: Maybe<number>;
-      badge?: Maybe<UserBadge>;
-      authProvider?: Maybe<AuthProvider>;
-      testsCompleted?: Maybe<number>;
-      wordsWritten?: Maybe<number>;
-      accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy'; id: string; amount: number; createdAt: any }>>;
-      charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      testPresets?: Maybe<
-        Array<{
-          __typename?: 'TestPreset';
-          id: string;
-          userId?: Maybe<string>;
-          type?: Maybe<TestType>;
-          time?: Maybe<number>;
-          language?: Maybe<TestLanguage>;
-          words?: Maybe<number>;
-          creatorImage?: Maybe<string>;
-          createdAt: any;
-          updatedAt: any;
-        }>
-      >;
-    }>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UserQueryVariables = Exact<{
   where: UserWhereInput;
 }>;
 
-export type UserQuery = {
-  __typename?: 'Query';
-  user: {
-    __typename?: 'UserResponse';
-    user?: Maybe<{
-      __typename?: 'User';
-      id: string;
-      oauthId?: Maybe<string>;
-      username?: Maybe<string>;
-      description?: Maybe<string>;
-      avatar?: Maybe<string>;
-      country?: Maybe<string>;
-      keystrokes?: Maybe<number>;
-      badge?: Maybe<UserBadge>;
-      authProvider?: Maybe<AuthProvider>;
-      testsCompleted?: Maybe<number>;
-      wordsWritten?: Maybe<number>;
-      accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy'; id: string; amount: number; createdAt: any }>>;
-      charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute'; id: string; amount: number; createdAt: any }>>;
-      testPresets?: Maybe<
-        Array<{
-          __typename?: 'TestPreset';
-          id: string;
-          userId?: Maybe<string>;
-          type?: Maybe<TestType>;
-          time?: Maybe<number>;
-          language?: Maybe<TestLanguage>;
-          words?: Maybe<number>;
-          creatorImage?: Maybe<string>;
-          createdAt: any;
-          updatedAt: any;
-        }>
-      >;
-    }>;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UserFollowersQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
-export type UserFollowersQuery = {
-  __typename?: 'Query';
-  userFollowers: {
-    __typename?: 'UserFollowersResponse';
-    users?: Maybe<
-      Array<{
-        __typename?: 'UserFollower';
-        id: string;
-        username: string;
-        authProvider?: Maybe<AuthProvider>;
-        oauthId?: Maybe<string>;
-        avatar: string;
-      }>
-    >;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export type UsersQueryVariables = Exact<{
   take: Scalars['Int'];
 }>;
 
-export type UsersQuery = {
-  __typename?: 'Query';
-  users: {
-    __typename?: 'UsersResponse';
-    users?: Maybe<
-      Array<{
-        __typename?: 'User';
-        id: string;
-        oauthId?: Maybe<string>;
-        username?: Maybe<string>;
-        description?: Maybe<string>;
-        avatar?: Maybe<string>;
-        country?: Maybe<string>;
-        keystrokes?: Maybe<number>;
-        badge?: Maybe<UserBadge>;
-        authProvider?: Maybe<AuthProvider>;
-        testsCompleted?: Maybe<number>;
-        wordsWritten?: Maybe<number>;
-        accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy'; id: string; amount: number; createdAt: any }>>;
-        charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute'; id: string; amount: number; createdAt: any }>>;
-        wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute'; id: string; amount: number; createdAt: any }>>;
-        testPresets?: Maybe<
-          Array<{
-            __typename?: 'TestPreset';
-            id: string;
-            userId?: Maybe<string>;
-            type?: Maybe<TestType>;
-            time?: Maybe<number>;
-            language?: Maybe<TestLanguage>;
-            words?: Maybe<number>;
-            creatorImage?: Maybe<string>;
-            createdAt: any;
-            updatedAt: any;
-          }>
-        >;
-      }>
-    >;
-    errors?: Maybe<Array<{ __typename?: 'ErrorResponse'; field: string; message: string }>>;
-  };
-};
+
+export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
 
 export const FilteredUserFragmentDoc = gql`
-  fragment FilteredUser on FilteredUser {
-    id
-    username
-    avatar
-    country
-    authProvider
-    oauthId
-    value
-  }
-`;
+    fragment FilteredUser on FilteredUser {
+  id
+  username
+  avatar
+  country
+  authProvider
+  oauthId
+  value
+}
+    `;
 export const ErrorResponseFragmentDoc = gql`
-  fragment ErrorResponse on ErrorResponse {
-    field
-    message
-  }
-`;
+    fragment ErrorResponse on ErrorResponse {
+  field
+  message
+}
+    `;
 export const FilteredUsersResponseFragmentDoc = gql`
-  fragment FilteredUsersResponse on FilteredUsersResponse {
-    nodes {
-      ...FilteredUser
-    }
-    errors {
-      ...ErrorResponse
-    }
-    nodeCount
-    pageCount
-    currentPage
-    nodesPerPage
-    hasMore
+    fragment FilteredUsersResponse on FilteredUsersResponse {
+  nodes {
+    ...FilteredUser
   }
-  ${FilteredUserFragmentDoc}
-  ${ErrorResponseFragmentDoc}
-`;
+  errors {
+    ...ErrorResponse
+  }
+  nodeCount
+  pageCount
+  currentPage
+  nodesPerPage
+  hasMore
+}
+    ${FilteredUserFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const FollowUserResponseFragmentDoc = gql`
-  fragment FollowUserResponse on FollowUserResponse {
-    follow
-    errors {
-      ...ErrorResponse
-    }
+    fragment FollowUserResponse on FollowUserResponse {
+  follow
+  errors {
+    ...ErrorResponse
   }
-  ${ErrorResponseFragmentDoc}
-`;
+}
+    ${ErrorResponseFragmentDoc}`;
 export const TestPresetFragmentDoc = gql`
-  fragment TestPreset on TestPreset {
-    id
-    userId
-    type
-    time
-    language
-    words
-    creatorImage
-    createdAt
-    updatedAt
-  }
-`;
+    fragment TestPreset on TestPreset {
+  id
+  userId
+  type
+  time
+  language
+  words
+  creatorImage
+  createdAt
+  updatedAt
+}
+    `;
 export const TestPresetResponseFragmentDoc = gql`
-  fragment TestPresetResponse on TestPresetResponse {
-    testPreset {
-      ...TestPreset
-    }
-    errors {
-      ...ErrorResponse
-    }
+    fragment TestPresetResponse on TestPresetResponse {
+  testPreset {
+    ...TestPreset
   }
-  ${TestPresetFragmentDoc}
-  ${ErrorResponseFragmentDoc}
-`;
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${TestPresetFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const TestPresetsResponseFragmentDoc = gql`
-  fragment TestPresetsResponse on TestPresetsResponse {
-    testPresets {
-      ...TestPreset
-    }
-    errors {
-      ...ErrorResponse
-    }
+    fragment TestPresetsResponse on TestPresetsResponse {
+  testPresets {
+    ...TestPreset
   }
-  ${TestPresetFragmentDoc}
-  ${ErrorResponseFragmentDoc}
-`;
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${TestPresetFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const UnfollowUserResponseFragmentDoc = gql`
-  fragment UnfollowUserResponse on UnfollowUserResponse {
-    unfollow
-    errors {
-      ...ErrorResponse
-    }
+    fragment UnfollowUserResponse on UnfollowUserResponse {
+  unfollow
+  errors {
+    ...ErrorResponse
   }
-  ${ErrorResponseFragmentDoc}
-`;
+}
+    ${ErrorResponseFragmentDoc}`;
 export const UserFollowerFragmentDoc = gql`
-  fragment UserFollower on UserFollower {
-    id
-    username
-    authProvider
-    oauthId
-    avatar
-  }
-`;
+    fragment UserFollower on UserFollower {
+  id
+  username
+  authProvider
+  oauthId
+  avatar
+}
+    `;
 export const UserFollowersResponseFragmentDoc = gql`
-  fragment UserFollowersResponse on UserFollowersResponse {
-    users {
-      ...UserFollower
-    }
-    errors {
-      ...ErrorResponse
-    }
+    fragment UserFollowersResponse on UserFollowersResponse {
+  users {
+    ...UserFollower
   }
-  ${UserFollowerFragmentDoc}
-  ${ErrorResponseFragmentDoc}
-`;
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${UserFollowerFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const UserFragmentDoc = gql`
-  fragment User on User {
+    fragment User on User {
+  id
+  oauthId
+  username
+  description
+  avatar
+  country
+  keystrokes
+  badge
+  authProvider
+  testsCompleted
+  wordsWritten
+  accuracy {
     id
-    oauthId
-    username
-    description
-    avatar
-    country
-    keystrokes
-    badge
-    authProvider
-    testsCompleted
-    wordsWritten
-    accuracy {
-      id
-      amount
-      createdAt
-    }
-    charsPerMinute {
-      id
-      amount
-      createdAt
-    }
-    wordsPerMinute {
-      id
-      amount
-      createdAt
-    }
-    testPresets {
-      ...TestPreset
-    }
+    amount
+    createdAt
   }
-  ${TestPresetFragmentDoc}
-`;
+  charsPerMinute {
+    id
+    amount
+    createdAt
+  }
+  wordsPerMinute {
+    id
+    amount
+    createdAt
+  }
+  testPresets {
+    ...TestPreset
+  }
+}
+    ${TestPresetFragmentDoc}`;
 export const UserResponseFragmentDoc = gql`
-  fragment UserResponse on UserResponse {
-    user {
-      ...User
-    }
-    errors {
-      ...ErrorResponse
-    }
+    fragment UserResponse on UserResponse {
+  user {
+    ...User
   }
-  ${UserFragmentDoc}
-  ${ErrorResponseFragmentDoc}
-`;
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${UserFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const UsersResponseFragmentDoc = gql`
-  fragment UsersResponse on UsersResponse {
-    users {
-      ...User
-    }
-    errors {
-      ...ErrorResponse
-    }
+    fragment UsersResponse on UsersResponse {
+  users {
+    ...User
   }
-  ${UserFragmentDoc}
-  ${ErrorResponseFragmentDoc}
-`;
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${UserFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const CreateTestPresetDocument = gql`
-  mutation createTestPreset($data: CreateTestPresetInput!) {
-    createTestPreset(data: $data) {
-      ...TestPresetResponse
-    }
+    mutation createTestPreset($data: CreateTestPresetInput!) {
+  createTestPreset(data: $data) {
+    ...TestPresetResponse
   }
-  ${TestPresetResponseFragmentDoc}
-`;
-export type CreateTestPresetMutationFn = Apollo.MutationFunction<
-  CreateTestPresetMutation,
-  CreateTestPresetMutationVariables
->;
+}
+    ${TestPresetResponseFragmentDoc}`;
+export type CreateTestPresetMutationFn = Apollo.MutationFunction<CreateTestPresetMutation, CreateTestPresetMutationVariables>;
 
 /**
  * __useCreateTestPresetMutation__
@@ -1192,33 +710,21 @@ export type CreateTestPresetMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateTestPresetMutation(
-  baseOptions?: Apollo.MutationHookOptions<CreateTestPresetMutation, CreateTestPresetMutationVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<CreateTestPresetMutation, CreateTestPresetMutationVariables>(
-    CreateTestPresetDocument,
-    options
-  );
-}
+export function useCreateTestPresetMutation(baseOptions?: Apollo.MutationHookOptions<CreateTestPresetMutation, CreateTestPresetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTestPresetMutation, CreateTestPresetMutationVariables>(CreateTestPresetDocument, options);
+      }
 export type CreateTestPresetMutationHookResult = ReturnType<typeof useCreateTestPresetMutation>;
 export type CreateTestPresetMutationResult = Apollo.MutationResult<CreateTestPresetMutation>;
-export type CreateTestPresetMutationOptions = Apollo.BaseMutationOptions<
-  CreateTestPresetMutation,
-  CreateTestPresetMutationVariables
->;
+export type CreateTestPresetMutationOptions = Apollo.BaseMutationOptions<CreateTestPresetMutation, CreateTestPresetMutationVariables>;
 export const CreateTestPresetUserDocument = gql`
-  mutation createTestPresetUser($data: CreateTestPresetInput!) {
-    createTestPresetUser(data: $data) {
-      ...TestPresetResponse
-    }
+    mutation createTestPresetUser($data: CreateTestPresetInput!) {
+  createTestPresetUser(data: $data) {
+    ...TestPresetResponse
   }
-  ${TestPresetResponseFragmentDoc}
-`;
-export type CreateTestPresetUserMutationFn = Apollo.MutationFunction<
-  CreateTestPresetUserMutation,
-  CreateTestPresetUserMutationVariables
->;
+}
+    ${TestPresetResponseFragmentDoc}`;
+export type CreateTestPresetUserMutationFn = Apollo.MutationFunction<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>;
 
 /**
  * __useCreateTestPresetUserMutation__
@@ -1237,29 +743,20 @@ export type CreateTestPresetUserMutationFn = Apollo.MutationFunction<
  *   },
  * });
  */
-export function useCreateTestPresetUserMutation(
-  baseOptions?: Apollo.MutationHookOptions<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>(
-    CreateTestPresetUserDocument,
-    options
-  );
-}
+export function useCreateTestPresetUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>(CreateTestPresetUserDocument, options);
+      }
 export type CreateTestPresetUserMutationHookResult = ReturnType<typeof useCreateTestPresetUserMutation>;
 export type CreateTestPresetUserMutationResult = Apollo.MutationResult<CreateTestPresetUserMutation>;
-export type CreateTestPresetUserMutationOptions = Apollo.BaseMutationOptions<
-  CreateTestPresetUserMutation,
-  CreateTestPresetUserMutationVariables
->;
+export type CreateTestPresetUserMutationOptions = Apollo.BaseMutationOptions<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>;
 export const FollowUserDocument = gql`
-  mutation followUser($userId: String!, $targetUserId: String!) {
-    followUser(userId: $userId, targetUserId: $targetUserId) {
-      ...FollowUserResponse
-    }
+    mutation followUser($userId: String!, $targetUserId: String!) {
+  followUser(userId: $userId, targetUserId: $targetUserId) {
+    ...FollowUserResponse
   }
-  ${FollowUserResponseFragmentDoc}
-`;
+}
+    ${FollowUserResponseFragmentDoc}`;
 export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutation, FollowUserMutationVariables>;
 
 /**
@@ -1280,20 +777,18 @@ export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutation, F
  *   },
  * });
  */
-export function useFollowUserMutation(
-  baseOptions?: Apollo.MutationHookOptions<FollowUserMutation, FollowUserMutationVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<FollowUserMutation, FollowUserMutationVariables>(FollowUserDocument, options);
-}
+export function useFollowUserMutation(baseOptions?: Apollo.MutationHookOptions<FollowUserMutation, FollowUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<FollowUserMutation, FollowUserMutationVariables>(FollowUserDocument, options);
+      }
 export type FollowUserMutationHookResult = ReturnType<typeof useFollowUserMutation>;
 export type FollowUserMutationResult = Apollo.MutationResult<FollowUserMutation>;
 export type FollowUserMutationOptions = Apollo.BaseMutationOptions<FollowUserMutation, FollowUserMutationVariables>;
 export const LogoutDocument = gql`
-  mutation logout {
-    logout
-  }
-`;
+    mutation logout {
+  logout
+}
+    `;
 export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMutationVariables>;
 
 /**
@@ -1313,20 +808,19 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  * });
  */
 export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, options);
+      }
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const UnfollowUserDocument = gql`
-  mutation unfollowUser($userId: String!, $targetUserId: String!) {
-    unfollowUser(userId: $userId, targetUserId: $targetUserId) {
-      ...UnfollowUserResponse
-    }
+    mutation unfollowUser($userId: String!, $targetUserId: String!) {
+  unfollowUser(userId: $userId, targetUserId: $targetUserId) {
+    ...UnfollowUserResponse
   }
-  ${UnfollowUserResponseFragmentDoc}
-`;
+}
+    ${UnfollowUserResponseFragmentDoc}`;
 export type UnfollowUserMutationFn = Apollo.MutationFunction<UnfollowUserMutation, UnfollowUserMutationVariables>;
 
 /**
@@ -1347,26 +841,20 @@ export type UnfollowUserMutationFn = Apollo.MutationFunction<UnfollowUserMutatio
  *   },
  * });
  */
-export function useUnfollowUserMutation(
-  baseOptions?: Apollo.MutationHookOptions<UnfollowUserMutation, UnfollowUserMutationVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UnfollowUserMutation, UnfollowUserMutationVariables>(UnfollowUserDocument, options);
-}
+export function useUnfollowUserMutation(baseOptions?: Apollo.MutationHookOptions<UnfollowUserMutation, UnfollowUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnfollowUserMutation, UnfollowUserMutationVariables>(UnfollowUserDocument, options);
+      }
 export type UnfollowUserMutationHookResult = ReturnType<typeof useUnfollowUserMutation>;
 export type UnfollowUserMutationResult = Apollo.MutationResult<UnfollowUserMutation>;
-export type UnfollowUserMutationOptions = Apollo.BaseMutationOptions<
-  UnfollowUserMutation,
-  UnfollowUserMutationVariables
->;
+export type UnfollowUserMutationOptions = Apollo.BaseMutationOptions<UnfollowUserMutation, UnfollowUserMutationVariables>;
 export const UpdateUserDocument = gql`
-  mutation updateUser($where: UserWhereInput!, $data: UserUpdateInput!) {
-    updateUser(where: $where, data: $data) {
-      ...UserResponse
-    }
+    mutation updateUser($where: UserWhereInput!, $data: UserUpdateInput!) {
+  updateUser(where: $where, data: $data) {
+    ...UserResponse
   }
-  ${UserResponseFragmentDoc}
-`;
+}
+    ${UserResponseFragmentDoc}`;
 export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
 
 /**
@@ -1387,23 +875,20 @@ export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, U
  *   },
  * });
  */
-export function useUpdateUserMutation(
-  baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
-}
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const TestPresetDocument = gql`
-  query testPreset($id: String!) {
-    testPreset(id: $id) {
-      ...TestPresetResponse
-    }
+    query testPreset($id: String!) {
+  testPreset(id: $id) {
+    ...TestPresetResponse
   }
-  ${TestPresetResponseFragmentDoc}
-`;
+}
+    ${TestPresetResponseFragmentDoc}`;
 
 /**
  * __useTestPresetQuery__
@@ -1422,26 +907,23 @@ export const TestPresetDocument = gql`
  * });
  */
 export function useTestPresetQuery(baseOptions: Apollo.QueryHookOptions<TestPresetQuery, TestPresetQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<TestPresetQuery, TestPresetQueryVariables>(TestPresetDocument, options);
-}
-export function useTestPresetLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<TestPresetQuery, TestPresetQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<TestPresetQuery, TestPresetQueryVariables>(TestPresetDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TestPresetQuery, TestPresetQueryVariables>(TestPresetDocument, options);
+      }
+export function useTestPresetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TestPresetQuery, TestPresetQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TestPresetQuery, TestPresetQueryVariables>(TestPresetDocument, options);
+        }
 export type TestPresetQueryHookResult = ReturnType<typeof useTestPresetQuery>;
 export type TestPresetLazyQueryHookResult = ReturnType<typeof useTestPresetLazyQuery>;
 export type TestPresetQueryResult = Apollo.QueryResult<TestPresetQuery, TestPresetQueryVariables>;
 export const TestPresetsDocument = gql`
-  query testPresets($input: TestPresetsFindInput!) {
-    testPresets(input: $input) {
-      ...TestPresetsResponse
-    }
+    query testPresets($input: TestPresetsFindInput!) {
+  testPresets(input: $input) {
+    ...TestPresetsResponse
   }
-  ${TestPresetsResponseFragmentDoc}
-`;
+}
+    ${TestPresetsResponseFragmentDoc}`;
 
 /**
  * __useTestPresetsQuery__
@@ -1460,26 +942,23 @@ export const TestPresetsDocument = gql`
  * });
  */
 export function useTestPresetsQuery(baseOptions: Apollo.QueryHookOptions<TestPresetsQuery, TestPresetsQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<TestPresetsQuery, TestPresetsQueryVariables>(TestPresetsDocument, options);
-}
-export function useTestPresetsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<TestPresetsQuery, TestPresetsQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<TestPresetsQuery, TestPresetsQueryVariables>(TestPresetsDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TestPresetsQuery, TestPresetsQueryVariables>(TestPresetsDocument, options);
+      }
+export function useTestPresetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TestPresetsQuery, TestPresetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TestPresetsQuery, TestPresetsQueryVariables>(TestPresetsDocument, options);
+        }
 export type TestPresetsQueryHookResult = ReturnType<typeof useTestPresetsQuery>;
 export type TestPresetsLazyQueryHookResult = ReturnType<typeof useTestPresetsLazyQuery>;
 export type TestPresetsQueryResult = Apollo.QueryResult<TestPresetsQuery, TestPresetsQueryVariables>;
 export const UserTestPresetsDocument = gql`
-  query userTestPresets($userId: String!) {
-    userTestPresets(userId: $userId) {
-      ...TestPresetsResponse
-    }
+    query userTestPresets($userId: String!) {
+  userTestPresets(userId: $userId) {
+    ...TestPresetsResponse
   }
-  ${TestPresetsResponseFragmentDoc}
-`;
+}
+    ${TestPresetsResponseFragmentDoc}`;
 
 /**
  * __useUserTestPresetsQuery__
@@ -1497,29 +976,24 @@ export const UserTestPresetsDocument = gql`
  *   },
  * });
  */
-export function useUserTestPresetsQuery(
-  baseOptions: Apollo.QueryHookOptions<UserTestPresetsQuery, UserTestPresetsQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<UserTestPresetsQuery, UserTestPresetsQueryVariables>(UserTestPresetsDocument, options);
-}
-export function useUserTestPresetsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<UserTestPresetsQuery, UserTestPresetsQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<UserTestPresetsQuery, UserTestPresetsQueryVariables>(UserTestPresetsDocument, options);
-}
+export function useUserTestPresetsQuery(baseOptions: Apollo.QueryHookOptions<UserTestPresetsQuery, UserTestPresetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserTestPresetsQuery, UserTestPresetsQueryVariables>(UserTestPresetsDocument, options);
+      }
+export function useUserTestPresetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserTestPresetsQuery, UserTestPresetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserTestPresetsQuery, UserTestPresetsQueryVariables>(UserTestPresetsDocument, options);
+        }
 export type UserTestPresetsQueryHookResult = ReturnType<typeof useUserTestPresetsQuery>;
 export type UserTestPresetsLazyQueryHookResult = ReturnType<typeof useUserTestPresetsLazyQuery>;
 export type UserTestPresetsQueryResult = Apollo.QueryResult<UserTestPresetsQuery, UserTestPresetsQueryVariables>;
 export const FilterUsersDocument = gql`
-  query filterUsers($page: Int!, $filterBy: UserFilterBy!) {
-    filterUsers(page: $page, filterBy: $filterBy) {
-      ...FilteredUsersResponse
-    }
+    query filterUsers($page: Int!, $filterBy: UserFilterBy!) {
+  filterUsers(page: $page, filterBy: $filterBy) {
+    ...FilteredUsersResponse
   }
-  ${FilteredUsersResponseFragmentDoc}
-`;
+}
+    ${FilteredUsersResponseFragmentDoc}`;
 
 /**
  * __useFilterUsersQuery__
@@ -1539,23 +1013,21 @@ export const FilterUsersDocument = gql`
  * });
  */
 export function useFilterUsersQuery(baseOptions: Apollo.QueryHookOptions<FilterUsersQuery, FilterUsersQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FilterUsersQuery, FilterUsersQueryVariables>(FilterUsersDocument, options);
-}
-export function useFilterUsersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FilterUsersQuery, FilterUsersQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FilterUsersQuery, FilterUsersQueryVariables>(FilterUsersDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FilterUsersQuery, FilterUsersQueryVariables>(FilterUsersDocument, options);
+      }
+export function useFilterUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FilterUsersQuery, FilterUsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FilterUsersQuery, FilterUsersQueryVariables>(FilterUsersDocument, options);
+        }
 export type FilterUsersQueryHookResult = ReturnType<typeof useFilterUsersQuery>;
 export type FilterUsersLazyQueryHookResult = ReturnType<typeof useFilterUsersLazyQuery>;
 export type FilterUsersQueryResult = Apollo.QueryResult<FilterUsersQuery, FilterUsersQueryVariables>;
 export const FollowsUserDocument = gql`
-  query followsUser($userId: String!, $targetUserId: String!) {
-    followsUser(userId: $userId, targetUserId: $targetUserId)
-  }
-`;
+    query followsUser($userId: String!, $targetUserId: String!) {
+  followsUser(userId: $userId, targetUserId: $targetUserId)
+}
+    `;
 
 /**
  * __useFollowsUserQuery__
@@ -1575,26 +1047,23 @@ export const FollowsUserDocument = gql`
  * });
  */
 export function useFollowsUserQuery(baseOptions: Apollo.QueryHookOptions<FollowsUserQuery, FollowsUserQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FollowsUserQuery, FollowsUserQueryVariables>(FollowsUserDocument, options);
-}
-export function useFollowsUserLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FollowsUserQuery, FollowsUserQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FollowsUserQuery, FollowsUserQueryVariables>(FollowsUserDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FollowsUserQuery, FollowsUserQueryVariables>(FollowsUserDocument, options);
+      }
+export function useFollowsUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FollowsUserQuery, FollowsUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FollowsUserQuery, FollowsUserQueryVariables>(FollowsUserDocument, options);
+        }
 export type FollowsUserQueryHookResult = ReturnType<typeof useFollowsUserQuery>;
 export type FollowsUserLazyQueryHookResult = ReturnType<typeof useFollowsUserLazyQuery>;
 export type FollowsUserQueryResult = Apollo.QueryResult<FollowsUserQuery, FollowsUserQueryVariables>;
 export const MeDocument = gql`
-  query me {
-    me {
-      ...UserResponse
-    }
+    query me {
+  me {
+    ...UserResponse
   }
-  ${UserResponseFragmentDoc}
-`;
+}
+    ${UserResponseFragmentDoc}`;
 
 /**
  * __useMeQuery__
@@ -1612,24 +1081,23 @@ export const MeDocument = gql`
  * });
  */
 export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+      }
 export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
+        }
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const UserDocument = gql`
-  query user($where: UserWhereInput!) {
-    user(where: $where) {
-      ...UserResponse
-    }
+    query user($where: UserWhereInput!) {
+  user(where: $where) {
+    ...UserResponse
   }
-  ${UserResponseFragmentDoc}
-`;
+}
+    ${UserResponseFragmentDoc}`;
 
 /**
  * __useUserQuery__
@@ -1648,24 +1116,23 @@ export const UserDocument = gql`
  * });
  */
 export function useUserQuery(baseOptions: Apollo.QueryHookOptions<UserQuery, UserQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+      }
 export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQuery, UserQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserQuery, UserQueryVariables>(UserDocument, options);
+        }
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UserFollowersDocument = gql`
-  query userFollowers($userId: String!) {
-    userFollowers(userId: $userId) {
-      ...UserFollowersResponse
-    }
+    query userFollowers($userId: String!) {
+  userFollowers(userId: $userId) {
+    ...UserFollowersResponse
   }
-  ${UserFollowersResponseFragmentDoc}
-`;
+}
+    ${UserFollowersResponseFragmentDoc}`;
 
 /**
  * __useUserFollowersQuery__
@@ -1683,29 +1150,24 @@ export const UserFollowersDocument = gql`
  *   },
  * });
  */
-export function useUserFollowersQuery(
-  baseOptions: Apollo.QueryHookOptions<UserFollowersQuery, UserFollowersQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<UserFollowersQuery, UserFollowersQueryVariables>(UserFollowersDocument, options);
-}
-export function useUserFollowersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<UserFollowersQuery, UserFollowersQueryVariables>
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<UserFollowersQuery, UserFollowersQueryVariables>(UserFollowersDocument, options);
-}
+export function useUserFollowersQuery(baseOptions: Apollo.QueryHookOptions<UserFollowersQuery, UserFollowersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserFollowersQuery, UserFollowersQueryVariables>(UserFollowersDocument, options);
+      }
+export function useUserFollowersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserFollowersQuery, UserFollowersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserFollowersQuery, UserFollowersQueryVariables>(UserFollowersDocument, options);
+        }
 export type UserFollowersQueryHookResult = ReturnType<typeof useUserFollowersQuery>;
 export type UserFollowersLazyQueryHookResult = ReturnType<typeof useUserFollowersLazyQuery>;
 export type UserFollowersQueryResult = Apollo.QueryResult<UserFollowersQuery, UserFollowersQueryVariables>;
 export const UsersDocument = gql`
-  query users($take: Int!) {
-    users(take: $take) {
-      ...UsersResponse
-    }
+    query users($take: Int!) {
+  users(take: $take) {
+    ...UsersResponse
   }
-  ${UsersResponseFragmentDoc}
-`;
+}
+    ${UsersResponseFragmentDoc}`;
 
 /**
  * __useUsersQuery__
@@ -1724,13 +1186,13 @@ export const UsersDocument = gql`
  * });
  */
 export function useUsersQuery(baseOptions: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-}
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+      }
 export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
-}
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        }
 export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
 export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
 export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;
