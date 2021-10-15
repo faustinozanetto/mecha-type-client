@@ -1,10 +1,8 @@
 import React from 'react';
-import dynamic from 'next/dynamic';
 import { Flex, Grid, Box, useColorModeValue } from '@chakra-ui/react';
 import { UserFragment } from '@generated/graphql';
-
-const Sidebar = dynamic(() => import('@components/sidebar/sidebar'));
-const Footer = dynamic(() => import('@components/footer/footer'));
+import Sidebar from '@components/sidebar/sidebar';
+import Footer from '@components/footer/footer';
 
 interface PageWrapperProps {
   /** User data */

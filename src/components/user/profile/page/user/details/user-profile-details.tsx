@@ -2,14 +2,12 @@ import React from 'react';
 import { Badge, Flex, Text, HStack, Skeleton, SkeletonText, useColorModeValue } from '@chakra-ui/react';
 import { UserFragment, UserBadge } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
-import dynamic from 'next/dynamic';
 import { UserAvatar } from '../user-avatar';
 import { SettingsButton } from './settings-button';
 import { generateAvatarURl } from '@modules/core/user/user';
 import { CountryEntry } from '@pages/user/[id]';
 import { UserProfileCountry } from './user-profile-country';
-
-const FollowButton = dynamic(() => import('@components/user/profile/page/user/details/follow-button'));
+import FollowButton from './follow-button';
 
 interface UserProfileDetailsProps {
   /** Current logged in user */

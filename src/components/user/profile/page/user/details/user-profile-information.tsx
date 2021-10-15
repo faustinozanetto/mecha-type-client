@@ -1,14 +1,10 @@
 import React from 'react';
+import UserProfilePresets from '../../presets/use-profile-presets';
+import UserProfileSocial from '../../social/user-profile-social';
+import UserProfileStats from '../../stats/user-profile-stats';
 import { Grid, GridItem } from '@chakra-ui/react';
 import { UserFollowerFragment, UserFragment } from '@generated/graphql';
-import dynamic from 'next/dynamic';
 import { UserParsedStats } from '@modules/core/user/user';
-
-const UserProfileStats = dynamic(() => import('@components/user/profile/page/stats/user-profile-stats'));
-
-const UserProfileSocial = dynamic(() => import('@components/user/profile/page/social/user-profile-social'));
-
-const UserProfilePresets = dynamic(() => import('@components/user/profile/page/presets/use-profile-presets'));
 
 interface UserProfileStatsProps {
   /** Target user to show profile */

@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
 import { TestPresetFragment, UserFragment, useUserCreateTestPresetHistoryEntryMutation } from '@generated/graphql';
@@ -11,9 +10,8 @@ import { useSound } from '@modules/core/sound/use-sound-hook';
 import { SoundType } from '@modules/core/sound/types/sound.types';
 import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
 import useMechaStore from 'state/store';
-
-const PracticeVisualLetter = dynamic(() => import('@components/practice/game/visual/practice-visual-letter'));
-const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));
+import PracticeVisualLetter from '../visual/practice-visual-letter';
+import PracticeResults from '@components/practice/results/practice-results';
 
 export enum ETypingStatType {
   CHARS = 'Characters',

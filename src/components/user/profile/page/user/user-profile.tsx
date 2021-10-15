@@ -53,8 +53,8 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
   };
 
   useEffect(() => {
-    setParsedStats(generateParsedStats(user));
-  }, [user?.testPresetHistory, loading]);
+    setParsedStats(generateParsedStats(targetUser));
+  }, [targetUser?.testPresetHistory, loading]);
 
   // If editing, return the edit profile component.
   if (editing) {

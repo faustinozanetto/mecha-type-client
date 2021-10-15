@@ -1,7 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game';
-import { Box, useColorMode, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import { ApexOptions } from 'apexcharts';
 
 // @ts-ignore
