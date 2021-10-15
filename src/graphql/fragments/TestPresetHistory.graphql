@@ -1,0 +1,13 @@
+fragment TestPresetHistory on TestPresetHistory {
+  id
+  userId
+  testPresetId
+  wpm
+  cpm
+  accuracy
+  keystrokes
+  correctChars
+  incorrectChars
+  createdAt
+  updatedAt
+}

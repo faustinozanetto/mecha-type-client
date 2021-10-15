@@ -19,31 +19,32 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
   const parseStats = (): ITypingStat[] => {
     let data: ITypingStat[] = [];
     if (user) {
-      for (let i = 0; i < user.testsCompleted; i++) {
-        const wpm = user.wordsPerMinute[i];
-        const cpm = user.charsPerMinute[i];
-        const accuracy = user.accuracy[i];
-        const keystrokes = user.keystrokes;
+      for (let i = 0; i < user.testPresetHistory.length; i++) {
+        const wpm = user.testPresetHistory[i].wpm;
+        const cpm = user.testPresetHistory[i].cpm;
+        const accuracy = user.testPresetHistory[i].accuracy;
+        const keystrokes = user.testPresetHistory[i].keystrokes;
+        const correctChars = user.testPresetHistory[i].correctChars;
+        const incorrectChars = user.testPresetHistory[i].incorrectChars;
 
         data.push({
-          wpm: wpm.amount ?? 0,
-          cpm: cpm.amount ?? 0,
-          accuracy: accuracy.amount ?? 0,
-          correct: 0,
-          errors: 0,
+          wpm: wpm ?? 0,
+          cpm: cpm ?? 0,
+          accuracy: accuracy ?? 0,
+          correct: correctChars ?? 0,
+          errors: incorrectChars ?? 0,
           keystrokes: keystrokes ?? 0,
-          time: wpm.createdAt,
+          time: user.testPresetHistory[i].createdAt,
         });
       }
     }
-    console.log(user);
     return data;
   };
 
   useEffect(() => {
     const parsedData = parseStats();
     setCurrentStat(parsedData);
-  }, [user, user?.testsCompleted]);
+  }, [user, user?.testPresetHistory]);
 
   return (
     <Flex flexDir="column" width="full" py={8}>
@@ -57,7 +58,7 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
 
       {/* Charts */}
       <Flex flexDir="column" backgroundColor={bgColor} rounded="lg" padding={6} my={4}>
-        <SimpleGrid columns={2} rows={3} gap={2}>
+        <SimpleGrid columns={[1, 1, 1, 1, 2, 2]} rows={2} gap={2}>
           <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
             <StatLineChart statsData={currentStat} statType={ETypingStatType.ACCURACY} />
           </GridItem>

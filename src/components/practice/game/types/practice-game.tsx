@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
-import { TestPresetFragment, UserFragment, useUpdateUserMutation } from '@generated/graphql';
+import { TestPresetFragment, UserFragment, useUserCreateTestPresetHistoryEntryMutation } from '@generated/graphql';
 import { Flex, SkeletonText, useColorModeValue, useToast, Box } from '@chakra-ui/react';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@modules/core/math/math';
@@ -67,14 +67,11 @@ interface PracticeGameInputProps {
 
 export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset, text, user }) => {
   const [duration, setDuration] = useState(0);
-  const [typedWrong, setTypeWrong] = useState(false);
   const [stats, setStats] = useState<ITypingStat[]>([]);
   const { time, start, pause, reset } = useTimer();
-  const [updateUserData] = useUpdateUserMutation();
-  const [typingInput, setTypingInput] = useState('');
+  const [userCreateTestPresetHistoryEntry] = useUserCreateTestPresetHistoryEntryMutation();
   const [currWordPos, setCurrWordPos] = useState([-1, -1]);
   const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
   const letterElements = useRef<HTMLDivElement>(null);
   const toast = useToast();
   const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
@@ -111,58 +108,6 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     setTypeSound(selectRandomTypeSound());
   }, [currIndex]);
 
-  // Checks whether the word is correct while the user is typing
-  useEffect(() => {
-    setTypeWrong((prev: boolean): boolean => {
-      let hasError = false;
-      for (let i = 0; i < typingInput.length; i++) {
-        const char = typingInput[i];
-        const correctChar = text[currWordPos[0] + i];
-        const diff = char !== correctChar;
-        if (diff) {
-          hasError = true;
-          break;
-        }
-      }
-      if (hasError !== prev) {
-        return !prev;
-      } else {
-        return prev;
-      }
-    });
-  }, [typingInput, currWordPos, text]);
-
-  // Set the start and end index of the next word
-  useEffect(() => {
-    const tempCurrIndex = text[currIndex] === ' ' ? currIndex + 1 : currIndex;
-    let startIndex = text.lastIndexOf(' ', tempCurrIndex);
-    startIndex = startIndex < 0 ? 0 : startIndex + 1;
-    let endIndex = text.indexOf(' ', tempCurrIndex);
-    endIndex = endIndex < 0 ? text.length - 1 : endIndex - 1;
-
-    setCurrWordPos((oldCurrWordPos) => {
-      if (startIndex !== oldCurrWordPos[0] || endIndex !== oldCurrWordPos[1]) {
-        return [startIndex, endIndex];
-      }
-      return oldCurrWordPos;
-    });
-  }, [currIndex, text]);
-
-  // Submit inputted word
-  const submitWord = () => {
-    for (let i = currWordPos[0]; i <= currWordPos[1]; i++) {
-      const index = i - currIndex - 1;
-      if (index > typingInput.length - 1) {
-        insertTyping();
-      } else {
-        insertTyping(typingInput[index]);
-      }
-    }
-    insertTyping(' ');
-    setTypingInput('');
-    setTypeWrong(false);
-  };
-
   /**
    * Updates the user data with the new test results
    */
@@ -175,27 +120,18 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
           position: 'bottom-right',
         });
       } else {
-        updateUserData({
+        userCreateTestPresetHistoryEntry({
           variables: {
-            where: {
-              id: user.id,
-            },
-            data: {
-              keystrokes: { increment: keystrokes },
-              wordsWritten: { set: 0 },
-              testsCompleted: { increment: 1 },
-              wordsPerMinute: {
-                createdAt: new Date(),
-                amount: roundTo2((correctChar * (60 / time)) / 5) ?? 0,
-              },
-              charsPerMinute: {
-                createdAt: new Date(),
-                amount: Math.round((60 / time) * correctChar) ?? 0,
-              },
-              accuracy: {
-                createdAt: new Date(),
-                amount: roundTo2((correctChar / (correctChar + errorChar)) * 100 ?? 0),
-              },
+            userId: user.id,
+            input: {
+              userId: user.id,
+              testPresetId: testPreset.id,
+              wpm: roundTo2((correctChar * (60 / time)) / 5) ?? 0,
+              cpm: Math.round((60 / time) * correctChar) ?? 0,
+              accuracy: roundTo2((correctChar / (correctChar + errorChar)) * 100 ?? 0),
+              keystrokes,
+              correctChars: correctChar,
+              incorrectChars: errorChar,
             },
           },
         });
@@ -312,41 +248,10 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
             })}
           </Box>
         </SkeletonText>
-
-        {/* Show input filed if typing game is of type input
-        {writeInputType === TypingGameType.INPUT && (
-          <Box width="100%" mt={2}>
-            <Input
-              type="text"
-              ref={inputRef}
-              variant="flushed"
-              fontWeight={500}
-              fontSize="lg"
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault();
-                  submitWord();
-                }
-              }}
-              onChange={(e) => {
-                setTypingInput(e.target.value);
-              }}
-              focusBorderColor={!typingInput.length ? '#94A3B8' : typedWrong ? 'red' : 'green'}
-              borderColor={!typingInput.length ? '#94A3B8' : typedWrong ? 'red' : 'green'}
-              borderBottomWidth={2}
-              value={typingInput}
-              disabled={phase === 2}
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck={false}
-              placeholder={phase !== 1 ? 'Type here... (Press enter or space to submit word)' : ''}
-            />
-          </Box>
-        )} */}
       </Flex>
 
       {/* Caret */}
-      {phase !== 2 && currIndex >= 0 && <Caret style={{ left: pos.left, top: pos.top }}>&nbsp;</Caret>}
+      {phase !== 2 && isFocused && currIndex >= 0 && <Caret style={{ left: pos.left, top: pos.top }}>&nbsp;</Caret>}
 
       {/* Stats container */}
       {phase === 2 && startTime && endTime && (

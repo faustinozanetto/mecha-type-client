@@ -31,22 +31,22 @@ export enum AuthProvider {
   Google = 'GOOGLE'
 }
 
-export type CharsPerMinute = {
-  __typename?: 'CharsPerMinute';
-  amount: Scalars['Float'];
-  /** Identifies the date and time when the object was created. */
-  createdAt: Scalars['Date'];
-  id: Scalars['String'];
-  /** Identifies the date and time when the object was last updated. */
-  updatedAt: Scalars['Date'];
-  userId: Scalars['String'];
-};
-
 export type CharsPerMinuteCreateInput = {
   amount?: Maybe<Scalars['Float']>;
   createdAt?: Maybe<Scalars['Date']>;
   id?: Maybe<Scalars['String']>;
   updatedAt?: Maybe<Scalars['Date']>;
+};
+
+export type CreateTestPresetHistoryInput = {
+  accuracy: Scalars['Float'];
+  correctChars: Scalars['Float'];
+  cpm: Scalars['Float'];
+  incorrectChars: Scalars['Float'];
+  keystrokes: Scalars['Float'];
+  testPresetId: Scalars['String'];
+  userId: Scalars['String'];
+  wpm: Scalars['Float'];
 };
 
 export type CreateTestPresetInput = {
@@ -107,16 +107,23 @@ export type InputUpdateInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createTestPreset: TestPresetResponse;
+  createTestPresetHistoryEntry: TestPresetHistoryResponse;
   createTestPresetUser: TestPresetResponse;
   followUser: FollowUserResponse;
   logout: Scalars['Boolean'];
   unfollowUser: UnfollowUserResponse;
   updateUser: UserResponse;
+  userCreateTestPresetHistoryEntry: TestPresetHistoryResponse;
 };
 
 
 export type MutationCreateTestPresetArgs = {
   data: CreateTestPresetInput;
+};
+
+
+export type MutationCreateTestPresetHistoryEntryArgs = {
+  input: CreateTestPresetHistoryInput;
 };
 
 
@@ -140,6 +147,12 @@ export type MutationUnfollowUserArgs = {
 export type MutationUpdateUserArgs = {
   data: UserUpdateInput;
   where: UserWhereInput;
+};
+
+
+export type MutationUserCreateTestPresetHistoryEntryArgs = {
+  input: CreateTestPresetHistoryInput;
+  userId: Scalars['String'];
 };
 
 export type Query = {
@@ -219,6 +232,29 @@ export type TestPreset = {
   words?: Maybe<Scalars['Int']>;
 };
 
+export type TestPresetHistory = {
+  __typename?: 'TestPresetHistory';
+  accuracy: Scalars['Float'];
+  correctChars: Scalars['Float'];
+  cpm: Scalars['Float'];
+  /** Identifies the date and time when the object was created. */
+  createdAt: Scalars['Date'];
+  id: Scalars['String'];
+  incorrectChars: Scalars['Float'];
+  keystrokes: Scalars['Float'];
+  testPresetId: Scalars['String'];
+  /** Identifies the date and time when the object was last updated. */
+  updatedAt: Scalars['Date'];
+  userId: Scalars['String'];
+  wpm: Scalars['Float'];
+};
+
+export type TestPresetHistoryResponse = {
+  __typename?: 'TestPresetHistoryResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  testPresetHistory?: Maybe<TestPresetHistory>;
+};
+
 export type TestPresetResponse = {
   __typename?: 'TestPresetResponse';
   errors?: Maybe<Array<ErrorResponse>>;
@@ -253,17 +289,6 @@ export enum TestType {
   Words = 'WORDS'
 }
 
-export type TypingAccuracy = {
-  __typename?: 'TypingAccuracy';
-  amount: Scalars['Float'];
-  /** Identifies the date and time when the object was created. */
-  createdAt: Scalars['Date'];
-  id: Scalars['String'];
-  /** Identifies the date and time when the object was last updated. */
-  updatedAt: Scalars['Date'];
-  userId: Scalars['String'];
-};
-
 export type UnfollowUserResponse = {
   __typename?: 'UnfollowUserResponse';
   errors?: Maybe<Array<ErrorResponse>>;
@@ -272,11 +297,9 @@ export type UnfollowUserResponse = {
 
 export type User = {
   __typename?: 'User';
-  accuracy?: Maybe<Array<TypingAccuracy>>;
   authProvider?: Maybe<AuthProvider>;
   avatar?: Maybe<Scalars['String']>;
   badge?: Maybe<UserBadge>;
-  charsPerMinute?: Maybe<Array<CharsPerMinute>>;
   country?: Maybe<Scalars['String']>;
   /** Identifies the date and time when the object was created. */
   createdAt: Scalars['Date'];
@@ -284,15 +307,12 @@ export type User = {
   followedBy?: Maybe<Array<UserOnUser>>;
   following?: Maybe<Array<UserOnUser>>;
   id: Scalars['String'];
-  keystrokes?: Maybe<Scalars['Int']>;
   oauthId?: Maybe<Scalars['String']>;
+  testPresetHistory?: Maybe<Array<TestPresetHistory>>;
   testPresets?: Maybe<Array<TestPreset>>;
-  testsCompleted?: Maybe<Scalars['Int']>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['Date'];
   username?: Maybe<Scalars['String']>;
-  wordsPerMinute?: Maybe<Array<WordsPerMinute>>;
-  wordsWritten?: Maybe<Scalars['Int']>;
 };
 
 /** User Badges */
@@ -375,17 +395,6 @@ export type UsersResponse = {
   users?: Maybe<Array<User>>;
 };
 
-export type WordsPerMinute = {
-  __typename?: 'WordsPerMinute';
-  amount: Scalars['Float'];
-  /** Identifies the date and time when the object was created. */
-  createdAt: Scalars['Date'];
-  id: Scalars['String'];
-  /** Identifies the date and time when the object was last updated. */
-  updatedAt: Scalars['Date'];
-  userId: Scalars['String'];
-};
-
 export type WordsPerMinuteCreateInput = {
   amount?: Maybe<Scalars['Float']>;
   createdAt?: Maybe<Scalars['Date']>;
@@ -393,45 +402,64 @@ export type WordsPerMinuteCreateInput = {
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
-export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number };
+export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number };
 
-export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any };
+export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any };
 
-export type UserFragment = { __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> };
+export type TestPresetHistoryFragment = { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any };
 
-export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string };
+export type UserFragment = { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined };
+
+export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string };
 
 export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: string, message: string };
 
-export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: number | null | undefined, pageCount?: number | null | undefined, currentPage?: number | null | undefined, nodesPerPage?: number | null | undefined, hasMore?: boolean | null | undefined, nodes?: Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type FollowUserResponseFragment = { __typename?: 'FollowUserResponse', follow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type FollowUserResponseFragment = { __typename?: 'FollowUserResponse', follow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type UserResponseFragment = { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> };
+export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+
+export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+
+export type CreateTestPresetHistoryEntryMutationVariables = Exact<{
+  input: CreateTestPresetHistoryInput;
+}>;
+
+
+export type CreateTestPresetHistoryEntryMutation = { __typename?: 'Mutation', createTestPresetHistoryEntry: { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+
+export type UserCreateTestPresetHistoryEntryMutationVariables = Exact<{
+  userId: Scalars['String'];
+  input: CreateTestPresetHistoryInput;
+}>;
+
+
+export type UserCreateTestPresetHistoryEntryMutation = { __typename?: 'Mutation', userCreateTestPresetHistoryEntry: { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type CreateTestPresetMutationVariables = Exact<{
   data: CreateTestPresetInput;
 }>;
 
 
-export type CreateTestPresetMutation = { __typename?: 'Mutation', createTestPreset: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type CreateTestPresetMutation = { __typename?: 'Mutation', createTestPreset: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type CreateTestPresetUserMutationVariables = Exact<{
   data: CreateTestPresetInput;
 }>;
 
 
-export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type FollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -439,7 +467,7 @@ export type FollowUserMutationVariables = Exact<{
 }>;
 
 
-export type FollowUserMutation = { __typename?: 'Mutation', followUser: { __typename?: 'FollowUserResponse', follow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type FollowUserMutation = { __typename?: 'Mutation', followUser: { __typename?: 'FollowUserResponse', follow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -452,7 +480,7 @@ export type UnfollowUserMutationVariables = Exact<{
 }>;
 
 
-export type UnfollowUserMutation = { __typename?: 'Mutation', unfollowUser: { __typename?: 'UnfollowUserResponse', unfollow?: Maybe<boolean>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UnfollowUserMutation = { __typename?: 'Mutation', unfollowUser: { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UpdateUserMutationVariables = Exact<{
   where: UserWhereInput;
@@ -460,28 +488,28 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type TestPresetQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPresetResponse', testPreset?: Maybe<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type TestPresetsQueryVariables = Exact<{
   input: TestPresetsFindInput;
 }>;
 
 
-export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UserTestPresetsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type FilterUsersQueryVariables = Exact<{
   page: Scalars['Int'];
@@ -489,7 +517,7 @@ export type FilterUsersQueryVariables = Exact<{
 }>;
 
 
-export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', nodeCount?: Maybe<number>, pageCount?: Maybe<number>, currentPage?: Maybe<number>, nodesPerPage?: Maybe<number>, hasMore?: Maybe<boolean>, nodes?: Maybe<Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, value: number }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', nodeCount?: number | null | undefined, pageCount?: number | null | undefined, currentPage?: number | null | undefined, nodesPerPage?: number | null | undefined, hasMore?: boolean | null | undefined, nodes?: Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type FollowsUserQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -502,28 +530,28 @@ export type FollowsUserQuery = { __typename?: 'Query', followsUser: boolean };
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UserQueryVariables = Exact<{
   where: UserWhereInput;
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: Maybe<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UserFollowersQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', users?: Maybe<Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: Maybe<AuthProvider>, oauthId?: Maybe<string>, avatar: string }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', users?: Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UsersQueryVariables = Exact<{
   take: Scalars['Int'];
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Maybe<Array<{ __typename?: 'User', id: string, oauthId?: Maybe<string>, username?: Maybe<string>, description?: Maybe<string>, avatar?: Maybe<string>, country?: Maybe<string>, keystrokes?: Maybe<number>, badge?: Maybe<UserBadge>, authProvider?: Maybe<AuthProvider>, testsCompleted?: Maybe<number>, wordsWritten?: Maybe<number>, accuracy?: Maybe<Array<{ __typename?: 'TypingAccuracy', id: string, amount: number, createdAt: any }>>, charsPerMinute?: Maybe<Array<{ __typename?: 'CharsPerMinute', id: string, amount: number, createdAt: any }>>, wordsPerMinute?: Maybe<Array<{ __typename?: 'WordsPerMinute', id: string, amount: number, createdAt: any }>>, testPresets?: Maybe<Array<{ __typename?: 'TestPreset', id: string, userId?: Maybe<string>, type?: Maybe<TestType>, time?: Maybe<number>, language?: Maybe<TestLanguage>, words?: Maybe<number>, creatorImage?: Maybe<string>, createdAt: any, updatedAt: any }>> }>>, errors?: Maybe<Array<{ __typename?: 'ErrorResponse', field: string, message: string }>> } };
+export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export const FilteredUserFragmentDoc = gql`
     fragment FilteredUser on FilteredUser {
@@ -566,6 +594,32 @@ export const FollowUserResponseFragmentDoc = gql`
   }
 }
     ${ErrorResponseFragmentDoc}`;
+export const TestPresetHistoryFragmentDoc = gql`
+    fragment TestPresetHistory on TestPresetHistory {
+  id
+  userId
+  testPresetId
+  wpm
+  cpm
+  accuracy
+  keystrokes
+  correctChars
+  incorrectChars
+  createdAt
+  updatedAt
+}
+    `;
+export const TestPresetHistoryResponseFragmentDoc = gql`
+    fragment TestPresetHistoryResponse on TestPresetHistoryResponse {
+  testPresetHistory {
+    ...TestPresetHistory
+  }
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${TestPresetHistoryFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const TestPresetFragmentDoc = gql`
     fragment TestPreset on TestPreset {
   id
@@ -637,31 +691,17 @@ export const UserFragmentDoc = gql`
   description
   avatar
   country
-  keystrokes
   badge
   authProvider
-  testsCompleted
-  wordsWritten
-  accuracy {
-    id
-    amount
-    createdAt
-  }
-  charsPerMinute {
-    id
-    amount
-    createdAt
-  }
-  wordsPerMinute {
-    id
-    amount
-    createdAt
+  testPresetHistory {
+    ...TestPresetHistory
   }
   testPresets {
     ...TestPreset
   }
 }
-    ${TestPresetFragmentDoc}`;
+    ${TestPresetHistoryFragmentDoc}
+${TestPresetFragmentDoc}`;
 export const UserResponseFragmentDoc = gql`
     fragment UserResponse on UserResponse {
   user {
@@ -684,6 +724,73 @@ export const UsersResponseFragmentDoc = gql`
 }
     ${UserFragmentDoc}
 ${ErrorResponseFragmentDoc}`;
+export const CreateTestPresetHistoryEntryDocument = gql`
+    mutation createTestPresetHistoryEntry($input: CreateTestPresetHistoryInput!) {
+  createTestPresetHistoryEntry(input: $input) {
+    ...TestPresetHistoryResponse
+  }
+}
+    ${TestPresetHistoryResponseFragmentDoc}`;
+export type CreateTestPresetHistoryEntryMutationFn = Apollo.MutationFunction<CreateTestPresetHistoryEntryMutation, CreateTestPresetHistoryEntryMutationVariables>;
+
+/**
+ * __useCreateTestPresetHistoryEntryMutation__
+ *
+ * To run a mutation, you first call `useCreateTestPresetHistoryEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTestPresetHistoryEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTestPresetHistoryEntryMutation, { data, loading, error }] = useCreateTestPresetHistoryEntryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTestPresetHistoryEntryMutation(baseOptions?: Apollo.MutationHookOptions<CreateTestPresetHistoryEntryMutation, CreateTestPresetHistoryEntryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTestPresetHistoryEntryMutation, CreateTestPresetHistoryEntryMutationVariables>(CreateTestPresetHistoryEntryDocument, options);
+      }
+export type CreateTestPresetHistoryEntryMutationHookResult = ReturnType<typeof useCreateTestPresetHistoryEntryMutation>;
+export type CreateTestPresetHistoryEntryMutationResult = Apollo.MutationResult<CreateTestPresetHistoryEntryMutation>;
+export type CreateTestPresetHistoryEntryMutationOptions = Apollo.BaseMutationOptions<CreateTestPresetHistoryEntryMutation, CreateTestPresetHistoryEntryMutationVariables>;
+export const UserCreateTestPresetHistoryEntryDocument = gql`
+    mutation userCreateTestPresetHistoryEntry($userId: String!, $input: CreateTestPresetHistoryInput!) {
+  userCreateTestPresetHistoryEntry(userId: $userId, input: $input) {
+    ...TestPresetHistoryResponse
+  }
+}
+    ${TestPresetHistoryResponseFragmentDoc}`;
+export type UserCreateTestPresetHistoryEntryMutationFn = Apollo.MutationFunction<UserCreateTestPresetHistoryEntryMutation, UserCreateTestPresetHistoryEntryMutationVariables>;
+
+/**
+ * __useUserCreateTestPresetHistoryEntryMutation__
+ *
+ * To run a mutation, you first call `useUserCreateTestPresetHistoryEntryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUserCreateTestPresetHistoryEntryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [userCreateTestPresetHistoryEntryMutation, { data, loading, error }] = useUserCreateTestPresetHistoryEntryMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUserCreateTestPresetHistoryEntryMutation(baseOptions?: Apollo.MutationHookOptions<UserCreateTestPresetHistoryEntryMutation, UserCreateTestPresetHistoryEntryMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UserCreateTestPresetHistoryEntryMutation, UserCreateTestPresetHistoryEntryMutationVariables>(UserCreateTestPresetHistoryEntryDocument, options);
+      }
+export type UserCreateTestPresetHistoryEntryMutationHookResult = ReturnType<typeof useUserCreateTestPresetHistoryEntryMutation>;
+export type UserCreateTestPresetHistoryEntryMutationResult = Apollo.MutationResult<UserCreateTestPresetHistoryEntryMutation>;
+export type UserCreateTestPresetHistoryEntryMutationOptions = Apollo.BaseMutationOptions<UserCreateTestPresetHistoryEntryMutation, UserCreateTestPresetHistoryEntryMutationVariables>;
 export const CreateTestPresetDocument = gql`
     mutation createTestPreset($data: CreateTestPresetInput!) {
   createTestPreset(data: $data) {

@@ -5,25 +5,10 @@ fragment User on User {
   description
   avatar
   country
-  keystrokes
   badge
   authProvider
-  testsCompleted
-  wordsWritten
-  accuracy {
-    id
-    amount
-    createdAt
-  }
-  charsPerMinute {
-    id
-    amount
-    createdAt
-  }
-  wordsPerMinute {
-    id
-    amount
-    createdAt
+  testPresetHistory {
+    ...TestPresetHistory
   }
   testPresets {
     ...TestPreset
