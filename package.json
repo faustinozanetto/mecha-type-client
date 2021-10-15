@@ -40,7 +40,6 @@
     "@next/bundle-analyzer": "^11.1.2",
     "@sentry/browser": "^6.13.3",
     "@sentry/node": "^6.13.3",
-    "@unly/universal-language-detector": "^2.0.3",
     "axios": "^0.23.0",
     "chalk": "^4.1.2",
     "chart.js": "^3.5.1",

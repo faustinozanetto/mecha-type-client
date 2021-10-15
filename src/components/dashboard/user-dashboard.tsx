@@ -1,29 +1,24 @@
 import React from 'react';
-import { __SERVER__ } from '@utils/constants';
-import { StatCard } from './stats';
-// import { IPositionEntry } from 'pages/dashboard';
-import { User } from 'generated/graphql';
-import { Flex } from '@chakra-ui/react';
+import { UserFragment } from 'generated/graphql';
+import { Flex, Text, Heading } from '@chakra-ui/react';
 
 interface DashboardProps {
-  user: User;
-  // userStats: IPositionEntry[];
+  /**
+   * UserFragment to retrieve data from.
+   */
+  user: UserFragment;
 }
 
 export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
-  /**
-   *
-   * @param filterBy Filter by parameter used to sort the stats.
-   * @returns Returns the data corresponding to the filtered param.
-   */
-  // const filterUserStats = (filterBy: FilterBy) => {
-  //   let data = userStats.filter((stat) => {
-  //     if (stat.fieldType === filterBy) {
-  //       return stat;
-  //     }
-  //   });
-  //   return data[0];
-  // };
-
-  return <Flex></Flex>;
+  return (
+    <Flex flexDir="column" width="full" py={8}>
+      {/* Heading */}
+      <Flex flexDir="column">
+        <Heading as="h1">Welcome back, {user.username}.</Heading>
+        <Text as="h2" ml={2} fontSize="lg" fontWeight={500}>
+          You have improved a lot since last week!
+        </Text>
+      </Flex>
+    </Flex>
+  );
 };

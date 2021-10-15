@@ -2,6 +2,7 @@ import React from 'react';
 import { SystemProps, Tooltip } from '@chakra-ui/react';
 import { Box, Text, Skeleton, Flex } from '@chakra-ui/react';
 import { Icon } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 
 interface UserStatCardProps {
   /** Name to display */
@@ -31,47 +32,49 @@ export const UserStatCard: React.FC<UserStatCardProps> = ({
   backgroundColor,
 }) => {
   return (
-    <Tooltip isDisabled={true} label={tooltipLabel} aria-label="Stat Card Tooltip">
-      <Box
-        display="flex"
-        flexDir="row"
-        padding="0.75rem"
-        margin="0.25rem"
-        borderRadius="xl"
-        alignItems="center"
-        boxShadow="lg"
-        backgroundColor={backgroundColor}
-      >
-        <Icon
-          as={icon}
-          w={12}
-          h={12}
+    <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.2 }}>
+      <Tooltip isDisabled={true} label={tooltipLabel} aria-label="Stat Card Tooltip">
+        <Box
           display="flex"
+          flexDir="row"
           padding="0.75rem"
-          color="black"
-          backgroundColor="white"
-          borderRadius="lg"
+          margin="0.25rem"
+          borderRadius="xl"
           alignItems="center"
-          justifyContent="center"
-        />
-        <Flex flexDir="column" ml={4}>
-          <Skeleton isLoaded={!loading} height={6} width="6rem">
-            <Text as="h3" color="white" fontSize="xl" fontWeight={600}>
-              {amount}
-            </Text>
-          </Skeleton>
-          <Skeleton
-            isLoaded={!loading}
-            height={!loading ? 'auto' : 6}
-            width={!loading ? 'auto' : '4rem'}
-            mt={!loading ? 1 : 2}
-          >
-            <Text as="h4" color="white" fontSize="lg" fontWeight={500} wordBreak="break-word">
-              {title}
-            </Text>
-          </Skeleton>
-        </Flex>
-      </Box>
-    </Tooltip>
+          boxShadow="lg"
+          backgroundColor={backgroundColor}
+        >
+          <Icon
+            as={icon}
+            w={12}
+            h={12}
+            display="flex"
+            padding="0.75rem"
+            color="black"
+            backgroundColor="white"
+            borderRadius="lg"
+            alignItems="center"
+            justifyContent="center"
+          />
+          <Flex flexDir="column" ml={4}>
+            <Skeleton isLoaded={!loading} height={6} width="6rem">
+              <Text as="h3" color="white" fontSize="xl" fontWeight={600}>
+                {amount}
+              </Text>
+            </Skeleton>
+            <Skeleton
+              isLoaded={!loading}
+              height={!loading ? 'auto' : 6}
+              width={!loading ? 'auto' : '4rem'}
+              mt={!loading ? 1 : 2}
+            >
+              <Text as="h4" color="white" fontSize="lg" fontWeight={500} wordBreak="break-word">
+                {title}
+              </Text>
+            </Skeleton>
+          </Flex>
+        </Box>
+      </Tooltip>
+    </motion.div>
   );
 };

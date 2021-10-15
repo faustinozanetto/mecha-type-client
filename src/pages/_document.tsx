@@ -15,6 +15,7 @@ import { Cookies } from '@modules/core/cookies/types/cookies.types';
 import theme from '../styles/theme';
 // eslint-disable-next-line @next/next/no-script-in-document
 import Script from 'next/script';
+import { GoogleAnalytics } from '@components/google/google-analytics';
 
 /**
  * Additional props depending on our App
@@ -47,18 +48,7 @@ class AppDocument extends Document<DocumentRenderProps> {
     return (
       <Html lang={locale}>
         <Head>
-          <Script
-            id="google-adsense"
-            src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-            data-ad-client="ca-pub-8808387532349652"
-            onLoad={() => {
-              if (typeof window !== 'undefined') {
-                window.onload = () => {
-                  ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
-                };
-              }
-            }}
-          />
+          <GoogleAnalytics />
         </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

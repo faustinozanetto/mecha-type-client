@@ -28,11 +28,11 @@ const sidebarLinks: ISidebarLink[] = [
     href: '/',
     icon: FiHome,
   },
-  // {
-  //   name: 'sidebar-dashboard',
-  //   href: '/dashboard',
-  //   icon: AiOutlineDashboard,
-  // },
+  {
+    name: 'sidebar-dashboard',
+    href: '/dashboard',
+    icon: AiOutlineDashboard,
+  },
   {
     name: 'sidebar-practice',
     href: '/practice',
