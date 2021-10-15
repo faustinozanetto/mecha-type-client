@@ -4,52 +4,52 @@ export const typeSounds: SoundType[] = [
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_1.wav',
+    filePath: '/sounds/type/click4_1.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_2.wav',
+    filePath: '/sounds/type/click4_2.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_3.wav',
+    filePath: '/sounds/type/click4_3.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_4.wav',
+    filePath: '/sounds/type/click4_4.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_5.wav',
+    filePath: '/sounds/type/click4_5.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_6.wav',
+    filePath: '/sounds/type/click4_6.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_7.wav',
+    filePath: '/sounds/type/click4_7.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_8.wav',
+    filePath: '/sounds/type/click4_8.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_9.wav',
+    filePath: '/sounds/type/click4_9.wav',
   },
   {
     category: SoundCategory.TYPE,
     volume: 2.25,
-    filePath: '/static/sounds/type/click4_10.wav',
+    filePath: '/sounds/type/click4_10.wav',
   },
 ];
 

@@ -50,18 +50,6 @@ const PracticeResults: React.FC<PracticeResultsProps> = ({
           <Text as="h1" fontSize="3xl" color={useColorModeValue('black', 'white')} fontWeight={700}>
             Results
           </Text>
-          <Button
-            size="lg"
-            variant="solid"
-            boxShadow="xl"
-            margin="0"
-            colorScheme="purple"
-            onClick={() => {
-              router.push('/practice');
-            }}
-          >
-            Back
-          </Button>
         </Flex>
         <SimpleGrid columns={[1, 1, 2, 3, 3]} spacing="0.5rem">
           <UserStatCard title="Keystrokes" amount={keystrokes.toString()} icon={FaKeyboard} backgroundColor="#075985" />

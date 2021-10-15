@@ -4,6 +4,8 @@ import LayoutCoreHead, { LayoutCoreHeadProps } from './layout-core-head';
 import { Box, Flex, Grid, useColorModeValue } from '@chakra-ui/react';
 import Sidebar, { SidebarProps } from '@components/sidebar/sidebar';
 import { createLogger } from '@modules/core/logging/mecha-logger';
+import { UserFragment } from '@generated/graphql';
+import Footer from '@components/footer/footer';
 
 export interface LayoutCoreProps {
   /**
@@ -26,28 +28,15 @@ export interface LayoutCoreProps {
    */
   Head?: React.FC<LayoutCoreHeadProps>;
   /**
-   * Component to use as Footer.
-   *
-   * @default BaseFooter
-   */
-  Footer?: React.FC;
-  /**
    * Wrapper container for the page.
    *
    * By default, uses CorePageContainer component.
    */
   PageContainer?: React.FC;
   /**
-   * Component to use as Sidebar.
-   *
-   * @default Sidebar
-   */
-  Sidebar?: typeof Sidebar;
-  /**
-   * Props forwarded to the Sidebar component.
    *
    */
-  sidebarProps?: SidebarProps;
+  user?: UserFragment;
   /** Errors */
   error?: any;
 }
@@ -58,16 +47,7 @@ const logger = createLogger({
 });
 
 const LayoutCore: React.FC<LayoutCoreProps> = (props): JSX.Element => {
-  const {
-    children,
-    error,
-    headProps = {},
-    PageContainer = LayoutCoreContainer,
-    Head = LayoutCoreHead,
-    Footer = null,
-    Sidebar = null,
-    sidebarProps,
-  } = props;
+  const { children, error, headProps = {}, user, PageContainer = LayoutCoreContainer, Head = LayoutCoreHead } = props;
 
   return (
     <Grid
@@ -78,13 +58,16 @@ const LayoutCore: React.FC<LayoutCoreProps> = (props): JSX.Element => {
     >
       {/* SEO Head */}
       <Head {...headProps} />
-      {/* Main */}
-      {/* Nav */}
-      <Box position="relative">{Sidebar && <Sidebar {...sidebarProps} />}</Box>
+
+      {/* Sidebar */}
+      <Box position="relative">{<Sidebar user={user} />}</Box>
+
+      {/* Main container */}
       <Flex flexDir="column" backgroundColor={useColorModeValue('gray.200', 'gray.800')} minHeight="100vh">
+        {/* Content */}
         {error ? <h1>Error</h1> : <PageContainer>{children}</PageContainer>}
         {/* Footer */}
-        {Footer && <Footer />}
+        <Footer />
       </Flex>
     </Grid>
   );

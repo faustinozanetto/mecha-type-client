@@ -20,7 +20,7 @@ export const fontConfigurations: FontConfiguration[] = [
   },
 ];
 
-export const fontsBasePath = '/static/fonts';
+export const fontsBasePath = '/fonts';
 
 /**
  *

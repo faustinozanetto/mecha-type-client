@@ -7,9 +7,6 @@ import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/layout-core';
 import withApollo from '@modules/core/apollo/apollo';
 
-import Footer from '@components/footer/footer';
-import Sidebar from '@components/sidebar/sidebar';
-
 interface PracticePageProps {}
 
 const PracticePage: React.FC<PracticePageProps> = () => {
@@ -17,9 +14,7 @@ const PracticePage: React.FC<PracticePageProps> = () => {
 
   return (
     <LayoutCore
-      Footer={Footer}
-      Sidebar={Sidebar}
-      sidebarProps={{ user: userData?.me?.user! }}
+      user={userData?.me?.user!}
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice page where you can choose to use a created preset, or create one.',

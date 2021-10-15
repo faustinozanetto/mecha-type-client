@@ -45,7 +45,7 @@ const LayoutCoreHead: React.FC<LayoutCoreHeadProps> = (props): JSX.Element => {
     seoCanonicalUrl,
     seoImage,
     seoDescription,
-    seoFavIcon = 'static/images/icons/mecha-type-icon.png',
+    seoFavIcon = '/images/icons/mecha-type-icon.png',
   } = props;
 
   return (
@@ -90,13 +90,13 @@ const LayoutCoreHead: React.FC<LayoutCoreHeadProps> = (props): JSX.Element => {
       <meta property="og:url" content={seoUrl} />
       <meta property="og:title" content={seoTitle} />
       <meta property="og:description" content={seoDescription} />
-      <meta property="og:image" content={seoFavIcon} />
+      <meta property="og:image" content={seoImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       {/* Twitter */}
       <meta name="twitter:site" content={seoUrl} />
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:image" content={seoFavIcon} />
+      <meta name="twitter:image" content={seoImage} />
     </NextHead>
   );
 };
