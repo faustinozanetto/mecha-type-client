@@ -2,7 +2,7 @@ import React from 'react';
 import { HStack, Text } from '@chakra-ui/react';
 import { FilteredUserFragment } from '@generated/graphql';
 import { UserAvatar } from '@components/user/profile/page/user/user-avatar';
-import { generateAvatarURl } from '@lib/user/userHelper';
+import { generateAvatarURl } from '@modules/core/user/user.module';
 
 interface LeaderboardUserProps {
   user: FilteredUserFragment;

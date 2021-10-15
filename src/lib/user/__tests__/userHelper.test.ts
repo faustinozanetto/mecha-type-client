@@ -1,4 +1,4 @@
-import { calculateAverageAccuracy, calculateAverageCPM, calculateAverageWPM } from '../userHelper';
+import { calculateAverageAccuracy, calculateAverageCPM, calculateAverageWPM } from '../../../modules/core/user/user.module';
 import { User } from '@generated/graphql';
 
 test('It should return the average WPM of a given User', () => {

@@ -5,7 +5,7 @@ import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
-import { generateAvatarURl } from '@lib/user/userHelper';
+import { generateAvatarURl } from '@modules/core/user/user';
 import withApollo from '@modules/core/apollo/apollo';
 
 import axios from 'axios';

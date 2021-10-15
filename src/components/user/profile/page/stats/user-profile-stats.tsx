@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, SimpleGrid, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
 import { UserStatCard } from '@components/user/profile/page/stats';
-import { calculateAverageWPM, calculateAverageCPM, calculateAverageAccuracy } from '@lib/user/userHelper';
+import { UserParsedStats, generateParsedStats } from '@modules/core/user/user';
 import BiBullseye from '@meronex/icons/bi/BiBullseye';
 import BiCrown from '@meronex/icons/bi/BiCrown';
 import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
@@ -13,12 +13,14 @@ import { useTranslation } from 'next-i18next';
 interface UserProfileStatsProps {
   /** User data to retrieve data from */
   user: UserFragment;
+  parsedStats: UserParsedStats;
   /** Loading state */
   loading: boolean;
 }
 
-const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) => {
+const UserProfileStats: React.FC<UserProfileStatsProps> = ({ parsedStats, loading }) => {
   const { t } = useTranslation('user-profile');
+
   return (
     <Box marginTop="0.5rem" marginBottom="0.5rem">
       <Text as="h2" fontSize="3xl" color={useColorModeValue('black', 'white')} fontWeight={600} marginBottom="0.5rem">
@@ -40,14 +42,14 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) =>
         />
         <UserStatCard
           title={t('stats-keystrokes')}
-          amount={user?.keystrokes?.toString() ?? 'Loading'}
+          amount={parsedStats.keystrokes.toString() ?? 'Loading'}
           loading={loading}
           icon={FaKeyboard}
           backgroundColor="#075985"
         />
         <UserStatCard
           title={t('stats-averageWPM')}
-          amount={user ? calculateAverageWPM(user).toString() : 'Loading'}
+          amount={parsedStats.averageWPM.toString() ?? 'Loading'}
           loading={loading}
           icon={FaKeyboard}
           hasTooltip={true}
@@ -56,7 +58,7 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) =>
         />
         <UserStatCard
           title={t('stats-averageCPM')}
-          amount={user ? calculateAverageCPM(user).toString() : 'Loading'}
+          amount={parsedStats.averageCPM.toString() ?? 'Loading'}
           loading={loading}
           icon={FaKeyboard}
           hasTooltip={true}
@@ -65,14 +67,14 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) =>
         />
         <UserStatCard
           title={t('stats-accuracy')}
-          amount={`${user ? calculateAverageAccuracy(user).toString() : 'Loading'}%`}
+          amount={parsedStats.averageAccuracy.toString() + ' %' ?? 'Loading'}
           loading={loading}
           icon={BiBullseye}
           backgroundColor="#5B21B6"
         />
         <UserStatCard
           title={t('stats-tests-completed')}
-          amount={user?.testsCompleted?.toString() ?? 'Loading'}
+          amount={parsedStats.testsCompleted.toString() ?? 'Loading'}
           loading={loading}
           icon={GrTest}
           backgroundColor="#6B21A8"

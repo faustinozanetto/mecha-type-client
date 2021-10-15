@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { useFollowsUserQuery, User, UserFragment, useUserFollowersQuery } from 'generated/graphql';
 import { Container } from '@chakra-ui/react';
 import { EditUserProfile } from '../../edit';
 import { CountryEntry } from '@pages/user/[id]';
+import { generateParsedStats, UserParsedStats } from '@modules/core/user/user';
 
 const UserProfileDetails = dynamic(() => import('@components/user/profile/page/user/details/user-profile-details'));
 
@@ -26,6 +27,7 @@ interface IUserProfileProps {
 
 const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, countries }) => {
   const [editing, setEditing] = useState(false);
+  const [parsedStats, setParsedStats] = useState<UserParsedStats>();
 
   const { data: followersData, refetch: followersRefetch } = useUserFollowersQuery({
     skip: targetUser?.id === undefined,
@@ -55,6 +57,10 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
     };
   };
 
+  useEffect(() => {
+    setParsedStats(generateParsedStats(user));
+  }, [user?.testPresetHistory, loading]);
+
   // If editing, return the edit profile component.
   if (editing) {
     return (
@@ -82,11 +88,14 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         followsUserRefetch={followsUserRefetch}
         settingsButtonClick={() => setEditing(true)}
       />
-      <UserProfileInformation
-        loading={loading}
-        targetUser={targetUser}
-        followers={followersData?.userFollowers?.users!}
-      />
+      {parsedStats && (
+        <UserProfileInformation
+          loading={loading}
+          targetUser={targetUser}
+          parsedStats={parsedStats}
+          followers={followersData?.userFollowers?.users!}
+        />
+      )}
     </Container>
   );
 };

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import { UserFollowerFragment } from '@generated/graphql';
 import { UserAvatar } from '../../user/user-avatar';
-import { generateAvatarURl } from '@lib/user/userHelper';
+import { generateAvatarURl } from '@modules/core/user/user';
 
 interface UserFollowerCardProps {
   /** Follower Data */

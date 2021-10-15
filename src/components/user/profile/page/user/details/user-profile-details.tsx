@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import { UserAvatar } from '../user-avatar';
 import { SettingsButton } from './settings-button';
-import { generateAvatarURl } from '@lib/user/userHelper';
+import { generateAvatarURl } from '@modules/core/user/user';
 import { CountryEntry } from '@pages/user/[id]';
 import { UserProfileCountry } from './user-profile-country';
 

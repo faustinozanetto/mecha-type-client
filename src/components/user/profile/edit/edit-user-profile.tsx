@@ -4,7 +4,7 @@ import { Flex, Text, GridItem, Grid, useColorModeValue } from '@chakra-ui/react'
 import { UserAvatar } from '../page/user/user-avatar';
 import { EditUserProfileForm } from './edit-user-profile-form';
 import { CountryEntry } from '@pages/user/[id]';
-import { generateAvatarURl } from '@lib/user/userHelper';
+import { generateAvatarURl } from '@modules/core/user/user';
 import EditUserProfileSelection from './edit-user-edit-selection';
 import { EditUserPracticeForm } from './edit-user-practice-form';
 
