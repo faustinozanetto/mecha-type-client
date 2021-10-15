@@ -52,7 +52,7 @@ export interface ITypingStat {
   /**
    * Second timestamp at which the stats where taken.
    */
-  time: number;
+  time: number | Date;
 }
 
 interface PracticeGameInputProps {

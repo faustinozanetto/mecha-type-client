@@ -11,7 +11,7 @@ const LayoutCoreContainer: React.FC<LayoutCoreContainerProps> = (props): JSX.Ele
 
   return (
     <Container
-      maxW={['1xl', '2xl', '3xl', '4xl']}
+      maxW={['1xl', '2xl', '3xl', '4xl', '6xl']}
       paddingTop="1rem"
       paddingBottom="1rem"
       minHeight="calc(100vh - 10rem)"

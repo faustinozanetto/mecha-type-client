@@ -1,8 +1,10 @@
 import React from 'react';
-import { Line } from 'react-chartjs-2';
-import { defaults } from 'react-chartjs-2';
+import dynamic from 'next/dynamic';
 import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game';
-import { useColorModeValue, Flex } from '@chakra-ui/react';
+import { useColorModeValue, Flex, Box } from '@chakra-ui/react';
+import { ApexOptions } from 'apexcharts';
+
+const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 interface StatLineChartProps {
   statsData: ITypingStat[];
@@ -49,48 +51,53 @@ export const StatLineChart: React.FC<StatLineChartProps> = ({ statsData, statTyp
    * @returns the array containing the labels for the chart.
    */
   const generateLabels = (): string[] => {
-    const array = statsData.map((entry) => `${entry.time}s`);
-    return array;
+    return statsData.map((entry) => {
+      // If time registry is of type number, we parse it as second, timestamp.
+      if (typeof entry.time === 'number') {
+        return `${entry.time}s`;
+      } else {
+        const date = new Date(entry.time);
+        return date.toISOString().split('T')[0];
+      }
+    });
   };
 
-  const data = {
-    labels: generateLabels(),
-    datasets: [
-      {
-        label: statType.valueOf(),
-        data: generateData(),
-        fill: true,
-        backgroundColor: chartBackgroundColor,
-        borderColor: '#7E22CE',
-        tension: 0.3,
-      },
-    ],
-  };
-
-  const options = {
-    sales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+  const options: ApexOptions = {
+    chart: {
+      type: 'area',
+      height: 350,
+      zoom: { enabled: false },
+    },
+    dataLabels: {
+      enabled: true,
     },
     title: {
-      font: 'Poppins',
+      text: `${statType.valueOf()} progression`,
+      align: 'left',
+    },
+    stroke: {
+      curve: 'smooth',
+    },
+    xaxis: {
+      categories: generateLabels(),
+    },
+    tooltip: {
+      x: {
+        format: 'yy/MM/dd',
+      },
     },
   };
 
-  defaults.font.family = 'Poppins';
-  defaults.font.weight = '600';
-  defaults.font.size = 14;
-  defaults.color = useColorModeValue('black', 'white');
+  const series = [
+    {
+      name: statType.valueOf(),
+      data: generateData(),
+    },
+  ];
 
   return (
-    <Flex>
-      {/* @ts-ignore */}
-      <Line data={data} options={options} />
-    </Flex>
+    <Box w="100%" h={{ sm: '300px' }} ps="8px">
+      <ReactApexChart options={options} series={series} type="area" width="100%" height="100%" />
+    </Box>
   );
 };
