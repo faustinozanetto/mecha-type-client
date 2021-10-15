@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
 import { useFollowsUserQuery, User, UserFragment, useUserFollowersQuery } from 'generated/graphql';
 import { Container } from '@chakra-ui/react';
 import { EditUserProfile } from '../../edit';
 import { CountryEntry } from '@pages/user/[id]';
 import { generateParsedStats, UserParsedStats } from '@modules/core/user/user';
-
-const UserProfileDetails = dynamic(() => import('@components/user/profile/page/user/details/user-profile-details'));
-
-const UserProfileInformation = dynamic(
-  () => import('@components/user/profile/page/user/details/user-profile-information')
-);
+import UserProfileDetails from './details/user-profile-details';
+import UserProfileInformation from './details/user-profile-information';
 
 interface IUserProfileProps {
   /** Current logged in user */

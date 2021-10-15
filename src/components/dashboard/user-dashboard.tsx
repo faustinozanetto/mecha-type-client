@@ -3,6 +3,7 @@ import { UserFragment } from 'generated/graphql';
 import { Flex, Text, Heading, useColorModeValue, SimpleGrid, VStack, GridItem } from '@chakra-ui/react';
 import { StatLineChart } from '@components/practice/results/charts';
 import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game';
+import { StatDonutChart } from '@components/practice/results/charts/stat-donut-chart';
 
 interface DashboardProps {
   /**
@@ -67,6 +68,9 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
           </GridItem>
           <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
             <StatLineChart statsData={currentStat} statType={ETypingStatType.CPM} />
+          </GridItem>
+          <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
+            <StatDonutChart statsData={currentStat} statType={ETypingStatType.CHARS} />
           </GridItem>
         </SimpleGrid>
       </Flex>

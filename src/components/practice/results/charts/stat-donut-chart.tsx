@@ -7,13 +7,12 @@ import { ApexOptions } from 'apexcharts';
 // @ts-ignore
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-interface StatLineChartProps {
+interface StatDonutChartProps {
   statsData: ITypingStat[];
   statType?: ETypingStatType;
 }
 
-export const StatLineChart: React.FC<StatLineChartProps> = ({ statsData, statType = ETypingStatType.WPM }) => {
-  const { colorMode } = useColorMode();
+export const StatDonutChart: React.FC<StatDonutChartProps> = ({ statsData, statType = ETypingStatType.WPM }) => {
   /**
    *
    * @returns the array containing the data based on the type passed from props
@@ -74,53 +73,25 @@ export const StatLineChart: React.FC<StatLineChartProps> = ({ statsData, statTyp
 
   const options: ApexOptions = {
     chart: {
-      type: 'area',
-      height: 350,
-      zoom: { enabled: false },
+      width: 300,
+      type: 'pie',
     },
     dataLabels: {
       enabled: true,
-      style: {
-        colors: ['#F44336', '#E91E63', '#9C27B0'],
-      },
     },
+    labels: ['Correct', 'Incorrect'],
+    colors: ['#48BB78', '#E53E3E'],
     title: {
       text: `${statType.valueOf()} progression`,
       align: 'left',
       style: { color: useColorModeValue('#000', '#fff'), fontWeight: '600', fontSize: '16' },
     },
-    colors: ['#F44336', '#E91E63', '#9C27B0'],
-    stroke: {
-      curve: 'smooth',
-    },
-    xaxis: {
-      categories: generateLabels(),
-      labels: { style: { colors: useColorModeValue('#000', '#fff') } },
-    },
-    yaxis: {
-      labels: { style: { colors: useColorModeValue('#000', '#fff') } },
-    },
-    markers: {
-      colors: ['#F44336', '#E91E63', '#9C27B0'],
-    },
-    tooltip: {
-      x: {
-        format: 'yy/MM/dd',
-      },
-    },
   };
-
-  const series = [
-    {
-      name: statType.valueOf(),
-      data: generateData(),
-    },
-  ];
 
   return (
     <Box w="100%" h={{ sm: '300px' }} ps="8px">
       {/* @ts-ignore */}
-      <ReactApexChart options={options} series={series} type="area" width="100%" height="100%" />
+      <ReactApexChart options={options} series={generateData()} type="pie" width={400} />
     </Box>
   );
 };

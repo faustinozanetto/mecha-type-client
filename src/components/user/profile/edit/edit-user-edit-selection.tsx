@@ -13,8 +13,6 @@ const EditUserProfileSelection: React.FC<EditUserProfileSelectionProps> = (props
 
   return (
     <Flex
-      templateRows="1fr"
-      templateColumns="1fr auto"
       padding="1rem"
       borderRadius="2xl"
       boxShadow="xl"

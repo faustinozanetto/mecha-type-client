@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import FiClock from '@meronex/icons/fi/FiClock';
 import BiBullseye from '@meronex/icons/bi/BiBullseye';
 import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
@@ -7,6 +6,7 @@ import { ITypingStat, ETypingStatType } from '../game/types/practice-game';
 import { ChartSelectButton, StatLineChart } from './charts';
 import { UserStatCard } from '@components/user/profile/page/stats/user-stat-card';
 import { Flex, Text, SimpleGrid, Button, Box, useColorModeValue } from '@chakra-ui/react';
+import { StatDonutChart } from './charts/stat-donut-chart';
 
 interface PracticeResultsProps {
   showStats?: boolean;
@@ -35,7 +35,6 @@ const PracticeResults: React.FC<PracticeResultsProps> = ({
   duration = '0s',
   statsData,
 }) => {
-  const router = useRouter();
   const [currentGraph, setCurrentGraph] = useState<ETypingStatType>(ETypingStatType.WPM);
 
   return (
@@ -77,15 +76,14 @@ const PracticeResults: React.FC<PracticeResultsProps> = ({
               label={ETypingStatType.ACCURACY}
               onClick={() => setCurrentGraph(ETypingStatType.ACCURACY)}
             />
-            <ChartSelectButton label={ETypingStatType.ERRORS} onClick={() => setCurrentGraph(ETypingStatType.ERRORS)} />
-            <ChartSelectButton
-              label={ETypingStatType.CORRECT}
-              onClick={() => setCurrentGraph(ETypingStatType.CORRECT)}
-            />
+            <ChartSelectButton label={ETypingStatType.CHARS} onClick={() => setCurrentGraph(ETypingStatType.CHARS)} />
           </Flex>
         </Flex>
         <SimpleGrid columns={1} rows={1} spacing="0.5rem">
-          <StatLineChart statsData={statsData} statType={currentGraph} />
+          {currentGraph !== ETypingStatType.CHARS && <StatLineChart statsData={statsData} statType={currentGraph} />}
+          {currentGraph === ETypingStatType.CHARS && (
+            <StatDonutChart statsData={statsData} statType={ETypingStatType.CHARS} />
+          )}
         </SimpleGrid>
       </Box>
     </Flex>

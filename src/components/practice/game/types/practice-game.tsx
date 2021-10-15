@@ -16,8 +16,7 @@ const PracticeVisualLetter = dynamic(() => import('@components/practice/game/vis
 const PracticeResults = dynamic(() => import('@components/practice/results/practice-results'));
 
 export enum ETypingStatType {
-  ERRORS = 'Errors',
-  CORRECT = 'Corrects',
+  CHARS = 'Characters',
   WPM = 'WPM',
   CPM = 'CPM',
   ACCURACY = 'Accuracy',
@@ -101,11 +100,6 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         top: 2,
       };
     }
-  }, [currIndex]);
-
-  // Use a random type sound on every key press
-  useEffect(() => {
-    setTypeSound(selectRandomTypeSound());
   }, [currIndex]);
 
   /**

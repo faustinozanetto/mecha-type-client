@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
+import withApollo from '@modules/core/apollo/apollo';
+import axios from 'axios';
+import LayoutCore from 'layouts/core/components/layout-core';
 import { useMeQuery, User, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@modules/core/user/user';
-import withApollo from '@modules/core/apollo/apollo';
 
-import axios from 'axios';
-import LayoutCore from 'layouts/core/components/layout-core';
 const UserProfile = dynamic(() => import('@components/user/profile/page/user/user-profile'));
 
 export type CountryEntry = {

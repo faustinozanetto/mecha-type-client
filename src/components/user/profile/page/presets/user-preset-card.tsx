@@ -15,7 +15,7 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loading 
       flexDir="row"
       backgroundColor="#1a202c"
       alignContent="flex-start"
-      justifyContent="flex-start"
+      justifyContent="space-between"
       alignItems="center"
       margin={2}
       padding={4}
@@ -35,7 +35,7 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loading 
           borderRadius="md"
           size="lg"
           variant="solid"
-          marginLeft={4}
+          marginLeft="auto"
           href={`/practice/play/${preset.id}`}
         >
           Try now
