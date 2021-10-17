@@ -1,0 +1,5 @@
+query followsUser($userId: String!, $followerId: String!) {
+  followsUser(userId: $userId, followerId: $followerId) {
+    ...FollowsUserResponse
+  }
+}

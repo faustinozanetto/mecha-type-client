@@ -1,5 +1,0 @@
-mutation followUser($userId: String!, $targetUserId: String!) {
-  followUser(userId: $userId, targetUserId: $targetUserId) {
-    ...FollowUserResponse
-  }
-}

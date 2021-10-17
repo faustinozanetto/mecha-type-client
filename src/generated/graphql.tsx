@@ -96,6 +96,12 @@ export type FollowUserResponse = {
   follow?: Maybe<Scalars['Boolean']>;
 };
 
+export type FollowsUserResponse = {
+  __typename?: 'FollowsUserResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  follows?: Maybe<Scalars['Boolean']>;
+};
+
 export type InputUpdateInput = {
   decrement?: Maybe<Scalars['Float']>;
   divide?: Maybe<Scalars['Float']>;
@@ -133,13 +139,13 @@ export type MutationCreateTestPresetUserArgs = {
 
 
 export type MutationFollowUserArgs = {
-  targetUserId: Scalars['String'];
+  followerId: Scalars['String'];
   userId: Scalars['String'];
 };
 
 
 export type MutationUnfollowUserArgs = {
-  targetUserId: Scalars['String'];
+  followerId: Scalars['String'];
   userId: Scalars['String'];
 };
 
@@ -158,7 +164,7 @@ export type MutationUserCreateTestPresetHistoryEntryArgs = {
 export type Query = {
   __typename?: 'Query';
   filterUsers: FilteredUsersResponse;
-  followsUser: Scalars['Boolean'];
+  followsUser: FollowsUserResponse;
   me: UserResponse;
   testPreset: TestPresetResponse;
   testPresets: TestPresetsResponse;
@@ -176,7 +182,7 @@ export type QueryFilterUsersArgs = {
 
 
 export type QueryFollowsUserArgs = {
-  targetUserId: Scalars['String'];
+  followerId: Scalars['String'];
   userId: Scalars['String'];
 };
 
@@ -418,6 +424,8 @@ export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersRespons
 
 export type FollowUserResponseFragment = { __typename?: 'FollowUserResponse', follow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
+export type FollowsUserResponseFragment = { __typename?: 'FollowsUserResponse', follows?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+
 export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
@@ -463,7 +471,7 @@ export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTest
 
 export type FollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
-  targetUserId: Scalars['String'];
+  followerId: Scalars['String'];
 }>;
 
 
@@ -476,7 +484,7 @@ export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
 
 export type UnfollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
-  targetUserId: Scalars['String'];
+  followerId: Scalars['String'];
 }>;
 
 
@@ -521,11 +529,11 @@ export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename
 
 export type FollowsUserQueryVariables = Exact<{
   userId: Scalars['String'];
-  targetUserId: Scalars['String'];
+  followerId: Scalars['String'];
 }>;
 
 
-export type FollowsUserQuery = { __typename?: 'Query', followsUser: boolean };
+export type FollowsUserQuery = { __typename?: 'Query', followsUser: { __typename?: 'FollowsUserResponse', follows?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -589,6 +597,14 @@ ${ErrorResponseFragmentDoc}`;
 export const FollowUserResponseFragmentDoc = gql`
     fragment FollowUserResponse on FollowUserResponse {
   follow
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${ErrorResponseFragmentDoc}`;
+export const FollowsUserResponseFragmentDoc = gql`
+    fragment FollowsUserResponse on FollowsUserResponse {
+  follows
   errors {
     ...ErrorResponse
   }
@@ -858,8 +874,8 @@ export type CreateTestPresetUserMutationHookResult = ReturnType<typeof useCreate
 export type CreateTestPresetUserMutationResult = Apollo.MutationResult<CreateTestPresetUserMutation>;
 export type CreateTestPresetUserMutationOptions = Apollo.BaseMutationOptions<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>;
 export const FollowUserDocument = gql`
-    mutation followUser($userId: String!, $targetUserId: String!) {
-  followUser(userId: $userId, targetUserId: $targetUserId) {
+    mutation followUser($userId: String!, $followerId: String!) {
+  followUser(userId: $userId, followerId: $followerId) {
     ...FollowUserResponse
   }
 }
@@ -880,7 +896,7 @@ export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutation, F
  * const [followUserMutation, { data, loading, error }] = useFollowUserMutation({
  *   variables: {
  *      userId: // value for 'userId'
- *      targetUserId: // value for 'targetUserId'
+ *      followerId: // value for 'followerId'
  *   },
  * });
  */
@@ -922,8 +938,8 @@ export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
 export const UnfollowUserDocument = gql`
-    mutation unfollowUser($userId: String!, $targetUserId: String!) {
-  unfollowUser(userId: $userId, targetUserId: $targetUserId) {
+    mutation unfollowUser($userId: String!, $followerId: String!) {
+  unfollowUser(userId: $userId, followerId: $followerId) {
     ...UnfollowUserResponse
   }
 }
@@ -944,7 +960,7 @@ export type UnfollowUserMutationFn = Apollo.MutationFunction<UnfollowUserMutatio
  * const [unfollowUserMutation, { data, loading, error }] = useUnfollowUserMutation({
  *   variables: {
  *      userId: // value for 'userId'
- *      targetUserId: // value for 'targetUserId'
+ *      followerId: // value for 'followerId'
  *   },
  * });
  */
@@ -1131,10 +1147,12 @@ export type FilterUsersQueryHookResult = ReturnType<typeof useFilterUsersQuery>;
 export type FilterUsersLazyQueryHookResult = ReturnType<typeof useFilterUsersLazyQuery>;
 export type FilterUsersQueryResult = Apollo.QueryResult<FilterUsersQuery, FilterUsersQueryVariables>;
 export const FollowsUserDocument = gql`
-    query followsUser($userId: String!, $targetUserId: String!) {
-  followsUser(userId: $userId, targetUserId: $targetUserId)
+    query followsUser($userId: String!, $followerId: String!) {
+  followsUser(userId: $userId, followerId: $followerId) {
+    ...FollowsUserResponse
+  }
 }
-    `;
+    ${FollowsUserResponseFragmentDoc}`;
 
 /**
  * __useFollowsUserQuery__
@@ -1149,7 +1167,7 @@ export const FollowsUserDocument = gql`
  * const { data, loading, error } = useFollowsUserQuery({
  *   variables: {
  *      userId: // value for 'userId'
- *      targetUserId: // value for 'targetUserId'
+ *      followerId: // value for 'followerId'
  *   },
  * });
  */
