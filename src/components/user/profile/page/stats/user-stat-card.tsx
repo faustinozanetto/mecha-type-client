@@ -8,7 +8,7 @@ interface UserStatCardProps {
   /** Name to display */
   title?: string;
   /** Amount of the result type */
-  amount?: string;
+  amount?: string | number;
   /** Loading state of the card */
   loading?: boolean;
   /** Icon to add to the left of the card */

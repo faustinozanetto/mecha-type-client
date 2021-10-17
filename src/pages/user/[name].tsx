@@ -9,11 +9,7 @@ import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@modules/core/user/user';
 import UserProfile from '@components/user/profile/page/user/user-profile';
-
-export type CountryEntry = {
-  name?: string;
-  flag?: string;
-};
+import { CountryEntry } from 'typings/user';
 
 interface UserPageProps {
   /** Countries data */
@@ -22,7 +18,7 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const router = useRouter();
-  const [IDFromRoute, _setIDFromRoute] = useState(router.query.id as string);
+  const [IDFromRoute, _setIDFromRoute] = useState(router.query.name as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
   const { data: userData, loading } = useMeQuery({
     ssr: true,

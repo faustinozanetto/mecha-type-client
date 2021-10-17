@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LayoutCoreContainer from './layout-core-container';
 import LayoutCoreHead, { LayoutCoreHeadProps } from './layout-core-head';
 import { Box, Flex, Grid, useColorModeValue } from '@chakra-ui/react';
@@ -48,6 +48,14 @@ const logger = createLogger({
 
 const LayoutCore: React.FC<LayoutCoreProps> = (props): JSX.Element => {
   const { children, error, headProps = {}, user, PageContainer = LayoutCoreContainer, Head = LayoutCoreHead } = props;
+  const [mounted, setMounted] = useState(false);
+  const mainContainerBG = useColorModeValue('gray.200', 'gray.800');
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <Grid
@@ -63,7 +71,7 @@ const LayoutCore: React.FC<LayoutCoreProps> = (props): JSX.Element => {
       <Box position="relative">{<Sidebar user={user} />}</Box>
 
       {/* Main container */}
-      <Flex flexDir="column" backgroundColor={useColorModeValue('gray.200', 'gray.800')} minHeight="100vh">
+      <Flex flexDir="column" backgroundColor={mainContainerBG} minHeight="100vh">
         {/* Content */}
         {error ? <h1>Error</h1> : <PageContainer>{children}</PageContainer>}
         {/* Footer */}

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useFollowsUserQuery, User, UserFragment, useUserFollowersQuery } from 'generated/graphql';
+import { useFollowsUserQuery, UserFragment, useUserFollowersQuery } from 'generated/graphql';
 import { Container } from '@chakra-ui/react';
-import { EditUserProfile } from '../../edit';
-import { CountryEntry } from '@pages/user/[id]';
 import { generateParsedStats, UserParsedStats } from '@modules/core/user/user';
 import UserProfileDetails from './details/user-profile-details';
 import UserProfileInformation from './details/user-profile-information';
+import { CountryEntry } from 'typings/user';
 
 interface IUserProfileProps {
   /** Current logged in user */
@@ -21,8 +20,13 @@ interface IUserProfileProps {
 }
 
 const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, countries }) => {
-  const [editing, setEditing] = useState(false);
-  const [parsedStats, setParsedStats] = useState<UserParsedStats>();
+  const [parsedStats, setParsedStats] = useState<UserParsedStats>({
+    averageAccuracy: 0,
+    averageCPM: 0,
+    averageWPM: 0,
+    keystrokes: 0,
+    testsCompleted: 0,
+  });
 
   const { data: followersData, refetch: followersRefetch } = useUserFollowersQuery({
     skip: targetUser?.id === undefined,
@@ -34,8 +38,8 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
   const { data: followsUserData, refetch: followsUserRefetch } = useFollowsUserQuery({
     skip: user?.id === targetUser?.id,
     variables: {
-      userId: user?.id! ?? '',
-      targetUserId: targetUser?.id ?? '',
+      userId: targetUser?.id ?? '',
+      followerId: user?.id ?? '',
     },
   });
 
@@ -56,20 +60,6 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
     setParsedStats(generateParsedStats(targetUser));
   }, [targetUser?.testPresetHistory, loading]);
 
-  // If editing, return the edit profile component.
-  if (editing) {
-    return (
-      <EditUserProfile
-        user={targetUser as User}
-        loading={loading}
-        countries={countries}
-        onUpdatedCallback={() => {
-          setEditing(false);
-        }}
-      />
-    );
-  }
-
   return (
     <Container maxW={['1xl', '2xl', '3xl', '5xl', '7xl']}>
       <UserProfileDetails
@@ -78,10 +68,9 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         loading={loading}
         ownsPage={ownsPage}
         country={getUserCountryData(user)}
-        followsUser={followsUserData?.followsUser?.valueOf()!}
+        followsUser={followsUserData?.followsUser?.follows}
         followersRefetch={followersRefetch}
         followsUserRefetch={followsUserRefetch}
-        settingsButtonClick={() => setEditing(true)}
       />
       {parsedStats && (
         <UserProfileInformation

@@ -5,14 +5,14 @@ import { HStack, Flex, VStack, useToast, Text } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormCancelButton } from '@components/forms/form-cancel-button';
 import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
-import { getPracticeConfig } from '@modules/core/practice/practice-config-manager';
 import FormSliderInput from '@components/ui/forms/form-slider-input';
 import { roundTo2 } from '@modules/core/math/math';
 import useMechaStore from 'state/store';
+import { useRouter } from 'next/router';
 
 interface EditUserPracticeFormProps {
-  /** Method to call when data was updated */
-  onUpdatedCallback: () => void;
+  /** Callback function to call when cancel button is clicked */
+  onCancelCallback: () => void;
 }
 
 export const EditPracticeFormSchema = Yup.object().shape({
@@ -36,8 +36,9 @@ export interface EditUserPracticeFormValues {
   typeSoundsVolume: number;
 }
 
-export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onUpdatedCallback }) => {
+export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onCancelCallback }) => {
   const toast = useToast();
+  const router = useRouter();
   const practiceConfig = useMechaStore((state) => state.practiceConfig);
   const [typeSoundValue, setTypeSoundValue] = useState(practiceConfig.typeSoundsVolume);
   const setPracticeConfig = useMechaStore((state) => state.setPracticeConfig);
@@ -53,7 +54,7 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onUp
         } catch (error) {
           console.log(error);
         }
-        onUpdatedCallback();
+        router.push(`/user/${router.query.name}`);
       }}
     >
       {(props: FormikProps<EditUserPracticeFormValues>) => {
@@ -145,7 +146,7 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onUp
             <HStack>
               {/* Submit button */}
               <FormSubmitButton width="50%">Save Changes</FormSubmitButton>
-              <FormCancelButton width="50%" onClick={() => onUpdatedCallback()}>
+              <FormCancelButton width="50%" onClick={onCancelCallback}>
                 Cancel
               </FormCancelButton>
             </HStack>

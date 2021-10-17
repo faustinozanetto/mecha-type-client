@@ -5,9 +5,9 @@ import { useTranslation } from 'next-i18next';
 import { UserAvatar } from '../user-avatar';
 import { SettingsButton } from './settings-button';
 import { generateAvatarURl } from '@modules/core/user/user';
-import { CountryEntry } from '@pages/user/[id]';
 import { UserProfileCountry } from './user-profile-country';
 import FollowButton from './follow-button';
+import { CountryEntry } from 'typings/user';
 
 interface UserProfileDetailsProps {
   /** Current logged in user */
@@ -26,7 +26,6 @@ interface UserProfileDetailsProps {
   followsUserRefetch: any;
   /** Used to re fetch the followers list query */
   followersRefetch: any;
-  settingsButtonClick: () => void;
 }
 
 const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
@@ -38,7 +37,6 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
   followsUser,
   followsUserRefetch,
   followersRefetch,
-  settingsButtonClick,
 }) => {
   const { t } = useTranslation('user-profile');
   return (
@@ -88,7 +86,7 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
             followsUserRefetch={followsUserRefetch}
             followersRefetch={followersRefetch}
           />
-          {ownsPage && <SettingsButton loading={loading} onClick={settingsButtonClick} />}
+          {ownsPage && <SettingsButton loading={loading} />}
         </Flex>
       </Flex>
     </Flex>

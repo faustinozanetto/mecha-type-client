@@ -49,8 +49,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({
       } else if (followsUser && user.id) {
         await unfollowUser({
           variables: {
-            userId: user.id,
-            targetUserId: targetUser.id,
+            userId: targetUser.id,
+            followerId: user.id,
           },
         });
         toast({
@@ -63,8 +63,8 @@ const FollowButton: React.FC<FollowButtonProps> = ({
       } else if (!followsUser && user.id) {
         await followUser({
           variables: {
-            userId: user.id,
-            targetUserId: targetUser.id,
+            userId: targetUser.id,
+            followerId: user.id,
           },
         });
         toast({

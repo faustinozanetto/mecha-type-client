@@ -13,6 +13,7 @@ import { useTranslation } from 'next-i18next';
 interface UserProfileStatsProps {
   /** User data to retrieve data from */
   user: UserFragment;
+  /** Stats to show in the profile. */
   parsedStats: UserParsedStats;
   /** Loading state */
   loading: boolean;
@@ -42,14 +43,14 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ parsedStats, loadin
         />
         <UserStatCard
           title={t('stats-keystrokes')}
-          amount={parsedStats.keystrokes.toString() ?? 'Loading'}
+          amount={parsedStats.keystrokes ?? 'Loading'}
           loading={loading}
           icon={FaKeyboard}
           backgroundColor="#075985"
         />
         <UserStatCard
           title={t('stats-averageWPM')}
-          amount={parsedStats.averageWPM.toString() ?? 'Loading'}
+          amount={parsedStats.averageWPM ?? 'Loading'}
           loading={loading}
           icon={FaKeyboard}
           hasTooltip={true}
@@ -58,7 +59,7 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ parsedStats, loadin
         />
         <UserStatCard
           title={t('stats-averageCPM')}
-          amount={parsedStats.averageCPM.toString() ?? 'Loading'}
+          amount={parsedStats.averageCPM ?? 'Loading'}
           loading={loading}
           icon={FaKeyboard}
           hasTooltip={true}
@@ -67,14 +68,14 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ parsedStats, loadin
         />
         <UserStatCard
           title={t('stats-accuracy')}
-          amount={parsedStats.averageAccuracy.toString() + ' %' ?? 'Loading'}
+          amount={parsedStats.averageAccuracy + ' %' ?? 'Loading'}
           loading={loading}
           icon={BiBullseye}
           backgroundColor="#5B21B6"
         />
         <UserStatCard
           title={t('stats-tests-completed')}
-          amount={parsedStats.testsCompleted.toString() ?? 'Loading'}
+          amount={parsedStats.testsCompleted ?? 'Loading'}
           loading={loading}
           icon={GrTest}
           backgroundColor="#6B21A8"

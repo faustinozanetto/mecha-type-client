@@ -1,14 +1,15 @@
 import React from 'react';
 import { Flex, Button, Text, VStack, useColorModeValue, HStack } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 interface EditUserProfileSelectionProps {
   onProfileSelected: () => void;
   onPracticeSelected: () => void;
-  onGoBackCallback: () => void;
 }
 
 const EditUserProfileSelection: React.FC<EditUserProfileSelectionProps> = (props): JSX.Element => {
-  const { onPracticeSelected, onProfileSelected, onGoBackCallback } = props;
+  const { onPracticeSelected, onProfileSelected } = props;
+  const { query } = useRouter();
   const backgroundColor = useColorModeValue('gray.300', 'gray.700');
 
   return (
@@ -36,7 +37,7 @@ const EditUserProfileSelection: React.FC<EditUserProfileSelectionProps> = (props
             Practice
           </Button>
         </HStack>
-        <Button width="100%" variant="ghost" colorScheme="red" onClick={onGoBackCallback}>
+        <Button as="a" width="100%" variant="ghost" colorScheme="red" href={`/user/${query.name}`}>
           Go back
         </Button>
       </VStack>

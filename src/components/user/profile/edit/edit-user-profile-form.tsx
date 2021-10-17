@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
+import router from 'next/router';
 import { Formik, FormikProps } from 'formik';
-import { User, useUpdateUserMutation } from '@generated/graphql';
+import { UserFragment, useUpdateUserMutation } from '@generated/graphql';
 import { HStack, Flex, VStack, useToast, Text } from '@chakra-ui/react';
 import { FormTextArea } from '@components/ui/forms/form-text-area';
 import { FormSelectInput } from '@components/ui/forms/form-select-input';
-import { CountryEntry } from '@pages/user/[id]';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormCancelButton } from '@components/forms/form-cancel-button';
+import { CountryEntry } from 'typings/user';
 
 interface EditUserProfileFormProps {
   /** User to retrieve data from. */
-  user: User;
-  /** Method to call when data was updated */
-  onUpdatedCallback: () => void;
+  user: UserFragment;
   /** Countries data */
   countries: CountryEntry[];
+  /** Callback function to call when cancel button is clicked */
+  onCancelCallback: () => void;
 }
 
 export const EditProfileFormSchema = Yup.object().shape({
@@ -28,7 +29,7 @@ export interface EditProfileFormValues {
   description: string;
 }
 
-export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, onUpdatedCallback, countries }) => {
+export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, countries, onCancelCallback }) => {
   const [updateUser] = useUpdateUserMutation();
   const toast = useToast();
   const [currentCountry, setCurrentCountry] = useState('');
@@ -70,7 +71,7 @@ export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, 
             duration: 3000,
             position: 'bottom-right',
           });
-          onUpdatedCallback();
+          router.push(`/user/${user.username}`);
         }
       }}
     >
@@ -114,7 +115,7 @@ export const EditUserProfileForm: React.FC<EditUserProfileFormProps> = ({ user, 
             <HStack>
               {/* Submit button */}
               <FormSubmitButton width="50%">Save Changes</FormSubmitButton>
-              <FormCancelButton width="50%" onClick={() => onUpdatedCallback()}>
+              <FormCancelButton width="50%" onClick={onCancelCallback}>
                 Cancel
               </FormCancelButton>
             </HStack>

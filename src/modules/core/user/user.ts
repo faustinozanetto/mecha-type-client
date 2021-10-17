@@ -23,7 +23,7 @@ export const generateParsedStats = (user: UserFragment): UserParsedStats => {
     testsCompleted: 0,
     keystrokes: 0,
   };
-  if (user) {
+  if (user && user.testPresetHistory && user.testPresetHistory.length > 0) {
     const entries = user.testPresetHistory.length;
     for (let i = 0; i < entries; i++) {
       const entry = user.testPresetHistory[i];
@@ -39,11 +39,12 @@ export const generateParsedStats = (user: UserFragment): UserParsedStats => {
     parsedStats.averageWPM /= entries;
     parsedStats.averageCPM /= entries;
     parsedStats.averageAccuracy /= entries;
+
+    // Round stats to use only 2 decimal places.
+    parsedStats.averageWPM = roundTo2(parsedStats.averageWPM);
+    parsedStats.averageCPM = roundTo2(parsedStats.averageCPM);
+    parsedStats.averageAccuracy = roundTo2(parsedStats.averageAccuracy);
   }
-  // Round stats to use only 2 decimal places.
-  parsedStats.averageWPM = roundTo2(parsedStats.averageWPM);
-  parsedStats.averageCPM = roundTo2(parsedStats.averageCPM);
-  parsedStats.averageAccuracy = roundTo2(parsedStats.averageAccuracy);
   return parsedStats;
 };
 
