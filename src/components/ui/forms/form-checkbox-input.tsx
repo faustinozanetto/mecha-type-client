@@ -9,14 +9,13 @@ export type FormCheckboxInputProps = BaseProps & {
 };
 
 export const FormCheckboxInput: FC<FormCheckboxInputProps> = (props: FormCheckboxInputProps) => {
-  const { name, label, children, checkBoxProps, ...rest } = props;
+  const { name, children, checkBoxProps, ...rest } = props;
   const [field, { error, touched }] = useField(name);
   const isChecked = field.value;
 
   return (
     <FormControl name={name} {...rest}>
       <Checkbox {...field} id={name} isInvalid={!!error && touched} isChecked={isChecked} {...checkBoxProps}>
-        {label}
         {children}
       </Checkbox>
     </FormControl>

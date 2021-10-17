@@ -2,6 +2,7 @@ fragment TestPresetsResponse on TestPresetsResponse {
   testPresets {
     ...TestPreset
   }
+  totalPresets
   errors {
     ...ErrorResponse
   }

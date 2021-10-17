@@ -8,12 +8,14 @@ import { FormCancelButton } from '@components/forms/form-cancel-button';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormSelectInput } from '@components/ui/forms/form-select-input';
 import { FormNumberInput } from '@components/ui/forms/form-number-input';
+import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
 
 interface PresetCreationFormValues {
   type: TestType;
   language: TestLanguage;
   words: number;
   time: number;
+  punctuated: boolean;
 }
 
 const validationSchema = Yup.object().shape({
@@ -25,6 +27,7 @@ const validationSchema = Yup.object().shape({
   time: Yup.number()
     .min(10, 'The time in seconds should be more than 10!')
     .required('Please provider a valid time in seconds!'),
+  punctuated: Yup.boolean().required('Punctuated is required!'),
 });
 
 interface PresetCreationFormProps {
@@ -43,6 +46,7 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, on
     language: TestLanguage.English,
     words: 25,
     time: 60,
+    punctuated: false,
   };
   return (
     <Formik
@@ -67,6 +71,7 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, on
               words: words,
               time: time,
               language: values.language,
+              punctuated: values.punctuated,
               userId: user.id,
               creatorImage: user.avatar,
             },
@@ -132,6 +137,11 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, on
 
               {/* Time input */}
               <FormNumberInput name="time" label="Test Time" />
+
+              {/* Punctuate Input */}
+              <FormCheckboxInput name="punctuated" label="">
+                Punctuate Words
+              </FormCheckboxInput>
             </VStack>
 
             {/* Submit Form */}

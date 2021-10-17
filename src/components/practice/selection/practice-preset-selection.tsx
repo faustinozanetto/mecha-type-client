@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { UserFragment, useTestPresetsQuery } from 'generated/graphql';
+import React, { useEffect, useState } from 'react';
+import { TestPresetFragment, UserFragment } from 'generated/graphql';
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button } from '@chakra-ui/react';
 import PresetCreation from './preset-creation/preset-creation';
 import PracticePresetCard from './preset-card/practice-preset-card';
+import { PracticeSearchInput } from './search-input/practice-search-input';
+import useMechaStore from 'state/store';
 interface PracticePresetSelectionProps {
   /** Current logged in user. */
   user: UserFragment;
@@ -11,14 +13,12 @@ interface PracticePresetSelectionProps {
 export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = ({ user }) => {
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const [creatingPreset, setCreatingPreset] = useState(false);
-  const { data: testPresets, loading } = useTestPresetsQuery({
-    variables: {
-      input: {
-        take: 5,
-        where: { userId: null },
-      },
-    },
-  });
+  const { searchedTestPresets } = useMechaStore();
+  const [presets, setPresets] = useState<TestPresetFragment[]>([]);
+
+  useEffect(() => {
+    setPresets(searchedTestPresets);
+  }, [searchedTestPresets]);
 
   if (creatingPreset) {
     return (
@@ -50,22 +50,16 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
           Here you can choose a preset or create your own custom one.
         </Text>
       </Container>
+      <PracticeSearchInput />
       {/* Presets */}
-      {testPresets?.testPresets?.testPresets && (
-        <SimpleGrid
-          backgroundColor={bgColor}
-          rounded="2rem"
-          maxWidth="3xl"
-          columns={[1, 1, 2, 2, 3, 3]}
-          rows="auto"
-          m={4}
-        >
-          {testPresets.testPresets.testPresets.map((preset, index) => {
+      {presets.length > 0 && (
+        <SimpleGrid backgroundColor={bgColor} rounded="2rem" width="3xl" columns={[3]} m={4} p={4}>
+          {presets.map((preset, index) => {
             return <PracticePresetCard key={index} presetData={preset} />;
           })}
         </SimpleGrid>
       )}
-      {!testPresets?.testPresets?.testPresets && !loading && (
+      {presets.length === 0 && (
         <Flex
           flexDir="column"
           rounded="lg"
