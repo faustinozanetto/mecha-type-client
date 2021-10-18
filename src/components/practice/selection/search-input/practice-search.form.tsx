@@ -13,6 +13,7 @@ import {
   FormControl,
   FormLabel,
   Box,
+  Stack,
 } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormSelectInput } from '@components/ui/forms/form-select-input';
@@ -20,6 +21,7 @@ import { FormNumberInput } from '@components/ui/forms/form-number-input';
 import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
 import FormSwitchInput from '@components/ui/forms/form-switch-input';
 import useMechaStore from 'state/store';
+import { parseNumber } from '@modules/core/math/math';
 
 interface PresetCreationFormValues {
   language: TestLanguage;
@@ -45,7 +47,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
     variables: { input: { currentPage: 0, pageSize: 0, where: {} } },
   });
   const { setSearchedTestPresets, searchedTestPresets } = useMechaStore();
-  const filterFieldBG = useColorModeValue('gray.400', 'gray.800');
+  const filterFieldBG = useColorModeValue('gray.200', 'gray.800');
 
   const initialFormValues: PresetCreationFormValues = {
     language: TestLanguage.English,
@@ -62,7 +64,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
       rounded="lg"
       alignItems="flex-start"
       backgroundColor={useColorModeValue('gray.300', 'gray.900')}
-      maxWidth="3xl"
+      maxWidth={['xl', 'xl', '2xl', '3xl']}
       m={4}
       p={4}
     >
@@ -75,7 +77,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
             whereInput.language = values.language;
           }
           if (values.filterWords) {
-            whereInput.words = values.words;
+            whereInput.words = parseNumber(values.words);
           }
           if (values.filterPunctuated) {
             whereInput.punctuated = values.punctuated;
@@ -84,7 +86,6 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
             variables: { input: { currentPage: 0, pageSize: 6, where: whereInput } },
           }).then((data) => {
             setSearchedTestPresets(data.data.testPresets.testPresets);
-            console.log(searchedTestPresets);
           });
         }}
       >
@@ -102,9 +103,9 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
               </HStack>
 
               {/* Form Content */}
-              <HStack alignItems="center">
+              <Stack direction={['column', 'column', 'row']} alignItems="center">
                 {/* Filter Language */}
-                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2} my={2}>
+                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2} mt={2}>
                   <FormControl id="language" mr={2}>
                     <HStack justifyContent="space-between" mb={values.filterLanguage ? 2 : 0}>
                       <FormLabel margin={0}>Language</FormLabel>
@@ -125,7 +126,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
                 </Box>
 
                 {/* Words Amount Input */}
-                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2} my={2}>
+                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2} marginTop={2}>
                   <FormControl id="words" mr={2}>
                     <HStack justifyContent="space-between" mb={values.filterWords ? 2 : 0}>
                       <FormLabel margin={0}>Words Amount</FormLabel>
@@ -136,7 +137,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
                 </Box>
 
                 {/* Punctuate Input */}
-                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2} my={2}>
+                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2} mt={2}>
                   <FormControl id="punctuate" mr={2}>
                     <HStack justifyContent="space-between" mb={values.filterPunctuated ? 6 : 0}>
                       <FormLabel margin={0}>Punctuate Words</FormLabel>
@@ -149,7 +150,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
                     )}
                   </FormControl>
                 </Box>
-              </HStack>
+              </Stack>
             </Flex>
           );
         }}

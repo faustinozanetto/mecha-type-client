@@ -10,6 +10,8 @@ import withApollo from '@modules/core/apollo/apollo';
 import useMechaStore from 'state/store';
 import { useRouter } from 'next/router';
 import LayoutCore from 'layouts/core/components/layout-core';
+import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
+import { Flex } from '@chakra-ui/react';
 
 interface PracticePlayPageProps {
   locale: string;
@@ -24,11 +26,10 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
       id: useGetIDFromUrl(),
     },
   });
-  const practiceConfig = useMechaStore((state) => state.practiceConfig);
 
   useEffect(() => {
     if (testPreset?.testPreset?.testPreset) {
-      setText(generateWords(testPreset?.testPreset?.testPreset, practiceConfig.punctuateWords).trimEnd());
+      setText(generateWords(testPreset?.testPreset?.testPreset).trimEnd());
     }
   }, [testPreset?.testPreset?.testPreset]);
 
@@ -45,14 +46,24 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
         seoUrl: `${__URI__}/practice/play/${testPreset?.testPreset?.testPreset?.id}`,
       }}
     >
-      {testPreset?.testPreset?.testPreset && text && (
-        <PracticeGameInput
-          loading={testPresetLoading || userLoading || text === ''}
-          testPreset={testPreset.testPreset.testPreset}
-          text={text as string}
-          user={userData?.me?.user!}
-        />
-      )}
+      <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
+        {testPreset?.testPreset?.testPreset && (
+          <Flex flexDir="column" width="100%">
+            <PracticeTestDetails
+              loading={testPresetLoading || userLoading || text === ''}
+              practiceTest={testPreset.testPreset.testPreset}
+            />
+          </Flex>
+        )}
+        {testPreset?.testPreset?.testPreset && text && (
+          <PracticeGameInput
+            loading={testPresetLoading || userLoading || text === ''}
+            testPreset={testPreset.testPreset.testPreset}
+            text={text as string}
+            user={userData?.me?.user!}
+          />
+        )}
+      </Flex>
     </LayoutCore>
   );
 };

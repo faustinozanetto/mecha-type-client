@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { TestPresetFragment, UserFragment } from 'generated/graphql';
+import { TestPresetFragment, UserFragment, useTestPresetsQuery } from 'generated/graphql';
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button } from '@chakra-ui/react';
 import PresetCreation from './preset-creation/preset-creation';
 import PracticePresetCard from './preset-card/practice-preset-card';
 import { PracticeSearchInput } from './search-input/practice-search-input';
 import useMechaStore from 'state/store';
+import { motion } from 'framer-motion';
 interface PracticePresetSelectionProps {
   /** Current logged in user. */
   user: UserFragment;
@@ -13,8 +14,17 @@ interface PracticePresetSelectionProps {
 export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = ({ user }) => {
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const [creatingPreset, setCreatingPreset] = useState(false);
+  const { data: defaultPresets, loading } = useTestPresetsQuery({
+    variables: { input: { currentPage: 0, pageSize: 6, where: {} } },
+  });
   const { searchedTestPresets } = useMechaStore();
   const [presets, setPresets] = useState<TestPresetFragment[]>([]);
+
+  useEffect(() => {
+    if (defaultPresets?.testPresets?.testPresets) {
+      setPresets(defaultPresets.testPresets.testPresets);
+    }
+  }, [loading]);
 
   useEffect(() => {
     setPresets(searchedTestPresets);
@@ -39,7 +49,7 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
         rounded="lg"
         alignItems="center"
         backgroundColor={bgColor}
-        maxWidth="3xl"
+        maxWidth={['xl', 'xl', '2xl', '3xl']}
         m={4}
         p={4}
       >
@@ -53,13 +63,47 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
       <PracticeSearchInput />
       {/* Presets */}
       {presets.length > 0 && (
-        <SimpleGrid backgroundColor={bgColor} rounded="2rem" width="3xl" columns={[3]} m={4} p={4}>
+        <SimpleGrid
+          key={presets.length}
+          minChildWidth="220px"
+          maxWidth={['xl', 'xl', '2xl', '3xl']}
+          backgroundColor={bgColor}
+          rounded="2rem"
+          m={4}
+          p={4}
+        >
           {presets.map((preset, index) => {
-            return <PracticePresetCard key={index} presetData={preset} />;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, translateY: -25 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+              >
+                <PracticePresetCard presetData={preset} />
+              </motion.div>
+            );
           })}
         </SimpleGrid>
       )}
-      {presets.length === 0 && (
+      {/* Presets Loading */}
+      {loading && (
+        <Flex
+          flexDir="column"
+          rounded="lg"
+          alignContent="center"
+          alignItems="center"
+          backgroundColor={bgColor}
+          m={4}
+          p={4}
+        >
+          <Text as="h2" fontWeight={600} fontSize="xl">
+            Content loading, please wait...
+          </Text>
+        </Flex>
+      )}
+      {/* No presets found */}
+      {presets.length === 0 && !loading && (
         <Flex
           flexDir="column"
           rounded="lg"

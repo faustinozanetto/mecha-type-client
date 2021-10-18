@@ -201,8 +201,6 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
 
   return (
     <Flex flexDir="column">
-      {/* Top container */}
-      <PracticeTestDetails loading={loading} practiceTest={testPreset} time={time} />
       <Flex
         flexDir="column"
         padding={6}

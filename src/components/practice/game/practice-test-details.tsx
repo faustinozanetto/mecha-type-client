@@ -7,10 +7,9 @@ interface PracticeTestDetailsProps {
   practiceTest: TestPresetFragment;
   /** Wether data is loading or not */
   loading: boolean;
-  time: number;
 }
 
-export const PracticeTestDetails: React.FC<PracticeTestDetailsProps> = ({ loading, practiceTest, time }) => {
+export const PracticeTestDetails: React.FC<PracticeTestDetailsProps> = ({ loading, practiceTest }) => {
   const textColor = useColorModeValue('black', 'white');
   return (
     <Flex
@@ -35,11 +34,11 @@ export const PracticeTestDetails: React.FC<PracticeTestDetailsProps> = ({ loadin
           </Text>
         )}
       </Flex>
-      <Flex flexDir="column">
+      {/* <Flex flexDir="column">
         <Text as="h3" fontSize="lg" color={useColorModeValue('black', 'white')} fontWeight={700}>
           {time}s
         </Text>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 };

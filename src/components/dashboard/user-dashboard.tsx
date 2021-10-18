@@ -13,7 +13,7 @@ interface DashboardProps {
 }
 
 export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
-  const [currentStat, setCurrentStat] = useState<ITypingStat[]>([]);
+  const [parsedStats, setParsedStats] = useState<ITypingStat[]>([]);
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const chartBgColor = useColorModeValue('gray.200', 'gray.800');
 
@@ -43,8 +43,7 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
   };
 
   useEffect(() => {
-    const parsedData = parseStats();
-    setCurrentStat(parsedData);
+    setParsedStats(parseStats());
   }, [user, user?.testPresetHistory]);
 
   return (
@@ -58,22 +57,39 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
       </Flex>
 
       {/* Charts */}
-      <Flex flexDir="column" backgroundColor={bgColor} rounded="lg" padding={6} my={4}>
-        <SimpleGrid columns={[1, 1, 1, 1, 2, 2]} rows={2} gap={2}>
-          <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-            <StatLineChart statsData={currentStat} statType={ETypingStatType.ACCURACY} />
-          </GridItem>
-          <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-            <StatLineChart statsData={currentStat} statType={ETypingStatType.WPM} />
-          </GridItem>
-          <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-            <StatLineChart statsData={currentStat} statType={ETypingStatType.CPM} />
-          </GridItem>
-          <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-            <StatDonutChart statsData={currentStat} statType={ETypingStatType.CHARS} />
-          </GridItem>
-        </SimpleGrid>
-      </Flex>
+      {parsedStats && parsedStats.length > 1 && (
+        <Flex flexDir="column" backgroundColor={bgColor} rounded="lg" padding={6} my={4}>
+          <SimpleGrid columns={[1, 1, 1, 1, 2, 2]} rows={2} gap={2}>
+            <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
+              <StatLineChart statsData={parsedStats} statType={ETypingStatType.ACCURACY} />
+            </GridItem>
+            <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
+              <StatLineChart statsData={parsedStats} statType={ETypingStatType.WPM} />
+            </GridItem>
+            <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
+              <StatLineChart statsData={parsedStats} statType={ETypingStatType.CPM} />
+            </GridItem>
+            <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
+              <StatDonutChart statsData={parsedStats} statType={ETypingStatType.CHARS} />
+            </GridItem>
+          </SimpleGrid>
+        </Flex>
+      )}
+      {parsedStats && parsedStats.length <= 1 && (
+        <Flex
+          flexDir="column"
+          rounded="lg"
+          alignContent="center"
+          alignItems="center"
+          backgroundColor={bgColor}
+          m={4}
+          p={4}
+        >
+          <Text as="h2" fontWeight={600} fontSize="xl">
+            Not enough data, try practicing more!
+          </Text>
+        </Flex>
+      )}
     </Flex>
   );
 };
