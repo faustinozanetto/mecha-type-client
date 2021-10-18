@@ -1,0 +1,11 @@
+fragment UserSettings on UserSettings {
+  id
+  userId
+  blindMode
+  noBackspace
+  pauseOnError
+  typeSounds
+  typeSoundsVolume
+  createdAt
+  updatedAt
+}

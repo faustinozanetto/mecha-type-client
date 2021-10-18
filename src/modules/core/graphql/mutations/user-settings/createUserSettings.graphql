@@ -1,0 +1,5 @@
+mutation createUserSettings($input: UserSettingsCreateInput!) {
+  createUserSettings(input: $input) {
+    ...UserSettingsResponse
+  }
+}

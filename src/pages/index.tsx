@@ -3,7 +3,7 @@ import LayoutCore from 'layouts/core/components/layout-core';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
-import withApollo from '@modules/core/apollo/apollo';
+import { withApollo } from '@modules/core/apollo/apollo';
 import { Heading } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { useMeQuery } from '@generated/graphql';
@@ -35,7 +35,7 @@ const Home: React.FC<IHomeProps> = () => {
       <Heading as="h2" fontSize="2xl">
         {t('test')}
       </Heading>
-      <Heading as="h3">v0.0.9</Heading>
+      <Heading as="h3">v0.1.0</Heading>
       <AdBanner />
     </LayoutCore>
   );

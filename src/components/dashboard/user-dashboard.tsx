@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { UserFragment } from 'generated/graphql';
-import { Flex, Text, Heading, useColorModeValue, SimpleGrid, VStack, GridItem } from '@chakra-ui/react';
+import { Flex, Text, Heading, useColorModeValue, SimpleGrid, GridItem } from '@chakra-ui/react';
 import { StatLineChart } from '@components/practice/results/charts';
 import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game';
 import { StatDonutChart } from '@components/practice/results/charts/stat-donut-chart';

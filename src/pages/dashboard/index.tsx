@@ -4,7 +4,7 @@ import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/layout-core';
-import withApollo from '@modules/core/apollo/apollo';
+import { withApollo } from '@modules/core/apollo/apollo';
 import { UserDashboard } from '@components/dashboard';
 import { useRouter } from 'next/router';
 

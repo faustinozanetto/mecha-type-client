@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
-import { useMeQuery, useTestPresetQuery } from 'generated/graphql';
+import { useMeQuery, useTestPresetQuery, useUserSettingsQuery } from 'generated/graphql';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { generateWords } from '@modules/core/practice/typing-game-utils';
-import withApollo from '@modules/core/apollo/apollo';
-import useMechaStore from 'state/store';
+import { withApollo } from '@modules/core/apollo/apollo';
 import { useRouter } from 'next/router';
 import LayoutCore from 'layouts/core/components/layout-core';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
@@ -25,6 +24,9 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
     variables: {
       id: useGetIDFromUrl(),
     },
+  });
+  const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
+    variables: { input: { userId: userData?.me?.user?.id } },
   });
 
   useEffect(() => {
@@ -55,12 +57,13 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
             />
           </Flex>
         )}
-        {testPreset?.testPreset?.testPreset && text && (
+        {testPreset?.testPreset?.testPreset && userSettings?.userSettings?.userSettings && text && (
           <PracticeGameInput
-            loading={testPresetLoading || userLoading || text === ''}
+            loading={testPresetLoading || userLoading || userSettingsLoading || text === ''}
             testPreset={testPreset.testPreset.testPreset}
             text={text as string}
             user={userData?.me?.user!}
+            userSettings={userSettings.userSettings.userSettings}
           />
         )}
       </Flex>

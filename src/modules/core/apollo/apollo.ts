@@ -1,9 +1,10 @@
-import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, FieldPolicy, HttpLink, InMemoryCache } from '@apollo/client';
 import { __BACKEND__ } from '@utils/constants';
-import { FilteredUsersResponse } from '@generated/graphql';
+import { FilteredUsersResponse, TestPresetsResponse } from '@generated/graphql';
 import { NextPageContext } from 'next';
-import { withApollo } from 'next-apollo';
+import { createWithApollo } from './createWithApollo';
 import { createLogger } from '../logging/mecha-logger';
+import { offsetLimitPagination, relayStylePagination } from '@apollo/client/utilities';
 
 const fileLabel = 'modules/core/apollo/apollo';
 const logger = createLogger({
@@ -34,15 +35,12 @@ const apolloClient = (ctx: NextPageContext) => {
       typePolicies: {
         Query: {
           fields: {
-            filterUsers: {
+            testPresets: {
               keyArgs: [],
-              merge(
-                existing: FilteredUsersResponse | undefined,
-                incoming: FilteredUsersResponse
-              ): FilteredUsersResponse {
+              merge(existing: TestPresetsResponse | undefined, incoming: TestPresetsResponse): TestPresetsResponse {
                 return {
                   ...incoming,
-                  nodes: [...(existing?.nodes || []), ...(incoming?.nodes || [])],
+                  edges: [...(existing?.edges || []), ...incoming.edges],
                 };
               },
             },
@@ -53,4 +51,4 @@ const apolloClient = (ctx: NextPageContext) => {
   });
 };
 
-export default withApollo(apolloClient);
+export const withApollo = createWithApollo(apolloClient);

@@ -5,10 +5,10 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "jsxImportSource": "@emotion/react",
-    "lib": ["dom", "dom.iterable", "es2017"],
+    "target": "esnext",
     "module": "esnext",
+    "jsx": "preserve",
+    "lib": ["dom", "es2017"],
     "moduleResolution": "node",
     "noEmit": true,
     "noUnusedLocals": false,
@@ -19,7 +19,6 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": false,
-    "target": "ES2019",
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["components/*"],
@@ -42,8 +41,10 @@
     "config/jest/jest-dom-extend-expect.js",
     "next.config.js",
     ".d.ts",
-    "src/lib/google/gtag.js"
-, "src/modules/core/i18n/i18n.config.ts", "src/modules/core/i18n/i18n.ts"  ],
+    "src/lib/google/gtag.js",
+    "src/modules/core/i18n/i18n.config.ts",
+    "src/modules/core/i18n/i18n.ts"
+  ],
   "exclude": ["node_modules", "dist", ".next", "out", "next.config.ts", ".babelrc", "bundles", "coverage", "test/*"],
   "ts-node": {
     "compilerOptions": {

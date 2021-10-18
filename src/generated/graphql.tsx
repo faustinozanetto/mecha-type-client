@@ -59,6 +59,12 @@ export type CreateTestPresetInput = {
   words: Scalars['Int'];
 };
 
+export type Edge = {
+  __typename?: 'Edge';
+  cursor?: Maybe<Scalars['Date']>;
+  node?: Maybe<TestPreset>;
+};
+
 export type ErrorResponse = {
   __typename?: 'ErrorResponse';
   field: Scalars['String'];
@@ -116,10 +122,12 @@ export type Mutation = {
   createTestPreset: TestPresetResponse;
   createTestPresetHistoryEntry: TestPresetHistoryResponse;
   createTestPresetUser: TestPresetResponse;
+  createUserSettings: UserSettingsResponse;
   followUser: FollowUserResponse;
   logout: Scalars['Boolean'];
   unfollowUser: UnfollowUserResponse;
   updateUser: UserResponse;
+  updateUserSettings: UserSettingsResponse;
   userCreateTestPresetHistoryEntry: TestPresetHistoryResponse;
 };
 
@@ -136,6 +144,11 @@ export type MutationCreateTestPresetHistoryEntryArgs = {
 
 export type MutationCreateTestPresetUserArgs = {
   data: CreateTestPresetInput;
+};
+
+
+export type MutationCreateUserSettingsArgs = {
+  input: UserSettingsCreateInput;
 };
 
 
@@ -157,9 +170,21 @@ export type MutationUpdateUserArgs = {
 };
 
 
+export type MutationUpdateUserSettingsArgs = {
+  input: UserSettingsUpdateInput;
+};
+
+
 export type MutationUserCreateTestPresetHistoryEntryArgs = {
   input: CreateTestPresetHistoryInput;
   userId: Scalars['String'];
+};
+
+export type PageInfo = {
+  __typename?: 'PageInfo';
+  endCursor?: Maybe<Scalars['Date']>;
+  hasMore?: Maybe<Scalars['Boolean']>;
+  startCursor?: Maybe<Scalars['Date']>;
 };
 
 export type Query = {
@@ -171,6 +196,7 @@ export type Query = {
   testPresets: TestPresetsResponse;
   user: UserResponse;
   userFollowers: UserFollowersResponse;
+  userSettings: UserSettingsResponse;
   userTestPresets: TestPresetsResponse;
   users: UsersResponse;
 };
@@ -205,6 +231,11 @@ export type QueryUserArgs = {
 
 export type QueryUserFollowersArgs = {
   userId: Scalars['String'];
+};
+
+
+export type QueryUserSettingsArgs = {
+  input: UserSettingsWhereInput;
 };
 
 
@@ -279,16 +310,17 @@ export type TestPresetWhereInput = {
 };
 
 export type TestPresetsFindInput = {
-  currentPage: Scalars['Int'];
-  pageSize: Scalars['Int'];
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
   where?: Maybe<TestPresetWhereInput>;
 };
 
 export type TestPresetsResponse = {
   __typename?: 'TestPresetsResponse';
+  count?: Maybe<Scalars['Int']>;
+  edges?: Maybe<Array<Edge>>;
   errors?: Maybe<Array<ErrorResponse>>;
-  testPresets?: Maybe<Array<TestPreset>>;
-  totalPresets?: Maybe<Scalars['Int']>;
+  pageInfo?: Maybe<PageInfo>;
 };
 
 /** Test Type */
@@ -377,6 +409,50 @@ export type UserResponse = {
   user?: Maybe<User>;
 };
 
+export type UserSettings = {
+  __typename?: 'UserSettings';
+  blindMode?: Maybe<Scalars['Boolean']>;
+  /** Identifies the date and time when the object was created. */
+  createdAt: Scalars['Date'];
+  id: Scalars['String'];
+  noBackspace?: Maybe<Scalars['Boolean']>;
+  pauseOnError?: Maybe<Scalars['Boolean']>;
+  typeSounds?: Maybe<Scalars['Boolean']>;
+  typeSoundsVolume?: Maybe<Scalars['Float']>;
+  /** Identifies the date and time when the object was last updated. */
+  updatedAt: Scalars['Date'];
+  userId?: Maybe<Scalars['String']>;
+};
+
+export type UserSettingsCreateInput = {
+  blindMode?: Maybe<Scalars['Boolean']>;
+  noBackspace?: Maybe<Scalars['Boolean']>;
+  pauseOnError?: Maybe<Scalars['Boolean']>;
+  typeSounds?: Maybe<Scalars['Boolean']>;
+  typeSoundsVolume?: Maybe<Scalars['Float']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+export type UserSettingsResponse = {
+  __typename?: 'UserSettingsResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  userSettings?: Maybe<UserSettings>;
+};
+
+export type UserSettingsUpdateInput = {
+  blindMode?: Maybe<Scalars['Boolean']>;
+  noBackspace?: Maybe<Scalars['Boolean']>;
+  pauseOnError?: Maybe<Scalars['Boolean']>;
+  typeSounds?: Maybe<Scalars['Boolean']>;
+  typeSoundsVolume?: Maybe<Scalars['Float']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
+export type UserSettingsWhereInput = {
+  id?: Maybe<Scalars['String']>;
+  userId?: Maybe<Scalars['String']>;
+};
+
 export type UserUpdateInput = {
   accuracy?: Maybe<AccuracyCreateInput>;
   badge?: Maybe<UserBadge>;
@@ -420,6 +496,8 @@ export type UserFragment = { __typename?: 'User', id: string, oauthId?: string |
 
 export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string };
 
+export type UserSettingsFragment = { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any };
+
 export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: string, message: string };
 
 export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: number | null | undefined, pageCount?: number | null | undefined, currentPage?: number | null | undefined, nodesPerPage?: number | null | undefined, hasMore?: boolean | null | undefined, nodes?: Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
@@ -432,13 +510,15 @@ export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistor
 
 export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', totalPresets?: number | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'PageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'Edge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+
+export type UserSettingsResponseFragment = { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
@@ -470,6 +550,20 @@ export type CreateTestPresetUserMutationVariables = Exact<{
 
 
 export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+
+export type CreateUserSettingsMutationVariables = Exact<{
+  input: UserSettingsCreateInput;
+}>;
+
+
+export type CreateUserSettingsMutation = { __typename?: 'Mutation', createUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+
+export type UpdateUserSettingsMutationVariables = Exact<{
+  input: UserSettingsUpdateInput;
+}>;
+
+
+export type UpdateUserSettingsMutation = { __typename?: 'Mutation', updateUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type FollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -512,14 +606,21 @@ export type TestPresetsQueryVariables = Exact<{
 }>;
 
 
-export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', totalPresets?: number | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'PageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'Edge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UserTestPresetsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', totalPresets?: number | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'PageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'Edge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+
+export type UserSettingsQueryVariables = Exact<{
+  input: UserSettingsWhereInput;
+}>;
+
+
+export type UserSettingsQuery = { __typename?: 'Query', userSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type FilterUsersQueryVariables = Exact<{
   page: Scalars['Int'];
@@ -665,10 +766,18 @@ export const TestPresetResponseFragmentDoc = gql`
 ${ErrorResponseFragmentDoc}`;
 export const TestPresetsResponseFragmentDoc = gql`
     fragment TestPresetsResponse on TestPresetsResponse {
-  testPresets {
-    ...TestPreset
+  count
+  pageInfo {
+    startCursor
+    endCursor
+    hasMore
   }
-  totalPresets
+  edges {
+    cursor
+    node {
+      ...TestPreset
+    }
+  }
   errors {
     ...ErrorResponse
   }
@@ -732,6 +841,30 @@ export const UserResponseFragmentDoc = gql`
   }
 }
     ${UserFragmentDoc}
+${ErrorResponseFragmentDoc}`;
+export const UserSettingsFragmentDoc = gql`
+    fragment UserSettings on UserSettings {
+  id
+  userId
+  blindMode
+  noBackspace
+  pauseOnError
+  typeSounds
+  typeSoundsVolume
+  createdAt
+  updatedAt
+}
+    `;
+export const UserSettingsResponseFragmentDoc = gql`
+    fragment UserSettingsResponse on UserSettingsResponse {
+  userSettings {
+    ...UserSettings
+  }
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${UserSettingsFragmentDoc}
 ${ErrorResponseFragmentDoc}`;
 export const UsersResponseFragmentDoc = gql`
     fragment UsersResponse on UsersResponse {
@@ -877,6 +1010,72 @@ export function useCreateTestPresetUserMutation(baseOptions?: Apollo.MutationHoo
 export type CreateTestPresetUserMutationHookResult = ReturnType<typeof useCreateTestPresetUserMutation>;
 export type CreateTestPresetUserMutationResult = Apollo.MutationResult<CreateTestPresetUserMutation>;
 export type CreateTestPresetUserMutationOptions = Apollo.BaseMutationOptions<CreateTestPresetUserMutation, CreateTestPresetUserMutationVariables>;
+export const CreateUserSettingsDocument = gql`
+    mutation createUserSettings($input: UserSettingsCreateInput!) {
+  createUserSettings(input: $input) {
+    ...UserSettingsResponse
+  }
+}
+    ${UserSettingsResponseFragmentDoc}`;
+export type CreateUserSettingsMutationFn = Apollo.MutationFunction<CreateUserSettingsMutation, CreateUserSettingsMutationVariables>;
+
+/**
+ * __useCreateUserSettingsMutation__
+ *
+ * To run a mutation, you first call `useCreateUserSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserSettingsMutation, { data, loading, error }] = useCreateUserSettingsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUserSettingsMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserSettingsMutation, CreateUserSettingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserSettingsMutation, CreateUserSettingsMutationVariables>(CreateUserSettingsDocument, options);
+      }
+export type CreateUserSettingsMutationHookResult = ReturnType<typeof useCreateUserSettingsMutation>;
+export type CreateUserSettingsMutationResult = Apollo.MutationResult<CreateUserSettingsMutation>;
+export type CreateUserSettingsMutationOptions = Apollo.BaseMutationOptions<CreateUserSettingsMutation, CreateUserSettingsMutationVariables>;
+export const UpdateUserSettingsDocument = gql`
+    mutation updateUserSettings($input: UserSettingsUpdateInput!) {
+  updateUserSettings(input: $input) {
+    ...UserSettingsResponse
+  }
+}
+    ${UserSettingsResponseFragmentDoc}`;
+export type UpdateUserSettingsMutationFn = Apollo.MutationFunction<UpdateUserSettingsMutation, UpdateUserSettingsMutationVariables>;
+
+/**
+ * __useUpdateUserSettingsMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserSettingsMutation, { data, loading, error }] = useUpdateUserSettingsMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserSettingsMutation, UpdateUserSettingsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserSettingsMutation, UpdateUserSettingsMutationVariables>(UpdateUserSettingsDocument, options);
+      }
+export type UpdateUserSettingsMutationHookResult = ReturnType<typeof useUpdateUserSettingsMutation>;
+export type UpdateUserSettingsMutationResult = Apollo.MutationResult<UpdateUserSettingsMutation>;
+export type UpdateUserSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateUserSettingsMutation, UpdateUserSettingsMutationVariables>;
 export const FollowUserDocument = gql`
     mutation followUser($userId: String!, $followerId: String!) {
   followUser(userId: $userId, followerId: $followerId) {
@@ -1114,6 +1313,41 @@ export function useUserTestPresetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type UserTestPresetsQueryHookResult = ReturnType<typeof useUserTestPresetsQuery>;
 export type UserTestPresetsLazyQueryHookResult = ReturnType<typeof useUserTestPresetsLazyQuery>;
 export type UserTestPresetsQueryResult = Apollo.QueryResult<UserTestPresetsQuery, UserTestPresetsQueryVariables>;
+export const UserSettingsDocument = gql`
+    query userSettings($input: UserSettingsWhereInput!) {
+  userSettings(input: $input) {
+    ...UserSettingsResponse
+  }
+}
+    ${UserSettingsResponseFragmentDoc}`;
+
+/**
+ * __useUserSettingsQuery__
+ *
+ * To run a query within a React component, call `useUserSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserSettingsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUserSettingsQuery(baseOptions: Apollo.QueryHookOptions<UserSettingsQuery, UserSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserSettingsQuery, UserSettingsQueryVariables>(UserSettingsDocument, options);
+      }
+export function useUserSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserSettingsQuery, UserSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserSettingsQuery, UserSettingsQueryVariables>(UserSettingsDocument, options);
+        }
+export type UserSettingsQueryHookResult = ReturnType<typeof useUserSettingsQuery>;
+export type UserSettingsLazyQueryHookResult = ReturnType<typeof useUserSettingsLazyQuery>;
+export type UserSettingsQueryResult = Apollo.QueryResult<UserSettingsQuery, UserSettingsQueryVariables>;
 export const FilterUsersDocument = gql`
     query filterUsers($page: Int!, $filterBy: UserFilterBy!) {
   filterUsers(page: $page, filterBy: $filterBy) {

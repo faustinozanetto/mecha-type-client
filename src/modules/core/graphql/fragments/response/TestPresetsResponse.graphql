@@ -1,8 +1,16 @@
 fragment TestPresetsResponse on TestPresetsResponse {
-  testPresets {
-    ...TestPreset
+  count
+  pageInfo {
+    startCursor
+    endCursor
+    hasMore
   }
-  totalPresets
+  edges {
+    cursor
+    node {
+      ...TestPreset
+    }
+  }
   errors {
     ...ErrorResponse
   }

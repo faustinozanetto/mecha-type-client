@@ -1,15 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
-import { TestPresetFragment, UserFragment, useUserCreateTestPresetHistoryEntryMutation } from '@generated/graphql';
+import {
+  TestPresetFragment,
+  UserFragment,
+  UserSettingsFragment,
+  useUserCreateTestPresetHistoryEntryMutation,
+  useUserSettingsQuery,
+} from '@generated/graphql';
 import { Flex, SkeletonText, useColorModeValue, useToast, Box } from '@chakra-ui/react';
-import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { roundTo2 } from '@modules/core/math/math';
 import { Caret } from '@components/practice/caret';
 import { useSound } from '@modules/core/sound/use-sound-hook';
 import { SoundType } from '@modules/core/sound/types/sound.types';
 import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
-import useMechaStore from 'state/store';
 import PracticeVisualLetter from '../visual/practice-visual-letter';
 import PracticeResults from '@components/practice/results/practice-results';
 
@@ -60,9 +64,16 @@ interface PracticeGameInputProps {
   text: string;
   /** Current logged in user. */
   user: UserFragment;
+  userSettings: UserSettingsFragment;
 }
 
-export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset, text, user }) => {
+export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({
+  loading,
+  testPreset,
+  text,
+  user,
+  userSettings,
+}) => {
   const [duration, setDuration] = useState(0);
   const [stats, setStats] = useState<ITypingStat[]>([]);
   const { time, start, pause, reset } = useTimer();
@@ -75,14 +86,13 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
 
   const bgColor = useColorModeValue('gray.300', 'gray.900');
-  const practiceConfig = useMechaStore((state) => state.practiceConfig);
 
   const {
     states: { charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping },
   } = useTypingGame(text, {
     skipCurrentWordOnSpace: false,
-    pauseOnError: practiceConfig.pauseOnError,
+    pauseOnError: userSettings.pauseOnError,
   });
 
   // Caret cursor positioning
@@ -185,14 +195,14 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     if (phase !== 2) {
       if (letter === 'Escape') {
         resetTyping();
-      } else if (letter === 'Backspace' && !practiceConfig.noBackspace) {
+      } else if (letter === 'Backspace' && !userSettings.noBackspace) {
         deleteTyping(control);
-        if (practiceConfig.typeSounds) {
+        if (userSettings.typeSounds) {
           play();
         }
       } else if (letter.length === 1) {
         insertTyping(letter);
-        if (practiceConfig.typeSounds) {
+        if (userSettings.typeSounds) {
           play();
         }
       }
@@ -227,7 +237,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
               return (
                 <PracticeVisualLetter
                   key={letter + index}
-                  shouldShowErrors={!practiceConfig.blindMode}
+                  shouldShowErrors={!userSettings.blindMode}
                   correct={state === 1}
                   incorrect={state === 2}
                   highlight={false}

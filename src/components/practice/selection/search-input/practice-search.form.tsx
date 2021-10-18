@@ -1,29 +1,16 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
-import { TestLanguage, TestPresetWhereInput, useTestPresetsQuery } from '@generated/graphql';
-import { useRouter } from 'next/router';
-import {
-  Flex,
-  useToast,
-  Text,
-  HStack,
-  Container,
-  useColorModeValue,
-  FormControl,
-  FormLabel,
-  Box,
-  Stack,
-} from '@chakra-ui/react';
+import { TestLanguage } from '@generated/graphql';
+import { Flex, Text, HStack, Container, useColorModeValue, FormControl, FormLabel, Box, Stack } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormSelectInput } from '@components/ui/forms/form-select-input';
 import { FormNumberInput } from '@components/ui/forms/form-number-input';
 import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
 import FormSwitchInput from '@components/ui/forms/form-switch-input';
-import useMechaStore from 'state/store';
 import { parseNumber } from '@modules/core/math/math';
 
-interface PresetCreationFormValues {
+export interface PracticeSearchValues {
   language: TestLanguage;
   filterLanguage: boolean;
   words: number;
@@ -40,18 +27,17 @@ const validationSchema = Yup.object().shape({
   punctuated: Yup.boolean().required('Punctuated is required!'),
 });
 
-interface PracticeSearchFormProps {}
+interface PracticeSearchFormProps {
+  /** Function to call when values are updated. */
+  onValuesUpdated: (values: PracticeSearchValues) => void;
+}
 
-export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
-  const { fetchMore } = useTestPresetsQuery({
-    variables: { input: { currentPage: 0, pageSize: 0, where: {} } },
-  });
-  const { setSearchedTestPresets, searchedTestPresets } = useMechaStore();
+export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValuesUpdated }) => {
   const filterFieldBG = useColorModeValue('gray.200', 'gray.800');
 
-  const initialFormValues: PresetCreationFormValues = {
+  const initialFormValues: PracticeSearchValues = {
     language: TestLanguage.English,
-    filterLanguage: false,
+    filterLanguage: true,
     words: 25,
     filterWords: false,
     punctuated: false,
@@ -72,24 +58,25 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
         initialValues={initialFormValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          let whereInput: TestPresetWhereInput = {};
+          let parsedValues: PracticeSearchValues = { ...values };
           if (values.filterLanguage) {
-            whereInput.language = values.language;
+            parsedValues.language = values.language;
           }
           if (values.filterWords) {
-            whereInput.words = parseNumber(values.words);
+            if (typeof values.words === 'undefined') {
+              parsedValues.words = 25;
+            } else {
+              parsedValues.words = parseNumber(values.words);
+            }
           }
           if (values.filterPunctuated) {
-            whereInput.punctuated = values.punctuated;
+            parsedValues.punctuated = values.punctuated;
           }
-          await fetchMore({
-            variables: { input: { currentPage: 0, pageSize: 6, where: whereInput } },
-          }).then((data) => {
-            setSearchedTestPresets(data.data.testPresets.testPresets);
-          });
+
+          onValuesUpdated(parsedValues);
         }}
       >
-        {(props: FormikProps<PresetCreationFormValues>) => {
+        {(props: FormikProps<PracticeSearchValues>) => {
           const { handleSubmit, values } = props;
 
           return (
@@ -105,7 +92,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
               {/* Form Content */}
               <Stack direction={['column', 'column', 'row']} alignItems="center">
                 {/* Filter Language */}
-                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2} mt={2}>
+                <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2}>
                   <FormControl id="language" mr={2}>
                     <HStack justifyContent="space-between" mb={values.filterLanguage ? 2 : 0}>
                       <FormLabel margin={0}>Language</FormLabel>
@@ -132,7 +119,9 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({}) => {
                       <FormLabel margin={0}>Words Amount</FormLabel>
                       <FormSwitchInput name="filterWords" switchProps={{ mr: 0 }} />
                     </HStack>
-                    {values.filterWords && <FormNumberInput name="words" label="" />}
+                    {values.filterWords && (
+                      <FormNumberInput name="words" defaultValue={initialFormValues.words} label="" />
+                    )}
                   </FormControl>
                 </Box>
 

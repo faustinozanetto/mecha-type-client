@@ -1,7 +1,7 @@
 import React from 'react';
 import { PresetCreationForm } from './preset-creation-form';
 import { UserFragment } from '@generated/graphql';
-import { Text, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 
 interface PresetCreationProps {
   /** Current logged in user. */

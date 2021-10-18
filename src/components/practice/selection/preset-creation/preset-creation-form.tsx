@@ -1,10 +1,9 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
-import { TestLanguage, TestType, useCreateTestPresetUserMutation, User, UserFragment } from '@generated/graphql';
+import { TestLanguage, TestType, useCreateTestPresetUserMutation, UserFragment } from '@generated/graphql';
 import { useRouter } from 'next/router';
-import { Flex, useToast, Text, VStack, HStack } from '@chakra-ui/react';
-import { FormCancelButton } from '@components/forms/form-cancel-button';
+import { Flex, useToast, Text, VStack, HStack, Button } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormSelectInput } from '@components/ui/forms/form-select-input';
 import { FormNumberInput } from '@components/ui/forms/form-number-input';
@@ -148,9 +147,9 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, on
             <HStack>
               {/* Submit button */}
               <FormSubmitButton width="50%">Submit</FormSubmitButton>
-              <FormCancelButton width="50%" onClick={() => onCreatedCallback()}>
+              <Button as="a" href="/practice" loadingText="Loading" colorScheme="gray" width="50%">
                 Cancel
-              </FormCancelButton>
+              </Button>
             </HStack>
           </Flex>
         );

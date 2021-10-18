@@ -5,7 +5,7 @@ import { Button, Flex, Heading, Skeleton, useColorModeValue, VStack } from '@cha
 import { Leaderboards } from '@components/leaderboards/leaderboards';
 import { __URI__ } from '@utils/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import withApollo from '@modules/core/apollo/apollo';
+import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
 
 interface LeaderboardsPageProps {

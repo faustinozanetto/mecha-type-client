@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import withApollo from '@modules/core/apollo/apollo';
+import { withApollo } from '@modules/core/apollo/apollo';
 import axios from 'axios';
 import LayoutCore from 'layouts/core/components/layout-core';
 import { useMeQuery, User, useUserQuery } from 'generated/graphql';

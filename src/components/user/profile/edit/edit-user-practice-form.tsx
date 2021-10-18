@@ -7,16 +7,17 @@ import { FormCancelButton } from '@components/forms/form-cancel-button';
 import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
 import FormSliderInput from '@components/ui/forms/form-slider-input';
 import { roundTo2 } from '@modules/core/math/math';
-import useMechaStore from 'state/store';
 import { useRouter } from 'next/router';
+import { UserSettingsFragment, useUpdateUserMutation, useUpdateUserSettingsMutation } from '@generated/graphql';
 
 interface EditUserPracticeFormProps {
   /** Callback function to call when cancel button is clicked */
   onCancelCallback: () => void;
+  userId: string;
+  userSettings: UserSettingsFragment;
 }
 
 export const EditPracticeFormSchema = Yup.object().shape({
-  punctuateWords: Yup.boolean().required('Punctuate words is required!'),
   blindMode: Yup.boolean().required('Blind Mode is required!'),
   pauseOnError: Yup.boolean().required('Pause on Error is required!'),
   noBackspace: Yup.boolean().required('No Backspace is required!'),
@@ -28,7 +29,6 @@ export const EditPracticeFormSchema = Yup.object().shape({
 });
 
 export interface EditUserPracticeFormValues {
-  punctuateWords: boolean;
   blindMode: boolean;
   pauseOnError: boolean;
   noBackspace: boolean;
@@ -36,24 +36,47 @@ export interface EditUserPracticeFormValues {
   typeSoundsVolume: number;
 }
 
-export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onCancelCallback }) => {
+export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
+  userSettings,
+  userId,
+  onCancelCallback,
+}) => {
   const toast = useToast();
   const router = useRouter();
-  const practiceConfig = useMechaStore((state) => state.practiceConfig);
-  const [typeSoundValue, setTypeSoundValue] = useState(practiceConfig.typeSoundsVolume);
-  const setPracticeConfig = useMechaStore((state) => state.setPracticeConfig);
-  const initialFormValues: EditUserPracticeFormValues = practiceConfig;
+  const [updateUserSettings] = useUpdateUserSettingsMutation();
+  const [typeSoundValue, setTypeSoundValue] = useState(userSettings.typeSoundsVolume);
+  const initialFormValues: EditUserPracticeFormValues = {
+    blindMode: userSettings.blindMode,
+    noBackspace: userSettings.noBackspace,
+    pauseOnError: userSettings.pauseOnError,
+    typeSounds: userSettings.typeSounds,
+    typeSoundsVolume: userSettings.typeSoundsVolume,
+  };
 
   return (
     <Formik
       initialValues={initialFormValues}
       validationSchema={EditPracticeFormSchema}
       onSubmit={async (values) => {
-        try {
-          setPracticeConfig(values);
-        } catch (error) {
-          console.log(error);
+        const response = await updateUserSettings({
+          variables: { input: { ...values, userId } },
+        });
+        if (response?.data?.updateUserSettings?.errors?.length > 0) {
+          toast({
+            title: 'An error occurred',
+            description: response.data.updateUserSettings.errors[0].message,
+            duration: 3000,
+            status: 'error',
+            position: 'bottom-right',
+          });
         }
+        toast({
+          title: 'Success',
+          description: 'Practice settings saved successfully!',
+          duration: 3000,
+          status: 'success',
+          position: 'bottom-right',
+        });
         router.push(`/user/${router.query.name}`);
       }}
     >
@@ -66,16 +89,6 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ onCa
               <Text as="h2" fontSize="3xl" fontWeight={600}>
                 Practice Settings
               </Text>
-
-              {/* Punctuate Words Input */}
-              <VStack>
-                <Text as="p" fontSize="md" fontWeight={400}>
-                  Wether words should be punctuated or not
-                </Text>
-                <FormCheckboxInput name="punctuateWords" sx={{ margin: '0.25rem !important' }}>
-                  Punctuate Words
-                </FormCheckboxInput>
-              </VStack>
 
               {/* Blind Mode Input */}
               <VStack>

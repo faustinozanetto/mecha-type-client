@@ -1,7 +1,7 @@
 import React from 'react';
-import withApollo from '@modules/core/apollo/apollo';
+import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
-import { useMeQuery, useUserQuery } from 'generated/graphql';
+import { useMeQuery, useUserQuery, useUserSettingsQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
@@ -25,6 +25,9 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
       },
     },
   });
+  const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
+    variables: { input: { userId: userData?.me?.user?.id } },
+  });
 
   /**
    *
@@ -47,7 +50,12 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
         seoUrl: `${__URI__!}/user/${targetUser?.user?.user?.username}/edit`,
       }}
     >
-      <EditUserProfile user={targetUser.user.user} loading={loading} countries={countries} />
+      <EditUserProfile
+        user={targetUser.user.user}
+        userSettings={userSettings?.userSettings?.userSettings}
+        loading={loading || userSettingsLoading}
+        countries={countries}
+      />
     </LayoutCore>
   );
 };

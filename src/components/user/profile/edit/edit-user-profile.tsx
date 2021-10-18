@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserFragment } from 'generated/graphql';
+import { UserFragment, UserSettingsFragment } from 'generated/graphql';
 import { Flex, GridItem, Grid, useColorModeValue } from '@chakra-ui/react';
 import { UserAvatar } from '../page/user/user-avatar';
 import { EditUserProfileForm } from './edit-user-profile-form';
@@ -17,13 +17,14 @@ export enum SettingsEdit {
 interface EditUserProfileProps {
   /** User to perform the edits */
   user: UserFragment;
+  userSettings: UserSettingsFragment;
   /** Wether content is loading or not */
   loading: boolean;
   /** Countries data */
   countries: CountryEntry[];
 }
 
-const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading, countries }) => {
+const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, userSettings, loading, countries }) => {
   const topBg = useColorModeValue('gray.300', 'gray.700');
   const [settingsType, setSettingsType] = useState<SettingsEdit>(SettingsEdit.UNSET);
 
@@ -63,7 +64,7 @@ const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading, countr
           </GridItem>
         </Grid>
       )}
-      {settingsType === SettingsEdit.PRACTICE && (
+      {userSettings && settingsType === SettingsEdit.PRACTICE && (
         <Flex
           flexDir="column"
           padding="1rem"
@@ -73,7 +74,11 @@ const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading, countr
           backgroundColor={topBg}
           width="lg"
         >
-          <EditUserPracticeForm onCancelCallback={() => setSettingsType(SettingsEdit.UNSET)} />
+          <EditUserPracticeForm
+            userSettings={userSettings}
+            userId={user.id}
+            onCancelCallback={() => setSettingsType(SettingsEdit.UNSET)}
+          />
         </Flex>
       )}
     </>

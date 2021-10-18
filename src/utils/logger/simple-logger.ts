@@ -1,4 +1,3 @@
-import { Console } from 'console';
 import noop from 'lodash.noop';
 
 export type SimpleLogger = Console;
@@ -48,15 +47,15 @@ const colorizeFallback: Colorize = (mode: Omit<PrintMode, 'groupEnd'>, prefixes:
 
     switch (mode) {
       case 'debug':
-        return prefixes.map((prefix: string) => chalk.yellow(prefix));
+        return prefixes.map((prefix: string) => chalk.bgYellow(prefix));
       case 'error':
-        return prefixes.map((prefix: string) => chalk.red(prefix));
+        return prefixes.map((prefix: string) => chalk.bgRed(prefix));
       case 'group':
         return prefixes.map((prefix: string) => chalk.bgGray(prefix));
       case 'info':
-        return prefixes.map((prefix: string) => chalk.blue(prefix));
+        return prefixes.map((prefix: string) => chalk.bgBlue(prefix));
       case 'log':
-        return prefixes.map((prefix: string) => chalk.grey(prefix));
+        return prefixes.map((prefix: string) => chalk.bgGrey(prefix));
       case 'warn':
         return prefixes.map((prefix: string) => orange(prefix));
     }

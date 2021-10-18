@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Container, Flex, useColorModeValue } from '@chakra-ui/react';
 import { UserSignIn } from '@components/auth/signin/user-sign-in';
 import { NextSeo } from 'next-seo';
