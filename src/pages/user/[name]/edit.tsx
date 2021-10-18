@@ -25,10 +25,6 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
       },
     },
   });
-  const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
-    variables: { input: { userId: userData?.me?.user?.id } },
-  });
-
   /**
    *
    * @returns wether the user owns the edit page or not.
@@ -50,12 +46,7 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
         seoUrl: `${__URI__!}/user/${targetUser?.user?.user?.username}/edit`,
       }}
     >
-      <EditUserProfile
-        user={targetUser.user.user}
-        userSettings={userSettings?.userSettings?.userSettings}
-        loading={loading || userSettingsLoading}
-        countries={countries}
-      />
+      <EditUserProfile user={targetUser.user.user} loading={loading} countries={countries} />
     </LayoutCore>
   );
 };

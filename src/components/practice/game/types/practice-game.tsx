@@ -4,7 +4,6 @@ import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
 import {
   TestPresetFragment,
   UserFragment,
-  UserSettingsFragment,
   useUserCreateTestPresetHistoryEntryMutation,
   useUserSettingsQuery,
 } from '@generated/graphql';
@@ -64,16 +63,9 @@ interface PracticeGameInputProps {
   text: string;
   /** Current logged in user. */
   user: UserFragment;
-  userSettings: UserSettingsFragment;
 }
 
-export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({
-  loading,
-  testPreset,
-  text,
-  user,
-  userSettings,
-}) => {
+export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset, text, user }) => {
   const [duration, setDuration] = useState(0);
   const [stats, setStats] = useState<ITypingStat[]>([]);
   const { time, start, pause, reset } = useTimer();
@@ -84,7 +76,9 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({
   const toast = useToast();
   const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
   const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
-
+  const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
+    variables: { input: { userId: user?.id } },
+  });
   const bgColor = useColorModeValue('gray.300', 'gray.900');
 
   const {
@@ -92,7 +86,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({
     actions: { insertTyping, deleteTyping, resetTyping },
   } = useTypingGame(text, {
     skipCurrentWordOnSpace: false,
-    pauseOnError: userSettings.pauseOnError,
+    pauseOnError: userSettings?.userSettings?.userSettings?.pauseOnError,
   });
 
   // Caret cursor positioning
@@ -195,14 +189,14 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({
     if (phase !== 2) {
       if (letter === 'Escape') {
         resetTyping();
-      } else if (letter === 'Backspace' && !userSettings.noBackspace) {
+      } else if (letter === 'Backspace' && !userSettings?.userSettings?.userSettings?.noBackspace) {
         deleteTyping(control);
-        if (userSettings.typeSounds) {
+        if (userSettings?.userSettings?.userSettings?.typeSounds) {
           play();
         }
       } else if (letter.length === 1) {
         insertTyping(letter);
-        if (userSettings.typeSounds) {
+        if (userSettings?.userSettings?.userSettings?.typeSounds) {
           play();
         }
       }
@@ -237,7 +231,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({
               return (
                 <PracticeVisualLetter
                   key={letter + index}
-                  shouldShowErrors={!userSettings.blindMode}
+                  shouldShowErrors={!userSettings?.userSettings?.userSettings?.blindMode}
                   correct={state === 1}
                   incorrect={state === 2}
                   highlight={false}

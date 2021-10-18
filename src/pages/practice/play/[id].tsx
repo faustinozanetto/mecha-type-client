@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
-import { useMeQuery, useTestPresetQuery, useUserSettingsQuery } from 'generated/graphql';
+import { useMeQuery, useTestPresetQuery } from 'generated/graphql';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -24,9 +24,6 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
     variables: {
       id: useGetIDFromUrl(),
     },
-  });
-  const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
-    variables: { input: { userId: userData?.me?.user?.id } },
   });
 
   useEffect(() => {
@@ -57,13 +54,12 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
             />
           </Flex>
         )}
-        {testPreset?.testPreset?.testPreset && userSettings?.userSettings?.userSettings && text && (
+        {testPreset?.testPreset?.testPreset && text && (
           <PracticeGameInput
-            loading={testPresetLoading || userLoading || userSettingsLoading || text === ''}
+            loading={testPresetLoading || userLoading || text === ''}
             testPreset={testPreset.testPreset.testPreset}
             text={text as string}
             user={userData?.me?.user!}
-            userSettings={userSettings.userSettings.userSettings}
           />
         )}
       </Flex>

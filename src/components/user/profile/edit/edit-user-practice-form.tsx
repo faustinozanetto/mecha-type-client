@@ -44,13 +44,13 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
   const toast = useToast();
   const router = useRouter();
   const [updateUserSettings] = useUpdateUserSettingsMutation();
-  const [typeSoundValue, setTypeSoundValue] = useState(userSettings.typeSoundsVolume);
+  const [typeSoundValue, setTypeSoundValue] = useState(userSettings?.typeSoundsVolume);
   const initialFormValues: EditUserPracticeFormValues = {
-    blindMode: userSettings.blindMode,
-    noBackspace: userSettings.noBackspace,
-    pauseOnError: userSettings.pauseOnError,
-    typeSounds: userSettings.typeSounds,
-    typeSoundsVolume: userSettings.typeSoundsVolume,
+    blindMode: userSettings?.blindMode,
+    noBackspace: userSettings?.noBackspace,
+    pauseOnError: userSettings?.pauseOnError,
+    typeSounds: userSettings?.typeSounds,
+    typeSoundsVolume: userSettings?.typeSoundsVolume,
   };
 
   return (
@@ -142,7 +142,7 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
                       min: 0.1,
                       step: 0.0001,
                       max: 5,
-                      value: initialFormValues.typeSoundsVolume,
+                      defaultValue: initialFormValues?.typeSoundsVolume,
                       onChangeStart: (value) => setTypeSoundValue(value),
                     }}
                     sx={{ margin: '0.25rem !important' }}
