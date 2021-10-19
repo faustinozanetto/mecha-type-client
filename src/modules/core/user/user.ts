@@ -107,7 +107,7 @@ export const generateAvatarURl = (user: UserFragment | FilteredUserFragment | Us
   if (user?.id) {
     switch (user.authProvider) {
       case AuthProvider.Default: {
-        avatarURL = '';
+        avatarURL = 'https://via.placeholder.com/150';
         break;
       }
       case AuthProvider.Discord: {

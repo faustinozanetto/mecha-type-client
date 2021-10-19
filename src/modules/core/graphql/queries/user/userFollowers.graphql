@@ -1,5 +1,5 @@
-query userFollowers($userId: String!) {
-  userFollowers(userId: $userId) {
+query userFollowers($input: UserFollowersFindInput!) {
+  userFollowers(input: $input) {
     ...UserFollowersResponse
   }
 }

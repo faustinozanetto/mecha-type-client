@@ -4,4 +4,6 @@ fragment UserFollower on UserFollower {
   authProvider
   oauthId
   avatar
+  createdAt
+  updatedAt
 }

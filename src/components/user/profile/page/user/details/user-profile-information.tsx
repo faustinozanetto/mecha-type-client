@@ -3,7 +3,7 @@ import UserProfilePresets from '../../presets/use-profile-presets';
 import UserProfileSocial from '../../social/user-profile-social';
 import UserProfileStats from '../../stats/user-profile-stats';
 import { Grid, GridItem } from '@chakra-ui/react';
-import { UserFollowerFragment, UserFragment } from '@generated/graphql';
+import {  UserFollowerFragment, UserFragment } from '@generated/graphql';
 import { UserParsedStats } from '@modules/core/user/user';
 
 interface UserProfileStatsProps {

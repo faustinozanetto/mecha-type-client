@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import { UserFollowerFragment } from '@generated/graphql';
 import { UserAvatar } from '../../user/user-avatar';
@@ -13,8 +12,6 @@ interface UserFollowerCardProps {
 }
 
 export const UserFollowerCard: React.FC<UserFollowerCardProps> = ({ follower, loading }) => {
-  const router = useRouter();
-
   return (
     <Flex
       as="a"
@@ -23,7 +20,6 @@ export const UserFollowerCard: React.FC<UserFollowerCardProps> = ({ follower, lo
       alignContent="flex-start"
       justifyContent="flex-start"
       alignItems="center"
-      margin={2}
       padding={4}
       borderRadius="lg"
       width={['auto', 'auto', 'auto', '100%', '100%']}

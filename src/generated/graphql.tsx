@@ -59,12 +59,6 @@ export type CreateTestPresetInput = {
   words: Scalars['Int'];
 };
 
-export type Edge = {
-  __typename?: 'Edge';
-  cursor?: Maybe<Scalars['Date']>;
-  node?: Maybe<TestPreset>;
-};
-
 export type ErrorResponse = {
   __typename?: 'ErrorResponse';
   field: Scalars['String'];
@@ -180,13 +174,6 @@ export type MutationUserCreateTestPresetHistoryEntryArgs = {
   userId: Scalars['String'];
 };
 
-export type PageInfo = {
-  __typename?: 'PageInfo';
-  endCursor?: Maybe<Scalars['Date']>;
-  hasMore?: Maybe<Scalars['Boolean']>;
-  startCursor?: Maybe<Scalars['Date']>;
-};
-
 export type Query = {
   __typename?: 'Query';
   filterUsers: FilteredUsersResponse;
@@ -230,7 +217,7 @@ export type QueryUserArgs = {
 
 
 export type QueryUserFollowersArgs = {
-  userId: Scalars['String'];
+  input: UserFollowersFindInput;
 };
 
 
@@ -309,18 +296,31 @@ export type TestPresetWhereInput = {
   words?: Maybe<Scalars['Int']>;
 };
 
+export type TestPresetsEdge = {
+  __typename?: 'TestPresetsEdge';
+  cursor?: Maybe<Scalars['Date']>;
+  node?: Maybe<TestPreset>;
+};
+
 export type TestPresetsFindInput = {
   skip: Scalars['Int'];
   take: Scalars['Int'];
   where?: Maybe<TestPresetWhereInput>;
 };
 
+export type TestPresetsPageInfo = {
+  __typename?: 'TestPresetsPageInfo';
+  endCursor?: Maybe<Scalars['Date']>;
+  hasMore?: Maybe<Scalars['Boolean']>;
+  startCursor?: Maybe<Scalars['Date']>;
+};
+
 export type TestPresetsResponse = {
   __typename?: 'TestPresetsResponse';
   count?: Maybe<Scalars['Int']>;
-  edges?: Maybe<Array<Edge>>;
+  edges?: Maybe<Array<TestPresetsEdge>>;
   errors?: Maybe<Array<ErrorResponse>>;
-  pageInfo?: Maybe<PageInfo>;
+  pageInfo?: Maybe<TestPresetsPageInfo>;
 };
 
 /** Test Type */
@@ -384,10 +384,31 @@ export type UserFollower = {
   username: Scalars['String'];
 };
 
+export type UserFollowerEdge = {
+  __typename?: 'UserFollowerEdge';
+  cursor?: Maybe<Scalars['Date']>;
+  node?: Maybe<UserFollower>;
+};
+
+export type UserFollowersFindInput = {
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+  where?: Maybe<UserWhereInput>;
+};
+
+export type UserFollowersPageInfo = {
+  __typename?: 'UserFollowersPageInfo';
+  endCursor?: Maybe<Scalars['Date']>;
+  hasMore?: Maybe<Scalars['Boolean']>;
+  startCursor?: Maybe<Scalars['Date']>;
+};
+
 export type UserFollowersResponse = {
   __typename?: 'UserFollowersResponse';
+  count?: Maybe<Scalars['Int']>;
+  edges?: Maybe<Array<UserFollowerEdge>>;
   errors?: Maybe<Array<ErrorResponse>>;
-  users?: Maybe<Array<UserFollower>>;
+  pageInfo?: Maybe<UserFollowersPageInfo>;
 };
 
 export type UserOnUser = {
@@ -494,7 +515,7 @@ export type TestPresetHistoryFragment = { __typename?: 'TestPresetHistory', id: 
 
 export type UserFragment = { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined };
 
-export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string };
+export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, createdAt: any, updatedAt: any };
 
 export type UserSettingsFragment = { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any };
 
@@ -510,11 +531,11 @@ export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistor
 
 export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'PageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'Edge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', users?: Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
@@ -606,14 +627,14 @@ export type TestPresetsQueryVariables = Exact<{
 }>;
 
 
-export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'PageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'Edge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UserTestPresetsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'PageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'Edge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UserSettingsQueryVariables = Exact<{
   input: UserSettingsWhereInput;
@@ -651,11 +672,11 @@ export type UserQueryVariables = Exact<{
 export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UserFollowersQueryVariables = Exact<{
-  userId: Scalars['String'];
+  input: UserFollowersFindInput;
 }>;
 
 
-export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', users?: Array<{ __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UsersQueryVariables = Exact<{
   take: Scalars['Int'];
@@ -799,12 +820,23 @@ export const UserFollowerFragmentDoc = gql`
   authProvider
   oauthId
   avatar
+  createdAt
+  updatedAt
 }
     `;
 export const UserFollowersResponseFragmentDoc = gql`
     fragment UserFollowersResponse on UserFollowersResponse {
-  users {
-    ...UserFollower
+  count
+  pageInfo {
+    startCursor
+    endCursor
+    hasMore
+  }
+  edges {
+    cursor
+    node {
+      ...UserFollower
+    }
   }
   errors {
     ...ErrorResponse
@@ -1490,8 +1522,8 @@ export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
 export const UserFollowersDocument = gql`
-    query userFollowers($userId: String!) {
-  userFollowers(userId: $userId) {
+    query userFollowers($input: UserFollowersFindInput!) {
+  userFollowers(input: $input) {
     ...UserFollowersResponse
   }
 }
@@ -1509,7 +1541,7 @@ export const UserFollowersDocument = gql`
  * @example
  * const { data, loading, error } = useUserFollowersQuery({
  *   variables: {
- *      userId: // value for 'userId'
+ *      input: // value for 'input'
  *   },
  * });
  */

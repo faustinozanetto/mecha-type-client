@@ -1,6 +1,15 @@
 fragment UserFollowersResponse on UserFollowersResponse {
-  users {
-    ...UserFollower
+  count
+  pageInfo {
+    startCursor
+    endCursor
+    hasMore
+  }
+  edges {
+    cursor
+    node {
+      ...UserFollower
+    }
   }
   errors {
     ...ErrorResponse

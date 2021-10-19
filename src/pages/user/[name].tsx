@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { withApollo } from '@modules/core/apollo/apollo';
+import UserProfile from '@components/user/profile/page/user/user-profile';
 import axios from 'axios';
 import LayoutCore from 'layouts/core/components/layout-core';
-import { useMeQuery, User, useUserQuery } from 'generated/graphql';
+import { withApollo } from '@modules/core/apollo/apollo';
+import { useMeQuery, UserFragment, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@modules/core/user/user';
-import UserProfile from '@components/user/profile/page/user/user-profile';
 import { CountryEntry } from 'typings/user';
 
 interface UserPageProps {
@@ -18,14 +18,28 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const router = useRouter();
+  const [me, setMe] = useState<UserFragment>();
+  const [targetUser, setTargetUser] = useState<UserFragment>();
   const [IDFromRoute, _setIDFromRoute] = useState(router.query.name as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
-  const { data: userData, loading } = useMeQuery({
-    ssr: true,
-  });
+  const { data: meUserData, loading: meLoading } = useMeQuery({ ssr: true });
 
-  const { data: targetUser, loading: targetUserLoading } = useUserQuery({
-    skip: IDFromRoute === '',
+  /** Check if the current logged user matches the target user. */
+  useEffect(() => {
+    const userOwnsPage = (): boolean => {
+      if (me) {
+        return me.username === IDFromRoute;
+      }
+      return false;
+    };
+    setUserOwnsPage(userOwnsPage());
+    if (userOwnsPage) {
+      setTargetUser(me);
+    }
+  }, [IDFromRoute, me]);
+
+  const { data: targetUserData, loading: targetUserLoading } = useUserQuery({
+    ssr: true,
     variables: {
       where: {
         username: IDFromRoute,
@@ -33,33 +47,36 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
     },
   });
 
+  // Me data
   useEffect(() => {
-    /** Check if the current logged user matches the target user. */
-    const userOwnsPage = (): boolean => {
-      if (userData?.me?.user && targetUser?.user?.user) {
-        return userData.me.user.id === targetUser.user.user.id;
-      }
-      return false;
-    };
-    setUserOwnsPage(userOwnsPage());
-  }, [targetUser?.user, userData?.me]);
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData]);
+
+  // Target User
+  useEffect(() => {
+    if (targetUserData?.user?.user && !targetUserLoading) {
+      setTargetUser(targetUserData.user.user);
+    }
+  }, [targetUserData]);
 
   return (
     <LayoutCore
-      user={userData?.me?.user}
+      user={me}
       headProps={{
-        seoTitle: `${targetUser?.user?.user?.username ?? IDFromRoute} | Mecha Type`,
+        seoTitle: `${targetUser?.username ?? IDFromRoute} | Mecha Type`,
         seoDescription: `${
-          targetUser?.user?.user?.username ?? IDFromRoute
+          targetUser?.username ?? IDFromRoute
         }´s profile page, showing their stats and more information.`,
-        seoUrl: `${__URI__!}/user/${targetUser?.user?.user?.username}`,
-        seoImage: generateAvatarURl(targetUser?.user?.user!),
+        seoUrl: `${__URI__!}/user/${targetUser?.username}`,
+        seoImage: generateAvatarURl(targetUser),
       }}
     >
       <UserProfile
-        user={userData?.me.user as User}
-        targetUser={targetUser?.user.user as User}
-        loading={loading && targetUserLoading && loading}
+        user={me}
+        targetUser={targetUser}
+        loading={meLoading && targetUserLoading}
         ownsPage={userOwnsPage}
         countries={countries}
       />
