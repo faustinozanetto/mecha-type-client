@@ -18,6 +18,7 @@ interface UserProfileDetailsProps {
   loading: boolean;
   /** If the current logged in user is the same as the profile page */
   refetchUserFollowers: any;
+  /** Wether the current logged in user owns the user page or not */
   ownsPage: boolean;
   /** Country data */
   country: CountryEntry;

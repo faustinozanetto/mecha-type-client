@@ -11,9 +11,11 @@ interface UserFollowersProps {
   followers: UserFollowerFragment[];
   /** Wether content is loading or not */
   loading: boolean;
+  /** Wether the current logged in user owns the user page or not */
+  ownsPage: boolean;
 }
 
-const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => {
+const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading, ownsPage }) => {
   const { query } = useRouter();
   const { t } = useTranslation('user-profile');
   const textColor = useColorModeValue('black', 'white');
@@ -45,15 +47,17 @@ const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => 
           })}
         </VStack>
       )}
-      <Button
-        as="a"
-        href={`/user/${query.name}/followers`}
-        colorScheme="purple"
-        size="lg"
-        width={['auto', 'auto', 'auto', '60%', '60%']}
-      >
-        See More
-      </Button>
+      {ownsPage && (
+        <Button
+          as="a"
+          href={`/user/${query.name}/followers`}
+          colorScheme="purple"
+          size="lg"
+          width={['auto', 'auto', 'auto', '60%', '60%']}
+        >
+          See More
+        </Button>
+      )}
     </Flex>
   );
 };

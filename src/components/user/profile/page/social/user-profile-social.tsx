@@ -10,9 +10,11 @@ interface UserProfileSocialProps {
   followersData: UserFollowerFragment[];
   /** Wether content is loading or not */
   loading: boolean;
+  /** Wether the current logged in user owns the user page or not */
+  ownsPage: boolean;
 }
 
-const UserProfileSocial: React.FC<UserProfileSocialProps> = ({ followersData, loading }) => {
+const UserProfileSocial: React.FC<UserProfileSocialProps> = ({ followersData, loading, ownsPage }) => {
   const { t } = useTranslation('user-profile');
 
   return (
@@ -20,7 +22,7 @@ const UserProfileSocial: React.FC<UserProfileSocialProps> = ({ followersData, lo
       <Text as="h2" fontSize="3xl" color={useColorModeValue('black', 'white')} fontWeight={600} marginBottom={4}>
         {t('social-title')}
       </Text>
-      <UserFollowers followers={followersData} loading={loading} />
+      <UserFollowers followers={followersData} loading={loading} ownsPage={ownsPage} />
     </Box>
   );
 };

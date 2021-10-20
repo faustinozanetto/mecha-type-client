@@ -24,20 +24,6 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const [userOwnsPage, setUserOwnsPage] = useState(false);
   const { data: meUserData, loading: meLoading } = useMeQuery({ ssr: true });
 
-  /** Check if the current logged user matches the target user. */
-  useEffect(() => {
-    const userOwnsPage = (): boolean => {
-      if (me) {
-        return me.username === IDFromRoute;
-      }
-      return false;
-    };
-    setUserOwnsPage(userOwnsPage());
-    if (userOwnsPage) {
-      setTargetUser(me);
-    }
-  }, [IDFromRoute, me]);
-
   const { data: targetUserData, loading: targetUserLoading } = useUserQuery({
     ssr: true,
     variables: {
@@ -57,9 +43,25 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   // Target User
   useEffect(() => {
     if (targetUserData?.user?.user && !targetUserLoading) {
-      setTargetUser(targetUserData.user.user);
+      setTargetUser(targetUser);
     }
   }, [targetUserData]);
+
+  /** Check if the current logged user matches the target user. */
+  useEffect(() => {
+    if (me && meUserData.me.user) {
+      const userOwnsPage = (): boolean => {
+        if (me) {
+          return me.username === IDFromRoute;
+        }
+        return false;
+      };
+      setUserOwnsPage(userOwnsPage());
+      if (userOwnsPage) {
+        setTargetUser(me);
+      }
+    }
+  }, [meUserData, IDFromRoute, me]);
 
   return (
     <LayoutCore
