@@ -17,15 +17,10 @@ interface UserProfileDetailsProps {
   /** Wether content is loading or not */
   loading: boolean;
   /** If the current logged in user is the same as the profile page */
+  refetchUserFollowers: any;
   ownsPage: boolean;
   /** Country data */
   country: CountryEntry;
-  /** Wether the user already follows or not the target user. */
-  followsUser: boolean;
-  /** Used to re fetch the user follows query */
-  followsUserRefetch: any;
-  /** Used to re fetch the followers list query */
-  followersRefetch: any;
 }
 
 const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
@@ -33,10 +28,8 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
   targetUser,
   loading,
   ownsPage,
+  refetchUserFollowers,
   country,
-  followsUser,
-  followsUserRefetch,
-  followersRefetch,
 }) => {
   const { t } = useTranslation('user-profile');
   return (
@@ -77,15 +70,15 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
         </Flex>
         {/* Buttons */}
         <Flex flexDir="column" alignItems="center">
-          <FollowButton
-            loading={loading}
-            user={user}
-            targetUser={targetUser}
-            followsUser={followsUser}
-            sameUser={ownsPage}
-            followsUserRefetch={followsUserRefetch}
-            followersRefetch={followersRefetch}
-          />
+          {user && targetUser && (
+            <FollowButton
+              loading={loading}
+              user={user}
+              targetUser={targetUser}
+              sameUser={ownsPage}
+              refetchUserFollowers={refetchUserFollowers}
+            />
+          )}
           {ownsPage && <SettingsButton loading={loading} />}
         </Flex>
       </Flex>

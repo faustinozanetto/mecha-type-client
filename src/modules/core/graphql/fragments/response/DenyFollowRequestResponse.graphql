@@ -1,0 +1,6 @@
+fragment DenyFollowRequestResponse on DenyFollowRequestResponse {
+  denied
+  errors {
+    ...ErrorResponse
+  }
+}

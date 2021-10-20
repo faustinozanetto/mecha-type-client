@@ -1,5 +1,5 @@
-fragment FollowUserResponse on FollowUserResponse {
-  follow
+fragment RequestFollowUserResponse on RequestFollowUserResponse {
+  requestSent
   errors {
     ...ErrorResponse
   }

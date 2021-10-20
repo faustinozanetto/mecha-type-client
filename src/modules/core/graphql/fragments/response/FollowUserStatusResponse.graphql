@@ -1,0 +1,6 @@
+fragment FollowUserStatusResponse on FollowUserStatusResponse {
+  status
+  errors {
+    ...ErrorResponse
+  }
+}

@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
-import { UserFragment, useUserFollowersQuery, useUserQuery } from 'generated/graphql';
+import { useMeQuery, UserFragment, useUserFollowersQuery, useUserQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import UserFollowersDashboard from '@components/user/pages/followers-dashboard/user-followers-dashboard';
 
 interface UserFollowersPageProps {}
 
 const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
   const { query } = useRouter();
+  const [me, setMe] = useState<UserFragment>();
   const [targetUser, setTargetUser] = useState<UserFragment>();
+  const { data: meUserData, loading: meLoading } = useMeQuery({ ssr: true });
+
   const { data: userData, loading: userLoading } = useUserQuery({
     variables: {
       where: {
@@ -19,21 +23,13 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
       },
     },
   });
-  const {
-    data: followersData,
-    loading: followersLoading,
-    refetch: followersRefetch,
-  } = useUserFollowersQuery({
-    variables: {
-      input: {
-        take: 4,
-        skip: 0,
-        where: {
-          id: targetUser?.id,
-        },
-      },
-    },
-  });
+
+  // Me data
+  useEffect(() => {
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData]);
 
   // Target User
   useEffect(() => {
@@ -44,14 +40,14 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
 
   return (
     <LayoutCore
-      user={targetUser}
+      user={me}
       headProps={{
         seoTitle: `${targetUser?.username} Followers | Mecha Type`,
         seoDescription: `${targetUser?.username}´s followers page, showing followers and more information.`,
         seoUrl: `${__URI__!}/user/${targetUser?.username}/followers`,
       }}
     >
-      <h1>Followers</h1>
+      <UserFollowersDashboard user={targetUser} />
     </LayoutCore>
   );
 };

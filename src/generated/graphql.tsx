@@ -16,6 +16,12 @@ export type Scalars = {
   Date: any;
 };
 
+export type AcceptFollowRequestResponse = {
+  __typename?: 'AcceptFollowRequestResponse';
+  accepted?: Maybe<Scalars['Boolean']>;
+  errors?: Maybe<Array<ErrorResponse>>;
+};
+
 export type AccuracyCreateInput = {
   amount?: Maybe<Scalars['Float']>;
   createdAt?: Maybe<Scalars['Date']>;
@@ -59,6 +65,12 @@ export type CreateTestPresetInput = {
   words: Scalars['Int'];
 };
 
+export type DenyFollowRequestResponse = {
+  __typename?: 'DenyFollowRequestResponse';
+  denied?: Maybe<Scalars['Boolean']>;
+  errors?: Maybe<Array<ErrorResponse>>;
+};
+
 export type ErrorResponse = {
   __typename?: 'ErrorResponse';
   field: Scalars['String'];
@@ -91,16 +103,18 @@ export type FilteredUsersResponse = {
   pageCount?: Maybe<Scalars['Int']>;
 };
 
-export type FollowUserResponse = {
-  __typename?: 'FollowUserResponse';
-  errors?: Maybe<Array<ErrorResponse>>;
-  follow?: Maybe<Scalars['Boolean']>;
-};
+/** Status of the follow request */
+export enum FollowStatus {
+  Accepted = 'ACCEPTED',
+  Notsent = 'NOTSENT',
+  Pending = 'PENDING',
+  Rejected = 'REJECTED'
+}
 
-export type FollowsUserResponse = {
-  __typename?: 'FollowsUserResponse';
+export type FollowUserStatusResponse = {
+  __typename?: 'FollowUserStatusResponse';
   errors?: Maybe<Array<ErrorResponse>>;
-  follows?: Maybe<Scalars['Boolean']>;
+  status?: Maybe<FollowStatus>;
 };
 
 export type InputUpdateInput = {
@@ -113,16 +127,24 @@ export type InputUpdateInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  acceptFollowRequest: AcceptFollowRequestResponse;
   createTestPreset: TestPresetResponse;
   createTestPresetHistoryEntry: TestPresetHistoryResponse;
   createTestPresetUser: TestPresetResponse;
   createUserSettings: UserSettingsResponse;
-  followUser: FollowUserResponse;
+  denyFollowRequest: DenyFollowRequestResponse;
   logout: Scalars['Boolean'];
+  requestFollowUser: RequestFollowUserResponse;
   unfollowUser: UnfollowUserResponse;
   updateUser: UserResponse;
   updateUserSettings: UserSettingsResponse;
   userCreateTestPresetHistoryEntry: TestPresetHistoryResponse;
+};
+
+
+export type MutationAcceptFollowRequestArgs = {
+  followerId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 
@@ -146,7 +168,13 @@ export type MutationCreateUserSettingsArgs = {
 };
 
 
-export type MutationFollowUserArgs = {
+export type MutationDenyFollowRequestArgs = {
+  followerId: Scalars['String'];
+  userId: Scalars['String'];
+};
+
+
+export type MutationRequestFollowUserArgs = {
   followerId: Scalars['String'];
   userId: Scalars['String'];
 };
@@ -177,7 +205,7 @@ export type MutationUserCreateTestPresetHistoryEntryArgs = {
 export type Query = {
   __typename?: 'Query';
   filterUsers: FilteredUsersResponse;
-  followsUser: FollowsUserResponse;
+  followUserStatus: FollowUserStatusResponse;
   me: UserResponse;
   testPreset: TestPresetResponse;
   testPresets: TestPresetsResponse;
@@ -195,7 +223,7 @@ export type QueryFilterUsersArgs = {
 };
 
 
-export type QueryFollowsUserArgs = {
+export type QueryFollowUserStatusArgs = {
   followerId: Scalars['String'];
   userId: Scalars['String'];
 };
@@ -233,6 +261,12 @@ export type QueryUserTestPresetsArgs = {
 
 export type QueryUsersArgs = {
   take: Scalars['Int'];
+};
+
+export type RequestFollowUserResponse = {
+  __typename?: 'RequestFollowUserResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  requestSent?: Maybe<Scalars['Boolean']>;
 };
 
 /** Test Language */
@@ -379,6 +413,7 @@ export type UserFollower = {
   createdAt: Scalars['Date'];
   id: Scalars['String'];
   oauthId?: Maybe<Scalars['String']>;
+  status?: Maybe<FollowStatus>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['Date'];
   username: Scalars['String'];
@@ -515,17 +550,21 @@ export type TestPresetHistoryFragment = { __typename?: 'TestPresetHistory', id: 
 
 export type UserFragment = { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined };
 
-export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, createdAt: any, updatedAt: any };
+export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt: any, updatedAt: any };
 
 export type UserSettingsFragment = { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any };
+
+export type AcceptFollowRequestResponseFragment = { __typename?: 'AcceptFollowRequestResponse', accepted?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+
+export type DenyFollowRequestResponseFragment = { __typename?: 'DenyFollowRequestResponse', denied?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: string, message: string };
 
 export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: number | null | undefined, pageCount?: number | null | undefined, currentPage?: number | null | undefined, nodesPerPage?: number | null | undefined, hasMore?: boolean | null | undefined, nodes?: Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type FollowUserResponseFragment = { __typename?: 'FollowUserResponse', follow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type RequestFollowUserResponseFragment = { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type FollowsUserResponseFragment = { __typename?: 'FollowsUserResponse', follows?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type FollowUserStatusResponseFragment = { __typename?: 'FollowUserStatusResponse', status?: FollowStatus | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
@@ -535,7 +574,7 @@ export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', 
 
 export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
@@ -586,18 +625,34 @@ export type UpdateUserSettingsMutationVariables = Exact<{
 
 export type UpdateUserSettingsMutation = { __typename?: 'Mutation', updateUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt: any, updatedAt: any } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
-export type FollowUserMutationVariables = Exact<{
+export type AcceptFollowRequestMutationVariables = Exact<{
   userId: Scalars['String'];
   followerId: Scalars['String'];
 }>;
 
 
-export type FollowUserMutation = { __typename?: 'Mutation', followUser: { __typename?: 'FollowUserResponse', follow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type AcceptFollowRequestMutation = { __typename?: 'Mutation', acceptFollowRequest: { __typename?: 'AcceptFollowRequestResponse', accepted?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+
+export type DenyFollowRequestMutationVariables = Exact<{
+  userId: Scalars['String'];
+  followerId: Scalars['String'];
+}>;
+
+
+export type DenyFollowRequestMutation = { __typename?: 'Mutation', denyFollowRequest: { __typename?: 'DenyFollowRequestResponse', denied?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: boolean };
+
+export type RequestFollowUserMutationVariables = Exact<{
+  userId: Scalars['String'];
+  followerId: Scalars['String'];
+}>;
+
+
+export type RequestFollowUserMutation = { __typename?: 'Mutation', requestFollowUser: { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UnfollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -651,13 +706,13 @@ export type FilterUsersQueryVariables = Exact<{
 
 export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', nodeCount?: number | null | undefined, pageCount?: number | null | undefined, currentPage?: number | null | undefined, nodesPerPage?: number | null | undefined, hasMore?: boolean | null | undefined, nodes?: Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
-export type FollowsUserQueryVariables = Exact<{
+export type FollowUserStatusQueryVariables = Exact<{
   userId: Scalars['String'];
   followerId: Scalars['String'];
 }>;
 
 
-export type FollowsUserQuery = { __typename?: 'Query', followsUser: { __typename?: 'FollowsUserResponse', follows?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type FollowUserStatusQuery = { __typename?: 'Query', followUserStatus: { __typename?: 'FollowUserStatusResponse', status?: FollowStatus | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -676,7 +731,7 @@ export type UserFollowersQueryVariables = Exact<{
 }>;
 
 
-export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UsersQueryVariables = Exact<{
   take: Scalars['Int'];
@@ -685,6 +740,28 @@ export type UsersQueryVariables = Exact<{
 
 export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
+export const ErrorResponseFragmentDoc = gql`
+    fragment ErrorResponse on ErrorResponse {
+  field
+  message
+}
+    `;
+export const AcceptFollowRequestResponseFragmentDoc = gql`
+    fragment AcceptFollowRequestResponse on AcceptFollowRequestResponse {
+  accepted
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${ErrorResponseFragmentDoc}`;
+export const DenyFollowRequestResponseFragmentDoc = gql`
+    fragment DenyFollowRequestResponse on DenyFollowRequestResponse {
+  denied
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${ErrorResponseFragmentDoc}`;
 export const FilteredUserFragmentDoc = gql`
     fragment FilteredUser on FilteredUser {
   id
@@ -694,12 +771,6 @@ export const FilteredUserFragmentDoc = gql`
   authProvider
   oauthId
   value
-}
-    `;
-export const ErrorResponseFragmentDoc = gql`
-    fragment ErrorResponse on ErrorResponse {
-  field
-  message
 }
     `;
 export const FilteredUsersResponseFragmentDoc = gql`
@@ -718,17 +789,17 @@ export const FilteredUsersResponseFragmentDoc = gql`
 }
     ${FilteredUserFragmentDoc}
 ${ErrorResponseFragmentDoc}`;
-export const FollowUserResponseFragmentDoc = gql`
-    fragment FollowUserResponse on FollowUserResponse {
-  follow
+export const RequestFollowUserResponseFragmentDoc = gql`
+    fragment RequestFollowUserResponse on RequestFollowUserResponse {
+  requestSent
   errors {
     ...ErrorResponse
   }
 }
     ${ErrorResponseFragmentDoc}`;
-export const FollowsUserResponseFragmentDoc = gql`
-    fragment FollowsUserResponse on FollowsUserResponse {
-  follows
+export const FollowUserStatusResponseFragmentDoc = gql`
+    fragment FollowUserStatusResponse on FollowUserStatusResponse {
+  status
   errors {
     ...ErrorResponse
   }
@@ -820,6 +891,7 @@ export const UserFollowerFragmentDoc = gql`
   authProvider
   oauthId
   avatar
+  status
   createdAt
   updatedAt
 }
@@ -1108,40 +1180,74 @@ export function useUpdateUserSettingsMutation(baseOptions?: Apollo.MutationHookO
 export type UpdateUserSettingsMutationHookResult = ReturnType<typeof useUpdateUserSettingsMutation>;
 export type UpdateUserSettingsMutationResult = Apollo.MutationResult<UpdateUserSettingsMutation>;
 export type UpdateUserSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateUserSettingsMutation, UpdateUserSettingsMutationVariables>;
-export const FollowUserDocument = gql`
-    mutation followUser($userId: String!, $followerId: String!) {
-  followUser(userId: $userId, followerId: $followerId) {
-    ...FollowUserResponse
+export const AcceptFollowRequestDocument = gql`
+    mutation acceptFollowRequest($userId: String!, $followerId: String!) {
+  acceptFollowRequest(userId: $userId, followerId: $followerId) {
+    ...AcceptFollowRequestResponse
   }
 }
-    ${FollowUserResponseFragmentDoc}`;
-export type FollowUserMutationFn = Apollo.MutationFunction<FollowUserMutation, FollowUserMutationVariables>;
+    ${AcceptFollowRequestResponseFragmentDoc}`;
+export type AcceptFollowRequestMutationFn = Apollo.MutationFunction<AcceptFollowRequestMutation, AcceptFollowRequestMutationVariables>;
 
 /**
- * __useFollowUserMutation__
+ * __useAcceptFollowRequestMutation__
  *
- * To run a mutation, you first call `useFollowUserMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useFollowUserMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useAcceptFollowRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptFollowRequestMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [followUserMutation, { data, loading, error }] = useFollowUserMutation({
+ * const [acceptFollowRequestMutation, { data, loading, error }] = useAcceptFollowRequestMutation({
  *   variables: {
  *      userId: // value for 'userId'
  *      followerId: // value for 'followerId'
  *   },
  * });
  */
-export function useFollowUserMutation(baseOptions?: Apollo.MutationHookOptions<FollowUserMutation, FollowUserMutationVariables>) {
+export function useAcceptFollowRequestMutation(baseOptions?: Apollo.MutationHookOptions<AcceptFollowRequestMutation, AcceptFollowRequestMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<FollowUserMutation, FollowUserMutationVariables>(FollowUserDocument, options);
+        return Apollo.useMutation<AcceptFollowRequestMutation, AcceptFollowRequestMutationVariables>(AcceptFollowRequestDocument, options);
       }
-export type FollowUserMutationHookResult = ReturnType<typeof useFollowUserMutation>;
-export type FollowUserMutationResult = Apollo.MutationResult<FollowUserMutation>;
-export type FollowUserMutationOptions = Apollo.BaseMutationOptions<FollowUserMutation, FollowUserMutationVariables>;
+export type AcceptFollowRequestMutationHookResult = ReturnType<typeof useAcceptFollowRequestMutation>;
+export type AcceptFollowRequestMutationResult = Apollo.MutationResult<AcceptFollowRequestMutation>;
+export type AcceptFollowRequestMutationOptions = Apollo.BaseMutationOptions<AcceptFollowRequestMutation, AcceptFollowRequestMutationVariables>;
+export const DenyFollowRequestDocument = gql`
+    mutation denyFollowRequest($userId: String!, $followerId: String!) {
+  denyFollowRequest(userId: $userId, followerId: $followerId) {
+    ...DenyFollowRequestResponse
+  }
+}
+    ${DenyFollowRequestResponseFragmentDoc}`;
+export type DenyFollowRequestMutationFn = Apollo.MutationFunction<DenyFollowRequestMutation, DenyFollowRequestMutationVariables>;
+
+/**
+ * __useDenyFollowRequestMutation__
+ *
+ * To run a mutation, you first call `useDenyFollowRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDenyFollowRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [denyFollowRequestMutation, { data, loading, error }] = useDenyFollowRequestMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      followerId: // value for 'followerId'
+ *   },
+ * });
+ */
+export function useDenyFollowRequestMutation(baseOptions?: Apollo.MutationHookOptions<DenyFollowRequestMutation, DenyFollowRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DenyFollowRequestMutation, DenyFollowRequestMutationVariables>(DenyFollowRequestDocument, options);
+      }
+export type DenyFollowRequestMutationHookResult = ReturnType<typeof useDenyFollowRequestMutation>;
+export type DenyFollowRequestMutationResult = Apollo.MutationResult<DenyFollowRequestMutation>;
+export type DenyFollowRequestMutationOptions = Apollo.BaseMutationOptions<DenyFollowRequestMutation, DenyFollowRequestMutationVariables>;
 export const LogoutDocument = gql`
     mutation logout {
   logout
@@ -1172,6 +1278,40 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const RequestFollowUserDocument = gql`
+    mutation requestFollowUser($userId: String!, $followerId: String!) {
+  requestFollowUser(userId: $userId, followerId: $followerId) {
+    ...RequestFollowUserResponse
+  }
+}
+    ${RequestFollowUserResponseFragmentDoc}`;
+export type RequestFollowUserMutationFn = Apollo.MutationFunction<RequestFollowUserMutation, RequestFollowUserMutationVariables>;
+
+/**
+ * __useRequestFollowUserMutation__
+ *
+ * To run a mutation, you first call `useRequestFollowUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestFollowUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestFollowUserMutation, { data, loading, error }] = useRequestFollowUserMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      followerId: // value for 'followerId'
+ *   },
+ * });
+ */
+export function useRequestFollowUserMutation(baseOptions?: Apollo.MutationHookOptions<RequestFollowUserMutation, RequestFollowUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RequestFollowUserMutation, RequestFollowUserMutationVariables>(RequestFollowUserDocument, options);
+      }
+export type RequestFollowUserMutationHookResult = ReturnType<typeof useRequestFollowUserMutation>;
+export type RequestFollowUserMutationResult = Apollo.MutationResult<RequestFollowUserMutation>;
+export type RequestFollowUserMutationOptions = Apollo.BaseMutationOptions<RequestFollowUserMutation, RequestFollowUserMutationVariables>;
 export const UnfollowUserDocument = gql`
     mutation unfollowUser($userId: String!, $followerId: String!) {
   unfollowUser(userId: $userId, followerId: $followerId) {
@@ -1416,42 +1556,42 @@ export function useFilterUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type FilterUsersQueryHookResult = ReturnType<typeof useFilterUsersQuery>;
 export type FilterUsersLazyQueryHookResult = ReturnType<typeof useFilterUsersLazyQuery>;
 export type FilterUsersQueryResult = Apollo.QueryResult<FilterUsersQuery, FilterUsersQueryVariables>;
-export const FollowsUserDocument = gql`
-    query followsUser($userId: String!, $followerId: String!) {
-  followsUser(userId: $userId, followerId: $followerId) {
-    ...FollowsUserResponse
+export const FollowUserStatusDocument = gql`
+    query followUserStatus($userId: String!, $followerId: String!) {
+  followUserStatus(userId: $userId, followerId: $followerId) {
+    ...FollowUserStatusResponse
   }
 }
-    ${FollowsUserResponseFragmentDoc}`;
+    ${FollowUserStatusResponseFragmentDoc}`;
 
 /**
- * __useFollowsUserQuery__
+ * __useFollowUserStatusQuery__
  *
- * To run a query within a React component, call `useFollowsUserQuery` and pass it any options that fit your needs.
- * When your component renders, `useFollowsUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFollowUserStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFollowUserStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFollowsUserQuery({
+ * const { data, loading, error } = useFollowUserStatusQuery({
  *   variables: {
  *      userId: // value for 'userId'
  *      followerId: // value for 'followerId'
  *   },
  * });
  */
-export function useFollowsUserQuery(baseOptions: Apollo.QueryHookOptions<FollowsUserQuery, FollowsUserQueryVariables>) {
+export function useFollowUserStatusQuery(baseOptions: Apollo.QueryHookOptions<FollowUserStatusQuery, FollowUserStatusQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FollowsUserQuery, FollowsUserQueryVariables>(FollowsUserDocument, options);
+        return Apollo.useQuery<FollowUserStatusQuery, FollowUserStatusQueryVariables>(FollowUserStatusDocument, options);
       }
-export function useFollowsUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FollowsUserQuery, FollowsUserQueryVariables>) {
+export function useFollowUserStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FollowUserStatusQuery, FollowUserStatusQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FollowsUserQuery, FollowsUserQueryVariables>(FollowsUserDocument, options);
+          return Apollo.useLazyQuery<FollowUserStatusQuery, FollowUserStatusQueryVariables>(FollowUserStatusDocument, options);
         }
-export type FollowsUserQueryHookResult = ReturnType<typeof useFollowsUserQuery>;
-export type FollowsUserLazyQueryHookResult = ReturnType<typeof useFollowsUserLazyQuery>;
-export type FollowsUserQueryResult = Apollo.QueryResult<FollowsUserQuery, FollowsUserQueryVariables>;
+export type FollowUserStatusQueryHookResult = ReturnType<typeof useFollowUserStatusQuery>;
+export type FollowUserStatusLazyQueryHookResult = ReturnType<typeof useFollowUserStatusLazyQuery>;
+export type FollowUserStatusQueryResult = Apollo.QueryResult<FollowUserStatusQuery, FollowUserStatusQueryVariables>;
 export const MeDocument = gql`
     query me {
   me {

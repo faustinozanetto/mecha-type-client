@@ -1,6 +1,0 @@
-fragment FollowsUserResponse on FollowsUserResponse {
-  follows
-  errors {
-    ...ErrorResponse
-  }
-}

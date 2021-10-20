@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import FiUserX from '@meronex/icons/fi/FiUserX';
 import FiUserPlus from '@meronex/icons/fi/FiUserPlus';
-import { useFollowUserMutation, UserFragment, useUnfollowUserMutation } from 'generated/graphql';
+import {
+  FollowStatus,
+  useFollowUserStatusQuery,
+  useRequestFollowUserMutation,
+  UserFragment,
+  useUnfollowUserMutation,
+} from 'generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { Button, useToast } from '@chakra-ui/react';
 
@@ -12,29 +18,34 @@ interface FollowButtonProps {
   user: UserFragment;
   /** Target user to edit profile */
   targetUser: UserFragment;
-  /** Wether the user already follows the target user or not. */
-  followsUser: boolean;
   /** Wether the current logged in user is equal as the target one */
   sameUser: boolean;
-  /** Used to re fetch the user follows query */
-  followsUserRefetch: any;
-  /** Used to re fetch the followers list query */
-  followersRefetch: any;
+  refetchUserFollowers: any;
 }
 
-const FollowButton: React.FC<FollowButtonProps> = ({
-  loading,
-  user,
-  targetUser,
-  followsUser,
-  sameUser,
-  followsUserRefetch,
-  followersRefetch,
-}) => {
+const FollowButton: React.FC<FollowButtonProps> = ({ loading, user, targetUser, sameUser, refetchUserFollowers }) => {
   const { t } = useTranslation('user-profile');
-  const [followUser] = useFollowUserMutation();
-  const [unfollowUser] = useUnfollowUserMutation();
   const toast = useToast();
+  const [followUserStatus, setFollowUserStatus] = useState<FollowStatus>(FollowStatus.Notsent);
+  const [requestFollowUser] = useRequestFollowUserMutation();
+  const [unfollowUser] = useUnfollowUserMutation();
+  const {
+    data: followUserStatusData,
+    loading: followUserStatusLoading,
+    refetch: followUserStatusRefetch,
+  } = useFollowUserStatusQuery({
+    variables: {
+      userId: targetUser?.id ?? '',
+      followerId: user?.id ?? '',
+    },
+  });
+
+  // Follows User
+  useEffect(() => {
+    if (followUserStatusData?.followUserStatus?.status) {
+      setFollowUserStatus(followUserStatusData.followUserStatus.status);
+    }
+  }, [followUserStatusData, user, targetUser, loading]);
 
   const handleFollow = async () => {
     if (user?.id) {
@@ -46,7 +57,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({
           duration: 3000,
           position: 'bottom-right',
         });
-      } else if (followsUser && user.id) {
+      } else if ((followUserStatus === FollowStatus.Accepted || followUserStatus === FollowStatus.Pending) && user.id) {
         await unfollowUser({
           variables: {
             userId: targetUser.id,
@@ -56,12 +67,12 @@ const FollowButton: React.FC<FollowButtonProps> = ({
         toast({
           title: 'Success',
           description: `You are now longer following ${targetUser.username}`,
-          status: 'success',
+          status: 'warning',
           duration: 3000,
           position: 'bottom-right',
         });
-      } else if (!followsUser && user.id) {
-        await followUser({
+      } else if (!(followUserStatus === FollowStatus.Accepted) && user.id) {
+        await requestFollowUser({
           variables: {
             userId: targetUser.id,
             followerId: user.id,
@@ -69,15 +80,15 @@ const FollowButton: React.FC<FollowButtonProps> = ({
         });
         toast({
           title: 'Success',
-          description: `You now following ${targetUser.username}`,
+          description: `A follow request has been sent to ${targetUser.username}`,
           status: 'success',
           duration: 3000,
           position: 'bottom-right',
         });
       }
       if (user.id !== targetUser.id) {
-        followsUserRefetch();
-        followersRefetch();
+        followUserStatusRefetch();
+        refetchUserFollowers();
       }
     } else {
       toast({
@@ -90,9 +101,48 @@ const FollowButton: React.FC<FollowButtonProps> = ({
     }
   };
 
+  const parseColorScheme = (): string => {
+    switch (followUserStatus) {
+      case FollowStatus.Accepted:
+        return 'red';
+      case FollowStatus.Rejected:
+        return 'green';
+      case FollowStatus.Pending:
+        return 'yellow';
+      case FollowStatus.Notsent:
+        return 'green';
+    }
+  };
+
+  const parseIcon = (): React.ReactElement => {
+    switch (followUserStatus) {
+      case FollowStatus.Accepted:
+        return <FiUserX />;
+      case FollowStatus.Rejected:
+        return <FiUserPlus />;
+      case FollowStatus.Pending:
+        return <FiUserPlus />;
+      case FollowStatus.Notsent:
+        return <FiUserPlus />;
+    }
+  };
+
+  const parseLabel = (): string => {
+    switch (followUserStatus) {
+      case FollowStatus.Accepted:
+        return t('unfollow-user');
+      case FollowStatus.Rejected:
+        return t('follow-user');
+      case FollowStatus.Pending:
+        return t('follow-pending');
+      case FollowStatus.Notsent:
+        return t('follow-user');
+    }
+  };
+
   return (
     <Button
-      colorScheme={followsUser ? 'red' : 'green'}
+      colorScheme={parseColorScheme()}
       variant="solid"
       size="lg"
       fontSize="lg"
@@ -100,12 +150,12 @@ const FollowButton: React.FC<FollowButtonProps> = ({
       width={['100%', '100%', '100%']}
       minWidth="3rem"
       marginBottom="1rem"
-      leftIcon={followsUser ? <FiUserX /> : <FiUserPlus />}
+      leftIcon={parseIcon()}
       isLoading={loading}
       loadingText="Loading"
       onClick={handleFollow}
     >
-      {followsUser ? t('unfollow-user') : t('follow-user')}
+      {parseLabel()}
     </Button>
   );
 };

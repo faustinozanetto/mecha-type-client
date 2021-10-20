@@ -1,0 +1,5 @@
+mutation acceptFollowRequest($userId: String!, $followerId: String!) {
+  acceptFollowRequest(userId: $userId, followerId: $followerId) {
+    ...AcceptFollowRequestResponse
+  }
+}

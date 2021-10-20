@@ -1,9 +1,10 @@
 import React from 'react';
 import { UserFollowerCard } from './user-follower-card';
 import { Flex, Text } from '@chakra-ui/layout';
-import { Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Button, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { UserFollowerFragment } from '@generated/graphql';
+import { useRouter } from 'next/router';
 
 interface UserFollowersProps {
   /** User followers data */
@@ -13,6 +14,7 @@ interface UserFollowersProps {
 }
 
 const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => {
+  const { query } = useRouter();
   const { t } = useTranslation('user-profile');
   const textColor = useColorModeValue('black', 'white');
   return (
@@ -43,6 +45,15 @@ const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => 
           })}
         </VStack>
       )}
+      <Button
+        as="a"
+        href={`/user/${query.name}/followers`}
+        colorScheme="purple"
+        size="lg"
+        width={['auto', 'auto', 'auto', '60%', '60%']}
+      >
+        See More
+      </Button>
     </Flex>
   );
 };

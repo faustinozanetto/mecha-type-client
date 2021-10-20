@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useFollowsUserQuery, UserFollowerFragment, UserFragment, useUserFollowersQuery } from 'generated/graphql';
+import { FollowStatus, UserFollowerFragment, UserFragment, useUserFollowersQuery } from 'generated/graphql';
 import { Container } from '@chakra-ui/react';
 import { generateParsedStats, UserParsedStats } from '@modules/core/user/user';
 import UserProfileDetails from './details/user-profile-details';
@@ -21,7 +21,6 @@ interface IUserProfileProps {
 
 const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, countries }) => {
   const [followers, setFollowers] = useState<UserFollowerFragment[]>([]);
-  const [followsUser, setFollowsUser] = useState(false);
   const [parsedStats, setParsedStats] = useState<UserParsedStats>({
     averageAccuracy: 0,
     averageCPM: 0,
@@ -33,28 +32,16 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
   const {
     data: followersData,
     loading: followersLoading,
-    refetch: followersRefetch,
+    refetch: refetchUserFollowers,
   } = useUserFollowersQuery({
     variables: {
       input: {
         take: 4,
         skip: 0,
         where: {
-          id: targetUser?.id,
+          username: targetUser?.username,
         },
       },
-    },
-  });
-
-  const {
-    data: followsUserData,
-    loading: followsUserLoading,
-    refetch: followsUserRefetch,
-  } = useFollowsUserQuery({
-    skip: user?.id === targetUser?.id,
-    variables: {
-      userId: targetUser?.id ?? '',
-      followerId: user?.id ?? '',
     },
   });
 
@@ -75,16 +62,12 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
   useEffect(() => {
     if (followersData?.userFollowers?.edges?.length > 0 && !followersLoading) {
       const mappedFollowers = followersData.userFollowers.edges.map((edge) => edge.node);
-      setFollowers(mappedFollowers);
+      const acceptedFollowers = mappedFollowers.filter((follower) => {
+        return follower.status === FollowStatus.Accepted;
+      });
+      setFollowers(acceptedFollowers);
     }
   }, [followersData]);
-
-  // Follows User
-  useEffect(() => {
-    if (followsUserData?.followsUser?.follows && !followsUserLoading) {
-      setFollowsUser(followsUserData.followsUser.follows);
-    }
-  }, [followsUserData]);
 
   useEffect(() => {
     setParsedStats(generateParsedStats(targetUser));
@@ -97,10 +80,8 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         targetUser={targetUser}
         loading={loading}
         ownsPage={ownsPage}
+        refetchUserFollowers={refetchUserFollowers}
         country={getUserCountryData(user)}
-        followsUser={followsUser}
-        followersRefetch={followersRefetch}
-        followsUserRefetch={followsUserRefetch}
       />
       {parsedStats && (
         <UserProfileInformation
