@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
-import { useMeQuery, useTestPresetQuery } from 'generated/graphql';
+import { TestPresetFragment, useMeQuery, UserFragment, useTestPresetQuery } from 'generated/graphql';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -17,49 +17,61 @@ interface PracticePlayPageProps {
 }
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
-  const [text, setText] = useState('');
   const router = useRouter();
-  const { data: userData, loading: userLoading } = useMeQuery({});
-  const { data: testPreset, loading: testPresetLoading } = useTestPresetQuery({
+  const [text, setText] = useState('');
+  const [me, setMe] = useState<UserFragment>();
+  const [testPreset, setTestPreset] = useState<TestPresetFragment>();
+  const { data: meUserData, loading: meLoading } = useMeQuery({});
+  const { data: testPresetData, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
       id: useGetIDFromUrl(),
     },
   });
 
+  // Me data
   useEffect(() => {
-    if (testPreset?.testPreset?.testPreset) {
-      setText(generateWords(testPreset?.testPreset?.testPreset).trimEnd());
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
     }
-  }, [testPreset?.testPreset?.testPreset]);
+  }, [meUserData]);
 
-  if (!userLoading && !userData?.me.user) {
+  // Test Preset
+  useEffect(() => {
+    if (testPresetData?.testPreset?.testPreset && !testPresetLoading) {
+      setTestPreset(testPresetData.testPreset.testPreset);
+    }
+  }, [testPresetData?.testPreset?.testPreset, testPresetLoading]);
+
+  // Test Preset Text
+  useEffect(() => {
+    setText(generateWords(testPreset).trimEnd());
+  }, [testPreset]);
+
+  if (!meLoading && !me && !meUserData?.me?.user) {
     router.push('/auth/signin');
   }
 
   return (
     <LayoutCore
-      user={userData?.me?.user}
+      user={me}
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice play page, test your skills on a specific Preset.',
-        seoUrl: `${__URI__}/practice/play/${testPreset?.testPreset?.testPreset?.id}`,
+        seoUrl: `${__URI__}/practice/play/${testPreset?.id}`,
       }}
     >
       <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
-        {testPreset?.testPreset?.testPreset && (
+        {testPreset && (
           <Flex flexDir="column" width="100%">
-            <PracticeTestDetails
-              loading={testPresetLoading || userLoading || text === ''}
-              practiceTest={testPreset.testPreset.testPreset}
-            />
+            <PracticeTestDetails loading={testPresetLoading || meLoading || text === ''} practiceTest={testPreset} />
           </Flex>
         )}
-        {testPreset?.testPreset?.testPreset && text && (
+        {testPreset && text && (
           <PracticeGameInput
-            loading={testPresetLoading || userLoading || text === ''}
-            testPreset={testPreset.testPreset.testPreset}
+            loading={testPresetLoading || meLoading || text === ''}
+            testPreset={testPreset}
             text={text as string}
-            user={userData?.me?.user!}
+            user={me}
           />
         )}
       </Flex>

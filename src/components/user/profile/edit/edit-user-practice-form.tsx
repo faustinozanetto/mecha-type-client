@@ -91,48 +91,48 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
               </Text>
 
               {/* Blind Mode Input */}
-              <VStack>
-                <Text as="p" fontSize="md" fontWeight={400}>
+              <Flex flexDir="column" width="100%">
+                <Text as="p" fontSize="md" fontWeight={500}>
                   Enable or disable all the error colors, and focus on base speed.
                 </Text>
                 <FormCheckboxInput name="blindMode" sx={{ margin: '0.25rem !important' }}>
                   Blind Mode
                 </FormCheckboxInput>
-              </VStack>
+              </Flex>
 
               {/* Pause on Error Input */}
-              <VStack>
-                <Text as="p" fontSize="md" fontWeight={400}>
+              <Flex flexDir="column" width="100%">
+                <Text as="p" fontSize="md" fontWeight={500}>
                   Enable or disable pause on error when a character is typed wrong.
                 </Text>
                 <FormCheckboxInput name="pauseOnError" sx={{ margin: '0.25rem !important' }}>
                   Pause on Error
                 </FormCheckboxInput>
-              </VStack>
+              </Flex>
 
               {/* No Backspace Input */}
-              <VStack>
-                <Text as="p" fontSize="md" fontWeight={400}>
+              <Flex flexDir="column" width="100%">
+                <Text as="p" fontSize="md" fontWeight={500}>
                   If enabled, user will not be able to delete characters.
                 </Text>
                 <FormCheckboxInput name="noBackspace" sx={{ margin: '0.25rem !important' }}>
                   No Backspace
                 </FormCheckboxInput>
-              </VStack>
+              </Flex>
 
               {/* Type Sounds Input */}
-              <VStack>
-                <Text as="p" fontSize="md" fontWeight={400}>
+              <Flex flexDir="column" width="100%">
+                <Text as="p" fontSize="md" fontWeight={500}>
                   If enabled, a keypress sound will be played on key press.
                 </Text>
                 <FormCheckboxInput name="typeSounds" sx={{ margin: '0.25rem !important' }}>
                   Type Sound
                 </FormCheckboxInput>
-              </VStack>
+              </Flex>
 
               {/* Type Sounds Volume Input */}
-              <VStack>
-                <Text as="p" fontSize="md" fontWeight={400}>
+              <Flex flexDir="column" width="100%">
+                <Text as="p" fontSize="md" fontWeight={500}>
                   Controls the volume of the type sounds in a scale 0.1 to 5
                 </Text>
                 <HStack width="100%">
@@ -149,11 +149,11 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
                   >
                     Type Sound Volume
                   </FormSliderInput>
-                  <Text as="p" fontSize="md" fontWeight={400}>
+                  <Text as="p" fontSize="md" fontWeight={500}>
                     {roundTo2(typeSoundValue)}
                   </Text>
                 </HStack>
-              </VStack>
+              </Flex>
             </VStack>
             {/* Submit Form */}
             <HStack>

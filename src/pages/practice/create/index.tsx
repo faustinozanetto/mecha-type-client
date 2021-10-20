@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import LayoutCore from 'layouts/core/components/layout-core';
 import { withApollo } from '@modules/core/apollo/apollo';
 import PresetCreation from '@components/practice/selection/preset-creation/preset-creation';
-import { useMeQuery } from '@generated/graphql';
+import { useMeQuery, UserFragment } from '@generated/graphql';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
@@ -10,18 +10,26 @@ import { __URI__ } from '@utils/constants';
 interface PracticePageProps {}
 
 const PracticePage: React.FC<PracticePageProps> = () => {
-  const { data: userData } = useMeQuery({});
+  const [me, setMe] = useState<UserFragment>();
+  const { data: meUserData, loading: meLoading } = useMeQuery({});
+
+  // Me data
+  useEffect(() => {
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData]);
 
   return (
     <LayoutCore
-      user={userData?.me?.user!}
+      user={me}
       headProps={{
         seoTitle: 'Preset Creation | Mecha Type',
         seoDescription: 'Create your own custom Practice Preset and share it to the community.',
         seoUrl: `${__URI__}/practice/create`,
       }}
     >
-      <PresetCreation user={userData?.me?.user} onCreatedCallback={() => {}} />
+      {me && <PresetCreation user={me} onCreatedCallback={() => {}} />}
     </LayoutCore>
   );
 };

@@ -23,6 +23,7 @@ const UserFollowersDashboard: React.FC<UserFollowersDashboardProps> = ({ user })
   const [followers, setFollowers] = useState<UserFollowerFragment[]>([]);
   const [pendingRequests, setPendingRequests] = useState<UserFollowerFragment[]>([]);
   const [acceptedRequests, setAcceptedRequests] = useState<UserFollowerFragment[]>([]);
+  const [followersAmount, setFollowersAmount] = useState({ accepted: 0, pending: 0 });
   const [acceptFollowRequest] = useAcceptFollowRequestMutation();
   const [denyFollowRequest] = useDenyFollowRequestMutation();
   const {
@@ -34,7 +35,7 @@ const UserFollowersDashboard: React.FC<UserFollowersDashboardProps> = ({ user })
   } = useUserFollowersQuery({
     variables: {
       input: {
-        take: 3,
+        take: 5,
         skip: 0,
         where: {
           id: user?.id,
@@ -51,7 +52,10 @@ const UserFollowersDashboard: React.FC<UserFollowersDashboardProps> = ({ user })
         variables: {
           input: {
             take: variables.input.take,
-            skip: 3 * pageCount,
+            skip: 5 * pageCount,
+            where: {
+              id: user?.id,
+            },
           },
         },
       });
@@ -67,6 +71,10 @@ const UserFollowersDashboard: React.FC<UserFollowersDashboardProps> = ({ user })
       setPendingRequests(mappedFollowers.filter((follower) => follower.status === FollowStatus.Pending));
       // Accepted requests
       setAcceptedRequests(mappedFollowers.filter((follower) => follower.status === FollowStatus.Accepted));
+      setFollowersAmount({
+        accepted: followersData?.userFollowers?.acceptedRequests,
+        pending: followersData?.userFollowers?.pendingRequests,
+      });
     }
   }, [followersData, pageCount, followersLoading, followersType]);
 
@@ -87,10 +95,10 @@ const UserFollowersDashboard: React.FC<UserFollowersDashboardProps> = ({ user })
               {user?.username}
             </Text>
             <Text as="h2" fontSize={18} color={useColorModeValue('black', 'white')} fontWeight={600}>
-              {pendingRequests.length} pending requests
+              {followersAmount.pending} pending requests
             </Text>
             <Text as="h2" fontSize={18} color={useColorModeValue('black', 'white')} fontWeight={600}>
-              {acceptedRequests.length} followers
+              {followersAmount.accepted} followers
             </Text>
           </Flex>
         </Flex>
@@ -119,9 +127,12 @@ const UserFollowersDashboard: React.FC<UserFollowersDashboardProps> = ({ user })
               <Button variant="ghost" onClick={() => setFollowersType(FollowStatus.Accepted)}>
                 Accepted
               </Button>
+              <Button as="a" href={`/user/${user.username}`} variant="ghost">
+                Back
+              </Button>
             </HStack>
           </HStack>
-          {followersType === FollowStatus.Pending && pendingRequests && pendingRequests.length > 0 && (
+          {followersType === FollowStatus.Pending && pendingRequests.length > 0 && (
             <VStack spacing="0.5rem" width="100%">
               {pendingRequests.map((follower, index) => {
                 return (

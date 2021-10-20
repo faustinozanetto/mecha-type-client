@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
-import { useMeQuery, useUserQuery, useUserSettingsQuery } from 'generated/graphql';
+import { useMeQuery, UserFragment, useUserQuery, useUserSettingsQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
@@ -17,21 +17,38 @@ interface EditUserPageProps {
 
 const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
   const { query } = useRouter();
-  const { data: userData, loading } = useMeQuery({});
-  const { data: targetUser, loading: targetUserLoading } = useUserQuery({
+  const [me, setMe] = useState<UserFragment>();
+  const [targetUser, setTargetUser] = useState<UserFragment>();
+  const { data: meUserData, loading: meLoading } = useMeQuery({});
+  const { data: userData, loading: userLoading } = useUserQuery({
     variables: {
       where: {
         username: query.name as string,
       },
     },
   });
+
+  // Me data
+  useEffect(() => {
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData]);
+
+  // Target User
+  useEffect(() => {
+    if (userData?.user?.user && !userLoading) {
+      setTargetUser(userData.user.user);
+    }
+  }, [userData]);
+
   /**
    *
    * @returns wether the user owns the edit page or not.
    */
   const ownsPage = (): boolean => {
     return (
-      !loading && !targetUserLoading && userData && targetUser && userData?.me?.user?.id === targetUser?.user?.user?.id
+      !meLoading && !userLoading && userData && targetUser && meUserData?.me?.user?.id === userData?.user?.user?.id
     );
   };
 
@@ -39,14 +56,14 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
 
   return (
     <LayoutCore
-      user={userData?.me?.user}
+      user={me}
       headProps={{
-        seoTitle: `Editing ${targetUser?.user?.user?.username} | Mecha Type`,
-        seoDescription: `${targetUser?.user?.user?.username}´s profile page, showing their stats and more information.`,
-        seoUrl: `${__URI__!}/user/${targetUser?.user?.user?.username}/edit`,
+        seoTitle: `Editing ${me?.username} | Mecha Type`,
+        seoDescription: `${me?.username}´s profile page, showing their stats and more information.`,
+        seoUrl: `${__URI__!}/user/${me?.username}/edit`,
       }}
     >
-      <EditUserProfile user={targetUser.user.user} loading={loading} countries={countries} />
+      {me && <EditUserProfile user={me} loading={meLoading} countries={countries} />}
     </LayoutCore>
   );
 };

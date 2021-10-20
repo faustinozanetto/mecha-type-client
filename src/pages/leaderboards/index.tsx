@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useFilterUsersQuery, useMeQuery, UserFilterBy } from 'generated/graphql';
+import React, { useEffect, useState } from 'react';
+import { useFilterUsersQuery, useMeQuery, UserFilterBy, UserFragment } from 'generated/graphql';
 import { GetStaticProps } from 'next';
 import { Button, Flex, Heading, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
 import { Leaderboards } from '@components/leaderboards/leaderboards';
@@ -13,9 +13,17 @@ interface LeaderboardsPageProps {
 }
 
 const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
-  const [filterBy, setFilterBy] = useState<UserFilterBy>(UserFilterBy.Accuracy);
+  const [me, setMe] = useState<UserFragment>();
   const [page, setPage] = useState(0);
-  const { data: userData, loading } = useMeQuery({});
+  const [filterBy, setFilterBy] = useState<UserFilterBy>(UserFilterBy.Accuracy);
+  const { data: meUserData, loading: meLoading } = useMeQuery({});
+
+  // Me data
+  useEffect(() => {
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData]);
 
   const {
     data: filteredUsers,
@@ -36,7 +44,7 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
 
   return (
     <LayoutCore
-      user={userData?.me?.user}
+      user={me}
       headProps={{
         seoTitle: 'Leaderboards | Mecha Type',
         seoDescription: 'Leaderboards of Mecha Type, see who is the best at typing!',

@@ -26,6 +26,8 @@ interface EditUserProfileProps {
 const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading, countries }) => {
   const topBg = useColorModeValue('gray.300', 'gray.700');
   const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
+    ssr: true,
+    skip: user?.id === null,
     variables: { input: { userId: user?.id } },
   });
 

@@ -34,6 +34,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({ loading, user, targetUser, 
     loading: followUserStatusLoading,
     refetch: followUserStatusRefetch,
   } = useFollowUserStatusQuery({
+    skip: user?.id === targetUser?.id,
     variables: {
       userId: targetUser?.id ?? '',
       followerId: user?.id ?? '',

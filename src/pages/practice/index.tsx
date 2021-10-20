@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PracticePresetSelection } from '@components/practice/selection';
-import { useMeQuery } from '@generated/graphql';
-import { GetServerSideProps, GetStaticProps } from 'next';
+import { useMeQuery, UserFragment } from '@generated/graphql';
+import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/layout-core';
@@ -10,18 +10,26 @@ import { withApollo } from '@modules/core/apollo/apollo';
 interface PracticePageProps {}
 
 const PracticePage: React.FC<PracticePageProps> = () => {
-  const { data: userData } = useMeQuery({});
+  const [me, setMe] = useState<UserFragment>();
+  const { data: meUserData, loading: meLoading } = useMeQuery({});
+
+  // Me data
+  useEffect(() => {
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData]);
 
   return (
     <LayoutCore
-      user={userData?.me?.user!}
+      user={me}
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice page where you can choose to use a created preset, or create one.',
         seoUrl: `${__URI__}/practice`,
       }}
     >
-      <PracticePresetSelection user={userData?.me?.user!} />
+      {me && <PracticePresetSelection user={me} />}
     </LayoutCore>
   );
 };

@@ -8,6 +8,7 @@ import { generateAvatarURl } from '@modules/core/user/user';
 import { UserProfileCountry } from './user-profile-country';
 import FollowButton from './follow-button';
 import { CountryEntry } from 'typings/user';
+import ManageFollowersButton from './manage-followers-button';
 
 interface UserProfileDetailsProps {
   /** Current logged in user */
@@ -64,14 +65,15 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
           </HStack>
           <UserProfileCountry countryData={country} loading={loading} />
           <SkeletonText isLoaded={!loading} noOfLines={2} py={!loading ? 0 : 2}>
-            <Text as="p" fontSize="lg" color={useColorModeValue('black', 'white')} fontWeight={400}>
+            <Text as="p" fontSize="lg" color={useColorModeValue('black', 'white')} fontWeight={500}>
               {targetUser?.description ? targetUser?.description : t('no-user-description')}
             </Text>
           </SkeletonText>
         </Flex>
         {/* Buttons */}
         <Flex flexDir="column" alignItems="center">
-          {user && targetUser && (
+          {ownsPage && <ManageFollowersButton loading={loading} />}
+          {!ownsPage && (
             <FollowButton
               loading={loading}
               user={user}

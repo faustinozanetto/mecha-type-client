@@ -19,7 +19,7 @@ export const PracticeCreateSection: React.FC<PracticeCreateSectionProps> = ({}) 
       <Text as="h2" fontWeight={600} fontSize="3xl">
         What about creating your own?
       </Text>
-      <Text as="p" fontWeight={400} fontSize="md" mx={12} textAlign="center">
+      <Text as="p" fontWeight={500} fontSize="md" mx={12} textAlign="center">
         If you feel like no preset fits you, you can have a try at creating your own custom preset. You can use it
         later, as it is saved to your profile!.
       </Text>

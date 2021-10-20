@@ -440,10 +440,12 @@ export type UserFollowersPageInfo = {
 
 export type UserFollowersResponse = {
   __typename?: 'UserFollowersResponse';
+  acceptedRequests?: Maybe<Scalars['Int']>;
   count?: Maybe<Scalars['Int']>;
   edges?: Maybe<Array<UserFollowerEdge>>;
   errors?: Maybe<Array<ErrorResponse>>;
   pageInfo?: Maybe<UserFollowersPageInfo>;
+  pendingRequests?: Maybe<Scalars['Int']>;
 };
 
 export type UserOnUser = {
@@ -574,7 +576,7 @@ export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', 
 
 export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
-export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', count?: number | null | undefined, acceptedRequests?: number | null | undefined, pendingRequests?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
 export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt: any, updatedAt: any }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt: any, updatedAt: any }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
@@ -731,7 +733,7 @@ export type UserFollowersQueryVariables = Exact<{
 }>;
 
 
-export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null | undefined, acceptedRequests?: number | null | undefined, pendingRequests?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt: any, updatedAt: any } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type UsersQueryVariables = Exact<{
   take: Scalars['Int'];
@@ -899,6 +901,8 @@ export const UserFollowerFragmentDoc = gql`
 export const UserFollowersResponseFragmentDoc = gql`
     fragment UserFollowersResponse on UserFollowersResponse {
   count
+  acceptedRequests
+  pendingRequests
   pageInfo {
     startCursor
     endCursor

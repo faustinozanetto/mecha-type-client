@@ -77,6 +77,8 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
   const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
   const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
+    ssr: true,
+    skip: user === null,
     variables: { input: { userId: user?.id } },
   });
   const bgColor = useColorModeValue('gray.300', 'gray.900');

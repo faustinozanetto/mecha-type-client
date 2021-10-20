@@ -1,22 +1,18 @@
 import React from 'react';
 import { UserFollowerCard } from './user-follower-card';
 import { Flex, Text } from '@chakra-ui/layout';
-import { Button, Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
+import { Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { UserFollowerFragment } from '@generated/graphql';
-import { useRouter } from 'next/router';
 
 interface UserFollowersProps {
   /** User followers data */
   followers: UserFollowerFragment[];
   /** Wether content is loading or not */
   loading: boolean;
-  /** Wether the current logged in user owns the user page or not */
-  ownsPage: boolean;
 }
 
-const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading, ownsPage }) => {
-  const { query } = useRouter();
+const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => {
   const { t } = useTranslation('user-profile');
   const textColor = useColorModeValue('black', 'white');
   return (
@@ -46,17 +42,6 @@ const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading, ownsP
             return <UserFollowerCard key={follower.id} follower={follower} loading={loading} />;
           })}
         </VStack>
-      )}
-      {ownsPage && (
-        <Button
-          as="a"
-          href={`/user/${query.name}/followers`}
-          colorScheme="purple"
-          size="lg"
-          width={['auto', 'auto', 'auto', '60%', '60%']}
-        >
-          See More
-        </Button>
       )}
     </Flex>
   );

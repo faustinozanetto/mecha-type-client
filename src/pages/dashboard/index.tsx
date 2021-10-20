@@ -1,5 +1,5 @@
-import React from 'react';
-import { useMeQuery } from '@generated/graphql';
+import React, { useEffect, useState } from 'react';
+import { useMeQuery, UserFragment } from '@generated/graphql';
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
@@ -12,22 +12,30 @@ interface DashboardPageProps {}
 
 const DashboardPage: React.FC<DashboardPageProps> = () => {
   const router = useRouter();
-  const { data: userData, loading: userLoading } = useMeQuery({});
+  const [me, setMe] = useState<UserFragment>();
+  const { data: meUserData, loading: meLoading } = useMeQuery({});
 
-  if (!userLoading && !userData?.me.user) {
+  // Me data
+  useEffect(() => {
+    if (meUserData?.me?.user && !meLoading) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData]);
+
+  if (!meLoading && !meUserData?.me.user) {
     router.push('/auth/signin');
   }
 
   return (
     <LayoutCore
-      user={userData?.me?.user!}
+      user={me}
       headProps={{
         seoTitle: 'Dashboard | Mecha Type',
         seoDescription: 'Dashboard page where you can see your progress and more precise information.',
         seoUrl: `${__URI__}/practice`,
       }}
     >
-      <UserDashboard user={userData?.me?.user} />
+      {me && <UserDashboard user={me} />}
     </LayoutCore>
   );
 };

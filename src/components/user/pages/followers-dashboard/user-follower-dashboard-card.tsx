@@ -3,7 +3,7 @@ import { IconButton, Flex, Skeleton, Text, useColorModeValue, HStack, Tooltip, S
 import { UserFollowerFragment } from '@generated/graphql';
 import { generateAvatarURl } from '@modules/core/user/user';
 import { UserAvatar } from '@components/user/profile/page/user/user-avatar';
-import { AddIcon, CloseIcon } from '@chakra-ui/icons';
+import { CheckIcon, CloseIcon } from '@chakra-ui/icons';
 
 interface UserFollowerDashboardCardProps {
   /** Follower Data */
@@ -55,7 +55,7 @@ export const UserFollowerDashboardCard: React.FC<UserFollowerDashboardCardProps>
             <IconButton
               colorScheme="green"
               aria-label="Accept Request"
-              icon={<AddIcon />}
+              icon={<CheckIcon />}
               onClick={onRequestAccepted}
             />
           </Tooltip>
