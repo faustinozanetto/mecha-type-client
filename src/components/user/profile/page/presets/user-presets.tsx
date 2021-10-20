@@ -3,6 +3,7 @@ import { UserPresetCard } from './user-preset-card';
 import { TestPresetFragment } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { Flex, Text, VStack, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 
 interface UserPresetsProps {
   /** Presets to retrieve data from */
@@ -37,10 +38,20 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ presets, loading }) =>
       )}
 
       {presets && presets.length > 0 && (
-        <VStack spacing="0.5rem" px={4} marginBottom="1rem" width="100%">
+        <VStack spacing="0.5rem" width="100%">
           {presets.map((preset, index) => {
             if (preset && preset.type) {
-              return <UserPresetCard key={preset.type + index} preset={preset} loading={loading} />;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, translateY: -25 }}
+                  animate={{ opacity: 1, translateY: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.15 }}
+                  style={{ width: '100%' }}
+                >
+                  <UserPresetCard key={preset.type + index} preset={preset} loading={loading} />
+                </motion.div>
+              );
             }
           })}
         </VStack>

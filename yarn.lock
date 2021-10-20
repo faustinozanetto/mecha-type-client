@@ -7179,11 +7179,6 @@ next-cookies@2.0.3:
   dependencies:
     universal-cookie "^4.0.2"
 
-next-google-ads@0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/next-google-ads/-/next-google-ads-0.1.1.tgz#289bfe2ad3e6d66fef287d5f786b95bcf59596fb"
-  integrity sha512-NGtC4ibWJ8EjYM91uS6W70FdaVq1QSCBmmiA9dWU/C4oyIG2CKZs28SdAF3G0WaXBnlc5Crlnl86NjQF2ecl7w==
-
 next-i18next@8.9.0:
   version "8.9.0"
   resolved "https://registry.yarnpkg.com/next-i18next/-/next-i18next-8.9.0.tgz#3f5a7f51ba3b40b60dcfd0b14c686d0657dcdd7d"
@@ -9844,8 +9839,3 @@ zen-observable@0.8.15:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
-
-zustand@3.5.14:
-  version "3.5.14"
-  resolved "https://registry.yarnpkg.com/zustand/-/zustand-3.5.14.tgz#591c3e8b75c57b2d13d596d8db00a08a0b3d5cdb"
-  integrity sha512-Y5o/024/eBluNGLt1MYp9KTqCzbw/Cztvx8MVjtmMWHQPrgnKfOe0Wqu7j7JSl+KxfJMA0TxNz4RKSqDx0fbHQ==

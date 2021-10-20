@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloLink, FieldPolicy, HttpLink, InMemoryCache } from '@apollo/client';
-import { __BACKEND__ } from '@utils/constants';
+import { __BACKEND__, __PROD__ } from '@utils/constants';
 import { FilteredUsersResponse, TestPresetsResponse, UserFollowersResponse } from '@generated/graphql';
 import { NextPageContext } from 'next';
 import { createWithApollo } from './createWithApollo';
@@ -27,6 +27,7 @@ const apolloClient = (ctx: NextPageContext) => {
         credentials: 'include',
       })
     ),
+    connectToDevTools: !__PROD__,
     headers: {
       cookie: (typeof window === 'undefined' ? ctx?.req?.headers.cookie : undefined) || '',
     },

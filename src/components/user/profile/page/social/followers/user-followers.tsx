@@ -4,6 +4,7 @@ import { Flex, Text } from '@chakra-ui/layout';
 import { Skeleton, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
 import { UserFollowerFragment } from '@generated/graphql';
+import { motion } from 'framer-motion';
 
 interface UserFollowersProps {
   /** User followers data */
@@ -37,9 +38,19 @@ const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => 
       )}
 
       {followers && followers.length > 0 && (
-        <VStack spacing="0.5rem" px={4} marginBottom="1rem" width="100%">
-          {followers.map((follower) => {
-            return <UserFollowerCard key={follower.id} follower={follower} loading={loading} />;
+        <VStack spacing="0.5rem" width="100%">
+          {followers.map((follower, index) => {
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, translateY: -25 }}
+                animate={{ opacity: 1, translateY: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.15 }}
+                style={{ width: '100%' }}
+              >
+                <UserFollowerCard key={follower.id} follower={follower} loading={loading} />
+              </motion.div>
+            );
           })}
         </VStack>
       )}

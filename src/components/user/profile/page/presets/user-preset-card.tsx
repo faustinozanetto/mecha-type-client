@@ -1,6 +1,8 @@
 import React from 'react';
 import { TestPresetFragment, TestType } from 'generated/graphql';
-import { Button, Flex, Skeleton, Text } from '@chakra-ui/react';
+import { Button, Flex, IconButton, Skeleton, Spacer, Text, Tooltip } from '@chakra-ui/react';
+import FaPlay from '@meronex/icons/fa/FaPlay';
+import { CopyIcon } from '@chakra-ui/icons';
 
 interface UserPresetCardProps {
   /** Preset data to retrieve info from. */
@@ -17,7 +19,6 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loading 
       alignContent="flex-start"
       justifyContent="space-between"
       alignItems="center"
-      margin={2}
       padding={4}
       borderRadius="lg"
       width={['auto', 'auto', 'auto', '100%', '100%']}
@@ -28,19 +29,24 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loading 
           {preset.type === TestType.Words ? `${preset.words} words` : `${preset.time} seconds`}
         </Text>
       </Skeleton>
-      <Skeleton isLoaded={!loading} marginLeft={4} height="auto">
-        <Button
+      <Skeleton isLoaded={!loading} marginLeft={4} height="auto"></Skeleton>
+      <Spacer />
+
+      {/* Copy Button */}
+      <Tooltip label="Copy" fontSize="md">
+        <IconButton colorScheme="green" aria-label="Copy Preset" icon={<CopyIcon />} m={2} />
+      </Tooltip>
+      {/* Try Button */}
+      <Tooltip label="Try" fontSize="md">
+        <IconButton
           as="a"
-          colorScheme="purple"
-          borderRadius="md"
-          size="lg"
-          variant="solid"
-          marginLeft="auto"
           href={`/practice/play/${preset.id}`}
-        >
-          Try now
-        </Button>
-      </Skeleton>
+          colorScheme="purple"
+          aria-label="Try Preset"
+          icon={<FaPlay />}
+          m={2}
+        />
+      </Tooltip>
     </Flex>
   );
 };
