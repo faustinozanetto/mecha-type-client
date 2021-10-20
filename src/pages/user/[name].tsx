@@ -10,6 +10,7 @@ import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@modules/core/user/user';
 import { CountryEntry } from 'typings/user';
+import { isReturnStatement } from 'typescript';
 
 interface UserPageProps {
   /** Countries data */
@@ -22,10 +23,9 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const [targetUser, setTargetUser] = useState<UserFragment>();
   const [IDFromRoute, _setIDFromRoute] = useState(router.query.name as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
-  const { data: meUserData, loading: meLoading } = useMeQuery({ ssr: true });
+  const { data: meUserData, loading: meLoading } = useMeQuery({});
 
   const { data: targetUserData, loading: targetUserLoading } = useUserQuery({
-    ssr: true,
     variables: {
       where: {
         username: IDFromRoute,
@@ -38,30 +38,21 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
     if (meUserData?.me?.user && !meLoading) {
       setMe(meUserData.me.user);
     }
-  }, [meUserData]);
+  }, [meUserData, meLoading]);
 
   // Target User
   useEffect(() => {
     if (targetUserData?.user?.user && !targetUserLoading) {
       setTargetUser(targetUser);
     }
-  }, [targetUserData]);
+  }, [targetUserData, targetUserLoading]);
 
   /** Check if the current logged user matches the target user. */
   useEffect(() => {
-    if (me && meUserData.me.user) {
-      const userOwnsPage = (): boolean => {
-        if (me) {
-          return me.username === IDFromRoute;
-        }
-        return false;
-      };
-      setUserOwnsPage(userOwnsPage());
-      if (userOwnsPage()) {
-        setTargetUser(me);
-      }
+    if (me && targetUser) {
+      setUserOwnsPage(me.username === IDFromRoute);
     }
-  }, [meUserData, IDFromRoute, me]);
+  }, [targetUser, IDFromRoute, me]);
 
   return (
     <LayoutCore
