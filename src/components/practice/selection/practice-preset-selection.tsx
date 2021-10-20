@@ -1,19 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {
-  TestLanguage,
-  TestPresetsQuery,
-  TestPresetWhereInput,
-  UserFragment,
-  useTestPresetsQuery,
-} from 'generated/graphql';
+import { TestLanguage, TestPresetWhereInput, UserFragment, useTestPresetsQuery } from 'generated/graphql';
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button, VStack, useToast } from '@chakra-ui/react';
 import PracticePresetCard from './preset-card/practice-preset-card';
 import { motion } from 'framer-motion';
 import { PracticeSearchForm, PracticeSearchValues } from './search-input/practice-search.form';
-import { parseNumber } from '@modules/core/math/math';
-import { RootState } from 'state/reducers';
-import { useSelector } from 'react-redux';
 import { PracticeCreateSection } from './practice-create-section';
+
 interface PracticePresetSelectionProps {
   /** Current logged in user. */
   user: UserFragment;

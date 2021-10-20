@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloLink, FieldPolicy, HttpLink, InMemoryCache } from '@apollo/client';
 import { __BACKEND__ } from '@utils/constants';
-import { FilteredUsersResponse, TestPresetsResponse } from '@generated/graphql';
+import { FilteredUsersResponse, TestPresetsResponse, UserFollowersResponse } from '@generated/graphql';
 import { NextPageContext } from 'next';
 import { createWithApollo } from './createWithApollo';
 import { createLogger } from '../logging/mecha-logger';
@@ -38,6 +38,18 @@ const apolloClient = (ctx: NextPageContext) => {
             testPresets: {
               keyArgs: [],
               merge(existing: TestPresetsResponse | undefined, incoming: TestPresetsResponse): TestPresetsResponse {
+                return {
+                  ...incoming,
+                  edges: [...(existing?.edges || []), ...incoming.edges],
+                };
+              },
+            },
+            userFollowers: {
+              keyArgs: [],
+              merge(
+                existing: UserFollowersResponse | undefined,
+                incoming: UserFollowersResponse
+              ): UserFollowersResponse {
                 return {
                   ...incoming,
                   edges: [...(existing?.edges || []), ...incoming.edges],

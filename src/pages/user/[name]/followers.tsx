@@ -38,6 +38,18 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
     }
   }, [userData]);
 
+  /**
+   *
+   * @returns wether the user owns the edit page or not.
+   */
+  const ownsPage = (): boolean => {
+    return (
+      !meLoading && !userLoading && userData && targetUser && meUserData?.me?.user?.id === userData?.user?.user?.id
+    );
+  };
+
+  if (!ownsPage()) return <h1>Forbidden</h1>;
+
   return (
     <LayoutCore
       user={me}
