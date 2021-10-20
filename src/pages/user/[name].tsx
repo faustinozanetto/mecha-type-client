@@ -24,7 +24,6 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const [IDFromRoute, _setIDFromRoute] = useState(router.query.name as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
   const { data: meUserData, loading: meLoading } = useMeQuery({});
-
   const { data: targetUserData, loading: targetUserLoading } = useUserQuery({
     variables: {
       where: {
@@ -35,15 +34,15 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
 
   // Me data
   useEffect(() => {
-    if (meUserData?.me?.user && !meLoading) {
+    if (meUserData?.me?.user) {
       setMe(meUserData.me.user);
     }
   }, [meUserData, meLoading]);
 
   // Target User
   useEffect(() => {
-    if (targetUserData?.user?.user && !targetUserLoading) {
-      setTargetUser(targetUser);
+    if (targetUserData?.user?.user) {
+      setTargetUser(targetUserData?.user?.user);
     }
   }, [targetUserData, targetUserLoading]);
 
