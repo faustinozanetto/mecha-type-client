@@ -67,7 +67,8 @@
     "redux-thunk": "^2.3.0",
     "ts-node": "^10.3.0",
     "uuid": "8.3.2",
-    "yup": "0.32.11"
+    "yup": "0.32.11",
+    "zustand": "^3.5.14"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

@@ -1,13 +1,14 @@
 fragment FilteredUsersResponse on FilteredUsersResponse {
-  nodes {
-    ...FilteredUser
+  count
+  pageInfo {
+    startCursor
+    endCursor
+    hasMore
   }
-  errors {
-    ...ErrorResponse
+  edges {
+    cursor
+    node {
+      ...FilteredUser
+    }
   }
-  nodeCount
-  pageCount
-  currentPage
-  nodesPerPage
-  hasMore
 }

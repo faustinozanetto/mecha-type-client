@@ -1,4 +1,10 @@
-import { AuthProvider, FilteredUserFragment, UserFollowerFragment, UserFragment } from 'generated/graphql';
+import {
+  AuthProvider,
+  FilteredUserFragment,
+  UserFilterBy,
+  UserFollowerFragment,
+  UserFragment,
+} from 'generated/graphql';
 import { roundTo2 } from '../math/math';
 
 export type UserParsedStats = {
@@ -95,6 +101,112 @@ export const generateParsedStats = (user: UserFragment): UserParsedStats => {
 //   }
 //   return 0;
 // };
+
+/**
+ *
+ * @param user the user to retrieve data from
+ * @returns the average accuracy.
+ */
+export const calculateAverage = (data: number[]): number => {
+  if (data && data.length > 0) {
+    const sum = data.reduce((tot, arr) => {
+      return tot + arr;
+    }, 0);
+    return Number.parseFloat((sum / data.length).toFixed(2));
+  }
+  return 0;
+};
+
+/**
+ *
+ * @param rawUsers raw users as an array of Filtered Users
+ * @param filterBy type of stat to filter the users by.
+ * @returns the filtered array of users.
+ */
+export const generateMappedFilteredUsers = (
+  rawUsers: FilteredUserFragment[],
+  filterBy: UserFilterBy
+): FilteredUserFragment[] => {
+  const filteredUsers: FilteredUserFragment[] = [];
+  switch (filterBy) {
+    case UserFilterBy.Accuracy: {
+      // Mapping for each user
+      rawUsers.map((user) => {
+        // Calculate average accuracy for user.
+        const averageField = calculateAverage(user.testPresetHistory.map((entry) => entry.accuracy));
+        // Create entry with name and average.
+        filteredUsers.push({
+          ...user,
+          value: averageField,
+        });
+      });
+      // Sorting
+      filteredUsers.sort((a, b) => b.value - a.value);
+      break;
+    }
+    case UserFilterBy.Wpm: {
+      // Mapping for each user
+      rawUsers.map((user) => {
+        // Calculate average accuracy for user.
+        const averageField = calculateAverage(user.testPresetHistory.map((entry) => entry.wpm));
+        // Create entry with name and average.
+        filteredUsers.push({
+          ...user,
+          value: averageField,
+        });
+      });
+      // Sorting
+      filteredUsers.sort((a, b) => b.value - a.value);
+      break;
+    }
+    case UserFilterBy.Cpm: {
+      // Mapping for each user
+      rawUsers.map((user) => {
+        // Calculate average accuracy for user.
+        const averageField = calculateAverage(user.testPresetHistory.map((entry) => entry.cpm));
+        // Create entry with name and average.
+        filteredUsers.push({
+          ...user,
+          value: averageField,
+        });
+      });
+      // Sorting
+      filteredUsers.sort((a, b) => b.value - a.value);
+      break;
+    }
+    case UserFilterBy.Keystrokes: {
+      // Mapping for each user
+      rawUsers.map((user) => {
+        // Calculate average accuracy for user.
+        const averageField = calculateAverage(user.testPresetHistory.map((entry) => entry.keystrokes));
+        // Create entry with name and average.
+        filteredUsers.push({
+          ...user,
+          value: averageField,
+        });
+      });
+      // Sorting
+      filteredUsers.sort((a, b) => b.value - a.value);
+      break;
+    }
+    case UserFilterBy.Testscompleted: {
+      // Mapping for each user
+      rawUsers.map((user) => {
+        // Calculate average accuracy for user.
+        const averageField = user.testPresetHistory.length;
+        // Create entry with name and average.
+        filteredUsers.push({
+          ...user,
+          value: averageField,
+        });
+      });
+      // Sorting
+      filteredUsers.sort((a, b) => b.value - a.value);
+      break;
+    }
+  }
+  return filteredUsers;
+};
 
 /**
  *

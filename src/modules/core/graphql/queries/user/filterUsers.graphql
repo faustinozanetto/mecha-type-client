@@ -1,5 +1,5 @@
-query filterUsers($page: Int!, $filterBy: UserFilterBy!) {
-  filterUsers(page: $page, filterBy: $filterBy) {
+query filterUsers($input: FilterUsersInput!) {
+  filterUsers(input: $input) {
     ...FilteredUsersResponse
   }
 }

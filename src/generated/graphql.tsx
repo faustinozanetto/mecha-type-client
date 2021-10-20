@@ -77,30 +77,53 @@ export type ErrorResponse = {
   message: Scalars['String'];
 };
 
+export type FilterUsersInput = {
+  filterBy: UserFilterBy;
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+  where?: Maybe<UserWhereInput>;
+};
+
 export type FilteredUser = {
   __typename?: 'FilteredUser';
   authProvider?: Maybe<AuthProvider>;
-  avatar: Scalars['String'];
-  country: Scalars['String'];
+  avatar?: Maybe<Scalars['String']>;
+  badge?: Maybe<UserBadge>;
+  country?: Maybe<Scalars['String']>;
   /** Identifies the date and time when the object was created. */
   createdAt?: Maybe<Scalars['Date']>;
+  description?: Maybe<Scalars['String']>;
+  followedBy?: Maybe<Array<UserOnUser>>;
+  following?: Maybe<Array<UserOnUser>>;
   id: Scalars['String'];
   oauthId?: Maybe<Scalars['String']>;
+  testPresetHistory?: Maybe<Array<TestPresetHistory>>;
+  testPresets?: Maybe<Array<TestPreset>>;
   /** Identifies the date and time when the object was last updated. */
   updatedAt?: Maybe<Scalars['Date']>;
-  username: Scalars['String'];
+  username?: Maybe<Scalars['String']>;
   value: Scalars['Float'];
+};
+
+export type FilteredUsersEdge = {
+  __typename?: 'FilteredUsersEdge';
+  cursor?: Maybe<Scalars['Date']>;
+  node?: Maybe<FilteredUser>;
+};
+
+export type FilteredUsersPageInfo = {
+  __typename?: 'FilteredUsersPageInfo';
+  endCursor?: Maybe<Scalars['Date']>;
+  hasMore?: Maybe<Scalars['Boolean']>;
+  startCursor?: Maybe<Scalars['Date']>;
 };
 
 export type FilteredUsersResponse = {
   __typename?: 'FilteredUsersResponse';
-  currentPage?: Maybe<Scalars['Int']>;
+  count?: Maybe<Scalars['Int']>;
+  edges?: Maybe<Array<FilteredUsersEdge>>;
   errors?: Maybe<Array<ErrorResponse>>;
-  hasMore?: Maybe<Scalars['Boolean']>;
-  nodeCount?: Maybe<Scalars['Int']>;
-  nodes?: Maybe<Array<FilteredUser>>;
-  nodesPerPage?: Maybe<Scalars['Int']>;
-  pageCount?: Maybe<Scalars['Int']>;
+  pageInfo?: Maybe<FilteredUsersPageInfo>;
 };
 
 /** Status of the follow request */
@@ -218,8 +241,7 @@ export type Query = {
 
 
 export type QueryFilterUsersArgs = {
-  filterBy: UserFilterBy;
-  page: Scalars['Int'];
+  input: FilterUsersInput;
 };
 
 
@@ -544,7 +566,7 @@ export type WordsPerMinuteCreateInput = {
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
-export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number };
+export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined };
 
 export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined };
 
@@ -562,7 +584,7 @@ export type DenyFollowRequestResponseFragment = { __typename?: 'DenyFollowReques
 
 export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: string, message: string };
 
-export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', nodeCount?: number | null | undefined, pageCount?: number | null | undefined, currentPage?: number | null | undefined, nodesPerPage?: number | null | undefined, hasMore?: boolean | null | undefined, nodes?: Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'FilteredUsersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'FilteredUsersEdge', cursor?: any | null | undefined, node?: { __typename?: 'FilteredUser', id: string, username?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined }> | null | undefined };
 
 export type RequestFollowUserResponseFragment = { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
 
@@ -701,12 +723,11 @@ export type UserSettingsQueryVariables = Exact<{
 export type UserSettingsQuery = { __typename?: 'Query', userSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type FilterUsersQueryVariables = Exact<{
-  page: Scalars['Int'];
-  filterBy: UserFilterBy;
+  input: FilterUsersInput;
 }>;
 
 
-export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', nodeCount?: number | null | undefined, pageCount?: number | null | undefined, currentPage?: number | null | undefined, nodesPerPage?: number | null | undefined, hasMore?: boolean | null | undefined, nodes?: Array<{ __typename?: 'FilteredUser', id: string, username: string, avatar: string, country: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'FilteredUsersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'FilteredUsersEdge', cursor?: any | null | undefined, node?: { __typename?: 'FilteredUser', id: string, username?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined }> | null | undefined } };
 
 export type FollowUserStatusQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -764,6 +785,21 @@ export const DenyFollowRequestResponseFragmentDoc = gql`
   }
 }
     ${ErrorResponseFragmentDoc}`;
+export const TestPresetHistoryFragmentDoc = gql`
+    fragment TestPresetHistory on TestPresetHistory {
+  id
+  userId
+  testPresetId
+  wpm
+  cpm
+  accuracy
+  keystrokes
+  correctChars
+  incorrectChars
+  createdAt
+  updatedAt
+}
+    `;
 export const FilteredUserFragmentDoc = gql`
     fragment FilteredUser on FilteredUser {
   id
@@ -772,25 +808,28 @@ export const FilteredUserFragmentDoc = gql`
   country
   authProvider
   oauthId
+  testPresetHistory {
+    ...TestPresetHistory
+  }
   value
 }
-    `;
+    ${TestPresetHistoryFragmentDoc}`;
 export const FilteredUsersResponseFragmentDoc = gql`
     fragment FilteredUsersResponse on FilteredUsersResponse {
-  nodes {
-    ...FilteredUser
+  count
+  pageInfo {
+    startCursor
+    endCursor
+    hasMore
   }
-  errors {
-    ...ErrorResponse
+  edges {
+    cursor
+    node {
+      ...FilteredUser
+    }
   }
-  nodeCount
-  pageCount
-  currentPage
-  nodesPerPage
-  hasMore
 }
-    ${FilteredUserFragmentDoc}
-${ErrorResponseFragmentDoc}`;
+    ${FilteredUserFragmentDoc}`;
 export const RequestFollowUserResponseFragmentDoc = gql`
     fragment RequestFollowUserResponse on RequestFollowUserResponse {
   requestSent
@@ -807,21 +846,6 @@ export const FollowUserStatusResponseFragmentDoc = gql`
   }
 }
     ${ErrorResponseFragmentDoc}`;
-export const TestPresetHistoryFragmentDoc = gql`
-    fragment TestPresetHistory on TestPresetHistory {
-  id
-  userId
-  testPresetId
-  wpm
-  cpm
-  accuracy
-  keystrokes
-  correctChars
-  incorrectChars
-  createdAt
-  updatedAt
-}
-    `;
 export const TestPresetHistoryResponseFragmentDoc = gql`
     fragment TestPresetHistoryResponse on TestPresetHistoryResponse {
   testPresetHistory {
@@ -1525,8 +1549,8 @@ export type UserSettingsQueryHookResult = ReturnType<typeof useUserSettingsQuery
 export type UserSettingsLazyQueryHookResult = ReturnType<typeof useUserSettingsLazyQuery>;
 export type UserSettingsQueryResult = Apollo.QueryResult<UserSettingsQuery, UserSettingsQueryVariables>;
 export const FilterUsersDocument = gql`
-    query filterUsers($page: Int!, $filterBy: UserFilterBy!) {
-  filterUsers(page: $page, filterBy: $filterBy) {
+    query filterUsers($input: FilterUsersInput!) {
+  filterUsers(input: $input) {
     ...FilteredUsersResponse
   }
 }
@@ -1544,8 +1568,7 @@ export const FilterUsersDocument = gql`
  * @example
  * const { data, loading, error } = useFilterUsersQuery({
  *   variables: {
- *      page: // value for 'page'
- *      filterBy: // value for 'filterBy'
+ *      input: // value for 'input'
  *   },
  * });
  */

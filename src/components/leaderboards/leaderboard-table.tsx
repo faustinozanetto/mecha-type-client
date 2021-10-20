@@ -1,40 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Flex,
-  Heading,
-  VStack,
-  useColorModeValue,
-  Table,
-  TableCaption,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  Tfoot,
-  Button,
-} from '@chakra-ui/react';
-import { FilteredUserFragment, UserFilterBy } from '@generated/graphql';
+import React from 'react';
+import { Flex, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useColorModeValue } from '@chakra-ui/react';
 import { LeaderboardUser } from './leaderboard-user';
+import { FilteredUserFragment, UserFilterBy } from '@generated/graphql';
 
-interface LeaderboardsProps {
-  /** Users data */
-  usersData: FilteredUserFragment[];
-  /** Filter by type */
+interface LeaderboardTableProps {
+  filteredUsers: FilteredUserFragment[];
   filterBy: UserFilterBy;
 }
 
-export const Leaderboards: React.FC<LeaderboardsProps> = ({ usersData, filterBy }) => {
-  const [users, setUsers] = useState<FilteredUserFragment[]>();
-
-  useEffect(() => {
-    if (usersData && usersData.length > 0) {
-      const sortingArray = [...usersData];
-      const sortedUsers = sortingArray.sort((a, b) => b.value - a.value);
-      setUsers(sortedUsers);
-    }
-  }, [usersData]);
-
+export const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ filteredUsers, filterBy }) => {
   return (
     <Flex
       width="100%"
@@ -54,8 +28,8 @@ export const Leaderboards: React.FC<LeaderboardsProps> = ({ usersData, filterBy 
           </Tr>
         </Thead>
         <Tbody>
-          {users &&
-            users.map((user, index) => {
+          {filteredUsers &&
+            filteredUsers.map((user, index) => {
               return (
                 <Tr key={user.username + index}>
                   <Td>

@@ -1,10 +1,9 @@
-import { ApolloClient, ApolloLink, FieldPolicy, HttpLink, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache } from '@apollo/client';
 import { __BACKEND__, __PROD__ } from '@utils/constants';
 import { FilteredUsersResponse, TestPresetsResponse, UserFollowersResponse } from '@generated/graphql';
 import { NextPageContext } from 'next';
 import { createWithApollo } from './createWithApollo';
 import { createLogger } from '../logging/mecha-logger';
-import { offsetLimitPagination, relayStylePagination } from '@apollo/client/utilities';
 
 const fileLabel = 'modules/core/apollo/apollo';
 const logger = createLogger({
@@ -51,6 +50,18 @@ const apolloClient = (ctx: NextPageContext) => {
                 existing: UserFollowersResponse | undefined,
                 incoming: UserFollowersResponse
               ): UserFollowersResponse {
+                return {
+                  ...incoming,
+                  edges: [...(existing?.edges || []), ...incoming.edges],
+                };
+              },
+            },
+            filterUsers: {
+              keyArgs: [],
+              merge(
+                existing: FilteredUsersResponse | undefined,
+                incoming: FilteredUsersResponse
+              ): FilteredUsersResponse {
                 return {
                   ...incoming,
                   edges: [...(existing?.edges || []), ...incoming.edges],
