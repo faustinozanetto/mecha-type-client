@@ -57,7 +57,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
         return false;
       };
       setUserOwnsPage(userOwnsPage());
-      if (userOwnsPage) {
+      if (userOwnsPage()) {
         setTargetUser(me);
       }
     }
