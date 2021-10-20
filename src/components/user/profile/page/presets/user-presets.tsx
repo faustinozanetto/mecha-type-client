@@ -8,11 +8,14 @@ import { motion } from 'framer-motion';
 interface UserPresetsProps {
   /** Presets to retrieve data from */
   presets: TestPresetFragment[];
+  /** Wether the current logged in user owns the user page or not */
+  ownsPage: boolean;
+  loggedInUsername: string;
   /** Wether content is loading or not */
   loading: boolean;
 }
 
-export const UserPresets: React.FC<UserPresetsProps> = ({ presets, loading }) => {
+export const UserPresets: React.FC<UserPresetsProps> = ({ presets, ownsPage, loggedInUsername, loading }) => {
   const { t } = useTranslation('user-profile');
   const textColor = useColorModeValue('black', 'white');
 
@@ -49,7 +52,13 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ presets, loading }) =>
                   transition={{ duration: 0.3, delay: index * 0.15 }}
                   style={{ width: '100%' }}
                 >
-                  <UserPresetCard key={preset.type + index} preset={preset} loading={loading} />
+                  <UserPresetCard
+                    key={preset.type + index}
+                    preset={preset}
+                    ownsPage={ownsPage}
+                    loggedInUsername={loggedInUsername}
+                    loading={loading}
+                  />
                 </motion.div>
               );
             }

@@ -8,17 +8,20 @@ import { UserPresets } from './user-presets';
 interface UserProfilePresetsProps {
   /** Presets data to retrieve data from */
   presets: TestPresetFragment[];
+  /** Wether the current logged in user owns the user page or not */
+  ownsPage: boolean;
+  loggedInUsername: string;
   /** Wether content is loading or not */
   loading: boolean;
 }
-const UserProfilePresets: React.FC<UserProfilePresetsProps> = ({ presets, loading }) => {
+const UserProfilePresets: React.FC<UserProfilePresetsProps> = ({ presets, loggedInUsername, ownsPage, loading }) => {
   const { t } = useTranslation('user-profile');
   return (
     <Box marginTop="0.5rem" marginBottom="0.5rem">
       <Text as="h2" fontSize="3xl" color={useColorModeValue('black', 'white')} fontWeight={600} marginBottom={4}>
         {t('presets-title')}
       </Text>
-      <UserPresets presets={presets} loading={loading} />
+      <UserPresets presets={presets} loggedInUsername={loggedInUsername} ownsPage={ownsPage} loading={loading} />
     </Box>
   );
 };

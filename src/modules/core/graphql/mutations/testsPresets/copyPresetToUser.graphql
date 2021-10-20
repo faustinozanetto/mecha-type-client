@@ -1,0 +1,5 @@
+mutation copyPresetToUser($input: CopyPresetToUserInput!) {
+  copyPresetToUser(input: $input) {
+    ...TestPresetResponse
+  }
+}

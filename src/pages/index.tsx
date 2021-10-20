@@ -35,7 +35,7 @@ const Home: React.FC<IHomeProps> = () => {
       <Heading as="h2" fontSize="2xl">
         {t('test')}
       </Heading>
-      <Heading as="h3">v0.1.4</Heading>
+      <Heading as="h3">v0.1.5</Heading>
       <AdBanner />
     </LayoutCore>
   );

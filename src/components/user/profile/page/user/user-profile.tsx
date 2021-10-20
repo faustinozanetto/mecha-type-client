@@ -87,6 +87,8 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         <UserProfileInformation
           loading={loading}
           targetUser={targetUser}
+          ownsPage={ownsPage}
+          loggedInUsername={user?.username}
           parsedStats={parsedStats}
           followers={followers}
         />

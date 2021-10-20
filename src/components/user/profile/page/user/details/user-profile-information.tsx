@@ -11,6 +11,9 @@ interface UserProfileStatsProps {
   targetUser: UserFragment;
   /** User followers */
   followers: UserFollowerFragment[];
+  loggedInUsername: string;
+  /** Wether the current logged in user owns the user page or not */
+  ownsPage: boolean;
   parsedStats: UserParsedStats;
   /** Wether content is loading or not */
   loading: boolean;
@@ -19,7 +22,8 @@ interface UserProfileStatsProps {
 const UserProfileInformation: React.FC<UserProfileStatsProps> = ({
   targetUser,
   followers,
-
+  ownsPage,
+  loggedInUsername,
   parsedStats,
   loading,
 }) => {
@@ -32,7 +36,12 @@ const UserProfileInformation: React.FC<UserProfileStatsProps> = ({
         <UserProfileSocial followersData={followers} loading={loading} />
       </GridItem>
       <GridItem colSpan={[2, 2, 2, 1, 1]}>
-        <UserProfilePresets presets={targetUser?.testPresets!} loading={loading} />
+        <UserProfilePresets
+          presets={targetUser?.testPresets!}
+          ownsPage={ownsPage}
+          loggedInUsername={loggedInUsername}
+          loading={loading}
+        />
       </GridItem>
     </Grid>
   );

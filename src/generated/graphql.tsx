@@ -44,6 +44,11 @@ export type CharsPerMinuteCreateInput = {
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
+export type CopyPresetToUserInput = {
+  presetId: Scalars['String'];
+  user: UserWhereInput;
+};
+
 export type CreateTestPresetHistoryInput = {
   accuracy: Scalars['Float'];
   correctChars: Scalars['Float'];
@@ -151,6 +156,7 @@ export type InputUpdateInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   acceptFollowRequest: AcceptFollowRequestResponse;
+  copyPresetToUser: TestPresetResponse;
   createTestPreset: TestPresetResponse;
   createTestPresetHistoryEntry: TestPresetHistoryResponse;
   createTestPresetUser: TestPresetResponse;
@@ -168,6 +174,11 @@ export type Mutation = {
 export type MutationAcceptFollowRequestArgs = {
   followerId: Scalars['String'];
   userId: Scalars['String'];
+};
+
+
+export type MutationCopyPresetToUserArgs = {
+  input: CopyPresetToUserInput;
 };
 
 
@@ -620,6 +631,13 @@ export type UserCreateTestPresetHistoryEntryMutationVariables = Exact<{
 
 
 export type UserCreateTestPresetHistoryEntryMutation = { __typename?: 'Mutation', userCreateTestPresetHistoryEntry: { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+
+export type CopyPresetToUserMutationVariables = Exact<{
+  input: CopyPresetToUserInput;
+}>;
+
+
+export type CopyPresetToUserMutation = { __typename?: 'Mutation', copyPresetToUser: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
 
 export type CreateTestPresetMutationVariables = Exact<{
   data: CreateTestPresetInput;
@@ -1076,6 +1094,39 @@ export function useUserCreateTestPresetHistoryEntryMutation(baseOptions?: Apollo
 export type UserCreateTestPresetHistoryEntryMutationHookResult = ReturnType<typeof useUserCreateTestPresetHistoryEntryMutation>;
 export type UserCreateTestPresetHistoryEntryMutationResult = Apollo.MutationResult<UserCreateTestPresetHistoryEntryMutation>;
 export type UserCreateTestPresetHistoryEntryMutationOptions = Apollo.BaseMutationOptions<UserCreateTestPresetHistoryEntryMutation, UserCreateTestPresetHistoryEntryMutationVariables>;
+export const CopyPresetToUserDocument = gql`
+    mutation copyPresetToUser($input: CopyPresetToUserInput!) {
+  copyPresetToUser(input: $input) {
+    ...TestPresetResponse
+  }
+}
+    ${TestPresetResponseFragmentDoc}`;
+export type CopyPresetToUserMutationFn = Apollo.MutationFunction<CopyPresetToUserMutation, CopyPresetToUserMutationVariables>;
+
+/**
+ * __useCopyPresetToUserMutation__
+ *
+ * To run a mutation, you first call `useCopyPresetToUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCopyPresetToUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [copyPresetToUserMutation, { data, loading, error }] = useCopyPresetToUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCopyPresetToUserMutation(baseOptions?: Apollo.MutationHookOptions<CopyPresetToUserMutation, CopyPresetToUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CopyPresetToUserMutation, CopyPresetToUserMutationVariables>(CopyPresetToUserDocument, options);
+      }
+export type CopyPresetToUserMutationHookResult = ReturnType<typeof useCopyPresetToUserMutation>;
+export type CopyPresetToUserMutationResult = Apollo.MutationResult<CopyPresetToUserMutation>;
+export type CopyPresetToUserMutationOptions = Apollo.BaseMutationOptions<CopyPresetToUserMutation, CopyPresetToUserMutationVariables>;
 export const CreateTestPresetDocument = gql`
     mutation createTestPreset($data: CreateTestPresetInput!) {
   createTestPreset(data: $data) {
