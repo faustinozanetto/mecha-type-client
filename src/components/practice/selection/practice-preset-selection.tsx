@@ -92,6 +92,7 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
           // Re fetch more using the filtered values and reset current page to 0.
           setPageCount(0);
           setSearchPresetValues(values);
+          console.log(values);
         }}
       />
       {/* Presets */}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
 import { TestLanguage } from '@generated/graphql';
@@ -19,22 +19,14 @@ export interface PracticeSearchValues {
   filterPunctuated: boolean;
 }
 
-const validationSchema = Yup.object().shape({
-  language: Yup.mixed().oneOf([TestLanguage.English, TestLanguage.Spanish]).required('Please provide a test language'),
-  words: Yup.number()
-    .min(10, 'The amount of words should be more than 10!')
-    .required('Please provide a valid words amount!'),
-  punctuated: Yup.boolean().required('Punctuated is required!'),
-});
-
 interface PracticeSearchFormProps {
   /** Function to call when values are updated. */
   onValuesUpdated: (values: PracticeSearchValues) => void;
 }
 
 export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValuesUpdated }) => {
+  const [formValues, setFormValues] = useState<PracticeSearchValues>();
   const filterFieldBG = useColorModeValue('gray.200', 'gray.800');
-
   const initialFormValues: PracticeSearchValues = {
     language: TestLanguage.English,
     filterLanguage: true,
@@ -43,6 +35,21 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValues
     punctuated: false,
     filterPunctuated: false,
   };
+
+  const validationSchema = Yup.object().shape({
+    filterWords: Yup.boolean(),
+    language: Yup.mixed()
+      .oneOf([TestLanguage.English, TestLanguage.Spanish])
+      .required('Please provide a test language'),
+    words: Yup.number().when('filterWords', {
+      is: true,
+      then: Yup.number()
+        .min(10, 'The amount of words should be more than 10!')
+        .required('Please provide a valid words amount!'),
+    }),
+    punctuated: Yup.boolean().required('Punctuated is required!'),
+  });
+
   return (
     <Container
       display="flex"
@@ -58,6 +65,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValues
         initialValues={initialFormValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
+          console.log(values);
           let parsedValues: PracticeSearchValues = { ...values };
           if (values.filterLanguage) {
             parsedValues.language = values.language;
