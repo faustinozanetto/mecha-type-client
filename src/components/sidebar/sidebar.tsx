@@ -81,9 +81,9 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       p={4}
     >
       {/* Title & Logo */}
-      <Flex flexDir="column" alignItems="center" mb={4}>
-        <Text as="span" fontWeight={700} fontSize="1.75rem" color="#fff" textAlign="center">
-          {isMediumOrMore ? 'Mecha Type' : 'MT'}
+      <Flex flexDir="row" justifyContent="center" alignContent="center" alignItems="center" mb={4}>
+        <Text as="h1" fontWeight={700} fontSize="1.75rem" color="#fff" textAlign="center">
+          {isMediumOrMore ? `Mecha Type` : 'MT'}
         </Text>
       </Flex>
       {/* Buttons */}

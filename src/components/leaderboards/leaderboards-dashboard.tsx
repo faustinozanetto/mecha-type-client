@@ -69,11 +69,28 @@ export const LeaderboardsDashboard: React.FC<LeaderboardsProps> = ({}) => {
         backgroundColor={useColorModeValue('gray.300', 'gray.900')}
         borderRadius="15px"
         width="100%"
-        m={4}
+        my={4}
         p={4}
       >
         <Heading as="h1" fontSize="4xl" fontWeight={700}>
           Leaderboards
+        </Heading>
+      </Flex>
+
+      <Flex
+        flexDir="column"
+        rounded="lg"
+        alignContent="center"
+        alignItems="center"
+        backgroundColor={useColorModeValue('gray.300', 'gray.900')}
+        borderRadius="15px"
+        width="100%"
+        m={4}
+        p={4}
+      >
+        <Heading as="p" fontSize="md" fontWeight={500} textAlign="center">
+          See who is the best at typing in Mecha Type, feel free to filter out by stat types such as words per minute or
+          accuracy. If you see your name here it´s a good sign! Keep rocking :)
         </Heading>
       </Flex>
       {/* Categories */}

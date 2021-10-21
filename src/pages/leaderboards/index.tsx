@@ -6,6 +6,7 @@ import { __URI__ } from '@utils/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
+import { Flex } from '@chakra-ui/react';
 
 interface LeaderboardsPageProps {
   /** Data containing the user info of the current logged in user. */
@@ -22,7 +23,9 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ me }) => {
         seoUrl: `${__URI__}/leaderboards`,
       }}
     >
-      <LeaderboardsDashboard />
+      <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
+        <LeaderboardsDashboard />
+      </Flex>
     </LayoutCore>
   );
 };
