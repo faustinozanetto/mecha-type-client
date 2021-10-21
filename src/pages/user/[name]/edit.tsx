@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
-import { useMeQuery, UserFragment, useUserQuery, useUserSettingsQuery } from 'generated/graphql';
+import { UserFragment, useUserQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
@@ -13,13 +13,13 @@ import EditUserProfile from '@components/user/profile/edit/edit-user-profile';
 interface EditUserPageProps {
   /** Countries data */
   countries: CountryEntry[];
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
 }
 
-const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
+const EditUserPage: React.FC<EditUserPageProps> = ({ countries, me }) => {
   const { query } = useRouter();
-  const [me, setMe] = useState<UserFragment>();
   const [targetUser, setTargetUser] = useState<UserFragment>();
-  const { data: meUserData, loading: meLoading } = useMeQuery({});
   const { data: userData, loading: userLoading } = useUserQuery({
     variables: {
       where: {
@@ -27,13 +27,6 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
       },
     },
   });
-
-  // Me data
-  useEffect(() => {
-    if (meUserData?.me?.user && !meLoading) {
-      setMe(meUserData.me.user);
-    }
-  }, [meUserData]);
 
   // Target User
   useEffect(() => {
@@ -47,9 +40,7 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
    * @returns wether the user owns the edit page or not.
    */
   const ownsPage = (): boolean => {
-    return (
-      !meLoading && !userLoading && userData && targetUser && meUserData?.me?.user?.id === userData?.user?.user?.id
-    );
+    return !userLoading && userData && targetUser && me.id === userData?.user?.user?.id;
   };
 
   if (!ownsPage()) return <h1>Forbidden</h1>;
@@ -63,7 +54,7 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
         seoUrl: `${__URI__!}/user/${me?.username}/edit`,
       }}
     >
-      {me && <EditUserProfile user={me} loading={meLoading} countries={countries} />}
+      {me && <EditUserProfile user={me} loading={me.id === null} countries={countries} />}
     </LayoutCore>
   );
 };

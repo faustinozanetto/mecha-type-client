@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
-import { TestPresetFragment, useMeQuery, UserFragment, useTestPresetQuery } from 'generated/graphql';
+import { TestPresetFragment, UserFragment, useTestPresetQuery } from 'generated/graphql';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -13,27 +13,19 @@ import { PracticeTestDetails } from '@components/practice/game/practice-test-det
 import { Flex } from '@chakra-ui/react';
 
 interface PracticePlayPageProps {
-  locale: string;
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
 }
 
-const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
+const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ me }) => {
   const router = useRouter();
   const [text, setText] = useState('');
-  const [me, setMe] = useState<UserFragment>();
   const [testPreset, setTestPreset] = useState<TestPresetFragment>();
-  const { data: meUserData, loading: meLoading } = useMeQuery({});
   const { data: testPresetData, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
       id: useGetIDFromUrl(),
     },
   });
-
-  // Me data
-  useEffect(() => {
-    if (meUserData?.me?.user && !meLoading) {
-      setMe(meUserData.me.user);
-    }
-  }, [meUserData]);
 
   // Test Preset
   useEffect(() => {
@@ -47,7 +39,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
     setText(generateWords(testPreset).trimEnd());
   }, [testPreset]);
 
-  if (!meLoading && !me && !meUserData?.me?.user) {
+  if (!me.id) {
     router.push('/auth/signin');
   }
 
@@ -63,12 +55,12 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ locale }) => {
       <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
         {testPreset && (
           <Flex flexDir="column" width="100%">
-            <PracticeTestDetails loading={testPresetLoading || meLoading || text === ''} practiceTest={testPreset} />
+            <PracticeTestDetails loading={testPresetLoading || text === ''} practiceTest={testPreset} />
           </Flex>
         )}
         {testPreset && text && (
           <PracticeGameInput
-            loading={testPresetLoading || meLoading || text === ''}
+            loading={testPresetLoading || text === ''}
             testPreset={testPreset}
             text={text as string}
             user={me}

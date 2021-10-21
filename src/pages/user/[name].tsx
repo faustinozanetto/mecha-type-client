@@ -15,15 +15,17 @@ import { isReturnStatement } from 'typescript';
 interface UserPageProps {
   /** Countries data */
   countries: CountryEntry[];
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
 }
 
-const UserPage: React.FC<UserPageProps> = ({ countries }) => {
+const UserPage: React.FC<UserPageProps> = ({ countries, me }) => {
   const router = useRouter();
-  const [me, setMe] = useState<UserFragment>();
+
   const [targetUser, setTargetUser] = useState<UserFragment>();
   const [IDFromRoute, _setIDFromRoute] = useState(router.query.name as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
-  const { data: meUserData, loading: meLoading } = useMeQuery({});
+
   const { data: targetUserData, loading: targetUserLoading } = useUserQuery({
     variables: {
       where: {
@@ -31,13 +33,6 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
       },
     },
   });
-
-  // Me data
-  useEffect(() => {
-    if (meUserData?.me?.user) {
-      setMe(meUserData.me.user);
-    }
-  }, [meUserData, meLoading]);
 
   // Target User
   useEffect(() => {
@@ -65,13 +60,15 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
         seoImage: generateAvatarURl(targetUser),
       }}
     >
-      <UserProfile
-        user={me}
-        targetUser={targetUser}
-        loading={meLoading && targetUserLoading}
-        ownsPage={userOwnsPage}
-        countries={countries}
-      />
+      {targetUser && (
+        <UserProfile
+          user={me}
+          targetUser={targetUser}
+          loading={targetUserLoading}
+          ownsPage={userOwnsPage}
+          countries={countries}
+        />
+      )}
     </LayoutCore>
   );
 };

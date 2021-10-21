@@ -47,7 +47,7 @@ const sidebarLinks: ISidebarLink[] = [
 
 export interface SidebarProps {
   /** User data */
-  user: UserFragment;
+  user: UserFragment | null;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ user }) => {
@@ -101,7 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
           spanishLabel={t('sidebar-language-switcher-spanish')}
         />
         <SidebarThemeToggler label={t('sidebar-theme-switcher')} />
-        {user ? (
+        {user?.id ? (
           <>
             <UserDetails user={user} />
             <LogoutButton label={t('sidebar-logout')} />

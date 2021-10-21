@@ -6,15 +6,17 @@ import { GetStaticProps } from 'next';
 import { withApollo } from '@modules/core/apollo/apollo';
 import { Heading } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
-import { useMeQuery } from '@generated/graphql';
+import { useMeQuery, UserFragment } from '@generated/graphql';
 import GoogleAdsense, { GoogleAdsenseWidget } from 'next-google-ads';
 import Script from 'next/script';
 
 interface IHomeProps {
   locale: string;
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
 }
 
-const Home: React.FC<IHomeProps> = () => {
+const Home: React.FC<IHomeProps> = ({ me }) => {
   const { t } = useTranslation('common');
 
   const { data: userData } = useMeQuery({
@@ -36,7 +38,8 @@ const Home: React.FC<IHomeProps> = () => {
       <Heading as="h2" fontSize="2xl">
         {t('test')}
       </Heading>
-      <Heading as="h3">v0.1.5</Heading>
+      <Heading as="h3">v0.1.6</Heading>
+      {me && <h1>{me.username}</h1>}
       <Script
         id="google-adsense"
         src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { appWithTranslation } from 'next-i18next';
 import { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
@@ -8,10 +8,22 @@ import { store } from 'state';
 import * as gtag from '@modules/core/adsense/google-tag';
 import { useRouter } from 'next/router';
 import { GoogleAnalytics } from '@components/google/google-analytics';
+import { UserFragment, useMeQuery } from '@generated/graphql';
+import { withApollo } from '@modules/core/apollo/apollo';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
   const router = useRouter();
+  const [me, setMe] = useState<UserFragment>();
+  const { data: meUserData, loading: meLoading } = useMeQuery({ ssr: true });
+
+  // Me data
+  useEffect(() => {
+    if (meUserData?.me?.user) {
+      setMe(meUserData.me.user);
+    }
+  }, [meUserData, meLoading]);
+
   useEffect(() => {
     const handleRouteChange = (url) => {
       gtag.pageview(url);
@@ -27,10 +39,10 @@ const MechaApp = (props: AppProps) => {
       <ChakraProvider>
         <GoogleAnalytics />
         <GlobalStyles />
-        <Component {...pageProps} />
+        <Component {...pageProps} me={me ?? {}} />
       </ChakraProvider>
     </Provider>
   );
 };
 
-export default appWithTranslation(MechaApp);
+export default withApollo({})(appWithTranslation(MechaApp));

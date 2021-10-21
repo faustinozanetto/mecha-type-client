@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { PracticePresetSelection } from '@components/practice/selection';
-import { useMeQuery, UserFragment } from '@generated/graphql';
+import { UserFragment } from '@generated/graphql';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/layout-core';
 import { withApollo } from '@modules/core/apollo/apollo';
 
-interface PracticePageProps {}
+interface PracticePageProps {
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
+}
 
-const PracticePage: React.FC<PracticePageProps> = () => {
-  const [me, setMe] = useState<UserFragment>();
-  const { data: meUserData, loading: meLoading } = useMeQuery({});
-
-  // Me data
-  useEffect(() => {
-    if (meUserData?.me?.user && !meLoading) {
-      setMe(meUserData.me.user);
-    }
-  }, [meUserData]);
-
+const PracticePage: React.FC<PracticePageProps> = ({ me }) => {
   return (
     <LayoutCore
       user={me}

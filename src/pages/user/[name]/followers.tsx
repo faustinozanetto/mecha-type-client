@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
-import { useMeQuery, UserFragment, useUserFollowersQuery, useUserQuery } from 'generated/graphql';
+import { UserFragment, useUserQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import UserFollowersDashboard from '@components/user/pages/followers-dashboard/user-followers-dashboard';
 
-interface UserFollowersPageProps {}
+interface UserFollowersPageProps {
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
+}
 
-const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
+const UserFollowersPage: React.FC<UserFollowersPageProps> = ({ me }) => {
   const { query } = useRouter();
-  const [me, setMe] = useState<UserFragment>();
   const [targetUser, setTargetUser] = useState<UserFragment>();
-  const { data: meUserData, loading: meLoading } = useMeQuery({ ssr: true });
 
   const { data: userData, loading: userLoading } = useUserQuery({
     variables: {
@@ -23,13 +24,6 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
       },
     },
   });
-
-  // Me data
-  useEffect(() => {
-    if (meUserData?.me?.user && !meLoading) {
-      setMe(meUserData.me.user);
-    }
-  }, [meUserData]);
 
   // Target User
   useEffect(() => {
@@ -43,9 +37,7 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
    * @returns wether the user owns the edit page or not.
    */
   const ownsPage = (): boolean => {
-    return (
-      !meLoading && !userLoading && userData && targetUser && meUserData?.me?.user?.id === userData?.user?.user?.id
-    );
+    return !userLoading && userData && targetUser && me.id === userData?.user?.user?.id;
   };
 
   if (!ownsPage()) return <h1>Forbidden</h1>;
@@ -59,7 +51,7 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
         seoUrl: `${__URI__!}/user/${targetUser?.username}/followers`,
       }}
     >
-      <UserFollowersDashboard user={targetUser} />
+      {targetUser && <UserFollowersDashboard user={targetUser} />}
     </LayoutCore>
   );
 };

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useMeQuery, UserFragment } from '@generated/graphql';
+import React from 'react';
+import { UserFragment } from '@generated/graphql';
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
@@ -8,21 +8,15 @@ import { withApollo } from '@modules/core/apollo/apollo';
 import { UserDashboard } from '@components/dashboard';
 import { useRouter } from 'next/router';
 
-interface DashboardPageProps {}
+interface DashboardPageProps {
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
+}
 
-const DashboardPage: React.FC<DashboardPageProps> = () => {
+const DashboardPage: React.FC<DashboardPageProps> = ({ me }) => {
   const router = useRouter();
-  const [me, setMe] = useState<UserFragment>();
-  const { data: meUserData, loading: meLoading } = useMeQuery({});
 
-  // Me data
-  useEffect(() => {
-    if (meUserData?.me?.user && !meLoading) {
-      setMe(meUserData.me.user);
-    }
-  }, [meUserData]);
-
-  if (!meLoading && !meUserData?.me.user) {
+  if (!me.id) {
     router.push('/auth/signin');
   }
 

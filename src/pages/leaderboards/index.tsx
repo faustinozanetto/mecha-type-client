@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useMeQuery, UserFragment } from 'generated/graphql';
+import React from 'react';
+import { UserFragment } from 'generated/graphql';
 import { GetStaticProps } from 'next';
 import { LeaderboardsDashboard } from '@components/leaderboards/leaderboards-dashboard';
 import { __URI__ } from '@utils/constants';
@@ -8,20 +8,11 @@ import { withApollo } from '@modules/core/apollo/apollo';
 import LayoutCore from 'layouts/core/components/layout-core';
 
 interface LeaderboardsPageProps {
-  locale: string;
+  /** Data containing the user info of the current logged in user. */
+  me: UserFragment;
 }
 
-const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ locale }) => {
-  const [me, setMe] = useState<UserFragment>();
-  const { data: meUserData, loading: meLoading } = useMeQuery({});
-
-  // Me data
-  useEffect(() => {
-    if (meUserData?.me?.user && !meLoading) {
-      setMe(meUserData.me.user);
-    }
-  }, [meUserData]);
-
+const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ me }) => {
   return (
     <LayoutCore
       user={me}
