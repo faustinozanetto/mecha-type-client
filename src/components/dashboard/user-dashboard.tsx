@@ -19,7 +19,7 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
 
   const parseStats = (): ITypingStat[] => {
     let data: ITypingStat[] = [];
-    if (user) {
+    if (user && user.testPresetHistory) {
       for (let i = 0; i < user.testPresetHistory.length; i++) {
         const wpm = user.testPresetHistory[i].wpm;
         const cpm = user.testPresetHistory[i].cpm;
