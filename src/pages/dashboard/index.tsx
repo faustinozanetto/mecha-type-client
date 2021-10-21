@@ -6,7 +6,6 @@ import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/layout-core';
 import { withApollo } from '@modules/core/apollo/apollo';
 import { UserDashboard } from '@components/dashboard';
-import { useRouter } from 'next/router';
 
 interface DashboardPageProps {
   /** Data containing the user info of the current logged in user. */
@@ -14,12 +13,6 @@ interface DashboardPageProps {
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ me }) => {
-  const router = useRouter();
-
-  if (!me.id) {
-    router.push('/auth/signin');
-  }
-
   return (
     <LayoutCore
       user={me}
