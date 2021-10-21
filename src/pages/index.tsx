@@ -38,7 +38,7 @@ const Home: React.FC<IHomeProps> = ({ me }) => {
       <Heading as="h2" fontSize="2xl">
         {t('test')}
       </Heading>
-      <Heading as="h3">v0.1.6</Heading>
+      <Heading as="h3">v0.1.7</Heading>
       {me && <h1>{me.username}</h1>}
       <Script
         id="google-adsense"
@@ -52,7 +52,7 @@ const Home: React.FC<IHomeProps> = ({ me }) => {
           }
         }}
       />
-      <GoogleAdsenseWidget client="ca-pub-8808387532349652" slot="99999999" responsive="true" />
+      <GoogleAdsenseWidget client="ca-pub-8808387532349652" slot="5518576177" responsive="true" />
     </LayoutCore>
   );
 };
