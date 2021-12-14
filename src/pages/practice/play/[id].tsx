@@ -5,9 +5,8 @@ import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
-import { generateWords } from '@modules/core/practice/typing-game-utils';
 import { withApollo } from '@modules/core/apollo/apollo';
-import { useRouter } from 'next/router';
+
 import LayoutCore from 'layouts/core/components/layout-core';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { Flex } from '@chakra-ui/react';
@@ -18,8 +17,6 @@ interface PracticePlayPageProps {
 }
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ me }) => {
-  const router = useRouter();
-  const [text, setText] = useState('');
   const [testPreset, setTestPreset] = useState<TestPresetFragment>();
   const { data: testPresetData, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
@@ -34,15 +31,6 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ me }) => {
     }
   }, [testPresetData?.testPreset?.testPreset, testPresetLoading]);
 
-  // Test Preset Text
-  useEffect(() => {
-    setText(generateWords(testPreset).trimEnd());
-  }, [testPreset]);
-
-  if (!me.id) {
-    router.push('/auth/signin');
-  }
-
   return (
     <LayoutCore
       user={me}
@@ -55,17 +43,10 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ me }) => {
       <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
         {testPreset && (
           <Flex flexDir="column" width="100%">
-            <PracticeTestDetails loading={testPresetLoading || text === ''} practiceTest={testPreset} />
+            <PracticeTestDetails loading={testPresetLoading} practiceTest={testPreset} />
           </Flex>
         )}
-        {testPreset && text && (
-          <PracticeGameInput
-            loading={testPresetLoading || text === ''}
-            testPreset={testPreset}
-            text={text as string}
-            user={me}
-          />
-        )}
+        {testPreset && <PracticeGameInput loading={testPresetLoading} testPreset={testPreset} user={me} />}
       </Flex>
     </LayoutCore>
   );

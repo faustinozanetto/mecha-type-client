@@ -31,7 +31,10 @@ const Footer: React.FC<FooterProps> = ({}) => {
             fontWeight={500}
             textAlign="center"
           >
-            Made with ❤️ on 🇦🇷 by Faustino Zanetto
+            Made with ❤️ on 🇦🇷 by{' '}
+            <Text as="a" href="https://github.com/faustinozanetto" target="_blank">
+              Faustino Zanetto
+            </Text>
           </Text>
         </Flex>
       </VStack>

@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import FiClock from '@meronex/icons/fi/FiClock';
 import BiBullseye from '@meronex/icons/bi/BiBullseye';
 import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
-import { ITypingStat, ETypingStatType } from '../game/types/practice-game';
 import { ChartSelectButton, StatLineChart } from './charts';
 import { UserStatCard } from '@components/user/profile/page/stats/user-stat-card';
 import { Flex, Text, SimpleGrid, Button, Box, useColorModeValue } from '@chakra-ui/react';
 import { StatDonutChart } from './charts/stat-donut-chart';
+import { PracticeStatType, PracticeStatsEntry } from '@typings/practice.types';
 
 interface PracticeResultsProps {
   showStats?: boolean;
@@ -19,7 +19,7 @@ interface PracticeResultsProps {
   accuracy?: string;
   wordsWritten?: number;
   duration?: string;
-  statsData: ITypingStat[];
+  statsData: PracticeStatsEntry[];
 }
 
 const PracticeResults: React.FC<PracticeResultsProps> = ({
@@ -35,7 +35,7 @@ const PracticeResults: React.FC<PracticeResultsProps> = ({
   duration = '0s',
   statsData,
 }) => {
-  const [currentGraph, setCurrentGraph] = useState<ETypingStatType>(ETypingStatType.WPM);
+  const [currentGraph, setCurrentGraph] = useState<PracticeStatType>(PracticeStatType.WPM);
 
   return (
     <Flex
@@ -70,19 +70,19 @@ const PracticeResults: React.FC<PracticeResultsProps> = ({
             Charts
           </Text>
           <Flex flexDir="row" justifyContent="space-between">
-            <ChartSelectButton label={ETypingStatType.WPM} onClick={() => setCurrentGraph(ETypingStatType.WPM)} />
-            <ChartSelectButton label={ETypingStatType.CPM} onClick={() => setCurrentGraph(ETypingStatType.CPM)} />
+            <ChartSelectButton label={PracticeStatType.WPM} onClick={() => setCurrentGraph(PracticeStatType.WPM)} />
+            <ChartSelectButton label={PracticeStatType.CPM} onClick={() => setCurrentGraph(PracticeStatType.CPM)} />
             <ChartSelectButton
-              label={ETypingStatType.ACCURACY}
-              onClick={() => setCurrentGraph(ETypingStatType.ACCURACY)}
+              label={PracticeStatType.ACCURACY}
+              onClick={() => setCurrentGraph(PracticeStatType.ACCURACY)}
             />
-            <ChartSelectButton label={ETypingStatType.CHARS} onClick={() => setCurrentGraph(ETypingStatType.CHARS)} />
+            <ChartSelectButton label={PracticeStatType.CHARS} onClick={() => setCurrentGraph(PracticeStatType.CHARS)} />
           </Flex>
         </Flex>
         <SimpleGrid columns={1} rows={1} spacing="0.5rem">
-          {currentGraph !== ETypingStatType.CHARS && <StatLineChart statsData={statsData} statType={currentGraph} />}
-          {currentGraph === ETypingStatType.CHARS && (
-            <StatDonutChart statsData={statsData} statType={ETypingStatType.CHARS} />
+          {currentGraph !== PracticeStatType.CHARS && <StatLineChart statsData={statsData} statType={currentGraph} />}
+          {currentGraph === PracticeStatType.CHARS && (
+            <StatDonutChart statsData={statsData} statType={PracticeStatType.CHARS} />
           )}
         </SimpleGrid>
       </Box>

@@ -8,7 +8,7 @@ import { FormTextArea } from '@components/ui/forms/form-text-area';
 import { FormSelectInput } from '@components/ui/forms/form-select-input';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormCancelButton } from '@components/forms/form-cancel-button';
-import { CountryEntry } from 'typings/user';
+import { CountryEntry } from '@typings/user.types';
 
 interface EditUserProfileFormProps {
   /** User to retrieve data from. */

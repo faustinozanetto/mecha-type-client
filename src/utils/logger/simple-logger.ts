@@ -1,16 +1,17 @@
+import chalk from 'chalk';
 import noop from 'lodash.noop';
 
 export type SimpleLogger = Console;
 export type PrintMode = 'debug' | 'error' | 'group' | 'groupEnd' | 'info' | 'log' | 'warn';
 
-export type SimpleLoggerOptions = {
+interface SimpleLoggerOptions {
   prefix?: string;
   disableAutoWrapPrefix?: boolean;
   colorize?: Colorize;
   shouldPrint?: ShouldPrint;
   shouldShowTime?: ShouldShowTime;
   timeFormat?: TimeFormat;
-};
+}
 
 export type Colorize = (mode: PrintMode, prefixes: string[]) => string[];
 export type ShouldPrint = (mode: PrintMode) => boolean;
@@ -42,7 +43,6 @@ export const timeFormatFallback: TimeFormat = () => new Date().toISOString();
  */
 const colorizeFallback: Colorize = (mode: Omit<PrintMode, 'groupEnd'>, prefixes: string[]): any[] => {
   if (typeof window === 'undefined') {
-    const chalk = require('chalk');
     const orange = chalk.hex('#FFA500');
 
     switch (mode) {

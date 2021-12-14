@@ -47,7 +47,7 @@ class AppDocument extends Document<DocumentRenderProps> {
     const { locale }: DocumentRenderProps = this.props;
     return (
       <Html lang={locale}>
-        <Head></Head>
+        <Head />
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />

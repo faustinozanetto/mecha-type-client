@@ -7,6 +7,7 @@ import { withApollo } from '@modules/core/apollo/apollo';
 import { Heading } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { useMeQuery, UserFragment } from '@generated/graphql';
+import AdSense from 'react-ssr-adsense';
 import GoogleAdsense, { GoogleAdsenseWidget } from 'next-google-ads';
 import Script from 'next/script';
 
@@ -38,8 +39,9 @@ const Home: React.FC<IHomeProps> = ({ me }) => {
       <Heading as="h2" fontSize="2xl">
         {t('test')}
       </Heading>
-      <Heading as="h3">v0.1.7</Heading>
+      <Heading as="h3">v0.1.95</Heading>
       {me && <h1>{me.username}</h1>}
+
       <Script
         id="google-adsense"
         src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"

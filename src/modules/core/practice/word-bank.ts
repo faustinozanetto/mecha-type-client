@@ -1,4 +1,4 @@
-import { WordBankEntry } from "./types/typing-game.types";
+import { WordBankEntry } from './types/typing-game.types';
 
 export const wordsBank: WordBankEntry[] = [
   {

@@ -8,7 +8,7 @@ export const createLogger = ({ fileLabel }: { fileLabel: string }): SimpleLogger
   return createSimpleLogger({
     prefix: fileLabel,
     shouldShowTime: () => true,
-    shouldPrint: (mode) => {
+    shouldPrint: () => {
       return !(process.env.NODE_ENV === 'production' && typeof window !== 'undefined');
     },
   });

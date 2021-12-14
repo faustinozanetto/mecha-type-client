@@ -4,7 +4,7 @@ import { Container } from '@chakra-ui/react';
 import { generateParsedStats, UserParsedStats } from '@modules/core/user/user';
 import UserProfileDetails from './details/user-profile-details';
 import UserProfileInformation from './details/user-profile-information';
-import { CountryEntry } from 'typings/user';
+import { CountryEntry } from '@typings/user.types';
 
 interface IUserProfileProps {
   /** Current logged in user */

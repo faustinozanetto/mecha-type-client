@@ -7,7 +7,7 @@ import { SettingsButton } from './settings-button';
 import { generateAvatarURl } from '@modules/core/user/user';
 import { UserProfileCountry } from './user-profile-country';
 import FollowButton from './follow-button';
-import { CountryEntry } from 'typings/user';
+import { CountryEntry } from '@typings/user.types';
 import ManageFollowersButton from './manage-followers-button';
 
 interface UserProfileDetailsProps {

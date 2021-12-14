@@ -6,7 +6,7 @@ import { EditUserProfileForm } from './edit-user-profile-form';
 import { generateAvatarURl } from '@modules/core/user/user';
 import EditUserProfileSelection from './edit-user-edit-selection';
 import { EditUserPracticeForm } from './edit-user-practice-form';
-import { CountryEntry } from 'typings/user';
+import { CountryEntry } from '@typings/user.types';
 
 export enum SettingsEdit {
   UNSET,

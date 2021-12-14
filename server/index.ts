@@ -1,7 +1,7 @@
 import next from 'next';
 import { createServer } from 'http';
-import { createLogger } from '@modules/core/logging/mecha-logger';
-import { __PROD__ } from '@utils/constants';
+import { __PROD__ } from '../src/utils/constants';
+import { createLogger } from '../src/modules/core/logging/mecha-logger';
 
 const fileLabel = 'server';
 const logger = createLogger({

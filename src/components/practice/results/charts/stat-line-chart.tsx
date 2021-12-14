@@ -1,18 +1,18 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game';
 import { Box, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { ApexOptions } from 'apexcharts';
+import { PracticeStatType, PracticeStatsEntry } from '@typings/practice.types';
 
 // @ts-ignore
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 interface StatLineChartProps {
-  statsData: ITypingStat[];
-  statType?: ETypingStatType;
+  statsData: PracticeStatsEntry[];
+  statType?: PracticeStatType;
 }
 
-export const StatLineChart: React.FC<StatLineChartProps> = ({ statsData, statType = ETypingStatType.WPM }) => {
+export const StatLineChart: React.FC<StatLineChartProps> = ({ statsData, statType = PracticeStatType.WPM }) => {
   const { colorMode } = useColorMode();
   /**
    *
@@ -20,19 +20,19 @@ export const StatLineChart: React.FC<StatLineChartProps> = ({ statsData, statTyp
    */
   const generateData = (): number[] | string[] => {
     let data: string[] | number[] = [];
-    if (statType !== ETypingStatType.CHARS) {
+    if (statType !== PracticeStatType.CHARS) {
       data = statsData.map((entry) => {
         switch (statType) {
-          case ETypingStatType.WPM: {
+          case PracticeStatType.WPM: {
             return entry.wpm.toString();
           }
-          case ETypingStatType.CPM: {
+          case PracticeStatType.CPM: {
             return entry.cpm.toString();
           }
-          case ETypingStatType.ACCURACY: {
+          case PracticeStatType.ACCURACY: {
             return entry.accuracy.toFixed(2);
           }
-          case ETypingStatType.KEYSTROKES: {
+          case PracticeStatType.KEYSTROKES: {
             return entry.keystrokes.toString();
           }
           default: {

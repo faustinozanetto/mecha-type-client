@@ -1,4 +1,16 @@
 {
   "cSpell.words": ["adsbygoogle", "Afterware", "apexcharts", "deepmerge", "isequal", "Mecha", "signin", "zustand"],
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "Mecha Type",
+      "database": "mecha-type",
+      "username": "postgres",
+      "password": "4532164mine"
+    }
+  ]
 }

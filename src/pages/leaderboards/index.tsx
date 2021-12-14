@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserFragment } from 'generated/graphql';
-import { GetStaticProps } from 'next';
+import { GetServerSideProps, GetStaticProps } from 'next';
 import { LeaderboardsDashboard } from '@components/leaderboards/leaderboards-dashboard';
 import { __URI__ } from '@utils/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -30,8 +30,9 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ me }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { locale } = context;
+
   return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['sidebar'])) } };
 };
 

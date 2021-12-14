@@ -38,6 +38,7 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValues
 
   const validationSchema = Yup.object().shape({
     filterWords: Yup.boolean(),
+    filterPunctuated: Yup.boolean(),
     language: Yup.mixed()
       .oneOf([TestLanguage.English, TestLanguage.Spanish])
       .required('Please provide a test language'),
@@ -47,7 +48,10 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValues
         .min(10, 'The amount of words should be more than 10!')
         .required('Please provide a valid words amount!'),
     }),
-    punctuated: Yup.boolean().required('Punctuated is required!'),
+    punctuated: Yup.boolean().when('filterPunctuated', {
+      is: true,
+      then: Yup.boolean().required('Punctuated is required!'),
+    }),
   });
 
   return (

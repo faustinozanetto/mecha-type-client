@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { UserFragment } from 'generated/graphql';
 import { Flex, Text, Heading, useColorModeValue, SimpleGrid, GridItem } from '@chakra-ui/react';
 import { StatLineChart } from '@components/practice/results/charts';
-import { ETypingStatType, ITypingStat } from '@components/practice/game/types/practice-game';
 import { StatDonutChart } from '@components/practice/results/charts/stat-donut-chart';
+import { PracticeStatType, PracticeStatsEntry } from '@typings/practice.types';
 
 interface DashboardProps {
   /**
@@ -13,12 +13,12 @@ interface DashboardProps {
 }
 
 export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
-  const [parsedStats, setParsedStats] = useState<ITypingStat[]>([]);
+  const [parsedStats, setParsedStats] = useState<PracticeStatsEntry[]>([]);
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const chartBgColor = useColorModeValue('gray.200', 'gray.800');
 
-  const parseStats = (): ITypingStat[] => {
-    let data: ITypingStat[] = [];
+  const parseStats = (): PracticeStatsEntry[] => {
+    let data: PracticeStatsEntry[] = [];
     if (user && user.testPresetHistory) {
       for (let i = 0; i < user.testPresetHistory.length; i++) {
         const wpm = user.testPresetHistory[i].wpm;
@@ -61,16 +61,16 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
         <Flex flexDir="column" backgroundColor={bgColor} rounded="lg" padding={6} my={4}>
           <SimpleGrid columns={[1, 1, 1, 1, 2, 2]} rows={2} gap={2}>
             <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-              <StatLineChart statsData={parsedStats} statType={ETypingStatType.ACCURACY} />
+              <StatLineChart statsData={parsedStats} statType={PracticeStatType.ACCURACY} />
             </GridItem>
             <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-              <StatLineChart statsData={parsedStats} statType={ETypingStatType.WPM} />
+              <StatLineChart statsData={parsedStats} statType={PracticeStatType.WPM} />
             </GridItem>
             <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-              <StatLineChart statsData={parsedStats} statType={ETypingStatType.CPM} />
+              <StatLineChart statsData={parsedStats} statType={PracticeStatType.CPM} />
             </GridItem>
             <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
-              <StatDonutChart statsData={parsedStats} statType={ETypingStatType.CHARS} />
+              <StatDonutChart statsData={parsedStats} statType={PracticeStatType.CHARS} />
             </GridItem>
           </SimpleGrid>
         </Flex>

@@ -15,65 +15,25 @@ import { SoundType } from '@modules/core/sound/types/sound.types';
 import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
 import PracticeVisualLetter from '../visual/practice-visual-letter';
 import PracticeResults from '@components/practice/results/practice-results';
-
-export enum ETypingStatType {
-  CHARS = 'Characters',
-  WPM = 'WPM',
-  CPM = 'CPM',
-  ACCURACY = 'Accuracy',
-  KEYSTROKES = 'Keystrokes',
-}
-
-export interface ITypingStat {
-  /**
-   * Amount of errors
-   */
-  errors: number;
-  /**
-   * Amount of correct chars.
-   */
-  correct: number;
-  /**
-   * Words per minute.
-   */
-  wpm: number;
-  /**
-   * Characters per minute
-   */
-  cpm: number;
-  /**
-   * Typing accuracy
-   */
-  accuracy: number;
-  /**
-   * Keystrokes
-   */
-  keystrokes: number;
-  /**
-   * Second timestamp at which the stats where taken.
-   */
-  time: number | Date;
-}
+import { PracticeStatsEntry } from '@typings/practice.types';
+import { generateWords } from '@modules/core/practice/typing-game-utils';
 
 interface PracticeGameInputProps {
   loading: boolean;
   /** Preset to take data from */
   testPreset: TestPresetFragment;
-  /** Previously generated text */
-  text: string;
   /** Current logged in user. */
   user: UserFragment;
 }
 
-export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset, text, user }) => {
-  const [duration, setDuration] = useState(0);
-  const [stats, setStats] = useState<ITypingStat[]>([]);
-  const { time, start, pause, reset } = useTimer();
-  const [userCreateTestPresetHistoryEntry] = useUserCreateTestPresetHistoryEntryMutation();
-  const [currWordPos, setCurrWordPos] = useState([-1, -1]);
-  const [isFocused, setIsFocused] = useState(false);
+export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset, user }) => {
   const letterElements = useRef<HTMLDivElement>(null);
   const toast = useToast();
+  const [userCreateTestPresetHistoryEntry] = useUserCreateTestPresetHistoryEntryMutation();
+  const [stats, setStats] = useState<PracticeStatsEntry[]>([]);
+  const { time, start, pause, reset } = useTimer();
+  const [currWordPos, setCurrWordPos] = useState([-1, -1]);
+  const [isFocused, setIsFocused] = useState(false);
   const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
   const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
   const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
@@ -84,9 +44,9 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const bgColor = useColorModeValue('gray.300', 'gray.900');
 
   const {
-    states: { charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
+    states: { chars, charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping },
-  } = useTypingGame(text, {
+  } = useTypingGame(generateWords(testPreset).trimEnd(), {
     skipCurrentWordOnSpace: false,
     pauseOnError: userSettings?.userSettings?.userSettings?.pauseOnError,
   });
@@ -110,8 +70,8 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
    * Updates the user data with the new test results
    */
   const updateUser = () => {
-    if (user) {
-      if (!user.id || phase !== 2 || !endTime || !startTime) {
+    if (user && user.id) {
+      if (phase !== 2 || !endTime || !startTime) {
         toast({
           title: 'Something went wrong!',
           status: 'error',
@@ -134,6 +94,13 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
           },
         });
       }
+    } else {
+      toast({
+        title: 'Warning',
+        description: 'Log-in to save your progress!',
+        status: 'warning',
+        position: 'bottom-right',
+      });
     }
   };
 
@@ -162,10 +129,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
 
   useEffect(() => {
     if (phase === 2 && endTime && startTime) {
-      setDuration(Math.floor((endTime - startTime) / 1000));
       setCurrWordPos([-1, -1]);
-    } else {
-      setDuration(0);
     }
   }, [phase, startTime, endTime]);
 
@@ -173,7 +137,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   useEffect(() => {
     // Creating a stat entry with the current settings.
     if (time !== 0) {
-      const statEntry: ITypingStat = {
+      const statEntry: PracticeStatsEntry = {
         time: time,
         correct: correctChar,
         errors: errorChar,
@@ -227,7 +191,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         <SkeletonText isLoaded={!loading} noOfLines={4}>
           {/* Words container */}
           <Box display="block" mb={2} ref={letterElements} transition="all 0.25s ease 0s" blur="4px">
-            {text.split('').map((letter, index) => {
+            {chars.split('').map((letter, index) => {
               const state = charsState[index];
               const shouldHighlight = index >= currWordPos[0] && index <= currWordPos[1];
               return (
@@ -260,7 +224,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
           incorrectChars={errorChar}
           spaceChars={spaceChar}
           accuracy={`${((correctChar / (correctChar + errorChar)) * 100).toFixed(2)}%`}
-          wordsWritten={0}
+          wordsWritten={chars.split(' ').length}
           duration={`${time}s`}
           statsData={stats}
         />

@@ -8,6 +8,11 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE_BUNDLE === 'true',
 });
 
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
 const nextConfig = {
   // See https://nextjs.org/docs/messages/webpack5
   // Necessary to manually specify to use webpack 5, because we use a custom "webpack" config (see below)
@@ -24,6 +29,9 @@ const nextConfig = {
    *  - babel Default babel-loader configuration
    * @see https://nextjs.org/docs/api-reference/next.config.js/custom-webpack-config
    */
+  experimental: {
+    esmExternals: false,
+  },
   webpack: (config, { buildId, dev, isServer, defaultLoaders }) => {
     if (isServer) {
       /**

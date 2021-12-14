@@ -9,7 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@modules/core/user/user';
-import { CountryEntry } from 'typings/user';
+import { CountryEntry } from '@typings/user.types';
 import { isReturnStatement } from 'typescript';
 
 interface UserPageProps {
@@ -80,14 +80,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     data: CountryEntry[];
   };
 
-  const res = await axios.get<AxiosResponse>('https://countriesnow.space/api/v0.1/countries/flag/images');
-  const data = await res.data;
-  data.data.map((country: any) => {
-    names.push({ name: country.name, flag: country.flag });
-  });
+  try {
+    const res = await axios.get<AxiosResponse>('https://countriesnow.space/api/v0.1/countries/flag/images');
+    const data = await res.data;
+    data.data.map((country: any) => {
+      names.push({ name: country.name, flag: country.flag });
+    });
+  } catch (e) {}
 
   return {
-    props: { countries: names, ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])) },
+    props: { countries: names ?? [], ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])) },
   };
 };
 

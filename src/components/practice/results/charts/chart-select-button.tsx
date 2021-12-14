@@ -1,14 +1,14 @@
-import { Button } from '@chakra-ui/react';
 import React from 'react';
-import { ETypingStatType } from '../../game/types/practice-game';
+import { Button } from '@chakra-ui/react';
+import { PracticeStatType } from '@typings/practice.types';
 
 interface ChartSelectButtonProps {
   /** Name to show in the button */
-  label?: ETypingStatType;
+  label?: PracticeStatType;
   onClick?: () => void;
 }
 
-export const ChartSelectButton: React.FC<ChartSelectButtonProps> = ({ label = ETypingStatType.WPM, onClick }) => {
+export const ChartSelectButton: React.FC<ChartSelectButtonProps> = ({ label = PracticeStatType.WPM, onClick }) => {
   return (
     <Button
       colorScheme="purple"

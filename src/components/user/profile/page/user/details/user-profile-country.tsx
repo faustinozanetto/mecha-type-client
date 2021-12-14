@@ -1,7 +1,7 @@
 import React from 'react';
 import { HStack, Text, Image, SkeletonText, useColorModeValue } from '@chakra-ui/react';
 import { useTranslation } from 'next-i18next';
-import { CountryEntry } from 'typings/user';
+import { CountryEntry } from '@typings/user.types';
 
 interface UserProfileCountryProps {
   /** Country data with name and flag url */

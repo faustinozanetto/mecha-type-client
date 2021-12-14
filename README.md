@@ -1,3 +1,5 @@
+![Alt](https://repobeats.axiom.co/api/embed/a051fc7c117c58de722dca8472a0d49837422f78.svg 'Repobeats analytics image')
+
 ## ⌨️ What is Mecha Type?
 
 Mecha Type is a web application for improving your typing and writing skills.

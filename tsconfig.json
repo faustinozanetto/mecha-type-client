@@ -8,7 +8,10 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
-    "lib": ["dom", "es2017"],
+    "lib": [
+      "dom",
+      "es2017"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "noUnusedLocals": false,
@@ -21,18 +24,44 @@
     "strict": false,
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"],
-      "@contexts/*": ["contexts/*"],
-      "@generated/*": ["generated/*"],
-      "@hooks/*": ["hooks/*"],
-      "@lib/*": ["lib/*"],
-      "@pages/*": ["pages/*"],
-      "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"],
-      "@wrappers/*": ["wrappers/*"],
-      "@public/*": ["..public/*"],
-      "@modules/*": ["modules/*"]
-    }
+      "@components/*": [
+        "components/*"
+      ],
+      "@contexts/*": [
+        "contexts/*"
+      ],
+      "@generated/*": [
+        "generated/*"
+      ],
+      "@hooks/*": [
+        "hooks/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ],
+      "@pages/*": [
+        "pages/*"
+      ],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@utils/*": [
+        "utils/*"
+      ],
+      "@wrappers/*": [
+        "wrappers/*"
+      ],
+      "@public/*": [
+        "..public/*"
+      ],
+      "@typings/*": [
+        "typings/*"
+      ],
+      "@modules/*": [
+        "modules/*"
+      ]
+    },
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",
@@ -45,7 +74,17 @@
     "src/modules/core/i18n/i18n.config.ts",
     "src/modules/core/i18n/i18n.ts"
   ],
-  "exclude": ["node_modules", "dist", ".next", "out", "next.config.ts", ".babelrc", "bundles", "coverage", "test/*"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".next",
+    "out",
+    "next.config.ts",
+    ".babelrc",
+    "bundles",
+    "coverage",
+    "test/*"
+  ],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"

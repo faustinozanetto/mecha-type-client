@@ -5,7 +5,7 @@ import { UserFragment, useUserQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
-import { CountryEntry } from 'typings/user';
+import { CountryEntry } from '@typings/user.types';
 import axios from 'axios';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import EditUserProfile from '@components/user/profile/edit/edit-user-profile';
