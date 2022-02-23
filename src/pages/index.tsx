@@ -39,7 +39,7 @@ const Home: React.FC<IHomeProps> = ({ me }) => {
       <Heading as="h2" fontSize="2xl">
         {t('test')}
       </Heading>
-      <Heading as="h3">v0.1.95</Heading>
+      <Heading as="h3">v0.2.5</Heading>
       {me && <h1>{me.username}</h1>}
 
       <Script

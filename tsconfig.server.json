@@ -1,9 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
     "outDir": "dist",
-    "target": "ES2018",
     "jsx": "preserve",
     "isolatedModules": false,
     "noEmit": false

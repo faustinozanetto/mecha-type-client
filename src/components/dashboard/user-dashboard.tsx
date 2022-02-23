@@ -59,7 +59,7 @@ export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
       {/* Charts */}
       {parsedStats && parsedStats.length > 1 && (
         <Flex flexDir="column" backgroundColor={bgColor} rounded="lg" padding={6} my={4}>
-          <SimpleGrid columns={[1, 1, 1, 1, 2, 2]} rows={2} gap={2}>
+          <SimpleGrid gap={2}>
             <GridItem backgroundColor={chartBgColor} rounded="lg" padding={6} margin={4}>
               <StatLineChart statsData={parsedStats} statType={PracticeStatType.ACCURACY} />
             </GridItem>

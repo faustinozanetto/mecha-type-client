@@ -44,7 +44,7 @@ const SignIn: React.FC<PracticePageProps> = ({ providers }) => {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   let providers: ProviderType[] = [];
-  await fetch(`${__BACKEND__}/v1/auth/providers`, {
+  await fetch(`${__BACKEND__}/api/v1/auth/providers`, {
     method: 'GET',
   })
     .then((response) => {

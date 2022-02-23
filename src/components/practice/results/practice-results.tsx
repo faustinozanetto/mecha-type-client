@@ -79,7 +79,7 @@ const PracticeResults: React.FC<PracticeResultsProps> = ({
             <ChartSelectButton label={PracticeStatType.CHARS} onClick={() => setCurrentGraph(PracticeStatType.CHARS)} />
           </Flex>
         </Flex>
-        <SimpleGrid columns={1} rows={1} spacing="0.5rem">
+        <SimpleGrid spacing="0.5rem">
           {currentGraph !== PracticeStatType.CHARS && <StatLineChart statsData={statsData} statType={currentGraph} />}
           {currentGraph === PracticeStatType.CHARS && (
             <StatDonutChart statsData={statsData} statType={PracticeStatType.CHARS} />

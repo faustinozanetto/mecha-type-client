@@ -15,7 +15,7 @@ const useSession = () => {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get<UserSession>(`${__BACKEND__}/auth/status`, {
+        .get<UserSession>(`${__BACKEND__}/api/auth/status`, {
           withCredentials: true,
         })
         .then((response) => {

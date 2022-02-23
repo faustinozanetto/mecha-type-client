@@ -13,9 +13,7 @@ interface UserAvatarProps {
 export const UserAvatar: React.FC<UserAvatarProps> = ({ imageUrl, size = 150, loading }) => {
   return (
     <SkeletonCircle isLoaded={!loading} size={size.toFixed(0)}>
-      {imageUrl && (
-        <Image src={imageUrl} alt="User avatar" rounded="2xl" width={size} height={size} quality={50} loading="eager" />
-      )}
+      {imageUrl && <Image src={imageUrl} alt="User avatar" rounded="2xl" width={size} height={size} loading="eager" />}
     </SkeletonCircle>
   );
 };

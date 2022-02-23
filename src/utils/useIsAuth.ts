@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 export const useIsAuth = () => {
   const { data, loading } = useSession();
   const router = useRouter();
-  console.log(data);
+
   useEffect(() => {
     if (!loading) {
       if (data === undefined) router.push('/auth/signin');

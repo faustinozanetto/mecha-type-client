@@ -1,10 +1,11 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-const defaultOptions =  {}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -23,10 +24,10 @@ export type AcceptFollowRequestResponse = {
 };
 
 export type AccuracyCreateInput = {
-  amount?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  id?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  createdAt?: InputMaybe<Scalars['Date']>;
+  id?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Date']>;
 };
 
 /** User auth provider service */
@@ -38,10 +39,10 @@ export enum AuthProvider {
 }
 
 export type CharsPerMinuteCreateInput = {
-  amount?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  id?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  createdAt?: InputMaybe<Scalars['Date']>;
+  id?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Date']>;
 };
 
 export type CopyPresetToUserInput = {
@@ -61,12 +62,12 @@ export type CreateTestPresetHistoryInput = {
 };
 
 export type CreateTestPresetInput = {
-  creatorImage?: Maybe<Scalars['String']>;
+  creatorImage?: InputMaybe<Scalars['String']>;
   language: TestLanguage;
   punctuated: Scalars['Boolean'];
   time: Scalars['Int'];
   type: TestType;
-  userId?: Maybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
   words: Scalars['Int'];
 };
 
@@ -86,7 +87,7 @@ export type FilterUsersInput = {
   filterBy: UserFilterBy;
   skip: Scalars['Int'];
   take: Scalars['Int'];
-  where?: Maybe<UserWhereInput>;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 export type FilteredUser = {
@@ -146,11 +147,11 @@ export type FollowUserStatusResponse = {
 };
 
 export type InputUpdateInput = {
-  decrement?: Maybe<Scalars['Float']>;
-  divide?: Maybe<Scalars['Float']>;
-  increment?: Maybe<Scalars['Float']>;
-  multiply?: Maybe<Scalars['Float']>;
-  set?: Maybe<Scalars['Float']>;
+  decrement?: InputMaybe<Scalars['Float']>;
+  divide?: InputMaybe<Scalars['Float']>;
+  increment?: InputMaybe<Scalars['Float']>;
+  multiply?: InputMaybe<Scalars['Float']>;
+  set?: InputMaybe<Scalars['Float']>;
 };
 
 export type Mutation = {
@@ -268,7 +269,7 @@ export type QueryTestPresetArgs = {
 
 
 export type QueryTestPresetsArgs = {
-  input?: Maybe<TestPresetsFindInput>;
+  input?: InputMaybe<TestPresetsFindInput>;
 };
 
 
@@ -355,12 +356,12 @@ export type TestPresetResponse = {
 };
 
 export type TestPresetWhereInput = {
-  id?: Maybe<Scalars['String']>;
-  language?: Maybe<TestLanguage>;
-  punctuated?: Maybe<Scalars['Boolean']>;
-  time?: Maybe<Scalars['Int']>;
-  type?: Maybe<TestType>;
-  words?: Maybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['String']>;
+  language?: InputMaybe<TestLanguage>;
+  punctuated?: InputMaybe<Scalars['Boolean']>;
+  time?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<TestType>;
+  words?: InputMaybe<Scalars['Int']>;
 };
 
 export type TestPresetsEdge = {
@@ -372,7 +373,7 @@ export type TestPresetsEdge = {
 export type TestPresetsFindInput = {
   skip: Scalars['Int'];
   take: Scalars['Int'];
-  where?: Maybe<TestPresetWhereInput>;
+  where?: InputMaybe<TestPresetWhereInput>;
 };
 
 export type TestPresetsPageInfo = {
@@ -461,7 +462,7 @@ export type UserFollowerEdge = {
 export type UserFollowersFindInput = {
   skip: Scalars['Int'];
   take: Scalars['Int'];
-  where?: Maybe<UserWhereInput>;
+  where?: InputMaybe<UserWhereInput>;
 };
 
 export type UserFollowersPageInfo = {
@@ -516,12 +517,12 @@ export type UserSettings = {
 };
 
 export type UserSettingsCreateInput = {
-  blindMode?: Maybe<Scalars['Boolean']>;
-  noBackspace?: Maybe<Scalars['Boolean']>;
-  pauseOnError?: Maybe<Scalars['Boolean']>;
-  typeSounds?: Maybe<Scalars['Boolean']>;
-  typeSoundsVolume?: Maybe<Scalars['Float']>;
-  userId?: Maybe<Scalars['String']>;
+  blindMode?: InputMaybe<Scalars['Boolean']>;
+  noBackspace?: InputMaybe<Scalars['Boolean']>;
+  pauseOnError?: InputMaybe<Scalars['Boolean']>;
+  typeSounds?: InputMaybe<Scalars['Boolean']>;
+  typeSoundsVolume?: InputMaybe<Scalars['Float']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type UserSettingsResponse = {
@@ -531,37 +532,37 @@ export type UserSettingsResponse = {
 };
 
 export type UserSettingsUpdateInput = {
-  blindMode?: Maybe<Scalars['Boolean']>;
-  noBackspace?: Maybe<Scalars['Boolean']>;
-  pauseOnError?: Maybe<Scalars['Boolean']>;
-  typeSounds?: Maybe<Scalars['Boolean']>;
-  typeSoundsVolume?: Maybe<Scalars['Float']>;
-  userId?: Maybe<Scalars['String']>;
+  blindMode?: InputMaybe<Scalars['Boolean']>;
+  noBackspace?: InputMaybe<Scalars['Boolean']>;
+  pauseOnError?: InputMaybe<Scalars['Boolean']>;
+  typeSounds?: InputMaybe<Scalars['Boolean']>;
+  typeSoundsVolume?: InputMaybe<Scalars['Float']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type UserSettingsWhereInput = {
-  id?: Maybe<Scalars['String']>;
-  userId?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  userId?: InputMaybe<Scalars['String']>;
 };
 
 export type UserUpdateInput = {
-  accuracy?: Maybe<AccuracyCreateInput>;
-  badge?: Maybe<UserBadge>;
-  charsPerMinute?: Maybe<CharsPerMinuteCreateInput>;
-  country?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  keystrokes?: Maybe<InputUpdateInput>;
-  name?: Maybe<Scalars['String']>;
-  testsCompleted?: Maybe<InputUpdateInput>;
-  wordsPerMinute?: Maybe<WordsPerMinuteCreateInput>;
-  wordsWritten?: Maybe<InputUpdateInput>;
+  accuracy?: InputMaybe<AccuracyCreateInput>;
+  badge?: InputMaybe<UserBadge>;
+  charsPerMinute?: InputMaybe<CharsPerMinuteCreateInput>;
+  country?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']>;
+  keystrokes?: InputMaybe<InputUpdateInput>;
+  name?: InputMaybe<Scalars['String']>;
+  testsCompleted?: InputMaybe<InputUpdateInput>;
+  wordsPerMinute?: InputMaybe<WordsPerMinuteCreateInput>;
+  wordsWritten?: InputMaybe<InputUpdateInput>;
 };
 
 export type UserWhereInput = {
-  id?: Maybe<Scalars['String']>;
-  username?: Maybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
 };
 
 export type UsersResponse = {
@@ -571,58 +572,58 @@ export type UsersResponse = {
 };
 
 export type WordsPerMinuteCreateInput = {
-  amount?: Maybe<Scalars['Float']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  id?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
+  amount?: InputMaybe<Scalars['Float']>;
+  createdAt?: InputMaybe<Scalars['Date']>;
+  id?: InputMaybe<Scalars['String']>;
+  updatedAt?: InputMaybe<Scalars['Date']>;
 };
 
-export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined };
+export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username?: string | null, avatar?: string | null, country?: string | null, authProvider?: AuthProvider | null, oauthId?: string | null, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null };
 
-export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined };
+export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null };
 
-export type TestPresetHistoryFragment = { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined };
+export type TestPresetHistoryFragment = { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null };
 
-export type UserFragment = { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined };
+export type UserFragment = { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null };
 
-export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined };
+export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null, oauthId?: string | null, avatar: string, status?: FollowStatus | null, createdAt?: any | null, updatedAt?: any | null };
 
-export type UserSettingsFragment = { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined };
+export type UserSettingsFragment = { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null };
 
-export type AcceptFollowRequestResponseFragment = { __typename?: 'AcceptFollowRequestResponse', accepted?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type AcceptFollowRequestResponseFragment = { __typename?: 'AcceptFollowRequestResponse', accepted?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type DenyFollowRequestResponseFragment = { __typename?: 'DenyFollowRequestResponse', denied?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type DenyFollowRequestResponseFragment = { __typename?: 'DenyFollowRequestResponse', denied?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type ErrorResponseFragment = { __typename?: 'ErrorResponse', field: string, message: string };
 
-export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'FilteredUsersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'FilteredUsersEdge', cursor?: any | null | undefined, node?: { __typename?: 'FilteredUser', id: string, username?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined }> | null | undefined };
+export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersResponse', count?: number | null, pageInfo?: { __typename?: 'FilteredUsersPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'FilteredUsersEdge', cursor?: any | null, node?: { __typename?: 'FilteredUser', id: string, username?: string | null, avatar?: string | null, country?: string | null, authProvider?: AuthProvider | null, oauthId?: string | null, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null } | null }> | null };
 
-export type RequestFollowUserResponseFragment = { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type RequestFollowUserResponseFragment = { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type FollowUserStatusResponseFragment = { __typename?: 'FollowUserStatusResponse', status?: FollowStatus | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type FollowUserStatusResponseFragment = { __typename?: 'FollowUserStatusResponse', status?: FollowStatus | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', count?: number | null, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null, node?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UnfollowUserResponseFragment = { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', count?: number | null | undefined, acceptedRequests?: number | null | undefined, pendingRequests?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UserFollowersResponseFragment = { __typename?: 'UserFollowersResponse', count?: number | null, acceptedRequests?: number | null, pendingRequests?: number | null, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null, oauthId?: string | null, avatar: string, status?: FollowStatus | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type UserSettingsResponseFragment = { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UserSettingsResponseFragment = { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined };
+export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type CreateTestPresetHistoryEntryMutationVariables = Exact<{
   input: CreateTestPresetHistoryInput;
 }>;
 
 
-export type CreateTestPresetHistoryEntryMutation = { __typename?: 'Mutation', createTestPresetHistoryEntry: { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type CreateTestPresetHistoryEntryMutation = { __typename?: 'Mutation', createTestPresetHistoryEntry: { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserCreateTestPresetHistoryEntryMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -630,42 +631,42 @@ export type UserCreateTestPresetHistoryEntryMutationVariables = Exact<{
 }>;
 
 
-export type UserCreateTestPresetHistoryEntryMutation = { __typename?: 'Mutation', userCreateTestPresetHistoryEntry: { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserCreateTestPresetHistoryEntryMutation = { __typename?: 'Mutation', userCreateTestPresetHistoryEntry: { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type CopyPresetToUserMutationVariables = Exact<{
   input: CopyPresetToUserInput;
 }>;
 
 
-export type CopyPresetToUserMutation = { __typename?: 'Mutation', copyPresetToUser: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type CopyPresetToUserMutation = { __typename?: 'Mutation', copyPresetToUser: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type CreateTestPresetMutationVariables = Exact<{
   data: CreateTestPresetInput;
 }>;
 
 
-export type CreateTestPresetMutation = { __typename?: 'Mutation', createTestPreset: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type CreateTestPresetMutation = { __typename?: 'Mutation', createTestPreset: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type CreateTestPresetUserMutationVariables = Exact<{
   data: CreateTestPresetInput;
 }>;
 
 
-export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type CreateTestPresetUserMutation = { __typename?: 'Mutation', createTestPresetUser: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type CreateUserSettingsMutationVariables = Exact<{
   input: UserSettingsCreateInput;
 }>;
 
 
-export type CreateUserSettingsMutation = { __typename?: 'Mutation', createUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type CreateUserSettingsMutation = { __typename?: 'Mutation', createUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UpdateUserSettingsMutationVariables = Exact<{
   input: UserSettingsUpdateInput;
 }>;
 
 
-export type UpdateUserSettingsMutation = { __typename?: 'Mutation', updateUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UpdateUserSettingsMutation = { __typename?: 'Mutation', updateUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type AcceptFollowRequestMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -673,7 +674,7 @@ export type AcceptFollowRequestMutationVariables = Exact<{
 }>;
 
 
-export type AcceptFollowRequestMutation = { __typename?: 'Mutation', acceptFollowRequest: { __typename?: 'AcceptFollowRequestResponse', accepted?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type AcceptFollowRequestMutation = { __typename?: 'Mutation', acceptFollowRequest: { __typename?: 'AcceptFollowRequestResponse', accepted?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type DenyFollowRequestMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -681,7 +682,7 @@ export type DenyFollowRequestMutationVariables = Exact<{
 }>;
 
 
-export type DenyFollowRequestMutation = { __typename?: 'Mutation', denyFollowRequest: { __typename?: 'DenyFollowRequestResponse', denied?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type DenyFollowRequestMutation = { __typename?: 'Mutation', denyFollowRequest: { __typename?: 'DenyFollowRequestResponse', denied?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -694,7 +695,7 @@ export type RequestFollowUserMutationVariables = Exact<{
 }>;
 
 
-export type RequestFollowUserMutation = { __typename?: 'Mutation', requestFollowUser: { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type RequestFollowUserMutation = { __typename?: 'Mutation', requestFollowUser: { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UnfollowUserMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -702,7 +703,7 @@ export type UnfollowUserMutationVariables = Exact<{
 }>;
 
 
-export type UnfollowUserMutation = { __typename?: 'Mutation', unfollowUser: { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UnfollowUserMutation = { __typename?: 'Mutation', unfollowUser: { __typename?: 'UnfollowUserResponse', unfollow?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UpdateUserMutationVariables = Exact<{
   where: UserWhereInput;
@@ -710,42 +711,42 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type TestPresetQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type TestPresetsQueryVariables = Exact<{
   input: TestPresetsFindInput;
 }>;
 
 
-export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', count?: number | null, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null, node?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserTestPresetsQueryVariables = Exact<{
   userId: Scalars['String'];
 }>;
 
 
-export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null | undefined, node?: { __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserTestPresetsQuery = { __typename?: 'Query', userTestPresets: { __typename?: 'TestPresetsResponse', count?: number | null, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null, node?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserSettingsQueryVariables = Exact<{
   input: UserSettingsWhereInput;
 }>;
 
 
-export type UserSettingsQuery = { __typename?: 'Query', userSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null | undefined, blindMode?: boolean | null | undefined, noBackspace?: boolean | null | undefined, pauseOnError?: boolean | null | undefined, typeSounds?: boolean | null | undefined, typeSoundsVolume?: number | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserSettingsQuery = { __typename?: 'Query', userSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type FilterUsersQueryVariables = Exact<{
   input: FilterUsersInput;
 }>;
 
 
-export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', count?: number | null | undefined, pageInfo?: { __typename?: 'FilteredUsersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'FilteredUsersEdge', cursor?: any | null | undefined, node?: { __typename?: 'FilteredUser', id: string, username?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined }> | null | undefined } };
+export type FilterUsersQuery = { __typename?: 'Query', filterUsers: { __typename?: 'FilteredUsersResponse', count?: number | null, pageInfo?: { __typename?: 'FilteredUsersPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'FilteredUsersEdge', cursor?: any | null, node?: { __typename?: 'FilteredUser', id: string, username?: string | null, avatar?: string | null, country?: string | null, authProvider?: AuthProvider | null, oauthId?: string | null, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null } | null }> | null } };
 
 export type FollowUserStatusQueryVariables = Exact<{
   userId: Scalars['String'];
@@ -753,33 +754,33 @@ export type FollowUserStatusQueryVariables = Exact<{
 }>;
 
 
-export type FollowUserStatusQuery = { __typename?: 'Query', followUserStatus: { __typename?: 'FollowUserStatusResponse', status?: FollowStatus | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type FollowUserStatusQuery = { __typename?: 'Query', followUserStatus: { __typename?: 'FollowUserStatusResponse', status?: FollowStatus | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserQueryVariables = Exact<{
   where: UserWhereInput;
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined } | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserFollowersQueryVariables = Exact<{
   input: UserFollowersFindInput;
 }>;
 
 
-export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null | undefined, acceptedRequests?: number | null | undefined, pendingRequests?: number | null | undefined, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null | undefined, endCursor?: any | null | undefined, hasMore?: boolean | null | undefined } | null | undefined, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null | undefined, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null | undefined, oauthId?: string | null | undefined, avatar: string, status?: FollowStatus | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined } | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null, acceptedRequests?: number | null, pendingRequests?: number | null, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null, oauthId?: string | null, avatar: string, status?: FollowStatus | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UsersQueryVariables = Exact<{
   take: Scalars['Int'];
 }>;
 
 
-export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null | undefined, username?: string | null | undefined, description?: string | null | undefined, avatar?: string | null | undefined, country?: string | null | undefined, badge?: UserBadge | null | undefined, authProvider?: AuthProvider | null | undefined, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null | undefined, type?: TestType | null | undefined, time?: number | null | undefined, language?: TestLanguage | null | undefined, words?: number | null | undefined, punctuated?: boolean | null | undefined, creatorImage?: string | null | undefined, createdAt?: any | null | undefined, updatedAt?: any | null | undefined }> | null | undefined }> | null | undefined, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null | undefined } };
+export type UsersQuery = { __typename?: 'Query', users: { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export const ErrorResponseFragmentDoc = gql`
     fragment ErrorResponse on ErrorResponse {
