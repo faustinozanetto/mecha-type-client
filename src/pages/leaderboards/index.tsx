@@ -1,22 +1,19 @@
 import React from 'react';
-import { UserFragment } from 'generated/graphql';
-import { GetServerSideProps, GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { LeaderboardsDashboard } from '@components/leaderboards/leaderboards-dashboard';
 import { __URI__ } from '@utils/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { withApollo } from '@modules/core/apollo/apollo';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { Flex } from '@chakra-ui/react';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 
-interface LeaderboardsPageProps {
-  /** Data containing the user info of the current logged in user. */
-  me: UserFragment;
-}
+interface LeaderboardsPageProps {}
 
-const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({ me }) => {
+const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({}) => {
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: 'Leaderboards | Mecha Type',
         seoDescription: 'Leaderboards of Mecha Type, see who is the best at typing!',

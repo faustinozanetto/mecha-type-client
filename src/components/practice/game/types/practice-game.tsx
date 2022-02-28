@@ -17,18 +17,18 @@ import PracticeVisualLetter from '../visual/practice-visual-letter';
 import PracticeResults from '@components/practice/results/practice-results';
 import { PracticeStatsEntry } from '@typings/practice.types';
 import { generateWords } from '@modules/core/practice/typing-game-utils';
+import useAuth from '@contexts/UserContext';
 
 interface PracticeGameInputProps {
   loading: boolean;
   /** Preset to take data from */
   testPreset: TestPresetFragment;
-  /** Current logged in user. */
-  user: UserFragment;
 }
 
-export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset, user }) => {
+export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset }) => {
   const letterElements = useRef<HTMLDivElement>(null);
   const toast = useToast();
+  const { user } = useAuth();
   const [userCreateTestPresetHistoryEntry] = useUserCreateTestPresetHistoryEntryMutation();
   const [stats, setStats] = useState<PracticeStatsEntry[]>([]);
   const { time, start, pause, reset } = useTimer();

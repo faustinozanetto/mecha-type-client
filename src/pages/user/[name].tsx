@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import UserProfile from '@components/user/profile/page/user/user-profile';
 import axios from 'axios';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { withApollo } from '@modules/core/apollo/apollo';
 import { useMeQuery, UserFragment, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { generateAvatarURl } from '@modules/core/user/user';
 import { CountryEntry } from '@typings/user.types';
 import { isReturnStatement } from 'typescript';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 
 interface UserPageProps {
   /** Countries data */
@@ -50,7 +51,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries, me }) => {
 
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: `${targetUser?.username ?? IDFromRoute} | Mecha Type`,
         seoDescription: `${

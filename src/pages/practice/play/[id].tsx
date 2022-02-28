@@ -1,22 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
-import { TestPresetFragment, UserFragment, useTestPresetQuery } from 'generated/graphql';
+import { TestPresetFragment, useTestPresetQuery } from 'generated/graphql';
 import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { withApollo } from '@modules/core/apollo/apollo';
 
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { Flex } from '@chakra-ui/react';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 
-interface PracticePlayPageProps {
-  /** Data containing the user info of the current logged in user. */
-  me: UserFragment;
-}
+interface PracticePlayPageProps {}
 
-const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ me }) => {
+const PracticePlayPage: React.FC<PracticePlayPageProps> = ({}) => {
   const [testPreset, setTestPreset] = useState<TestPresetFragment>();
   const { data: testPresetData, loading: testPresetLoading } = useTestPresetQuery({
     variables: {
@@ -33,7 +31,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ me }) => {
 
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice play page, test your skills on a specific Preset.',
@@ -46,7 +44,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({ me }) => {
             <PracticeTestDetails loading={testPresetLoading} practiceTest={testPreset} />
           </Flex>
         )}
-        {testPreset && <PracticeGameInput loading={testPresetLoading} testPreset={testPreset} user={me} />}
+        {testPreset && <PracticeGameInput loading={testPresetLoading} testPreset={testPreset} />}
       </Flex>
     </LayoutCore>
   );

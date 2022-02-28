@@ -3,26 +3,24 @@ import { UserFragment } from '@generated/graphql';
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { withApollo } from '@modules/core/apollo/apollo';
 import { UserDashboard } from '@components/dashboard';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 
-interface DashboardPageProps {
-  /** Data containing the user info of the current logged in user. */
-  me: UserFragment;
-}
+interface DashboardPageProps {}
 
-const DashboardPage: React.FC<DashboardPageProps> = ({ me }) => {
+const DashboardPage: React.FC<DashboardPageProps> = ({}) => {
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: 'Dashboard | Mecha Type',
         seoDescription: 'Dashboard page where you can see your progress and more precise information.',
         seoUrl: `${__URI__}/practice`,
       }}
     >
-      {me && <UserDashboard user={me} />}
+      <UserDashboard />
     </LayoutCore>
   );
 };

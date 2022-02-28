@@ -2,7 +2,7 @@ import React from 'react';
 import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 
 interface AboutPageProps {}
 

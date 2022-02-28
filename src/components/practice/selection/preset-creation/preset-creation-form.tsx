@@ -8,6 +8,7 @@ import { FormSubmitButton } from '@components/forms/form-submit-button';
 import { FormSelectInput } from '@components/ui/forms/form-select-input';
 import { FormNumberInput } from '@components/ui/forms/form-number-input';
 import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
+import useAuth from '@contexts/UserContext';
 
 interface PresetCreationFormValues {
   type: TestType;
@@ -30,15 +31,14 @@ const validationSchema = Yup.object().shape({
 });
 
 interface PresetCreationFormProps {
-  /** Current logged in user. */
-  user: UserFragment;
   /** Method to call when the preset was created */
   onCreatedCallback: () => void;
 }
 
-export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({ user, onCreatedCallback }) => {
+export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({}) => {
   const router = useRouter();
   const toast = useToast();
+  const { user } = useAuth();
   const [createTestPresetUser] = useCreateTestPresetUserMutation();
   const initialFormValues: PresetCreationFormValues = {
     type: TestType.Words,

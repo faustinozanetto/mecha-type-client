@@ -1,28 +1,25 @@
 import React from 'react';
 import { PracticePresetSelection } from '@components/practice/selection';
-import { UserFragment } from '@generated/graphql';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { withApollo } from '@modules/core/apollo/apollo';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 
-interface PracticePageProps {
-  /** Data containing the user info of the current logged in user. */
-  me: UserFragment;
-}
+interface PracticePageProps {}
 
-const PracticePage: React.FC<PracticePageProps> = ({ me }) => {
+const PracticePage: React.FC<PracticePageProps> = ({}) => {
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice page where you can choose to use a created preset, or create one.',
         seoUrl: `${__URI__}/practice`,
       }}
     >
-      {me && <PracticePresetSelection user={me} />}
+      <PracticePresetSelection />
     </LayoutCore>
   );
 };

@@ -11,11 +11,27 @@ export type ProviderType = {
   authUrl: string;
 };
 
-interface PracticePageProps {
-  providers: ProviderType[];
-}
+const PROVIDERS = [
+  {
+    id: 'discord',
+    name: 'Discord',
+    authUrl: `${__BACKEND__}/api/v1/auth/discord/login`,
+  },
+  {
+    id: 'google',
+    name: 'Google',
+    authUrl: `${__BACKEND__}/api/v1/auth/google/login`,
+  },
+  {
+    id: 'github',
+    name: 'Github',
+    authUrl: `${__BACKEND__}/api/v1/auth/github/login`,
+  },
+];
 
-const SignIn: React.FC<PracticePageProps> = ({ providers }) => {
+interface PracticePageProps {}
+
+const SignIn: React.FC<PracticePageProps> = ({}) => {
   return (
     <Flex backgroundColor={useColorModeValue('gray.200', 'gray.800')}>
       <NextSeo
@@ -36,27 +52,10 @@ const SignIn: React.FC<PracticePageProps> = ({ providers }) => {
         minHeight="100vh"
         centerContent
       >
-        {providers && <UserSignIn providers={providers} />}
+        {PROVIDERS && <UserSignIn providers={PROVIDERS} />}
       </Container>
     </Flex>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  let providers: ProviderType[] = [];
-  await fetch(`${__BACKEND__}/api/v1/auth/providers`, {
-    method: 'GET',
-  })
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw response;
-    })
-    .then((data) => {
-      providers = data;
-    });
-  return { props: providers };
 };
 
 export default SignIn;

@@ -4,13 +4,11 @@ import { UserFragment } from '@generated/graphql';
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 
 interface PresetCreationProps {
-  /** Current logged in user. */
-  user: UserFragment;
   /** Method to call when the preset was created */
   onCreatedCallback: () => void;
 }
 
-const PresetCreation: React.FC<PresetCreationProps> = ({ user, onCreatedCallback }) => {
+const PresetCreation: React.FC<PresetCreationProps> = ({ onCreatedCallback }) => {
   const topBg = useColorModeValue('gray.300', 'gray.700');
 
   return (
@@ -22,7 +20,7 @@ const PresetCreation: React.FC<PresetCreationProps> = ({ user, onCreatedCallback
       width="sm"
       backgroundColor={topBg}
     >
-      <PresetCreationForm user={user} onCreatedCallback={onCreatedCallback} />
+      <PresetCreationForm  onCreatedCallback={onCreatedCallback} />
     </Flex>
   );
 };

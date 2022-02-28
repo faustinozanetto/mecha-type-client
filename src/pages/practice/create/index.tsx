@@ -1,28 +1,28 @@
 import React from 'react';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { withApollo } from '@modules/core/apollo/apollo';
 import PresetCreation from '@components/practice/selection/preset-creation/preset-creation';
 import { UserFragment } from '@generated/graphql';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
+import useAuth from '@contexts/UserContext';
 
-interface PracticePageProps {
-  /** Data containing the user info of the current logged in user. */
-  me: UserFragment;
-}
+interface PracticePageProps {}
 
-const PracticePage: React.FC<PracticePageProps> = ({ me }) => {
+const PracticePage: React.FC<PracticePageProps> = ({}) => {
+  const { user } = useAuth();
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: 'Preset Creation | Mecha Type',
         seoDescription: 'Create your own custom Practice Preset and share it to the community.',
         seoUrl: `${__URI__}/practice/create`,
       }}
     >
-      {me && <PresetCreation user={me} onCreatedCallback={() => {}} />}
+      {user && <PresetCreation onCreatedCallback={() => {}} />}
     </LayoutCore>
   );
 };

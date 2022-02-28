@@ -5,7 +5,7 @@ import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
 import FiHome from '@meronex/icons/fi/FiHome';
 import FiStar from '@meronex/icons/fi/FiStar';
 
-import { UserFragment } from 'generated/graphql';
+import { User } from 'generated/graphql';
 import { SidebarButton } from './sidebar-button';
 import { LogoutButton, UserDetails } from './user';
 import useMediaQuery from '@hooks/general/useMediaQuery';
@@ -47,7 +47,7 @@ const sidebarLinks: ISidebarLink[] = [
 
 export interface SidebarProps {
   /** User data */
-  user: UserFragment | null;
+  user: User;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ user }) => {

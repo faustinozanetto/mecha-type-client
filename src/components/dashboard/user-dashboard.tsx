@@ -4,16 +4,13 @@ import { Flex, Text, Heading, useColorModeValue, SimpleGrid, GridItem } from '@c
 import { StatLineChart } from '@components/practice/results/charts';
 import { StatDonutChart } from '@components/practice/results/charts/stat-donut-chart';
 import { PracticeStatType, PracticeStatsEntry } from '@typings/practice.types';
+import useAuth from '@contexts/UserContext';
 
-interface DashboardProps {
-  /**
-   * UserFragment to retrieve data from.
-   */
-  user: UserFragment;
-}
+interface DashboardProps {}
 
-export const UserDashboard: React.FC<DashboardProps> = ({ user }) => {
+export const UserDashboard: React.FC<DashboardProps> = ({}) => {
   const [parsedStats, setParsedStats] = useState<PracticeStatsEntry[]>([]);
+  const { user } = useAuth();
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const chartBgColor = useColorModeValue('gray.200', 'gray.800');
 

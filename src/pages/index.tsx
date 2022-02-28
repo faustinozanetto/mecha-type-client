@@ -1,5 +1,5 @@
 import React from 'react';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
@@ -10,6 +10,7 @@ import { useMeQuery, UserFragment } from '@generated/graphql';
 import AdSense from 'react-ssr-adsense';
 import GoogleAdsense, { GoogleAdsenseWidget } from 'next-google-ads';
 import Script from 'next/script';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 
 interface IHomeProps {
   locale: string;
@@ -26,7 +27,7 @@ const Home: React.FC<IHomeProps> = ({ me }) => {
 
   return (
     <LayoutCore
-      user={userData?.me?.user}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: 'Home | Mecha Type',
         seoDescription: 'Homepage for Mecha Type, usually shows information about updates and news.',
@@ -39,7 +40,7 @@ const Home: React.FC<IHomeProps> = ({ me }) => {
       <Heading as="h2" fontSize="2xl">
         {t('test')}
       </Heading>
-      <Heading as="h3">v0.2.5</Heading>
+      <Heading as="h3">v0.2.8</Heading>
       {me && <h1>{me.username}</h1>}
 
       <Script

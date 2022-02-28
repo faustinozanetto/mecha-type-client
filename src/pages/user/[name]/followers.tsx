@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { withApollo } from '@modules/core/apollo/apollo';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { UserFragment, useUserQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import UserFollowersDashboard from '@components/user/pages/followers-dashboard/user-followers-dashboard';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
+import useAuth from '@contexts/UserContext';
 
-interface UserFollowersPageProps {
-  /** Data containing the user info of the current logged in user. */
-  me: UserFragment;
-}
+interface UserFollowersPageProps {}
 
-const UserFollowersPage: React.FC<UserFollowersPageProps> = ({ me }) => {
+const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
   const { query } = useRouter();
+  const { user: me } = useAuth();
   const [targetUser, setTargetUser] = useState<UserFragment>();
 
   const { data: userData, loading: userLoading } = useUserQuery({
@@ -44,7 +44,7 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({ me }) => {
 
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: `${targetUser?.username} Followers | Mecha Type`,
         seoDescription: `${targetUser?.username}´s followers page, showing followers and more information.`,

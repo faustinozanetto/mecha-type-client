@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { TestLanguage, TestPresetWhereInput, UserFragment, useTestPresetsQuery } from 'generated/graphql';
+import { TestLanguage, TestPresetWhereInput, User, useTestPresetsQuery } from 'generated/graphql';
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button, VStack, useToast } from '@chakra-ui/react';
 import PracticePresetCard from './preset-card/practice-preset-card';
 import { motion } from 'framer-motion';
 import { PracticeSearchForm, PracticeSearchValues } from './search-input/practice-search.form';
 import { PracticeCreateSection } from './practice-create-section';
 
-interface PracticePresetSelectionProps {
-  /** Current logged in user. */
-  user: UserFragment;
-}
+interface PracticePresetSelectionProps {}
 
-export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = ({ user }) => {
+export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = ({}) => {
   const bgColor = useColorModeValue('gray.300', 'gray.900');
   const toast = useToast();
   const [pageCount, setPageCount] = useState(0);
@@ -92,7 +89,6 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
           // Re fetch more using the filtered values and reset current page to 0.
           setPageCount(0);
           setSearchPresetValues(values);
-          console.log(values);
         }}
       />
       {/* Presets */}

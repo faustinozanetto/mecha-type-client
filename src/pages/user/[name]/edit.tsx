@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { withApollo } from '@modules/core/apollo/apollo';
-import LayoutCore from 'layouts/core/components/layout-core';
+import LayoutCore from 'layouts/core/components/core-layout';
 import { UserFragment, useUserQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
@@ -9,6 +9,7 @@ import { CountryEntry } from '@typings/user.types';
 import axios from 'axios';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import EditUserProfile from '@components/user/profile/edit/edit-user-profile';
+import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 
 interface EditUserPageProps {
   /** Countries data */
@@ -47,7 +48,7 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries, me }) => {
 
   return (
     <LayoutCore
-      user={me}
+      head={CoreLayoutHead}
       headProps={{
         seoTitle: `Editing ${me?.username} | Mecha Type`,
         seoDescription: `${me?.username}´s profile page, showing their stats and more information.`,

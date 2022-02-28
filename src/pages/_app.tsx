@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { GoogleAnalytics } from '@components/google/google-analytics';
 import { UserFragment, useMeQuery } from '@generated/graphql';
 import { withApollo } from '@modules/core/apollo/apollo';
+import { AuthProvider } from '@contexts/UserContext';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -36,11 +37,13 @@ const MechaApp = (props: AppProps) => {
 
   return (
     <Provider store={store}>
-      <ChakraProvider>
-        <GoogleAnalytics />
-        <GlobalStyles />
-        <Component {...pageProps} me={me ?? {}} />
-      </ChakraProvider>
+      <AuthProvider>
+        <ChakraProvider>
+          <GoogleAnalytics />
+          <GlobalStyles />
+          <Component {...pageProps} me={me ?? {}} />
+        </ChakraProvider>
+      </AuthProvider>
     </Provider>
   );
 };
