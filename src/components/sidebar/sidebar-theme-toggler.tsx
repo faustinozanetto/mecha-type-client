@@ -5,7 +5,7 @@ import { SunIcon, MoonIcon } from '@chakra-ui/icons';
 
 interface SidebarThemeTogglerProps {
   /** Label to show in the button */
-  label: string;
+  label?: string;
 }
 
 export const SidebarThemeToggler: React.FC<SidebarThemeTogglerProps> = ({ label }) => {
@@ -32,7 +32,7 @@ export const SidebarThemeToggler: React.FC<SidebarThemeTogglerProps> = ({ label 
       >
         <HStack alignItems="center">
           {colorMode === 'dark' ? <SunIcon w={5} h={5} /> : <MoonIcon w={5} h={5} />}
-          {isMediumOrMore && <Text>{label}</Text>}
+          {isMediumOrMore && label && <Text>{label}</Text>}
         </HStack>
       </Button>
     </Tooltip>

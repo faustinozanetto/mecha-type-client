@@ -7,11 +7,7 @@ interface LandingLayoutContainerProps {
 }
 
 const LandingLayoutContainer: React.FC<LandingLayoutContainerProps> = (props): JSX.Element => {
-  return (
-    <Container maxW={['1xl', '2xl', '3xl']} minHeight={'100vh'} py={4}>
-      {props.children}
-    </Container>
-  );
+  return <Box minHeight={'100vh'}>{props.children}</Box>;
 };
 
 export default LandingLayoutContainer;

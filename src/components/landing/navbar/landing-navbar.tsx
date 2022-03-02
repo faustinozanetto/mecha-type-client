@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Text, Container, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
+import { SidebarThemeToggler } from '@components/sidebar/sidebar-theme-toggler';
 
 interface LandingNavbarProps {}
 
@@ -17,6 +18,9 @@ const LandingNavbar: React.FC<LandingNavbarProps> = (props): JSX.Element => {
             </Text>
           </HStack>
           {/* Right */}
+          <HStack>
+            <SidebarThemeToggler />
+          </HStack>
         </Flex>
       </Container>
     </Box>
