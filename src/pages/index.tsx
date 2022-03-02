@@ -10,6 +10,7 @@ import { __URI__ } from '@utils/constants';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import LandingLayout from 'layouts/landing/components/landing-layout';
 import LandingLayoutHead from 'layouts/landing/components/landing-layout-head';
+import LandingHero from '@components/landing/hero/lading-hero';
 
 interface IHomeProps {
   locale: string;
@@ -27,13 +28,7 @@ const Home: React.FC<IHomeProps> = ({}) => {
         seoUrl: __URI__,
       }}
     >
-      <Heading as="h1" fontWeight={700}>
-        Welcome to Mecha Type
-      </Heading>
-      <Heading as="h2" fontSize="2xl">
-        {t('test')}
-      </Heading>
-      <Heading as="h3">v0.2.8</Heading>
+      <LandingHero />
     </LandingLayout>
   );
 };

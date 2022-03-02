@@ -17,7 +17,6 @@ export interface LandingLayoutProps {
 const LandingLayout: React.FC<LandingLayoutProps> = (props): JSX.Element => {
   const { children, head: Head, headProps, error } = props;
   const { user } = useAuth();
-  const mainContainerBG = useColorModeValue('gray.200', 'gray.800');
 
   return (
     <Box role="main" minHeight="100vh">
@@ -28,7 +27,7 @@ const LandingLayout: React.FC<LandingLayoutProps> = (props): JSX.Element => {
       <LandingNavbar />
 
       {/* Main container */}
-      <Flex flexDir="column" backgroundColor={mainContainerBG} minHeight="100vh">
+      <Flex flexDir="column" minHeight="100vh">
         {/* Content */}
         {error ? <Text>Error</Text> : <LandingLayoutContainer>{children}</LandingLayoutContainer>}
         {/* Footer */}

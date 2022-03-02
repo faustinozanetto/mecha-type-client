@@ -7,7 +7,7 @@ const LandingNavbar: React.FC<LandingNavbarProps> = (props): JSX.Element => {
   const {} = props;
 
   return (
-    <Box as="nav" backgroundColor="#111827" height={20} boxShadow="dark-lg">
+    <Box as="nav" backgroundColor="#111827" height={20} boxShadow="2xl">
       <Container height="full" maxW="container.lg">
         <Flex justifyContent="space-between" height="full">
           {/* Left */}
