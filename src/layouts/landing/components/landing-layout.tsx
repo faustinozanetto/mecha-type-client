@@ -1,45 +1,41 @@
 import React from 'react';
 import { Box, Flex, Text, Grid, useColorModeValue } from '@chakra-ui/react';
-import { CoreLayoutHeadProps } from './core-layout-head';
-import CoreLayoutContainer from './core-layout-container';
 import Sidebar from '@components/sidebar/sidebar';
 import useAuth from '@contexts/UserContext';
 import Footer from '@components/footer/footer';
+import { LandingLayoutHeadProps } from './landing-layout-head';
+import LandingLayoutContainer from './landing-layout-container';
+import LandingNavbar from '@components/landing/navbar/landing-navbar';
 
-export interface LayoutCoreProps {
+export interface LandingLayoutProps {
   children: React.ReactNode;
-  head?: React.FC<CoreLayoutHeadProps>;
-  headProps?: CoreLayoutHeadProps;
+  head?: React.FC<LandingLayoutHeadProps>;
+  headProps?: LandingLayoutHeadProps;
   error?: any;
 }
 
-const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
+const LandingLayout: React.FC<LandingLayoutProps> = (props): JSX.Element => {
   const { children, head: Head, headProps, error } = props;
   const { user } = useAuth();
   const mainContainerBG = useColorModeValue('gray.200', 'gray.800');
 
   return (
-    <Grid
-      role="main"
-      gridTemplateColumns={['1fr', '80px 1fr', '80px 1fr', '80px 1fr', '250px 1fr']}
-      gridTemplateRows="1fr"
-      minHeight="100vh"
-    >
+    <Box role="main" minHeight="100vh">
       {/* SEO Head */}
       <Head {...headProps} />
 
-      {/* Sidebar */}
-      <Box position="relative">{<Sidebar user={user} />}</Box>
+      {/* Navbar */}
+      <LandingNavbar />
 
       {/* Main container */}
       <Flex flexDir="column" backgroundColor={mainContainerBG} minHeight="100vh">
         {/* Content */}
-        {error ? <Text>Error</Text> : <CoreLayoutContainer>{children}</CoreLayoutContainer>}
+        {error ? <Text>Error</Text> : <LandingLayoutContainer>{children}</LandingLayoutContainer>}
         {/* Footer */}
         <Footer />
       </Flex>
-    </Grid>
+    </Box>
   );
 };
 
-export default CoreLayout;
+export default LandingLayout;
