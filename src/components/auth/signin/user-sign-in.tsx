@@ -3,6 +3,7 @@ import { Heading, VStack, Text, useColorModeValue, Box, Flex, Button } from '@ch
 import { ProviderType } from '@pages/auth/signin';
 import { SignInOption } from './sing-in-option';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface UserSignInProps {
   providers: ProviderType[];
@@ -10,11 +11,6 @@ interface UserSignInProps {
 
 export const UserSignIn: React.FC<UserSignInProps> = ({ providers }) => {
   const router = useRouter();
-
-  const getGoBackHref = (): string => {
-    const nextQuery = router.query.next as string;
-    return nextQuery;
-  };
 
   return (
     <VStack
@@ -40,9 +36,11 @@ export const UserSignIn: React.FC<UserSignInProps> = ({ providers }) => {
             return <SignInOption key={provider.id + index} provider={provider} />;
           })}
         {/* Go back button */}
-        <Button as="a" variant="solid" colorScheme="blue" size="lg" width="90%" mt={4} href={getGoBackHref()}>
-          Go back
-        </Button>
+        <Link href={(router.query.back as string) ?? '/practice'} passHref={true}>
+          <Button variant="solid" colorScheme="blue" size="lg" width="90%" mt={4}>
+            Go back
+          </Button>
+        </Link>
       </VStack>
     </VStack>
   );

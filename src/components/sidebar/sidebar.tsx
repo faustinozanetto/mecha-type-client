@@ -15,6 +15,8 @@ import { SidebarThemeToggler } from './sidebar-theme-toggler';
 import { useRouter } from 'next/router';
 import { SidebarLanguageSwitcher } from './sidebar-language-siwtcher';
 import { useTranslation } from 'next-i18next';
+import LoginButton from './user/login-button';
+import Link from 'next/link';
 
 interface ISidebarLink {
   name: string;
@@ -56,18 +58,6 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
   const isSmallOrLess = useMediaQuery('(max-width: 30em)');
 
-  /**
-   *
-   * @returns the combined uri of the auth sign in and set next query
-   * to the current page, so when sign in is completed it redirects to
-   * the current page.
-   */
-  const generateSignInHref = (): string => {
-    const base = '/auth/signin';
-    const currentUri = router.asPath;
-    return base.concat(`?next=${currentUri}`);
-  };
-
   return (
     <Flex
       as="nav"
@@ -89,7 +79,11 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       {/* Buttons */}
       <Flex flexDirection="column" flexGrow={1} alignItems="center">
         {sidebarLinks.map((link, index) => {
-          return <SidebarButton key={index} icon={link.icon} label={t(link.name)} href={link.href} />;
+          return (
+            <Link key={index} href={link.href} passHref={true}>
+              <SidebarButton icon={link.icon} label={t(link.name)} href={link.href} />
+            </Link>
+          );
         })}
       </Flex>
 
@@ -107,7 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
             <LogoutButton label={t('sidebar-logout')} />
           </>
         ) : (
-          <SidebarButton icon={FiLogIn} label={t('sidebar-login')} href={generateSignInHref()} />
+          <LoginButton label={t('sidebar-login')} />
         )}
       </Flex>
     </Flex>

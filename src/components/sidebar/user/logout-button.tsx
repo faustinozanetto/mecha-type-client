@@ -17,8 +17,8 @@ export const LogoutButton: React.FC<LogoutButtonProps> = ({ label }) => {
     <SidebarButton
       label={label}
       icon={FiLogOut}
-      onClick={async () => {
-        await logout().then(() => router.push('/'));
+      onClick={() => {
+        logout().then(() => router.push('/practice'));
       }}
     />
   );

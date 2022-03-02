@@ -32,7 +32,7 @@ const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
       <Box position="relative">{<Sidebar user={user} />}</Box>
 
       {/* Main container */}
-      <Flex flexDir="column" backgroundColor={mainContainerBG} minHeight="100vh">
+      <Flex flexDir="column" backgroundColor={mainContainerBG} >
         {/* Content */}
         {error ? <Text>Error</Text> : <CoreLayoutContainer>{children}</CoreLayoutContainer>}
         {/* Footer */}

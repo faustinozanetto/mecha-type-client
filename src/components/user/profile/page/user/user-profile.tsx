@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { FollowStatus, UserFollowerFragment, UserFragment, useUserFollowersQuery } from 'generated/graphql';
 import { Container } from '@chakra-ui/react';
 import { generateParsedStats, UserParsedStats } from '@modules/core/user/user';

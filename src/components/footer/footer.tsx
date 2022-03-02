@@ -1,5 +1,6 @@
 import React from 'react';
 import { VStack, Text, Flex } from '@chakra-ui/react';
+import { __VER__ } from '@utils/constants';
 
 interface FooterProps {}
 
@@ -21,6 +22,9 @@ const Footer: React.FC<FooterProps> = ({}) => {
           <Text as="h2" color="#fff" fontSize={['xl', 'xl', 'lg', '3xl']} fontWeight={700} textAlign="center">
             Mecha Type
           </Text>
+          <Text as="span" fontWeight={600}>
+            0.3.0
+          </Text>
         </Flex>
         <Flex flexDir="column" width="100%" mx="auto" justifyContent="center" alignItems="center">
           <Text
@@ -31,7 +35,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
             fontWeight={500}
             textAlign="center"
           >
-            Made with ❤️ on 🇦🇷 by{' '}
+            Made with ❤️ on 🇦🇷 by
             <Text as="a" href="https://github.com/faustinozanetto" target="_blank">
               Faustino Zanetto
             </Text>

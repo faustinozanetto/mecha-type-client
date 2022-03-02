@@ -3,6 +3,8 @@
  */
 export const __PROD__: boolean = process.env.NODE_ENV === 'production';
 
+export const __VER__: string = process.env.BUILD_VERSION as string;
+
 /**
  * @returns Backend URI used in Apollo Client
  */

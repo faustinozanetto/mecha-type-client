@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Tooltip, HStack, Icon, Text } from '@chakra-ui/react';
 import useMediaQuery from '@hooks/general/useMediaQuery';
+import Link from 'next/link';
 
 interface SidebarButtonProps {
   /**
@@ -20,13 +21,17 @@ interface SidebarButtonProps {
    */
   onClick?: () => void;
 }
-export const SidebarButton: React.FC<SidebarButtonProps> = ({ icon, label, href, onClick, ...rest }) => {
+
+export const SidebarButton = React.forwardRef<any, SidebarButtonProps>((props, ref) => {
+  const { icon, label, href, onClick, ...rest } = props;
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
 
   return (
     <Tooltip label={label} placement="right" aria-label={`${label} tooltip`} isDisabled={isMediumOrMore}>
       <Button
         as="a"
+        href={href}
+        ref={ref}
         variant="ghost"
         borderRadius="md"
         size="lg"
@@ -36,7 +41,6 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({ icon, label, href,
         justifyContent={['center', 'center', 'center', 'center', 'flex-start']}
         paddingInline={[0, 0, 0, 4, 4]}
         onClick={onClick}
-        href={href ?? ''}
         _hover={{
           color: 'hsl(210deg,30%,8%)!important',
           backgroundColor: '#fff',
@@ -50,4 +54,6 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({ icon, label, href,
       </Button>
     </Tooltip>
   );
-};
+});
+
+SidebarButton.displayName = 'SidebarButton';

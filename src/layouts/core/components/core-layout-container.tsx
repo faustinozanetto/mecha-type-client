@@ -8,7 +8,7 @@ interface CoreLayoutContainerProps {
 
 const CoreLayoutContainer: React.FC<CoreLayoutContainerProps> = (props): JSX.Element => {
   return (
-    <Container maxW={['1xl', '2xl', '3xl', '5xl', '7xl']} minHeight={'100vh'} py={4} centerContent>
+    <Container maxW={['1xl', '2xl', '3xl', '5xl', '7xl']} minHeight="calc(100vh - 10rem)" py={4} centerContent>
       {props.children}
     </Container>
   );
