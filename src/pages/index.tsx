@@ -12,6 +12,7 @@ import LandingLayout from 'layouts/landing/components/landing-layout';
 import LandingLayoutHead from 'layouts/landing/components/landing-layout-head';
 import LandingHero from '@components/landing/hero/lading-hero';
 import LandingFeatures from '@components/landing/features/landing-features';
+import LandingStats from '@components/landing/stats/lading-stats';
 
 interface IHomeProps {
   locale: string;
@@ -29,8 +30,12 @@ const Home: React.FC<IHomeProps> = ({}) => {
         seoUrl: __URI__,
       }}
     >
+      {/* Hero */}
       <LandingHero />
+      {/* Features */}
       <LandingFeatures />
+      {/* Statistics */}
+      <LandingStats />
     </LandingLayout>
   );
 };

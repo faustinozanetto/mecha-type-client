@@ -35,8 +35,8 @@ const LandingFeatures: React.FC<LandingFeaturesProps> = ({}) => {
       <Container maxW="5xl">
         {/* Top */}
         <Stack as={Box} textAlign="center" spacing={{ base: 8, md: 14 }} py={16}>
-          <Heading fontWeight={800} fontSize={{ base: '2xl', sm: '4xl', md: '5xl' }} lineHeight="110%">
-            Why use MechaType?
+          <Heading fontWeight={800} fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }} lineHeight="110%">
+            Why MechaType?
           </Heading>
           <Text color={useColorModeValue('gray.500', 'gray.300')} fontSize="lg">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente at libero facere error optio placeat
