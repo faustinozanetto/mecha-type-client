@@ -21,7 +21,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({}) => {
             ducimus molestiae similique.
           </Text>
           <Stack direction="column" spacing={3} align="center" alignSelf="center" position="relative">
-            <Link href="/practice">
+            <Link href="/practice" passHref={true}>
               <Button colorScheme="blue" rounded="0" size="lg" width="12rem" boxShadow="lg">
                 Get Started
               </Button>
