@@ -47,7 +47,9 @@ class AppDocument extends Document<DocumentRenderProps> {
     const { locale }: DocumentRenderProps = this.props;
     return (
       <Html lang={locale}>
-        <Head />
+        <Head>
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />

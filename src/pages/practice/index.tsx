@@ -6,6 +6,7 @@ import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/core-layout';
 import { withApollo } from '@modules/core/apollo/apollo';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
+import GoogleAds from '@components/google/google-ads';
 
 interface PracticePageProps {}
 
@@ -20,6 +21,7 @@ const PracticePage: React.FC<PracticePageProps> = ({}) => {
       }}
     >
       <PracticePresetSelection />
+      <GoogleAds />
     </LayoutCore>
   );
 };
