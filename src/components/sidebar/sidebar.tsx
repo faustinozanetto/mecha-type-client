@@ -81,8 +81,8 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       <Flex flexDirection="column" flexGrow={1} alignItems="center">
         {sidebarLinks.map((link, index) => {
           return (
-            <Link key={index} href={link.href} passHref={true}>
-              <SidebarButton icon={link.icon} label={t(link.name)} href={link.href} />
+            <Link key={index} href={link.href} passHref>
+              <SidebarButton icon={link.icon} label={t(link.name)} />
             </Link>
           );
         })}

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-document-import-in-page */
 import React from 'react';
 import { ColorModeScript } from '@chakra-ui/react';
-import NextCookies from 'next-cookies';
 import Document, {
   Html,
   Head,
@@ -33,8 +32,6 @@ class AppDocument extends Document<DocumentRenderProps> {
   static async getInitialProps(context: DocumentContext): Promise<DocumentGetInitialPropsOutput> {
     const { query, req } = context;
     const initialProps: DocumentInitialProps = await Document.getInitialProps(context);
-
-    const readonlyCookies: Cookies = NextCookies(context); // Parses Next.js cookies in a universal way (server + client)
     const locale = context.locale;
 
     return {

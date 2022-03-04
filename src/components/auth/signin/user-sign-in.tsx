@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, VStack, Text, useColorModeValue, Box, Flex, Button } from '@chakra-ui/react';
+import { Heading, VStack, Text, useColorModeValue, Box, Flex, Button, Container } from '@chakra-ui/react';
 import { ProviderType } from '@pages/auth/signin';
 import { SignInOption } from './sing-in-option';
 import { useRouter } from 'next/router';
@@ -29,12 +29,19 @@ export const UserSignIn: React.FC<UserSignInProps> = ({ providers }) => {
           Available Options
         </Text>
       </Flex>
+
       {/* Options */}
       <VStack width="100%" spacing={4} rounded="2xl">
         {providers &&
           providers?.map((provider, index) => {
             return <SignInOption key={provider.id + index} provider={provider} />;
           })}
+        <Container maxWidth="md">
+          <Text textAlign="center" fontSize="md" opacity={0.75}>
+            Keep in mind that by using providers such as Discord or Github, we only need the username, photo and
+            anything else. Now data is being compromised nor used for other purposes, Thanks.
+          </Text>
+        </Container>
         {/* Go back button */}
         <Link href={(router.query.back as string) ?? '/practice'} passHref={true}>
           <Button variant="solid" colorScheme="blue" size="lg" width="90%" mt={4}>

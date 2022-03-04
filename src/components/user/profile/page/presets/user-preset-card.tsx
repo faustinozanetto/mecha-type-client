@@ -1,8 +1,19 @@
 import React from 'react';
 import { TestPresetFragment, TestType, useCopyPresetToUserMutation } from 'generated/graphql';
-import { Button, Flex, IconButton, Skeleton, Spacer, Text, Tooltip, useToast } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  IconButton,
+  Skeleton,
+  Spacer,
+  Text,
+  Tooltip,
+  useColorModeValue,
+  useToast,
+} from '@chakra-ui/react';
 import FaPlay from '@meronex/icons/fa/FaPlay';
 import { CopyIcon } from '@chakra-ui/icons';
+import Link from 'next/link';
 
 interface UserPresetCardProps {
   /** Preset data to retrieve info from. */
@@ -20,7 +31,7 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
   return (
     <Flex
       flexDir="row"
-      backgroundColor="#1a202c"
+      backgroundColor={useColorModeValue('gray.400', 'gray.800')}
       alignContent="flex-start"
       justifyContent="space-between"
       alignItems="center"
@@ -29,7 +40,7 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
       width={['auto', 'auto', 'auto', '100%', '100%']}
     >
       <Skeleton isLoaded={!loading} height="auto">
-        <Text as="h3" color="white" fontWeight={600} fontSize="1.1rem">
+        <Text as="h3" color={useColorModeValue('black', 'white')} fontWeight={600} fontSize="1.1rem">
           {preset.language} | {preset?.type} |{' '}
           {preset.type === TestType.Words ? `${preset.words} words` : `${preset.time} seconds`}
         </Text>
@@ -70,14 +81,9 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
 
       {/* Try Button */}
       <Tooltip label="Try" fontSize="md">
-        <IconButton
-          as="a"
-          href={`/practice/play/${preset.id}`}
-          colorScheme="purple"
-          aria-label="Try Preset"
-          icon={<FaPlay />}
-          m={2}
-        />
+        <Link href={`/practice/play/${preset.id}`} passHref>
+          <IconButton colorScheme="purple" aria-label="Try Preset" icon={<FaPlay />} m={2} />
+        </Link>
       </Tooltip>
     </Flex>
   );

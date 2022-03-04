@@ -6,6 +6,7 @@ import { Flex, Image, Text, HStack, Button, useColorModeValue, Wrap } from '@cha
 import { PracticePresetCardStat } from './practice-preset-card-stat';
 import { capitalizeFirstLetter } from '@modules/core/practice/typing-game-utils';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 interface PracticePresetCardProps {
   /** Data to fill the card information */
@@ -58,18 +59,11 @@ const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetData }) =
         </Wrap>
       </Flex>
       <HStack padding="0 0.75rem 0.75rem">
-        <Button
-          as="a"
-          variant="solid"
-          borderRadius="lg"
-          colorScheme="telegram"
-          size="md"
-          my={1}
-          width="full"
-          href={`/practice/play/${presetData.id}`}
-        >
-          Start
-        </Button>
+        <Link href={`/practice/play/${presetData.id}`} passHref>
+          <Button variant="solid" borderRadius="lg" colorScheme="telegram" size="md" my={1} width="full">
+            Start
+          </Button>
+        </Link>
       </HStack>
     </Flex>
   );

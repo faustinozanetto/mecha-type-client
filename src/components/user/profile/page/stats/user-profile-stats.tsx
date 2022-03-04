@@ -39,7 +39,7 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ parsedStats, loadin
           amount={'666'}
           loading={loading}
           icon={BiCrown}
-          backgroundColor="#D69E2E"
+          backgroundColor="#2f2cd8"
         />
         <UserStatCard
           title={t('stats-keystrokes')}

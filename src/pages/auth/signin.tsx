@@ -17,11 +17,11 @@ const PROVIDERS = [
     name: 'Discord',
     authUrl: `${__BACKEND__}/api/v1/auth/discord/login`,
   },
-  {
-    id: 'google',
-    name: 'Google',
-    authUrl: `${__BACKEND__}/api/v1/auth/google/login`,
-  },
+  // {
+  //   id: 'google',
+  //   name: 'Google',
+  //   authUrl: `${__BACKEND__}/api/v1/auth/google/login`,
+  // },
   {
     id: 'github',
     name: 'Github',

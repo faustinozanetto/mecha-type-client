@@ -69,7 +69,6 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValues
         initialValues={initialFormValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
-          console.log(values);
           let parsedValues: PracticeSearchValues = { ...values };
           if (values.filterLanguage) {
             parsedValues.language = values.language;

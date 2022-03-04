@@ -13,24 +13,18 @@ interface SidebarButtonProps {
    */
   label: string;
   /**
-   * Href tag to parse to the button.
-   */
-  href?: string;
-  /**
    * On Click event to pass to the onclick of the button.
    */
   onClick?: () => void;
 }
 
 export const SidebarButton = React.forwardRef<any, SidebarButtonProps>((props, ref) => {
-  const { icon, label, href, onClick, ...rest } = props;
+  const { icon, label, onClick, ...rest } = props;
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
 
   return (
     <Tooltip label={label} placement="right" aria-label={`${label} tooltip`} isDisabled={isMediumOrMore}>
       <Button
-        as="a"
-        href={href}
         ref={ref}
         variant="ghost"
         borderRadius="md"
