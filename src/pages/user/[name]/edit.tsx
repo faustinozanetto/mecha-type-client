@@ -6,20 +6,19 @@ import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { CountryEntry } from '@typings/user.types';
-import axios from 'axios';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import EditUserProfile from '@components/user/profile/edit/edit-user-profile';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
+import useAuth from '@contexts/UserContext';
 
 interface EditUserPageProps {
   /** Countries data */
   countries: CountryEntry[];
-  /** Data containing the user info of the current logged in user. */
-  me: UserFragment;
 }
 
-const EditUserPage: React.FC<EditUserPageProps> = ({ countries, me }) => {
+const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
   const { query } = useRouter();
+  const { user: loggedInUser, loading: loggedInLoading } = useAuth();
   const [targetUser, setTargetUser] = useState<UserFragment>();
   const { data: userData, loading: userLoading } = useUserQuery({
     variables: {
@@ -41,7 +40,7 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries, me }) => {
    * @returns wether the user owns the edit page or not.
    */
   const ownsPage = (): boolean => {
-    return !userLoading && userData && targetUser && me.id === userData?.user?.user?.id;
+    return !userLoading && userData && targetUser && loggedInUser?.id === userData?.user?.user?.id;
   };
 
   if (!ownsPage()) return <h1>Forbidden</h1>;
@@ -50,12 +49,12 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries, me }) => {
     <LayoutCore
       head={CoreLayoutHead}
       headProps={{
-        seoTitle: `Editing ${me?.username} | Mecha Type`,
-        seoDescription: `${me?.username}´s profile page, showing their stats and more information.`,
-        seoUrl: `${__URI__!}/user/${me?.username}/edit`,
+        seoTitle: `Editing ${loggedInUser?.username} | Mecha Type`,
+        seoDescription: `${loggedInUser?.username}´s profile page, showing their stats and more information.`,
+        seoUrl: `${__URI__!}/user/${loggedInUser?.username}/edit`,
       }}
     >
-      {me && <EditUserProfile user={me} loading={me.id === null} countries={countries} />}
+      {loggedInUser && <EditUserProfile user={loggedInUser} loading={loggedInLoading} countries={countries} />}
     </LayoutCore>
   );
 };
@@ -63,15 +62,14 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries, me }) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { locale } = context;
   let names: CountryEntry[] = [];
-  type AxiosResponse = {
-    data: CountryEntry[];
-  };
 
-  const res = await axios.get<AxiosResponse>('https://countriesnow.space/api/v0.1/countries/flag/images');
-  const data = await res.data;
-  data.data.map((country: any) => {
-    names.push({ name: country.name, flag: country.flag });
-  });
+  await fetch('https://restcountries.com/v3.1/all')
+    .then((response) => response.json())
+    .then((data) =>
+      data.map((country) => {
+        names.push({ name: country.name.common, flag: country.flags.svg });
+      })
+    );
 
   return {
     props: { countries: names, ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])) },

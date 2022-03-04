@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Text, Container, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
 import { SidebarThemeToggler } from '@components/sidebar/sidebar-theme-toggler';
+import MechaTypeLogo from '../../branding/mechatype-logo';
 
 interface LandingNavbarProps {}
 
@@ -13,9 +14,7 @@ const LandingNavbar: React.FC<LandingNavbarProps> = (props): JSX.Element => {
         <Flex justifyContent="space-between" height="full">
           {/* Left */}
           <HStack alignItems="center">
-            <Text as="h1" fontWeight={700} fontSize="2rem" color="#fff" textAlign="center">
-              Mecha Type
-            </Text>
+            <MechaTypeLogo />
           </HStack>
           {/* Right */}
           <HStack>

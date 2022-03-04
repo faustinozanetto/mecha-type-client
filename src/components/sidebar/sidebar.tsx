@@ -17,6 +17,7 @@ import { SidebarLanguageSwitcher } from './sidebar-language-siwtcher';
 import { useTranslation } from 'next-i18next';
 import LoginButton from './user/login-button';
 import Link from 'next/link';
+import MechaTypeLogo from '@components/branding/mechatype-logo';
 
 interface ISidebarLink {
   name: string;
@@ -73,7 +74,7 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       {/* Title & Logo */}
       <Flex flexDir="row" justifyContent="center" alignContent="center" alignItems="center" mb={4}>
         <Text as="h1" fontWeight={700} fontSize="1.75rem" color="#fff" textAlign="center">
-          {isMediumOrMore ? `Mecha Type` : 'MT'}
+          {isMediumOrMore ? <MechaTypeLogo /> : 'MT'}
         </Text>
       </Flex>
       {/* Buttons */}

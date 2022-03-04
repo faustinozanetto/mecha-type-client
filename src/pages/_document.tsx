@@ -48,7 +48,11 @@ class AppDocument extends Document<DocumentRenderProps> {
     return (
       <Html lang={locale}>
         <Head>
-          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADSENSE}`}
+            crossOrigin="anonymous"
+          ></script>
         </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

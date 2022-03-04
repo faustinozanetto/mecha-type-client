@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
             Mecha Type
           </Text>
           <Text as="span" fontWeight={600}>
-            0.3.1
+            0.3.3
           </Text>
         </Flex>
         <Flex flexDir="column" width="100%" mx="auto" justifyContent="center" alignItems="center">
