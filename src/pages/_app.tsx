@@ -6,12 +6,14 @@ import GlobalStyles from '@styles/global-styles';
 import { Provider } from 'react-redux';
 import { store } from 'state';
 import * as gtag from '@modules/core/adsense/google-tag';
+import '@fontsource/poppins';
 import { useRouter } from 'next/router';
 import { GoogleAnalytics } from '@components/google/google-analytics';
 import { UserFragment, useMeQuery } from '@generated/graphql';
 import { withApollo } from '@modules/core/apollo/apollo';
 import { AuthProvider } from '@contexts/UserContext';
 import mechaTheme from '@styles/theme';
+import TypingGameProvider from '@contexts/typing-game.context';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -39,11 +41,13 @@ const MechaApp = (props: AppProps) => {
   return (
     <Provider store={store}>
       <AuthProvider>
-        <ChakraProvider theme={mechaTheme}>
-          <GoogleAnalytics />
-          <GlobalStyles />
-          <Component {...pageProps} me={me ?? {}} />
-        </ChakraProvider>
+        <TypingGameProvider>
+          <ChakraProvider theme={mechaTheme}>
+            <GoogleAnalytics />
+            <GlobalStyles />
+            <Component {...pageProps} me={me ?? {}} />
+          </ChakraProvider>
+        </TypingGameProvider>
       </AuthProvider>
     </Provider>
   );

@@ -9,7 +9,6 @@ import {
 } from '@generated/graphql';
 import { Flex, SkeletonText, useColorModeValue, useToast, Box } from '@chakra-ui/react';
 import { roundTo2 } from '@modules/core/math/math';
-import { Caret } from '@components/practice/caret';
 import { useSound } from '@modules/core/sound/use-sound-hook';
 import { SoundType } from '@modules/core/sound/types/sound.types';
 import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
@@ -19,6 +18,7 @@ import { PracticeStatsEntry } from '@typings/practice.types';
 import { generateWords } from '@modules/core/practice/typing-game-utils';
 import useAuth from '@contexts/UserContext';
 import NewCaret from '@components/practice/caret/new-caret';
+import { useTypingGameContext } from '@contexts/typing-game.context';
 
 interface PracticeGameInputProps {
   loading: boolean;
@@ -31,6 +31,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const caretRef = useRef<HTMLDivElement>(null);
   const toast = useToast();
   const { user } = useAuth();
+  const { setHideCursor } = useTypingGameContext();
   const [userCreateTestPresetHistoryEntry] = useUserCreateTestPresetHistoryEntryMutation();
   const [stats, setStats] = useState<PracticeStatsEntry[]>([]);
   const { time, start, pause, reset } = useTimer();
@@ -66,7 +67,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
       const letterHeight = letterRef.offsetHeight;
 
       // Calculate the new top offset based on the height of the letter.
-      let newLetterTop = currentLetterPosTop - Math.round(letterHeight / 6);
+      let newLetterTop = currentLetterPosTop - Math.round(letterHeight - 35);
 
       let newLetterLeft = 0;
 
@@ -138,6 +139,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         pause();
         // Update user data to database.
         updateUser();
+        setHideCursor(false);
         break;
       }
     }
@@ -186,6 +188,8 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     }
   };
 
+  if (userSettingsLoading) return <h1>loading</h1>;
+
   return (
     <Flex flexDir="column">
       <Flex
@@ -202,11 +206,25 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         userSelect="none"
         outline="none"
         onKeyDown={(e) => handleKeyDown(e.key, e.ctrlKey)}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={() => {
+          setIsFocused(true);
+          setHideCursor(true);
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+          setHideCursor(false);
+        }}
       >
         <SkeletonText isLoaded={!loading} noOfLines={4}>
-          <NewCaret ref={caretRef} left={pos?.left} top={pos?.top} playFlashAnim={true} />
+          {phase !== 2 && (
+            <NewCaret
+              ref={caretRef}
+              left={pos?.left}
+              top={pos?.top}
+              playFlashAnim={true}
+              settings={userSettings?.userSettings?.userSettings}
+            />
+          )}
 
           {/* Words container */}
           <Box display="block" mb={2} ref={letterElements} transition="all 0.25s ease 0s" blur="4px">

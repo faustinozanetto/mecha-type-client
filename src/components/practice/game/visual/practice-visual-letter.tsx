@@ -22,7 +22,7 @@ const PracticeVisualLetter: React.FC<PracticeVisualLetterProps> = (props) => {
       as="span"
       lineHeight="1.5rem"
       fontSize="1.5rem"
-      letterSpacing="widest"
+      letterSpacing="wider"
       fontWeight={500}
       color={highlight ? '#000' : incorrect && shouldShowErrors ? '#dc2626' : correct ? correctColor : letterColor}
       backgroundColor={highlight ? '#fbbf24' : ''}

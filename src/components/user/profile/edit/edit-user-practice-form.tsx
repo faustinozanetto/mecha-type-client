@@ -8,9 +8,10 @@ import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
 import FormSliderInput from '@components/ui/forms/form-slider-input';
 import { roundTo2 } from '@modules/core/math/math';
 import { useRouter } from 'next/router';
-import { UserSettings, useUpdateUserSettingsMutation } from '@generated/graphql';
+import { CaretStyle, UserSettings, useUpdateUserSettingsMutation } from '@generated/graphql';
 import { HexColorPicker } from 'react-colorful';
 import { FormControl } from '@components/ui/forms/form-control';
+import { FormSelectInput } from '@components/ui/forms/form-select-input';
 
 interface EditUserPracticeFormProps {
   /** Callback function to call when cancel button is clicked */
@@ -21,6 +22,7 @@ interface EditUserPracticeFormProps {
 
 export const EditPracticeFormSchema = Yup.object().shape({
   caretColor: Yup.string().required('Caret color is required!'),
+  caretStyle: Yup.mixed().oneOf(Object.values(CaretStyle)),
   blindMode: Yup.boolean().required('Blind Mode is required!'),
   pauseOnError: Yup.boolean().required('Pause on Error is required!'),
   noBackspace: Yup.boolean().required('No Backspace is required!'),
@@ -33,6 +35,7 @@ export const EditPracticeFormSchema = Yup.object().shape({
 
 export interface EditUserPracticeFormValues {
   caretColor: string;
+  caretStyle: CaretStyle;
   blindMode: boolean;
   pauseOnError: boolean;
   noBackspace: boolean;
@@ -52,6 +55,7 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
   const [typeSoundValue, setTypeSoundValue] = useState(userSettings?.typeSoundsVolume);
   const initialFormValues: EditUserPracticeFormValues = {
     caretColor: userSettings?.caretColor,
+    caretStyle: userSettings?.caretStyle,
     blindMode: userSettings?.blindMode,
     noBackspace: userSettings?.noBackspace,
     pauseOnError: userSettings?.pauseOnError,
@@ -147,6 +151,25 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
                   </Text>
                 </HStack>
               </Flex>
+
+              {/* Caret style */}
+              <HStack display="flex" alignItems="center" justifyContent="center">
+                <FormSelectInput
+                  name="caretStyle"
+                  label="Caret Style"
+                  selectProps={{
+                    placeholder: 'Select Style',
+                  }}
+                >
+                  {Object.values(CaretStyle).map((style, index) => {
+                    return (
+                      <option key={index} value={style}>
+                        {style}
+                      </option>
+                    );
+                  })}
+                </FormSelectInput>
+              </HStack>
 
               {/* Type Sounds Input */}
               <Flex flexDir="column" width="100%">

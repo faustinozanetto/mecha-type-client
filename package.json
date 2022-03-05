@@ -35,6 +35,7 @@
     "@chakra-ui/react": "1.8.6",
     "@emotion/react": "11",
     "@emotion/styled": "11",
+    "@fontsource/poppins": "^4.5.2",
     "@meronex/icons": "4.0.0",
     "@next/bundle-analyzer": "12.1.0",
     "apexcharts": "3.33.2",

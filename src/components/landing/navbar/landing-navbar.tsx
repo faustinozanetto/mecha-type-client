@@ -16,7 +16,7 @@ const LandingNavbar: React.FC<LandingNavbarProps> = (props): JSX.Element => {
           <HStack alignItems="center">
             <MechaTypeLogo />
             <Heading as="span" fontSize="md" color="white">
-              0.3.5
+              0.3.6
             </Heading>
           </HStack>
           {/* Right */}

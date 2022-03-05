@@ -23,22 +23,18 @@ export const PracticeTestDetails: React.FC<PracticeTestDetailsProps> = ({ loadin
       backgroundColor={useColorModeValue('gray.300', 'gray.900')}
     >
       <Flex flexDir="column">
-        <Text as="h1" fontSize="2xl" color={useColorModeValue('black', 'white')} fontWeight={700}>
-          Writing Test
-        </Text>
-        {loading ? (
-          <Skeleton height="15px" />
-        ) : (
-          <Text as="h2" fontSize="xl" color={textColor} fontWeight={500}>
+        <Skeleton isLoaded={!loading}>
+          <Text as="h1" fontSize="2xl" color={useColorModeValue('black', 'white')} fontWeight={700}>
+            Writing Test
+          </Text>
+        </Skeleton>
+
+        <Skeleton isLoaded={!loading}>
+          <Text as="h2" fontSize="xl" color={textColor} fontWeight={600}>
             {practiceTest.words} words - {practiceTest.language}
           </Text>
-        )}
+        </Skeleton>
       </Flex>
-      {/* <Flex flexDir="column">
-        <Text as="h3" fontSize="lg" color={useColorModeValue('black', 'white')} fontWeight={700}>
-          {time}s
-        </Text>
-      </Flex> */}
     </Flex>
   );
 };
