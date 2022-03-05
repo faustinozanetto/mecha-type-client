@@ -2,6 +2,7 @@ fragment UserSettings on UserSettings {
   id
   userId
   blindMode
+  caretColor
   noBackspace
   pauseOnError
   typeSounds

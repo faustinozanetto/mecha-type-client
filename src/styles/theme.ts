@@ -1,9 +1,12 @@
 import { extendTheme, ThemeConfig } from '@chakra-ui/react';
 
-const config: ThemeConfig = {
-  initialColorMode: 'light',
-  useSystemColorMode: false,
-};
-
-const theme = extendTheme({ config });
-export default theme;
+const mechaTheme = extendTheme({
+  styles: {
+    global: (props) => ({
+      body: {
+        fontFamily: 'Poppins',
+      },
+    }),
+  },
+});
+export default mechaTheme;

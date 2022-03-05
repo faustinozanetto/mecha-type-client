@@ -8,16 +8,19 @@ import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
 import FormSliderInput from '@components/ui/forms/form-slider-input';
 import { roundTo2 } from '@modules/core/math/math';
 import { useRouter } from 'next/router';
-import { UserSettingsFragment, useUpdateUserMutation, useUpdateUserSettingsMutation } from '@generated/graphql';
+import { UserSettings, useUpdateUserSettingsMutation } from '@generated/graphql';
+import { HexColorPicker } from 'react-colorful';
+import { FormControl } from '@components/ui/forms/form-control';
 
 interface EditUserPracticeFormProps {
   /** Callback function to call when cancel button is clicked */
   onCancelCallback: () => void;
   userId: string;
-  userSettings: UserSettingsFragment;
+  userSettings: UserSettings;
 }
 
 export const EditPracticeFormSchema = Yup.object().shape({
+  caretColor: Yup.string().required('Caret color is required!'),
   blindMode: Yup.boolean().required('Blind Mode is required!'),
   pauseOnError: Yup.boolean().required('Pause on Error is required!'),
   noBackspace: Yup.boolean().required('No Backspace is required!'),
@@ -29,6 +32,7 @@ export const EditPracticeFormSchema = Yup.object().shape({
 });
 
 export interface EditUserPracticeFormValues {
+  caretColor: string;
   blindMode: boolean;
   pauseOnError: boolean;
   noBackspace: boolean;
@@ -43,9 +47,11 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
 }) => {
   const toast = useToast();
   const router = useRouter();
+  const [color, setColor] = useState(userSettings?.caretColor);
   const [updateUserSettings] = useUpdateUserSettingsMutation();
   const [typeSoundValue, setTypeSoundValue] = useState(userSettings?.typeSoundsVolume);
   const initialFormValues: EditUserPracticeFormValues = {
+    caretColor: userSettings?.caretColor,
     blindMode: userSettings?.blindMode,
     noBackspace: userSettings?.noBackspace,
     pauseOnError: userSettings?.pauseOnError,
@@ -55,11 +61,12 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
 
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={initialFormValues}
       validationSchema={EditPracticeFormSchema}
       onSubmit={async (values) => {
         const response = await updateUserSettings({
-          variables: { input: { ...values, userId } },
+          variables: { input: { ...values, caretColor: values.caretColor, userId } },
         });
         if (response?.data?.updateUserSettings?.errors?.length > 0) {
           toast({
@@ -81,7 +88,7 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
       }}
     >
       {(props: FormikProps<EditUserPracticeFormValues>) => {
-        const { handleSubmit } = props;
+        const { handleSubmit, setValues, values } = props;
         return (
           <Flex as="form" flexDir="column" maxWidth="100%" my={4} px={2} onSubmit={handleSubmit as any}>
             {/* Form Content */}
@@ -118,6 +125,27 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
                 <FormCheckboxInput name="noBackspace" sx={{ margin: '0.25rem !important' }}>
                   No Backspace
                 </FormCheckboxInput>
+              </Flex>
+
+              {/* Caret Customization */}
+              <Flex flexDir="column" width="100%">
+                <Text as="p" fontSize="md" fontWeight={500} mb={2}>
+                  Customize the color of the Caret in Practice mode.
+                </Text>
+                <HStack>
+                  <FormControl name="caretColor">
+                    <HexColorPicker
+                      color={color}
+                      onChange={(newColor) => {
+                        setColor(newColor);
+                        setValues({ ...values, caretColor: newColor });
+                      }}
+                    />
+                  </FormControl>
+                  <Text as="span" backgroundColor={color}>
+                    {color}
+                  </Text>
+                </HStack>
               </Flex>
 
               {/* Type Sounds Input */}

@@ -504,6 +504,7 @@ export type UserResponse = {
 export type UserSettings = {
   __typename?: 'UserSettings';
   blindMode?: Maybe<Scalars['Boolean']>;
+  caretColor?: Maybe<Scalars['String']>;
   /** Identifies the date and time when the object was created. */
   createdAt?: Maybe<Scalars['Date']>;
   id: Scalars['String'];
@@ -518,11 +519,12 @@ export type UserSettings = {
 
 export type UserSettingsCreateInput = {
   blindMode?: InputMaybe<Scalars['Boolean']>;
+  caretColor?: InputMaybe<Scalars['String']>;
   noBackspace?: InputMaybe<Scalars['Boolean']>;
   pauseOnError?: InputMaybe<Scalars['Boolean']>;
   typeSounds?: InputMaybe<Scalars['Boolean']>;
   typeSoundsVolume?: InputMaybe<Scalars['Float']>;
-  userId?: InputMaybe<Scalars['String']>;
+  userId: Scalars['String'];
 };
 
 export type UserSettingsResponse = {
@@ -533,11 +535,12 @@ export type UserSettingsResponse = {
 
 export type UserSettingsUpdateInput = {
   blindMode?: InputMaybe<Scalars['Boolean']>;
+  caretColor?: InputMaybe<Scalars['String']>;
   noBackspace?: InputMaybe<Scalars['Boolean']>;
   pauseOnError?: InputMaybe<Scalars['Boolean']>;
   typeSounds?: InputMaybe<Scalars['Boolean']>;
   typeSoundsVolume?: InputMaybe<Scalars['Float']>;
-  userId?: InputMaybe<Scalars['String']>;
+  userId: Scalars['String'];
 };
 
 export type UserSettingsWhereInput = {
@@ -590,7 +593,7 @@ export type UserFragment = { __typename?: 'User', id: string, oauthId?: string |
 
 export type UserFollowerFragment = { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null, oauthId?: string | null, avatar: string, status?: FollowStatus | null, createdAt?: any | null, updatedAt?: any | null };
 
-export type UserSettingsFragment = { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null };
+export type UserSettingsFragment = { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, caretColor?: string | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null };
 
 export type AcceptFollowRequestResponseFragment = { __typename?: 'AcceptFollowRequestResponse', accepted?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
@@ -618,7 +621,7 @@ export type UserFollowersResponseFragment = { __typename?: 'UserFollowersRespons
 
 export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type UserSettingsResponseFragment = { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
+export type UserSettingsResponseFragment = { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, caretColor?: string | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
@@ -663,14 +666,14 @@ export type CreateUserSettingsMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserSettingsMutation = { __typename?: 'Mutation', createUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
+export type CreateUserSettingsMutation = { __typename?: 'Mutation', createUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, caretColor?: string | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UpdateUserSettingsMutationVariables = Exact<{
   input: UserSettingsUpdateInput;
 }>;
 
 
-export type UpdateUserSettingsMutation = { __typename?: 'Mutation', updateUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
+export type UpdateUserSettingsMutation = { __typename?: 'Mutation', updateUserSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, caretColor?: string | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type AcceptFollowRequestMutationVariables = Exact<{
   userId: Scalars['String'];
@@ -743,7 +746,7 @@ export type UserSettingsQueryVariables = Exact<{
 }>;
 
 
-export type UserSettingsQuery = { __typename?: 'Query', userSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
+export type UserSettingsQuery = { __typename?: 'Query', userSettings: { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, caretColor?: string | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type FilterUsersQueryVariables = Exact<{
   input: FilterUsersInput;
@@ -1025,6 +1028,7 @@ export const UserSettingsFragmentDoc = gql`
   id
   userId
   blindMode
+  caretColor
   noBackspace
   pauseOnError
   typeSounds

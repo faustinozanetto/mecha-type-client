@@ -35,17 +35,19 @@ const flash = keyframes`
   }
 `;
 
-interface CaretProps extends React.HTMLAttributes<HTMLSpanElement> {}
+interface CaretProps extends React.HTMLAttributes<HTMLSpanElement> {
+  caretColor?: string;
+}
 
 export const Caret: React.FC<CaretProps> = (props) => {
-  const { children, ...rest } = props;
+  const { children, caretColor = '#ffb300', ...rest } = props;
 
   return (
     <Text
       as="span"
       position="absolute"
       display="inline"
-      borderColor="#ffb300"
+      borderColor={caretColor}
       borderLeftWidth="3px"
       height="1.5rem"
       {...rest}

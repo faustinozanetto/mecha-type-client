@@ -8,7 +8,7 @@ export const FormSubmitButton: React.FC<FormSubmitButtonProps> = (props) => {
   const { children, ...rest } = props;
   const { isSubmitting } = useFormikContext();
   return (
-    <Button type="submit" isLoading={isSubmitting} loadingText="Loading" colorScheme="green" {...rest}>
+    <Button type="submit" isLoading={isSubmitting} loadingText="Loading" colorScheme="telegram" {...rest}>
       {children}
     </Button>
   );

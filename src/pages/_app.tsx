@@ -11,6 +11,7 @@ import { GoogleAnalytics } from '@components/google/google-analytics';
 import { UserFragment, useMeQuery } from '@generated/graphql';
 import { withApollo } from '@modules/core/apollo/apollo';
 import { AuthProvider } from '@contexts/UserContext';
+import mechaTheme from '@styles/theme';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -38,7 +39,7 @@ const MechaApp = (props: AppProps) => {
   return (
     <Provider store={store}>
       <AuthProvider>
-        <ChakraProvider>
+        <ChakraProvider theme={mechaTheme}>
           <GoogleAnalytics />
           <GlobalStyles />
           <Component {...pageProps} me={me ?? {}} />

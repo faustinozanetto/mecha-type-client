@@ -56,12 +56,17 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({}) => {
         let words = 0;
         if (typeof values.words === 'string') {
           words = Number.parseInt(values.words);
+        } else {
+          words = values.words;
         }
 
         let time = 0;
         if (typeof values.time === 'string') {
           time = Number.parseInt(values.time);
+        } else {
+          time = values.time;
         }
+        console.log(values);
         // If save preset is true, we save it to the user.
         const response = await createTestPresetUser({
           variables: {

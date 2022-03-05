@@ -169,6 +169,8 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     }
   };
 
+  if (userSettingsLoading) return <h1>loading</h1>;
+  
   return (
     <Flex flexDir="column">
       <Flex
@@ -211,7 +213,14 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
       </Flex>
 
       {/* Caret */}
-      {phase !== 2 && isFocused && currIndex >= 0 && <Caret style={{ left: pos.left, top: pos.top }}>&nbsp;</Caret>}
+      {phase !== 2 && isFocused && currIndex >= 0 && (
+        <Caret
+          style={{ left: pos.left, top: pos.top }}
+          caretColor={userSettings?.userSettings?.userSettings?.caretColor}
+        >
+          &nbsp;
+        </Caret>
+      )}
 
       {/* Stats container */}
       {phase === 2 && startTime && endTime && (
