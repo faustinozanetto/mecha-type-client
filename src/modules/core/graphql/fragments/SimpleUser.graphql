@@ -1,0 +1,10 @@
+fragment SimpleUser on User {
+  id
+  oauthId
+  username
+  description
+  avatar
+  country
+  badge
+  authProvider
+}

@@ -1,6 +1,6 @@
 import next from 'next';
 import { createServer } from 'http';
-import { __PROD__ } from '../src/utils/constants';
+import { __PROD__, __URI__ } from '../src/utils/constants';
 import { createLogger } from '../src/modules/core/logging/mecha-logger';
 
 const fileLabel = 'server';
@@ -28,7 +28,7 @@ const logger = createLogger({
     });
     srv
       .on('listening', async () => {
-        logger.debug('SERVER', `Listening on ${process.env.HOST}:${process.env.PORT}`);
+        logger.debug('SERVER', `Listening on ${srv.address()}:${process.env.PORT}`);
       })
       .listen(process.env.PORT);
   });

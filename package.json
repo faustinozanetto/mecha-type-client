@@ -6,7 +6,7 @@
   "license": "ISC",
   "private": true,
   "scripts": {
-    "start:windows": "ts-node --project tsconfig.server.json -r tsconfig-paths/register server/index.ts",
+    "start:dev": "ts-node --project tsconfig.server.json -r tsconfig-paths/register server/index.ts",
     "start:tunnel": "ngrok http 3000",
     "start:prod": "cross-env NODE_ENV=production next start",
     "build": "yarn next build",

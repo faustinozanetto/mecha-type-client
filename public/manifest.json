@@ -3,5 +3,34 @@
   "name": "The only place to type",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#111827"
+  "background_color": "#90cdf4",
+  "theme_color": "#90cdf4",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/icons/mecha-type-icon32x32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "/images/icons/mecha-type-icon64x64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "/images/icons/mecha-type-icon128x128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/images/icons/mecha-type-icon256x256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "/images/icons/mecha-type-icon512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
 }

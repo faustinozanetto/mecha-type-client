@@ -16,11 +16,27 @@ export type FontConfiguration = {
 export const fontConfigurations: FontConfiguration[] = [
   {
     fontName: 'Poppins',
-    fontWeights: [500, 600, 700],
+    format: 'woff2',
+    fontWeights: [400, 500, 600, 700, 800, 900],
   },
 ];
 
 export const fontsBasePath = '/fonts';
+
+const parseFontConfiguration = (fontFamily: FontConfiguration): string => {
+  const fontFaces: string[] = fontFamily.fontWeights.map((weigth) => {
+    return `
+        @font-face {
+          font-family: ${fontFamily.fontName};
+          font-style: normal;
+          font-weight: ${weigth};
+          font-display: optional;
+          src: url(${fontsBasePath}/${fontFamily.fontName}/poppins-latin-${weigth}.woff2) format('woff2');
+          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }`;
+  });
+  return fontFaces.join('');
+};
 
 /**
  *
@@ -30,34 +46,7 @@ export const fontsBasePath = '/fonts';
 export const injectFontFamily = (fontFamily: FontConfiguration): string => {
   switch (fontFamily.fontName) {
     case 'Poppins': {
-      return `
-        @font-face {
-          font-family: ${fontFamily.fontName};
-          font-style: normal;
-          font-weight: 500;
-          font-display: optional;
-          src: url(${fontsBasePath}/${fontFamily.fontName}/poppins-latin-500.woff2) format('woff2');
-          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-
-        @font-face {
-          font-family: ${fontFamily.fontName};
-          font-style: normal;
-          font-weight: 600;
-          font-display: optional;
-          src: url(${fontsBasePath}/${fontFamily.fontName}/poppins-latin-600.woff2) format('woff2');
-          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-
-        @font-face {
-          font-family: ${fontFamily.fontName};
-          font-style: normal;
-          font-weight: 700;
-          font-display: optional;
-          src: url(${fontsBasePath}/${fontFamily.fontName}/poppins-latin-700.woff2) format('woff2');
-          unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-      `;
+      return parseFontConfiguration(fontFamily);
     }
   }
 };

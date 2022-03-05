@@ -13,16 +13,25 @@ export interface CoreLayoutHeadProps {
 }
 
 const CoreLayoutHead: React.FC<CoreLayoutHeadProps> = (props): JSX.Element => {
-  const { seoTitle, seoUrl, seoCanonicalUrl, seoImage, seoDescription, seoFavIcon } = props;
+  const {
+    seoTitle,
+    seoUrl,
+    seoCanonicalUrl,
+    seoImage,
+    seoDescription,
+    seoFavIcon = '/images/icons/mecha-type-icon256x256.png',
+  } = props;
 
   return (
     <NextHead>
+      <title>{seoTitle}</title>
+      {/* Manifest */}
+      <link rel="manifest" href="/manifest.json" />
       {/* Base */}
       <meta charSet="UTF-8" />
-      <title>{seoTitle}</title>
       <meta name="description" content={seoDescription} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <link rel="icon" href={seoFavIcon} />
+      <link rel="icon" type="image/png" sizes="256x256" href={seoFavIcon} />
       <link rel="canonical" href={seoCanonicalUrl} />
 
       {/* Languages */}

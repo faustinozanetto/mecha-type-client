@@ -580,6 +580,8 @@ export type WordsPerMinuteCreateInput = {
 
 export type FilteredUserFragment = { __typename?: 'FilteredUser', id: string, username?: string | null, avatar?: string | null, country?: string | null, authProvider?: AuthProvider | null, oauthId?: string | null, value: number, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null };
 
+export type SimpleUserFragment = { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null };
+
 export type TestPresetFragment = { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null };
 
 export type TestPresetHistoryFragment = { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null };
@@ -601,6 +603,8 @@ export type FilteredUsersResponseFragment = { __typename?: 'FilteredUsersRespons
 export type RequestFollowUserResponseFragment = { __typename?: 'RequestFollowUserResponse', requestSent?: boolean | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type FollowUserStatusResponseFragment = { __typename?: 'FollowUserStatusResponse', status?: FollowStatus | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
+
+export type SimpleUserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
@@ -759,7 +763,7 @@ export type FollowUserStatusQuery = { __typename?: 'Query', followUserStatus: { 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserQueryVariables = Exact<{
   where: UserWhereInput;
@@ -865,6 +869,29 @@ export const FollowUserStatusResponseFragmentDoc = gql`
   }
 }
     ${ErrorResponseFragmentDoc}`;
+export const SimpleUserFragmentDoc = gql`
+    fragment SimpleUser on User {
+  id
+  oauthId
+  username
+  description
+  avatar
+  country
+  badge
+  authProvider
+}
+    `;
+export const SimpleUserResponseFragmentDoc = gql`
+    fragment SimpleUserResponse on UserResponse {
+  user {
+    ...SimpleUser
+  }
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${SimpleUserFragmentDoc}
+${ErrorResponseFragmentDoc}`;
 export const TestPresetHistoryResponseFragmentDoc = gql`
     fragment TestPresetHistoryResponse on TestPresetHistoryResponse {
   testPresetHistory {
@@ -1674,10 +1701,10 @@ export type FollowUserStatusQueryResult = Apollo.QueryResult<FollowUserStatusQue
 export const MeDocument = gql`
     query me {
   me {
-    ...UserResponse
+    ...SimpleUserResponse
   }
 }
-    ${UserResponseFragmentDoc}`;
+    ${SimpleUserResponseFragmentDoc}`;
 
 /**
  * __useMeQuery__
