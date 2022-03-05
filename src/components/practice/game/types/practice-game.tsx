@@ -18,6 +18,7 @@ import PracticeResults from '@components/practice/results/practice-results';
 import { PracticeStatsEntry } from '@typings/practice.types';
 import { generateWords } from '@modules/core/practice/typing-game-utils';
 import useAuth from '@contexts/UserContext';
+import NewCaret from '@components/practice/caret/new-caret';
 
 interface PracticeGameInputProps {
   loading: boolean;
@@ -27,6 +28,7 @@ interface PracticeGameInputProps {
 
 export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset }) => {
   const letterElements = useRef<HTMLDivElement>(null);
+  const caretRef = useRef<HTMLDivElement>(null);
   const toast = useToast();
   const { user } = useAuth();
   const [userCreateTestPresetHistoryEntry] = useUserCreateTestPresetHistoryEntryMutation();
@@ -53,18 +55,33 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
 
   // Caret cursor positioning
   const pos = useMemo(() => {
-    if (currIndex !== -1 && letterElements.current) {
-      let spanRef: any = letterElements.current.children[currIndex];
-      let left = spanRef.offsetLeft + spanRef.offsetWidth - 1;
-      let top = spanRef.offsetTop + 4;
-      return { left, top };
-    } else {
-      return {
-        left: -2,
-        top: 2,
-      };
+    let currentLetterIndex: number = currIndex;
+    if (currentLetterIndex === -1) {
+      currentLetterIndex = 0;
     }
-  }, [currIndex]);
+    if (letterElements && letterElements.current) {
+      let letterRef: any = letterElements.current.children[currentLetterIndex];
+      const currentLetterPosLeft = letterRef.offsetLeft;
+      const currentLetterPosTop = letterRef.offsetTop;
+      const letterHeight = letterRef.offsetHeight;
+
+      // Calculate the new top offset based on the height of the letter.
+      let newLetterTop = currentLetterPosTop - Math.round(letterHeight / 6);
+
+      let newLetterLeft = 0;
+
+      if (currIndex === -1) {
+        // No input has been done.
+        newLetterLeft = currentLetterPosLeft - caretRef.current.offsetWidth / 2;
+      } else if (currIndex >= 0) {
+        // User has started typing.
+        // Calculate the new left offset.
+        newLetterLeft = currentLetterPosLeft + letterRef.offsetWidth - caretRef.current.offsetWidth / 2;
+      }
+
+      return { left: newLetterLeft, top: newLetterTop };
+    }
+  }, [currIndex, letterElements.current]);
 
   /**
    * Updates the user data with the new test results
@@ -169,8 +186,6 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     }
   };
 
-  if (userSettingsLoading) return <h1>loading</h1>;
-  
   return (
     <Flex flexDir="column">
       <Flex
@@ -191,6 +206,8 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         onBlur={() => setIsFocused(false)}
       >
         <SkeletonText isLoaded={!loading} noOfLines={4}>
+          <NewCaret ref={caretRef} left={pos?.left} top={pos?.top} playFlashAnim={true} />
+
           {/* Words container */}
           <Box display="block" mb={2} ref={letterElements} transition="all 0.25s ease 0s" blur="4px">
             {chars.split('').map((letter, index) => {
@@ -211,16 +228,6 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
           </Box>
         </SkeletonText>
       </Flex>
-
-      {/* Caret */}
-      {phase !== 2 && isFocused && currIndex >= 0 && (
-        <Caret
-          style={{ left: pos.left, top: pos.top }}
-          caretColor={userSettings?.userSettings?.userSettings?.caretColor}
-        >
-          &nbsp;
-        </Caret>
-      )}
 
       {/* Stats container */}
       {phase === 2 && startTime && endTime && (
