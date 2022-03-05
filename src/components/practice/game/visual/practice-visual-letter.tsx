@@ -20,13 +20,13 @@ const PracticeVisualLetter: React.FC<PracticeVisualLetterProps> = (props) => {
   return (
     <Text
       as="span"
-      lineHeight="1.75rem"
-      fontSize="1.3rem"
+      lineHeight="1.5rem"
+      fontSize="1.5rem"
       letterSpacing="widest"
       fontWeight={500}
       color={highlight ? '#000' : incorrect && shouldShowErrors ? '#dc2626' : correct ? correctColor : letterColor}
       backgroundColor={highlight ? '#fbbf24' : ''}
-      transition="all 150ms ease"
+      transition="all 0.25s ease 0s"
       borderBottomStyle="solid"
       borderBottomWidth="2.25px"
       borderBottomColor={shouldShowErrors && incorrect ? '#dc2626' : 'transparent'}

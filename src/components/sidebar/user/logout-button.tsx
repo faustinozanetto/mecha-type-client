@@ -11,7 +11,7 @@ interface LogoutButtonProps {
 
 export const LogoutButton: React.FC<LogoutButtonProps> = ({ label }) => {
   return (
-    <Link href={'/'} passHref shallow={false}>
+    <Link href={'/'} passHref>
       <SidebarButton
         label={label}
         icon={FiLogOut}

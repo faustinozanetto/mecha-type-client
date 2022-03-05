@@ -11,7 +11,21 @@ const LandingHero: React.FC<LandingHeroProps> = ({}) => {
         <Stack as={Box} textAlign="center" spacing={{ base: 8, md: 14 }} py={{ base: 20, md: 36 }}>
           <Heading fontWeight={800} fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }} lineHeight="110%">
             Improving your typing <br />
-            <Text as="span" color={useColorModeValue('blue.400', 'blue.300')}>
+            <Text
+              as="span"
+              position="relative"
+              color={useColorModeValue('blue.400', 'blue.300')}
+              _after={{
+                content: "''",
+                width: 'full',
+                height: '30%',
+                position: 'absolute',
+                bottom: 1,
+                left: 0,
+                bg: 'blue.400',
+                zIndex: -1,
+              }}
+            >
               has never been this easy
             </Text>
           </Heading>
