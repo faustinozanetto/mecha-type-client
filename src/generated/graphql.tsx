@@ -296,7 +296,7 @@ export type QueryUserSettingsArgs = {
 
 
 export type QueryUserTestPresetsArgs = {
-  userId: Scalars['String'];
+  input: UserTestPresetsInput;
 };
 
 
@@ -558,6 +558,12 @@ export type UserSettingsWhereInput = {
   userId?: InputMaybe<Scalars['String']>;
 };
 
+export type UserTestPresetsInput = {
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
+  username?: InputMaybe<Scalars['String']>;
+};
+
 export type UserUpdateInput = {
   accuracy?: InputMaybe<AccuracyCreateInput>;
   badge?: InputMaybe<UserBadge>;
@@ -745,7 +751,7 @@ export type TestPresetsQueryVariables = Exact<{
 export type TestPresetsQuery = { __typename?: 'Query', testPresets: { __typename?: 'TestPresetsResponse', count?: number | null, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null, node?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserTestPresetsQueryVariables = Exact<{
-  userId: Scalars['String'];
+  input: UserTestPresetsInput;
 }>;
 
 
@@ -1573,8 +1579,8 @@ export type TestPresetsQueryHookResult = ReturnType<typeof useTestPresetsQuery>;
 export type TestPresetsLazyQueryHookResult = ReturnType<typeof useTestPresetsLazyQuery>;
 export type TestPresetsQueryResult = Apollo.QueryResult<TestPresetsQuery, TestPresetsQueryVariables>;
 export const UserTestPresetsDocument = gql`
-    query userTestPresets($userId: String!) {
-  userTestPresets(userId: $userId) {
+    query userTestPresets($input: UserTestPresetsInput!) {
+  userTestPresets(input: $input) {
     ...TestPresetsResponse
   }
 }
@@ -1592,7 +1598,7 @@ export const UserTestPresetsDocument = gql`
  * @example
  * const { data, loading, error } = useUserTestPresetsQuery({
  *   variables: {
- *      userId: // value for 'userId'
+ *      input: // value for 'input'
  *   },
  * });
  */

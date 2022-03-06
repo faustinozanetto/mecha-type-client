@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserPresetCard } from './user-preset-card';
-import { TestPresetFragment } from '@generated/graphql';
+import { TestPresetFragment, useTestPresetsQuery, useUserTestPresetsQuery } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
-import { Flex, Text, VStack, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Flex, Text, VStack, useColorModeValue, Skeleton, Button, Box } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 interface UserPresetsProps {
-  /** Presets to retrieve data from */
-  presets: TestPresetFragment[];
   /** Wether the current logged in user owns the user page or not */
   ownsPage: boolean;
   loggedInUsername: string;
@@ -15,16 +13,57 @@ interface UserPresetsProps {
   loading: boolean;
 }
 
-export const UserPresets: React.FC<UserPresetsProps> = ({ presets, ownsPage, loggedInUsername, loading }) => {
+export const UserPresets: React.FC<UserPresetsProps> = ({ ownsPage, loggedInUsername, loading }) => {
   const { t } = useTranslation('user-profile');
   const textColor = useColorModeValue('black', 'white');
+  const [pageCount, setPageCount] = useState(0);
+  const [presets, setPresets] = useState<TestPresetFragment[]>([]);
+
+  const {
+    data: testPresetsData,
+    loading: testPresetsLoading,
+    fetchMore: testPresetsFetchMore,
+    variables: testPresetsVariables,
+  } = useUserTestPresetsQuery({
+    variables: {
+      input: {
+        username: loggedInUsername,
+        take: 3,
+        skip: 0,
+      },
+    },
+  });
+
+  // Update state on fetch change
+  useEffect(() => {
+    if (testPresetsData && testPresetsData.userTestPresets.edges) {
+      const mappedPresets = testPresetsData.userTestPresets.edges.map((edge) => edge.node);
+      setPresets(mappedPresets);
+    }
+  }, [testPresetsData, testPresetsLoading]);
+
+  // Fetch more on page count change
+  useEffect(() => {
+    if (pageCount > 0) {
+      testPresetsFetchMore({
+        variables: {
+          input: {
+            take: testPresetsVariables.input.take,
+            skip: 3 * testPresetsVariables.input.skip,
+            username: testPresetsVariables.input.username,
+          },
+        },
+      });
+    }
+  }, [pageCount]);
 
   return (
     <Flex
       flexDir="column"
       padding="0.5rem"
       borderRadius="lg"
-      backgroundColor={useColorModeValue('gray.300', 'gray.700')}
+      bg={useColorModeValue('gray.100', 'gray.700')}
+      color={useColorModeValue('gray.700', 'gray.200')}
       justifyContent="center"
       alignItems="center"
     >
@@ -32,6 +71,7 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ presets, ownsPage, log
         {t('presets-subtitle')}
       </Text>
 
+      {/* No presets */}
       {presets && presets.length === 0 && (
         <Skeleton isLoaded={!loading} height="auto">
           <Text as="h3" fontSize="xl" color={textColor} fontWeight={500} marginTop={2} marginBottom={2}>
@@ -40,6 +80,7 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ presets, ownsPage, log
         </Skeleton>
       )}
 
+      {/* Presets mapping and rendering */}
       {presets && presets.length > 0 && (
         <VStack spacing="0.5rem" width="100%">
           {presets.map((preset, index) => {
@@ -63,6 +104,23 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ presets, ownsPage, log
             }
           })}
         </VStack>
+      )}
+
+      {/* Loading more */}
+      {testPresetsData && testPresetsData.userTestPresets.pageInfo.hasMore && (
+        <Flex width="full" justifyContent="center" my={4}>
+          <Button
+            colorScheme="linkedin"
+            onClick={() => {
+              setPageCount(pageCount + 1);
+            }}
+            loadingText="Loading"
+            width="15rem"
+            isLoading={testPresetsLoading}
+          >
+            Load More
+          </Button>
+        </Flex>
       )}
     </Flex>
   );

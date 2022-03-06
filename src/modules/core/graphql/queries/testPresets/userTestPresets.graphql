@@ -1,5 +1,5 @@
-query userTestPresets($userId: String!) {
-  userTestPresets(userId: $userId) {
+query userTestPresets($input: UserTestPresetsInput!) {
+  userTestPresets(input: $input) {
     ...TestPresetsResponse
   }
 }

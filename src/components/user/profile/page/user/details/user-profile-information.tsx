@@ -36,12 +36,7 @@ const UserProfileInformation: React.FC<UserProfileStatsProps> = ({
         <UserProfileSocial followersData={followers} loading={loading} />
       </GridItem>
       <GridItem colSpan={[2, 2, 2, 1, 1]}>
-        <UserProfilePresets
-          presets={targetUser?.testPresets!}
-          ownsPage={ownsPage}
-          loggedInUsername={loggedInUsername}
-          loading={loading}
-        />
+        <UserProfilePresets ownsPage={ownsPage} loggedInUsername={loggedInUsername} loading={loading} />
       </GridItem>
     </Grid>
   );

@@ -31,7 +31,8 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
   return (
     <Flex
       flexDir="row"
-      backgroundColor={useColorModeValue('gray.400', 'gray.800')}
+      bg={useColorModeValue('gray.50', 'gray.900')}
+      color={useColorModeValue('gray.700', 'gray.200')}
       alignContent="flex-start"
       justifyContent="space-between"
       alignItems="center"

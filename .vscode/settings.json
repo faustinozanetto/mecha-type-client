@@ -12,5 +12,6 @@
       "username": "postgres",
       "password": "4532164mine"
     }
-  ]
+  ],
+  "discord.enabled": false
 }

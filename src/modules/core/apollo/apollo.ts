@@ -68,6 +68,15 @@ const apolloClient = (ctx: NextPageContext) => {
                 };
               },
             },
+            userTestPresets: {
+              keyArgs: [],
+              merge(existing: TestPresetsResponse | undefined, incoming: TestPresetsResponse): TestPresetsResponse {
+                return {
+                  ...incoming,
+                  edges: [...(existing?.edges || []), ...incoming.edges],
+                };
+              },
+            },
           },
         },
       },
