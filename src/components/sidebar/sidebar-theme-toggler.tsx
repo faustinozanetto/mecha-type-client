@@ -19,16 +19,11 @@ export const SidebarThemeToggler: React.FC<SidebarThemeTogglerProps> = ({ label 
         variant="ghost"
         borderRadius="md"
         size="lg"
-        color="#fff"
         my={1}
         width={['auto', 'auto', 'auto', 'auto', '100%']}
         justifyContent={['center', 'center', 'center', 'center', 'flex-start']}
         paddingInline={[0, 0, 0, 4, 4]}
         onClick={toggleColorMode}
-        _hover={{
-          color: 'hsl(210deg,30%,8%)!important',
-          backgroundColor: '#fff',
-        }}
       >
         <HStack alignItems="center">
           {colorMode === 'dark' ? <SunIcon w={5} h={5} /> : <MoonIcon w={5} h={5} />}

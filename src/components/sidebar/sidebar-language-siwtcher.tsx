@@ -29,15 +29,10 @@ export const SidebarLanguageSwitcher: React.FC<SidebarLanguageSwitcherProps> = (
           variant="ghost"
           borderRadius="md"
           size="lg"
-          color="#fff"
           my={1}
           width={['auto', 'auto', 'auto', 'auto', '100%']}
           justifyContent={['center', 'center', 'center', 'center', 'flex-start']}
           paddingInline={[0, 0, 0, 4, 4]}
-          _hover={{
-            color: 'hsl(210deg,30%,8%)!important',
-            backgroundColor: '#fff',
-          }}
         >
           <HStack alignItems="center">
             <AtSignIcon w={5} h={5} />

@@ -1,10 +1,12 @@
-![Alt](https://repobeats.axiom.co/api/embed/a051fc7c117c58de722dca8472a0d49837422f78.svg 'Repobeats analytics image')
+# MechaType Client
 
 ## ⌨️ What is Mecha Type?
 
 Mecha Type is a web application for improving your typing and writing skills.
 It´s a complete package combined with social media aspects such as
 auth & user system with many features already included and planned for the future.
+
+---
 
 ## 👨🏻‍💻 Tech Stack
 
@@ -15,9 +17,8 @@ Mecha Type is being developed with the latest trends and technologies used in th
 - Apollo Graphql - Apollo Client is a comprehensive state management library for JavaScript.
 - Prisma - Next-generation Node.js and TypeScript ORM.
 - GraphQL - GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data.
-- Styled Components - Visual primitives for the component age.
 - Chakra UI - For the beautiful handcrafted UI.
-- Nexus - Declarative, Code-First GraphQL Schemas for JavaScript/TypeScript.
+---
 
 ## 🌌 Features
 

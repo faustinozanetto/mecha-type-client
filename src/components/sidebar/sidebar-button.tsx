@@ -29,16 +29,11 @@ export const SidebarButton = React.forwardRef<any, SidebarButtonProps>((props, r
         variant="ghost"
         borderRadius="md"
         size="lg"
-        color="#fff"
         my={2}
         width={['auto', 'auto', 'auto', 'auto', '100%']}
         justifyContent={['center', 'center', 'center', 'center', 'flex-start']}
         paddingInline={[0, 0, 0, 4, 4]}
         onClick={onClick}
-        _hover={{
-          color: 'hsl(210deg,30%,8%)!important',
-          backgroundColor: '#fff',
-        }}
         {...rest}
       >
         <HStack alignItems="center">

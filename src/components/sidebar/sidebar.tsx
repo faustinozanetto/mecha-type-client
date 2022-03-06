@@ -9,7 +9,7 @@ import { User } from 'generated/graphql';
 import { SidebarButton } from './sidebar-button';
 import { LogoutButton, UserDetails } from './user';
 import useMediaQuery from '@hooks/general/useMediaQuery';
-import { Text, Flex } from '@chakra-ui/react';
+import { Text, Flex, useColorModeValue } from '@chakra-ui/react';
 import { __URI__ } from '@utils/constants';
 import { SidebarThemeToggler } from './sidebar-theme-toggler';
 import { useRouter } from 'next/router';
@@ -18,6 +18,7 @@ import { useTranslation } from 'next-i18next';
 import LoginButton from './user/login-button';
 import Link from 'next/link';
 import MechaTypeLogo from '@components/branding/mechatype-logo';
+import MechaTypeLogoInitials from '@components/branding/mechatype-initials';
 
 interface ISidebarLink {
   name: string;
@@ -56,6 +57,7 @@ export interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ user }) => {
   const router = useRouter();
   const { t } = useTranslation('sidebar');
+  const logoColor = useColorModeValue('black', 'white');
   const isMediumOrMore = useMediaQuery('(min-width: 80em)');
   const isSmallOrLess = useMediaQuery('(max-width: 30em)');
 
@@ -68,13 +70,14 @@ const Sidebar: React.FC<SidebarProps> = ({ user }) => {
       float="left"
       height="100%"
       width={['80px', '80px', '80px', '80px', '250px']}
-      backgroundColor="#111827"
+      bg={useColorModeValue('gray.50', 'gray.900')}
+      color={useColorModeValue('gray.700', 'gray.200')}
       p={4}
     >
       {/* Title & Logo */}
       <Flex flexDir="row" justifyContent="center" alignContent="center" alignItems="center" mb={4}>
         <Text as="h1" fontWeight={700} fontSize="1.75rem" color="#fff" textAlign="center">
-          {isMediumOrMore ? <MechaTypeLogo /> : 'MT'}
+          {isMediumOrMore ? <MechaTypeLogo color={logoColor} /> : <MechaTypeLogoInitials color={logoColor} />}
         </Text>
       </Flex>
       {/* Buttons */}

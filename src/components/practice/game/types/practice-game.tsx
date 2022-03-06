@@ -19,6 +19,7 @@ import { generateWords } from '@modules/core/practice/typing-game-utils';
 import useAuth from '@contexts/UserContext';
 import NewCaret from '@components/practice/caret/new-caret';
 import { useTypingGameContext } from '@contexts/typing-game.context';
+import ShakeEffect from '@components/effects/shakes/shake-effect';
 
 interface PracticeGameInputProps {
   loading: boolean;
@@ -191,78 +192,80 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   if (userSettingsLoading) return <h1>loading</h1>;
 
   return (
-    <Flex flexDir="column">
-      <Flex
-        flexDir="column"
-        padding={6}
-        borderRadius="2xl"
-        alignItems="center"
-        justifyContent="space-between"
-        boxShadow="xl"
-        marginBottom={4}
-        fontSize="lg"
-        backgroundColor={bgColor}
-        tabIndex={0}
-        userSelect="none"
-        outline="none"
-        onKeyDown={(e) => handleKeyDown(e.key, e.ctrlKey)}
-        onFocus={() => {
-          setIsFocused(true);
-          setHideCursor(true);
-        }}
-        onBlur={() => {
-          setIsFocused(false);
-          setHideCursor(false);
-        }}
-      >
-        <SkeletonText isLoaded={!loading} noOfLines={4}>
-          {phase !== 2 && (
-            <NewCaret
-              ref={caretRef}
-              left={pos?.left}
-              top={pos?.top}
-              playFlashAnim={true}
-              settings={userSettings?.userSettings?.userSettings}
-            />
-          )}
+    <ShakeEffect h={2} v={2} r={1} q={1}>
+      <Flex flexDir="column">
+        <Flex
+          flexDir="column"
+          padding={6}
+          borderRadius="2xl"
+          alignItems="center"
+          justifyContent="space-between"
+          boxShadow="xl"
+          marginBottom={4}
+          fontSize="lg"
+          backgroundColor={bgColor}
+          tabIndex={0}
+          userSelect="none"
+          outline="none"
+          onKeyDown={(e) => handleKeyDown(e.key, e.ctrlKey)}
+          onFocus={() => {
+            setIsFocused(true);
+            setHideCursor(true);
+          }}
+          onBlur={() => {
+            setIsFocused(false);
+            setHideCursor(false);
+          }}
+        >
+          <SkeletonText isLoaded={!loading} noOfLines={4}>
+            {phase !== 2 && (
+              <NewCaret
+                ref={caretRef}
+                left={pos?.left}
+                top={pos?.top}
+                playFlashAnim={true}
+                settings={userSettings?.userSettings?.userSettings}
+              />
+            )}
 
-          {/* Words container */}
-          <Box display="block" mb={2} ref={letterElements} transition="all 0.25s ease 0s" blur="4px">
-            {chars.split('').map((letter, index) => {
-              const state = charsState[index];
-              const shouldHighlight = index >= currWordPos[0] && index <= currWordPos[1];
-              return (
-                <PracticeVisualLetter
-                  key={letter + index}
-                  shouldShowErrors={!userSettings?.userSettings?.userSettings?.blindMode}
-                  correct={state === 1}
-                  incorrect={state === 2}
-                  highlight={false}
-                >
-                  {letter}
-                </PracticeVisualLetter>
-              );
-            })}
-          </Box>
-        </SkeletonText>
+            {/* Words container */}
+            <Box display="block" mb={2} ref={letterElements} transition="all 0.25s ease 0s" blur="4px">
+              {chars.split('').map((letter, index) => {
+                const state = charsState[index];
+                const shouldHighlight = index >= currWordPos[0] && index <= currWordPos[1];
+                return (
+                  <PracticeVisualLetter
+                    key={letter + index}
+                    shouldShowErrors={!userSettings?.userSettings?.userSettings?.blindMode}
+                    correct={state === 1}
+                    incorrect={state === 2}
+                    highlight={false}
+                  >
+                    {letter}
+                  </PracticeVisualLetter>
+                );
+              })}
+            </Box>
+          </SkeletonText>
+        </Flex>
+
+        {/* Stats container */}
+        {phase === 2 && startTime && endTime && (
+          <PracticeResults
+            showStats={phase === 2 && startTime !== 0 && endTime !== 0}
+            keystrokes={keystrokes}
+            wordsPerMinute={roundTo2((correctChar * (60 / time)) / 5)}
+            charsPerMinute={Math.round((60 / time) * correctChar)}
+            correctChars={correctChar}
+            incorrectChars={errorChar}
+            spaceChars={spaceChar}
+            accuracy={`${((correctChar / (correctChar + errorChar)) * 100).toFixed(2)}%`}
+            wordsWritten={chars.split(' ').length}
+            duration={`${time}s`}
+            statsData={stats}
+          />
+        )}
       </Flex>
-
-      {/* Stats container */}
-      {phase === 2 && startTime && endTime && (
-        <PracticeResults
-          showStats={phase === 2 && startTime !== 0 && endTime !== 0}
-          keystrokes={keystrokes}
-          wordsPerMinute={roundTo2((correctChar * (60 / time)) / 5)}
-          charsPerMinute={Math.round((60 / time) * correctChar)}
-          correctChars={correctChar}
-          incorrectChars={errorChar}
-          spaceChars={spaceChar}
-          accuracy={`${((correctChar / (correctChar + errorChar)) * 100).toFixed(2)}%`}
-          wordsWritten={chars.split(' ').length}
-          duration={`${time}s`}
-          statsData={stats}
-        />
-      )}
-    </Flex>
+    </ShakeEffect>
   );
 };

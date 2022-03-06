@@ -4,10 +4,11 @@ import React from 'react';
 interface MechaTypeLogoProps {
   width?: string;
   height?: string;
+  color?: string;
 }
 
 const MechaTypeLogo: React.FC<MechaTypeLogoProps> = (props) => {
-  const { width = '200px', height = '50px' } = props;
+  const { width = '200px', height = '50px', color = '#fff' } = props;
   return (
     <Box
       as="svg"
@@ -16,7 +17,7 @@ const MechaTypeLogo: React.FC<MechaTypeLogoProps> = (props) => {
       height={height}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="3.523 -2.469 261.331 44.856"
-      fill="#ffffff"
+      fill={color}
     >
       <title>Mecha Type Logo</title>
       <path
