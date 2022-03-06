@@ -22,7 +22,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
         <Flex flexDir="column" width="100%" mx="auto" justifyContent="center" alignItems="center">
           <MechaTypeLogoName />
           <Heading as="span" fontSize="md" color="white">
-            0.3.7
+            0.3.8
           </Heading>
         </Flex>
         <Flex flexDir="column" width="100%" mx="auto" justifyContent="center" alignItems="center">

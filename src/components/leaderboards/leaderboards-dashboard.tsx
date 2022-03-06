@@ -22,7 +22,7 @@ export const LeaderboardsDashboard: React.FC<LeaderboardsProps> = ({}) => {
   } = useFilterUsersQuery({
     variables: {
       input: {
-        take: 5,
+        take: 20,
         skip: 0,
         filterBy: filterBy,
         where: {},
@@ -37,7 +37,7 @@ export const LeaderboardsDashboard: React.FC<LeaderboardsProps> = ({}) => {
         variables: {
           input: {
             take: variables.input.take,
-            skip: 5 * pageCount,
+            skip: 20 * pageCount,
             filterBy: filterBy,
             where: {},
           },
