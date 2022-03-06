@@ -21,6 +21,7 @@ const Footer: React.FC<FooterProps> = ({}) => {
           <Stack spacing={6}>
             <Box>
               <MechaTypeLogoName color={useColorModeValue('black', 'white')} />
+              0.4.0
             </Box>
             <Text fontSize={'sm'}>© 2022 Conkis Studios. All rights reserved</Text>
             <Stack direction={'row'} spacing={6}>

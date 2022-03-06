@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UserProfile from '@components/user/profile/page/user/user-profile';
 import LayoutCore from 'layouts/core/components/core-layout';
 import { withApollo } from '@modules/core/apollo/apollo';
-import { UserFragment, useUserQuery } from 'generated/graphql';
+import { User, useUserQuery } from 'generated/graphql';
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
@@ -21,7 +21,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const router = useRouter();
   const usernameURI = router.query.name as string;
   const { user: loggedInUser } = useAuth();
-  const [targetUser, setTargetUser] = useState<UserFragment>();
+  const [targetUser, setTargetUser] = useState<User>();
   const [userOwnsPage, setUserOwnsPage] = useState(false);
 
   const {
@@ -40,7 +40,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   // Target User
   useEffect(() => {
     if (targetUserData?.user?.user) {
-      setTargetUser(targetUserData?.user?.user);
+      setTargetUser(targetUserData.user.user);
     }
   }, [targetUserData, targetUserLoading]);
 
@@ -49,7 +49,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
     if (!loggedInUser || usernameURI === loggedInUser?.username) {
       setTargetUser(loggedInUser);
     }
-  }, [called]);
+  }, [called, loggedInUser, usernameURI]);
 
   /** Check if the current logged user matches the target user. */
   useEffect(() => {

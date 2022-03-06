@@ -255,6 +255,7 @@ export type Query = {
   userFollowers: UserFollowersResponse;
   userSettings: UserSettingsResponse;
   userTestPresets: TestPresetsResponse;
+  userTestPresetsHistory: TestPresetsHistoryResponse;
   users: UsersResponse;
 };
 
@@ -297,6 +298,11 @@ export type QueryUserSettingsArgs = {
 
 export type QueryUserTestPresetsArgs = {
   input: UserTestPresetsInput;
+};
+
+
+export type QueryUserTestPresetsHistoryArgs = {
+  input: UserTestPresetsHistoryInput;
 };
 
 
@@ -381,6 +387,12 @@ export type TestPresetsFindInput = {
   skip: Scalars['Int'];
   take: Scalars['Int'];
   where?: InputMaybe<TestPresetWhereInput>;
+};
+
+export type TestPresetsHistoryResponse = {
+  __typename?: 'TestPresetsHistoryResponse';
+  errors?: Maybe<Array<ErrorResponse>>;
+  testPresetHistory?: Maybe<Array<TestPresetHistory>>;
 };
 
 export type TestPresetsPageInfo = {
@@ -558,6 +570,10 @@ export type UserSettingsWhereInput = {
   userId?: InputMaybe<Scalars['String']>;
 };
 
+export type UserTestPresetsHistoryInput = {
+  username?: InputMaybe<Scalars['String']>;
+};
+
 export type UserTestPresetsInput = {
   skip: Scalars['Int'];
   take: Scalars['Int'];
@@ -625,8 +641,6 @@ export type FollowUserStatusResponseFragment = { __typename?: 'FollowUserStatusR
 
 export type SimpleUserResponseFragment = { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
-export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
-
 export type TestPresetResponseFragment = { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type TestPresetsResponseFragment = { __typename?: 'TestPresetsResponse', count?: number | null, pageInfo?: { __typename?: 'TestPresetsPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'TestPresetsEdge', cursor?: any | null, node?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
@@ -640,6 +654,10 @@ export type UserResponseFragment = { __typename?: 'UserResponse', user?: { __typ
 export type UserSettingsResponseFragment = { __typename?: 'UserSettingsResponse', userSettings?: { __typename?: 'UserSettings', id: string, userId?: string | null, blindMode?: boolean | null, caretStyle?: CaretStyle | null, caretColor?: string | null, noBackspace?: boolean | null, pauseOnError?: boolean | null, typeSounds?: boolean | null, typeSoundsVolume?: number | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type UsersResponseFragment = { __typename?: 'UsersResponse', users?: Array<{ __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
+
+export type TestPresetHistoryResponseFragment = { __typename?: 'TestPresetHistoryResponse', testPresetHistory?: { __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
+
+export type TestPresetsHistoryResponseFragment = { __typename?: 'TestPresetsHistoryResponse', testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null };
 
 export type CreateTestPresetHistoryEntryMutationVariables = Exact<{
   input: CreateTestPresetHistoryInput;
@@ -735,6 +753,13 @@ export type UpdateUserMutationVariables = Exact<{
 
 
 export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
+
+export type UserTestPresetsHistoryQueryVariables = Exact<{
+  input: UserTestPresetsHistoryInput;
+}>;
+
+
+export type UserTestPresetsHistoryQuery = { __typename?: 'Query', userTestPresetsHistory: { __typename?: 'TestPresetsHistoryResponse', testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type TestPresetQueryVariables = Exact<{
   id: Scalars['String'];
@@ -911,17 +936,6 @@ export const SimpleUserResponseFragmentDoc = gql`
 }
     ${SimpleUserFragmentDoc}
 ${ErrorResponseFragmentDoc}`;
-export const TestPresetHistoryResponseFragmentDoc = gql`
-    fragment TestPresetHistoryResponse on TestPresetHistoryResponse {
-  testPresetHistory {
-    ...TestPresetHistory
-  }
-  errors {
-    ...ErrorResponse
-  }
-}
-    ${TestPresetHistoryFragmentDoc}
-${ErrorResponseFragmentDoc}`;
 export const TestPresetFragmentDoc = gql`
     fragment TestPreset on TestPreset {
   id
@@ -1075,6 +1089,28 @@ export const UsersResponseFragmentDoc = gql`
   }
 }
     ${UserFragmentDoc}
+${ErrorResponseFragmentDoc}`;
+export const TestPresetHistoryResponseFragmentDoc = gql`
+    fragment TestPresetHistoryResponse on TestPresetHistoryResponse {
+  testPresetHistory {
+    ...TestPresetHistory
+  }
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${TestPresetHistoryFragmentDoc}
+${ErrorResponseFragmentDoc}`;
+export const TestPresetsHistoryResponseFragmentDoc = gql`
+    fragment TestPresetsHistoryResponse on TestPresetsHistoryResponse {
+  testPresetHistory {
+    ...TestPresetHistory
+  }
+  errors {
+    ...ErrorResponse
+  }
+}
+    ${TestPresetHistoryFragmentDoc}
 ${ErrorResponseFragmentDoc}`;
 export const CreateTestPresetHistoryEntryDocument = gql`
     mutation createTestPresetHistoryEntry($input: CreateTestPresetHistoryInput!) {
@@ -1508,6 +1544,41 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UserTestPresetsHistoryDocument = gql`
+    query userTestPresetsHistory($input: UserTestPresetsHistoryInput!) {
+  userTestPresetsHistory(input: $input) {
+    ...TestPresetsHistoryResponse
+  }
+}
+    ${TestPresetsHistoryResponseFragmentDoc}`;
+
+/**
+ * __useUserTestPresetsHistoryQuery__
+ *
+ * To run a query within a React component, call `useUserTestPresetsHistoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserTestPresetsHistoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserTestPresetsHistoryQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUserTestPresetsHistoryQuery(baseOptions: Apollo.QueryHookOptions<UserTestPresetsHistoryQuery, UserTestPresetsHistoryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserTestPresetsHistoryQuery, UserTestPresetsHistoryQueryVariables>(UserTestPresetsHistoryDocument, options);
+      }
+export function useUserTestPresetsHistoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserTestPresetsHistoryQuery, UserTestPresetsHistoryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserTestPresetsHistoryQuery, UserTestPresetsHistoryQueryVariables>(UserTestPresetsHistoryDocument, options);
+        }
+export type UserTestPresetsHistoryQueryHookResult = ReturnType<typeof useUserTestPresetsHistoryQuery>;
+export type UserTestPresetsHistoryLazyQueryHookResult = ReturnType<typeof useUserTestPresetsHistoryLazyQuery>;
+export type UserTestPresetsHistoryQueryResult = Apollo.QueryResult<UserTestPresetsHistoryQuery, UserTestPresetsHistoryQueryVariables>;
 export const TestPresetDocument = gql`
     query testPreset($id: String!) {
   testPreset(id: $id) {

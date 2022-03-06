@@ -7,20 +7,38 @@ import BiBullseye from '@meronex/icons/bi/BiBullseye';
 import BiCrown from '@meronex/icons/bi/BiCrown';
 import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
 import GrTest from '@meronex/icons/gr/GrTest';
-import { UserFragment } from '@generated/graphql';
+import { User, useUserTestPresetsHistoryQuery } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 
 interface UserProfileStatsProps {
   /** User data to retrieve data from */
-  user: UserFragment;
-  /** Stats to show in the profile. */
-  parsedStats: UserParsedStats;
+  user: User;
   /** Loading state */
   loading: boolean;
 }
 
-const UserProfileStats: React.FC<UserProfileStatsProps> = ({ parsedStats, loading }) => {
+const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) => {
   const { t } = useTranslation('user-profile');
+  const { data: testsPresetHistoryData, loading: testsPresetsHistoryLoading } = useUserTestPresetsHistoryQuery({
+    variables: {
+      input: { username: user.username },
+    },
+  });
+  const [parsedStats, setParsedStats] = useState<UserParsedStats>({
+    averageAccuracy: 0,
+    averageCPM: 0,
+    averageWPM: 0,
+    keystrokes: 0,
+    testsCompleted: 0,
+  });
+
+  // Load history data
+  useEffect(() => {
+    if (testsPresetHistoryData && testsPresetHistoryData.userTestPresetsHistory.testPresetHistory) {
+      const stats = generateParsedStats(testsPresetHistoryData.userTestPresetsHistory.testPresetHistory);
+      setParsedStats(stats);
+    }
+  }, [testsPresetHistoryData]);
 
   return (
     <Box marginTop="0.5rem" marginBottom="0.5rem">

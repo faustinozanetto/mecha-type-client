@@ -1,6 +1,8 @@
 import {
   AuthProvider,
   FilteredUserFragment,
+  TestPresetHistory,
+  User,
   UserFilterBy,
   UserFollowerFragment,
   UserFragment,
@@ -21,7 +23,7 @@ export type UserParsedStats = {
  * @param user User Fragment to retrieve data from.
  * @returns the parsed stats into a object.
  */
-export const generateParsedStats = (user: UserFragment): UserParsedStats => {
+export const generateParsedStats = (historyData: TestPresetHistory[]): UserParsedStats => {
   let parsedStats: UserParsedStats = {
     averageWPM: 0,
     averageCPM: 0,
@@ -29,10 +31,10 @@ export const generateParsedStats = (user: UserFragment): UserParsedStats => {
     testsCompleted: 0,
     keystrokes: 0,
   };
-  if (user && user.testPresetHistory && user.testPresetHistory.length > 0) {
-    const entries = user.testPresetHistory.length;
+  if (historyData && historyData.length > 0) {
+    const entries = historyData.length;
     for (let i = 0; i < entries; i++) {
-      const entry = user.testPresetHistory[i];
+      const entry = historyData[i];
       if (entry) {
         parsedStats.averageWPM += entry.wpm;
         parsedStats.averageCPM += entry.cpm;

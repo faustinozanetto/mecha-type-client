@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FollowStatus, UserFollowerFragment, UserFragment, useUserFollowersQuery } from 'generated/graphql';
+import { FollowStatus, UserFollowerFragment, User, useUserFollowersQuery } from 'generated/graphql';
 import { Container } from '@chakra-ui/react';
-import { generateParsedStats, UserParsedStats } from '@modules/core/user/user';
 import UserProfileDetails from './details/user-profile-details';
 import UserProfileInformation from './details/user-profile-information';
 import { CountryEntry } from '@typings/user.types';
 
 interface IUserProfileProps {
   /** Current logged in user */
-  user: UserFragment;
+  user: User;
   /** Target user to show profile */
-  targetUser: UserFragment;
+  targetUser: User;
   /** Wether content is loading or not */
   loading: boolean;
   /** If the current logged in user is the same as the profile page */
@@ -21,13 +20,6 @@ interface IUserProfileProps {
 
 const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, countries }) => {
   const [followers, setFollowers] = useState<UserFollowerFragment[]>([]);
-  const [parsedStats, setParsedStats] = useState<UserParsedStats>({
-    averageAccuracy: 0,
-    averageCPM: 0,
-    averageWPM: 0,
-    keystrokes: 0,
-    testsCompleted: 0,
-  });
 
   const {
     data: followersData,
@@ -45,7 +37,7 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
     },
   });
 
-  const getUserCountryData = (user: UserFragment): CountryEntry => {
+  const getUserCountryData = (user: User): CountryEntry => {
     const country = countries.find((country) => {
       if (country.name) return country?.name === user?.country;
     });
@@ -69,10 +61,6 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
     }
   }, [followersData]);
 
-  useEffect(() => {
-    setParsedStats(generateParsedStats(targetUser));
-  }, [targetUser?.testPresetHistory, loading]);
-
   return (
     <Container maxW={['1xl', '2xl', '3xl', '5xl', '7xl']}>
       <UserProfileDetails
@@ -83,16 +71,14 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         refetchUserFollowers={refetchUserFollowers}
         country={getUserCountryData(user)}
       />
-      {parsedStats && (
-        <UserProfileInformation
-          loading={loading}
-          targetUser={targetUser}
-          ownsPage={ownsPage}
-          loggedInUsername={user?.username}
-          parsedStats={parsedStats}
-          followers={followers}
-        />
-      )}
+
+      <UserProfileInformation
+        loading={loading}
+        targetUser={targetUser}
+        ownsPage={ownsPage}
+        loggedInUsername={user?.username}
+        followers={followers}
+      />
     </Container>
   );
 };
