@@ -14,9 +14,7 @@ const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 
 // Export the provider as we need to wrap the entire app with it
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
-  const { data: userData, loading: meLoading } = useMeQuery({
-    ssr: true,
-  });
+  const { data: userData, loading: meLoading } = useMeQuery({});
   const [logoutMutation] = useLogoutMutation();
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState<boolean>(false);

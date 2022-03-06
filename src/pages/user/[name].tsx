@@ -19,17 +19,22 @@ interface UserPageProps {
 
 const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   const router = useRouter();
+  const usernameURI = router.query.name as string;
   const { user: loggedInUser } = useAuth();
   const [targetUser, setTargetUser] = useState<UserFragment>();
-  const [IDFromRoute, _setIDFromRoute] = useState(router.query.name as string);
   const [userOwnsPage, setUserOwnsPage] = useState(false);
 
-  const { data: targetUserData, loading: targetUserLoading } = useUserQuery({
+  const {
+    data: targetUserData,
+    loading: targetUserLoading,
+    called,
+  } = useUserQuery({
     variables: {
       where: {
-        username: IDFromRoute,
+        username: usernameURI,
       },
     },
+    skip: !loggedInUser || usernameURI === loggedInUser?.username,
   });
 
   // Target User
@@ -39,20 +44,27 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
     }
   }, [targetUserData, targetUserLoading]);
 
+  useEffect(() => {
+    // If we skipped target user query
+    if (!loggedInUser || usernameURI === loggedInUser?.username) {
+      setTargetUser(loggedInUser);
+    }
+  }, [called]);
+
   /** Check if the current logged user matches the target user. */
   useEffect(() => {
     if (loggedInUser && targetUser) {
-      setUserOwnsPage(loggedInUser.username === IDFromRoute);
+      setUserOwnsPage(loggedInUser.username === usernameURI);
     }
-  }, [targetUser, IDFromRoute, loggedInUser]);
+  }, [targetUser, usernameURI, loggedInUser]);
 
   return (
     <LayoutCore
       head={CoreLayoutHead}
       headProps={{
-        seoTitle: `${targetUser?.username ?? IDFromRoute} | Mecha Type`,
+        seoTitle: `${targetUser?.username ?? usernameURI} | Mecha Type`,
         seoDescription: `${
-          targetUser?.username ?? IDFromRoute
+          targetUser?.username ?? usernameURI
         }´s profile page, showing their stats and more information.`,
         seoUrl: `${__URI__!}/user/${targetUser?.username}`,
         seoCanonicalUrl: `${__URI__!}/user`,
