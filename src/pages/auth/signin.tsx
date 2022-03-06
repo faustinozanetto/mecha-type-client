@@ -17,11 +17,11 @@ const PROVIDERS = [
     name: 'Discord',
     authUrl: `${__BACKEND__}/api/v1/auth/discord/login`,
   },
-  // {
-  //   id: 'google',
-  //   name: 'Google',
-  //   authUrl: `${__BACKEND__}/api/v1/auth/google/login`,
-  // },
+  {
+    id: 'google',
+    name: 'Google',
+    authUrl: `${__BACKEND__}/api/v1/auth/google/login`,
+  },
   {
     id: 'github',
     name: 'Github',
@@ -37,7 +37,7 @@ const SignIn: React.FC<PracticePageProps> = ({}) => {
       <NextSeo
         title={`Sign In | Mecha Type`}
         description="Sign In page with many options such as Discord and Google."
-        canonical={`auth/signin`}
+        
         openGraph={{
           type: 'website',
           locale: 'en_US',

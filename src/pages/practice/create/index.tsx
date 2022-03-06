@@ -20,6 +20,7 @@ const PracticePage: React.FC<PracticePageProps> = ({}) => {
         seoTitle: 'Preset Creation | Mecha Type',
         seoDescription: 'Create your own custom Practice Preset and share it to the community.',
         seoUrl: `${__URI__}/practice/create`,
+        seoCanonicalUrl: `${__URI__}/practice/create`,
       }}
     >
       {user && <PresetCreation onCreatedCallback={() => {}} />}

@@ -17,7 +17,8 @@ const DashboardPage: React.FC<DashboardPageProps> = ({}) => {
       headProps={{
         seoTitle: 'Dashboard | Mecha Type',
         seoDescription: 'Dashboard page where you can see your progress and more precise information.',
-        seoUrl: `${__URI__}/practice`,
+        seoUrl: `${__URI__}/dashboard`,
+        seoCanonicalUrl: `${__URI__}/dashboard`,
       }}
     >
       <UserDashboard />

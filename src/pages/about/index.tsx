@@ -13,6 +13,7 @@ const AboutPage: React.FC<AboutPageProps> = ({}) => {
         seoTitle: 'About | Mecha Type',
         seoDescription: 'About page.',
         seoUrl: `${__URI__}/about`,
+        seoCanonicalUrl: `${__URI__}/about`,
       }}
     >
       <h1>About</h1>

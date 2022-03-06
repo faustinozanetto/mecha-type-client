@@ -55,6 +55,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
           targetUser?.username ?? IDFromRoute
         }´s profile page, showing their stats and more information.`,
         seoUrl: `${__URI__!}/user/${targetUser?.username}`,
+        seoCanonicalUrl: `${__URI__!}/user`,
         seoImage: generateAvatarURl(targetUser),
       }}
     >

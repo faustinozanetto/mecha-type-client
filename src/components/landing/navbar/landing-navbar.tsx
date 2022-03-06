@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text, Container, Flex, HStack, useColorModeValue, Heading } from '@chakra-ui/react';
+import { Box, Container, Flex, HStack } from '@chakra-ui/react';
 import { SidebarThemeToggler } from '@components/sidebar/sidebar-theme-toggler';
 import MechaTypeLogo from '../../branding/mechatype-logo';
 
@@ -15,9 +15,6 @@ const LandingNavbar: React.FC<LandingNavbarProps> = (props): JSX.Element => {
           {/* Left */}
           <HStack alignItems="center">
             <MechaTypeLogo />
-            <Heading as="span" fontSize="md" color="white">
-              0.3.6
-            </Heading>
           </HStack>
           {/* Right */}
           <HStack>

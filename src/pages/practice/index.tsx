@@ -18,6 +18,7 @@ const PracticePage: React.FC<PracticePageProps> = ({}) => {
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice page where you can choose to use a created preset, or create one.',
         seoUrl: `${__URI__}/practice`,
+        seoCanonicalUrl: `${__URI__}/practice`,
       }}
     >
       <PracticePresetSelection />

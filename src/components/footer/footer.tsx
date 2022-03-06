@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Text, Flex } from '@chakra-ui/react';
+import { VStack, Text, Flex, Heading } from '@chakra-ui/react';
 import { __VER__ } from '@utils/constants';
 import MechaTypeLogoName from '@components/branding/mechatype-logo-name';
 
@@ -21,6 +21,9 @@ const Footer: React.FC<FooterProps> = ({}) => {
       <VStack>
         <Flex flexDir="column" width="100%" mx="auto" justifyContent="center" alignItems="center">
           <MechaTypeLogoName />
+          <Heading as="span" fontSize="md" color="white">
+            0.3.7
+          </Heading>
         </Flex>
         <Flex flexDir="column" width="100%" mx="auto" justifyContent="center" alignItems="center">
           <Text

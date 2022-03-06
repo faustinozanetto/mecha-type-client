@@ -14,6 +14,7 @@ import { withApollo } from '@modules/core/apollo/apollo';
 import { AuthProvider } from '@contexts/UserContext';
 import mechaTheme from '@styles/theme';
 import TypingGameProvider from '@contexts/typing-game.context';
+import Script from 'next/script';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -43,6 +44,18 @@ const MechaApp = (props: AppProps) => {
       <AuthProvider>
         <TypingGameProvider>
           <ChakraProvider theme={mechaTheme}>
+            <Script
+              id="Adsense-id"
+              async
+              strategy="afterInteractive"
+              onError={(e) => {
+                console.error('Script failed to load', e);
+              }}
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
+                process.env.NEXT_PUBLIC_GOOGLE_ADSENSE as string
+              }`}
+              crossOrigin="anonymous"
+            />
             <GoogleAnalytics />
             <GlobalStyles />
             <Component {...pageProps} me={me ?? {}} />

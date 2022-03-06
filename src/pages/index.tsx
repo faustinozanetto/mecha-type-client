@@ -28,6 +28,7 @@ const Home: React.FC<IHomeProps> = ({}) => {
         seoTitle: 'Home | Mecha Type',
         seoDescription: 'Homepage for Mecha Type, usually shows information about updates and news.',
         seoUrl: __URI__,
+        seoCanonicalUrl: __URI__,
       }}
     >
       {/* Hero */}
@@ -36,6 +37,16 @@ const Home: React.FC<IHomeProps> = ({}) => {
       <LandingFeatures />
       {/* Statistics */}
       <LandingStats />
+      <ins
+        className="adsbygoogle"
+        style={{ display: 'block' }}
+        data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADSENSE as string}
+        data-ad-slot="5518576177"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      ></ins>
+
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </LandingLayout>
   );
 };

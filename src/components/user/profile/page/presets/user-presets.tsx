@@ -53,7 +53,6 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ presets, ownsPage, log
                   style={{ width: '100%' }}
                 >
                   <UserPresetCard
-                    key={preset.type + index}
                     preset={preset}
                     ownsPage={ownsPage}
                     loggedInUsername={loggedInUsername}

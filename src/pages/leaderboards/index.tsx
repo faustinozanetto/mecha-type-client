@@ -18,6 +18,7 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({}) => {
         seoTitle: 'Leaderboards | Mecha Type',
         seoDescription: 'Leaderboards of Mecha Type, see who is the best at typing!',
         seoUrl: `${__URI__}/leaderboards`,
+        seoCanonicalUrl: `${__URI__}/leaderboards`,
       }}
     >
       <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
