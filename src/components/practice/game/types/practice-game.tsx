@@ -3,7 +3,6 @@ import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
 import {
   TestPresetFragment,
-  UserFragment,
   useUserCreateTestPresetHistoryEntryMutation,
   useUserSettingsQuery,
 } from '@generated/graphql';
@@ -19,7 +18,6 @@ import { generateWords } from '@modules/core/practice/typing-game-utils';
 import useAuth from '@contexts/UserContext';
 import NewCaret from '@components/practice/caret/new-caret';
 import { useTypingGameContext } from '@contexts/typing-game.context';
-import ShakeEffect from '@components/effects/shakes/shake-effect';
 
 interface PracticeGameInputProps {
   loading: boolean;
@@ -171,7 +169,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
 
-  const handleKeyDown = (letter: string, control: boolean) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, letter: string, control: boolean) => {
     if (phase !== 2) {
       if (letter === 'Escape') {
         resetTyping();
@@ -206,7 +204,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
         tabIndex={0}
         userSelect="none"
         outline="none"
-        onKeyDown={(e) => handleKeyDown(e.key, e.ctrlKey)}
+        onKeyDown={(e) => handleKeyDown(e, e.key, e.ctrlKey)}
         onFocus={() => {
           setIsFocused(true);
           setHideCursor(true);

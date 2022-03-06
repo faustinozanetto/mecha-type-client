@@ -10,11 +10,12 @@ export interface LayoutCoreProps {
   children: React.ReactNode;
   head?: React.FC<CoreLayoutHeadProps>;
   headProps?: CoreLayoutHeadProps;
+  stickyFooter?: boolean;
   error?: any;
 }
 
 const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
-  const { children, head: Head, headProps, error } = props;
+  const { children, head: Head, headProps, stickyFooter = false, error } = props;
   const { user } = useAuth();
   const mainContainerBG = useColorModeValue('gray.200', 'gray.800');
 
@@ -23,7 +24,6 @@ const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
       role="main"
       gridTemplateColumns={['1fr', '80px 1fr', '80px 1fr', '80px 1fr', '250px 1fr']}
       gridTemplateRows="1fr"
-      minHeight="100vh"
     >
       {/* SEO Head */}
       <Head {...headProps} />
@@ -32,11 +32,11 @@ const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
       <Box position="relative">{<Sidebar user={user} />}</Box>
 
       {/* Main container */}
-      <Flex flexDir="column" backgroundColor={mainContainerBG} >
+      <Flex flexDir="column" minHeight="100vh" justifyContent="space-between" backgroundColor={mainContainerBG}>
         {/* Content */}
         {error ? <Text>Error</Text> : <CoreLayoutContainer>{children}</CoreLayoutContainer>}
         {/* Footer */}
-        <Footer />
+        <Footer/>
       </Flex>
     </Grid>
   );

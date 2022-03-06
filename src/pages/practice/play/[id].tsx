@@ -32,6 +32,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({}) => {
   return (
     <LayoutCore
       head={CoreLayoutHead}
+      stickyFooter={true}
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice play page, test your skills on a specific Preset.',

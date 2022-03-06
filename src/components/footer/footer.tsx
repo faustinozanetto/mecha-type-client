@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Text, Flex, Heading, Box, Container, Stack, SimpleGrid, useColorModeValue } from '@chakra-ui/react';
+import { Text, Box, Container, Stack, SimpleGrid, useColorModeValue } from '@chakra-ui/react';
 import { __VER__ } from '@utils/constants';
 import MechaTypeLogoName from '@components/branding/mechatype-logo-name';
 import { FaInstagram, FaTwitter, FaYoutube } from '@meronex/icons/fa';
@@ -14,7 +14,8 @@ const Footer: React.FC<FooterProps> = ({}) => {
       as="footer"
       bg={useColorModeValue('gray.50', 'gray.900')}
       color={useColorModeValue('gray.700', 'gray.200')}
-      mt={10}
+      height="18m"
+      width="100%"
     >
       <Container as={Stack} maxW={'6xl'} py={10}>
         <SimpleGrid templateColumns={{ sm: '1fr 1fr', md: '2fr 1fr 1fr 2fr' }} spacing={8}>

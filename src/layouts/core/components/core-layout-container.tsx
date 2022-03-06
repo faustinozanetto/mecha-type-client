@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Flex } from '@chakra-ui/react';
+import { Container } from '@chakra-ui/react';
 
 interface CoreLayoutContainerProps {
   /** Children to display inside container */
@@ -8,7 +8,7 @@ interface CoreLayoutContainerProps {
 
 const CoreLayoutContainer: React.FC<CoreLayoutContainerProps> = (props): JSX.Element => {
   return (
-    <Container maxW={['1xl', '2xl', '3xl', '5xl', '7xl']} minHeight="calc(100vh - 10rem)" py={4} centerContent>
+    <Container maxW={['1xl', '2xl', '3xl', '5xl', '7xl']} centerContent>
       {props.children}
     </Container>
   );
