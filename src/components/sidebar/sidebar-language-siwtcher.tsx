@@ -42,7 +42,7 @@ export const SidebarLanguageSwitcher: React.FC<SidebarLanguageSwitcherProps> = (
       </Tooltip>
       <MenuList>
         <MenuItem onClick={() => router.push(router.asPath, router.asPath, { locale: 'en' })}>{englishLabel}</MenuItem>
-        <Link href={router.asPath} locale={'es'}>
+        <Link href={router.asPath} locale={'es'} passHref>
           <MenuItem>{spanishLabel}</MenuItem>
         </Link>
       </MenuList>

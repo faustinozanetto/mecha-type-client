@@ -14,6 +14,8 @@ import {
 import FaPlay from '@meronex/icons/fa/FaPlay';
 import { CopyIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
+import useAuth from '@contexts/UserContext';
+import UserPresetCardTry from './user-preset-card-try';
 
 interface UserPresetCardProps {
   /** Preset data to retrieve info from. */
@@ -27,6 +29,7 @@ interface UserPresetCardProps {
 
 export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedInUsername, ownsPage, loading }) => {
   const toast = useToast();
+  const { user } = useAuth();
   const [copyPresetToUser] = useCopyPresetToUserMutation();
   return (
     <Flex
@@ -50,8 +53,8 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
       <Spacer />
 
       {/* Copy Button */}
-      {!ownsPage && (
-        <Tooltip label="Copy" fontSize="md">
+      {user && user.username && (
+        <Tooltip label="Copy" aria-label="Copy Preset" fontSize="md">
           <IconButton
             colorScheme="green"
             aria-label="Copy Preset"
@@ -79,13 +82,10 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
           />
         </Tooltip>
       )}
-
       {/* Try Button */}
-      <Tooltip label="Try" fontSize="md">
-        <Link href={`/practice/play/${preset.id}`} passHref>
-          <IconButton colorScheme="purple" aria-label="Try Preset" icon={<FaPlay />} m={2} />
-        </Link>
-      </Tooltip>
+      <Link href={{ pathname: '/practice/play/[id]', query: { id: preset.id } }} passHref>
+        <UserPresetCardTry aria-label="Try Preset" />
+      </Link>
     </Flex>
   );
 };

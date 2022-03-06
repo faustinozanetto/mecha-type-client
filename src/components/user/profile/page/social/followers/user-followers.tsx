@@ -21,7 +21,8 @@ const UserFollowers: React.FC<UserFollowersProps> = ({ followers, loading }) => 
       flexDir="column"
       padding="0.5rem"
       borderRadius="lg"
-      backgroundColor={useColorModeValue('gray.300', 'gray.700')}
+      bg={useColorModeValue('gray.100', 'gray.700')}
+      color={useColorModeValue('gray.700', 'gray.200')}
       justifyContent="center"
       alignItems="center"
     >
