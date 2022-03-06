@@ -814,7 +814,7 @@ export type UserQueryVariables = Exact<{
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null, testPresetHistory?: Array<{ __typename?: 'TestPresetHistory', id: string, userId: string, testPresetId: string, wpm: number, cpm: number, accuracy: number, keystrokes: number, correctChars: number, incorrectChars: number, createdAt?: any | null, updatedAt?: any | null }> | null, testPresets?: Array<{ __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null }> | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
+export type UserQuery = { __typename?: 'Query', user: { __typename?: 'UserResponse', user?: { __typename?: 'User', id: string, oauthId?: string | null, username?: string | null, description?: string | null, avatar?: string | null, country?: string | null, badge?: UserBadge | null, authProvider?: AuthProvider | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UserFollowersQueryVariables = Exact<{
   input: UserFollowersFindInput;
@@ -1827,10 +1827,10 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const UserDocument = gql`
     query user($where: UserWhereInput!) {
   user(where: $where) {
-    ...UserResponse
+    ...SimpleUserResponse
   }
 }
-    ${UserResponseFragmentDoc}`;
+    ${SimpleUserResponseFragmentDoc}`;
 
 /**
  * __useUserQuery__
