@@ -1,24 +1,27 @@
 import React from 'react';
-import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetStaticProps } from 'next';
 import { __URI__ } from '@utils/constants';
-import LandingLayoutHead from 'layouts/landing/components/landing-layout-head';
+
 import LandingLayout from 'layouts/landing/components/landing-layout';
+import LandingLayoutHead from 'layouts/landing/components/landing-layout-head';
 
-interface PrivacyPageProps {}
+interface ErrorPageProps {
+  locale: string;
+}
 
-const PrivacyPage: React.FC<PrivacyPageProps> = ({}) => {
+const ErrorPage: React.FC<ErrorPageProps> = ({}) => {
   return (
     <LandingLayout
       head={LandingLayoutHead}
       headProps={{
-        seoTitle: 'Privacy | Mecha Type',
-        seoDescription: 'Privacy page showing the data we collect and other important information of Mecha Type.',
-        seoUrl: __URI__ + '/privacy',
-        seoCanonicalUrl: __URI__ + '/privacy',
+        seoTitle: 'Error | Mecha Type',
+        seoDescription: 'Homepage for Mecha Type, usually shows information about updates and news.',
+        seoUrl: __URI__,
+        seoCanonicalUrl: __URI__,
       }}
     >
-      <h1>Privacy</h1>
+      <h1>error</h1>
     </LandingLayout>
   );
 };
@@ -28,4 +31,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
-export default PrivacyPage;
+export default ErrorPage;

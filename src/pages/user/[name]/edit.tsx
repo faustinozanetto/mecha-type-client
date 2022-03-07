@@ -1,49 +1,46 @@
 import React, { useEffect, useState } from 'react';
-import { withApollo } from '@modules/core/apollo/apollo';
+import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 import LayoutCore from 'layouts/core/components/core-layout';
-import { UserFragment, useUserQuery } from 'generated/graphql';
+import { User, UserDocument, UserQuery, UserQueryVariables } from 'generated/graphql';
+import ErrorPage from 'next/error';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { CountryEntry } from '@typings/user.types';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import EditUserProfile from '@components/user/profile/edit/edit-user-profile';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import useAuth from '@contexts/UserContext';
+import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
 
 interface EditUserPageProps {
-  /** Countries data */
   countries: CountryEntry[];
+  targetUser: User;
 }
 
-const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
-  const { query } = useRouter();
-  const { user: loggedInUser, loading: loggedInLoading } = useAuth();
-  const [targetUser, setTargetUser] = useState<UserFragment>();
-  const { data: userData, loading: userLoading } = useUserQuery({
-    variables: {
-      where: {
-        username: query.name as string,
-      },
-    },
-  });
+const EditUserPage: React.FC<EditUserPageProps> = (props) => {
+  const { countries, targetUser } = props;
+  const router = useRouter();
+  const usernameURI = router.query.name as string;
+  const { user: loggedInUser } = useAuth();
+  const [userOwnsPage, setUserOwnsPage] = useState(false);
 
-  // Target User
+  /** Check if the current logged user matches the target user. */
   useEffect(() => {
-    if (userData?.user?.user && !userLoading) {
-      setTargetUser(userData.user.user);
+    if (loggedInUser && targetUser) {
+      setUserOwnsPage(loggedInUser.username === usernameURI);
     }
-  }, [userData]);
+  }, [targetUser, usernameURI, loggedInUser]);
 
-  /**
-   *
-   * @returns wether the user owns the edit page or not.
-   */
-  const ownsPage = (): boolean => {
-    return !userLoading && userData && targetUser && loggedInUser?.id === userData?.user?.user?.id;
-  };
+  // Content loading
+  if (router.isFallback) {
+    return <h1>Loading...</h1>;
+  }
 
-  if (!ownsPage()) return <h1>Forbidden</h1>;
+  // An error occurred
+  if (!targetUser || !loggedInUser) {
+    return <ErrorPage statusCode={404} />;
+  }
 
   return (
     <LayoutCore
@@ -54,15 +51,25 @@ const EditUserPage: React.FC<EditUserPageProps> = ({ countries }) => {
         seoUrl: `${__URI__!}/user/${loggedInUser?.username}/edit`,
       }}
     >
-      {loggedInUser && <EditUserProfile user={loggedInUser} loading={loggedInLoading} countries={countries} />}
+      <EditUserProfile user={loggedInUser} loading={loggedInUser === null} countries={countries} />
     </LayoutCore>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { locale } = context;
-  let names: CountryEntry[] = [];
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { locale, params } = context;
+  const client = initializeApollo();
 
+  // Target user data fetch.
+  const { data: userData } = await client.query<UserQuery, UserQueryVariables>({
+    query: UserDocument,
+    variables: {
+      where: { username: params.name as string },
+    },
+  });
+
+  // Countries data fetch.
+  let names: CountryEntry[] = [];
   await fetch('https://restcountries.com/v3.1/all')
     .then((response) => response.json())
     .then((data) =>
@@ -71,9 +78,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       })
     );
 
+  // Found user and return the rest of props.
+  if (userData.user.user) {
+    return {
+      props: {
+        ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])),
+        countries: names ?? [],
+        targetUser: userData.user.user,
+      },
+    };
+  }
+  // An error ocurred
   return {
-    props: { countries: names, ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])) },
+    props: {},
+    notFound: true,
   };
 };
 
-export default withApollo({})(EditUserPage);
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    fallback: 'blocking',
+    paths: [],
+  };
+};
+
+export default withApollo(EditUserPage);

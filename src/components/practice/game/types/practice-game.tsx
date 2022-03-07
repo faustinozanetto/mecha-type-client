@@ -6,7 +6,7 @@ import {
   useUserCreateTestPresetHistoryEntryMutation,
   useUserSettingsQuery,
 } from '@generated/graphql';
-import { Flex, SkeletonText, useColorModeValue, useToast, Box } from '@chakra-ui/react';
+import { Flex, SkeletonText, useColorModeValue, useToast, Box, Skeleton } from '@chakra-ui/react';
 import { roundTo2 } from '@modules/core/math/math';
 import { useSound } from '@modules/core/sound/use-sound-hook';
 import { SoundType } from '@modules/core/sound/types/sound.types';
@@ -61,25 +61,27 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     }
     if (letterElements && letterElements.current) {
       let letterRef: any = letterElements.current.children[currentLetterIndex];
-      const currentLetterPosLeft = letterRef.offsetLeft;
-      const currentLetterPosTop = letterRef.offsetTop;
-      const letterHeight = letterRef.offsetHeight;
+      if (letterRef) {
+        const currentLetterPosLeft = letterRef.offsetLeft;
+        const currentLetterPosTop = letterRef.offsetTop;
+        const letterHeight = letterRef.offsetHeight;
 
-      // Calculate the new top offset based on the height of the letter.
-      let newLetterTop = currentLetterPosTop - Math.round(letterHeight - 35);
+        // Calculate the new top offset based on the height of the letter.
+        let newLetterTop = currentLetterPosTop - Math.round(letterHeight - 35);
 
-      let newLetterLeft = 0;
+        let newLetterLeft = 0;
 
-      if (currIndex === -1) {
-        // No input has been done.
-        newLetterLeft = currentLetterPosLeft - caretRef.current.offsetWidth / 2;
-      } else if (currIndex >= 0) {
-        // User has started typing.
-        // Calculate the new left offset.
-        newLetterLeft = currentLetterPosLeft + letterRef.offsetWidth - caretRef.current.offsetWidth / 2;
+        if (currIndex === -1) {
+          // No input has been done.
+          newLetterLeft = currentLetterPosLeft - caretRef.current.offsetWidth / 2;
+        } else if (currIndex >= 0) {
+          // User has started typing.
+          // Calculate the new left offset.
+          newLetterLeft = currentLetterPosLeft + letterRef.offsetWidth - caretRef.current.offsetWidth / 2;
+        }
+
+        return { left: newLetterLeft, top: newLetterTop };
       }
-
-      return { left: newLetterLeft, top: newLetterTop };
     }
   }, [currIndex, letterElements.current]);
 
@@ -187,8 +189,6 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     }
   };
 
-  if (userSettingsLoading) return <h1>loading</h1>;
-
   return (
     <Flex flexDir="column">
       <Flex
@@ -214,7 +214,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
           setHideCursor(false);
         }}
       >
-        <SkeletonText isLoaded={!loading} noOfLines={4}>
+        <SkeletonText isLoaded={!loading && testPreset !== null} noOfLines={4}>
           {phase !== 2 && (
             <NewCaret
               ref={caretRef}

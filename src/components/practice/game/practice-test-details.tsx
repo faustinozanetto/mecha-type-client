@@ -1,10 +1,10 @@
 import React from 'react';
 import { Flex, useColorModeValue, Text, Skeleton, HStack, Switch } from '@chakra-ui/react';
-import { TestPresetFragment } from '@generated/graphql';
+import { TestPreset } from '@generated/graphql';
 
 interface PracticeTestDetailsProps {
   /** Test preset data */
-  practiceTest: TestPresetFragment;
+  practiceTest: TestPreset;
   /** Wether data is loading or not */
   loading: boolean;
 }
@@ -31,7 +31,7 @@ export const PracticeTestDetails: React.FC<PracticeTestDetailsProps> = ({ loadin
 
         <Skeleton isLoaded={!loading}>
           <Text as="h2" fontSize="xl" color={textColor} fontWeight={600}>
-            {practiceTest.words} words - {practiceTest.language}
+            {practiceTest?.words} words - {practiceTest?.language}
           </Text>
         </Skeleton>
       </Flex>

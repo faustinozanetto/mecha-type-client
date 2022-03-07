@@ -1,34 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
-import { TestPresetFragment, useTestPresetQuery } from 'generated/graphql';
-import { useGetIDFromUrl } from '@utils/useGetIDFromUrl';
-import { GetServerSideProps } from 'next';
+import { TestPreset, TestPresetDocument, TestPresetQuery, TestPresetQueryVariables } from 'generated/graphql';
+import ErrorPage from 'next/error';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
-import { withApollo } from '@modules/core/apollo/apollo';
-
+import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 import LayoutCore from 'layouts/core/components/core-layout';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { Flex } from '@chakra-ui/react';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
+import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
+import { useRouter } from 'next/router';
 
-interface PracticePlayPageProps {}
+interface PracticePlayPageProps {
+  preset: TestPreset;
+}
 
-const PracticePlayPage: React.FC<PracticePlayPageProps> = ({}) => {
-  const [testPreset, setTestPreset] = useState<TestPresetFragment>();
-  const { data: testPresetData, loading: testPresetLoading } = useTestPresetQuery({
-    variables: {
-      id: useGetIDFromUrl(),
-    },
-  });
+const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
+  const { preset } = props;
+  const router = useRouter();
 
-  // Test Preset
-  useEffect(() => {
-    if (testPresetData?.testPreset?.testPreset && !testPresetLoading) {
-      setTestPreset(testPresetData.testPreset.testPreset);
-    }
-  }, [testPresetData?.testPreset?.testPreset, testPresetLoading]);
+  if (router.isFallback) {
+    return <h1>Loading...</h1>;
+  }
 
+  if (!preset) {
+    return <ErrorPage statusCode={404} />;
+  }
   return (
     <LayoutCore
       head={CoreLayoutHead}
@@ -36,24 +35,55 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = ({}) => {
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice play page, test your skills on a specific Preset.',
-        seoUrl: `${__URI__}/practice/play/${testPreset?.id}`,
+        seoUrl: `${__URI__}/practice/play/${preset?.id}`,
       }}
     >
       <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
-        {testPreset && (
-          <Flex flexDir="column" width="100%">
-            <PracticeTestDetails loading={testPresetLoading} practiceTest={testPreset} />
-          </Flex>
-        )}
-        {testPreset && <PracticeGameInput loading={testPresetLoading} testPreset={testPreset} />}
+        <Flex flexDir="column" width="100%">
+          <PracticeTestDetails loading={preset === null} practiceTest={preset} />
+        </Flex>
+
+        <PracticeGameInput loading={preset === null} testPreset={preset} />
       </Flex>
     </LayoutCore>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { locale } = context;
-  return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { locale, params } = context;
+  const client = initializeApollo();
+
+  try {
+    const { data: presetData, networkStatus } = await client.query<TestPresetQuery, TestPresetQueryVariables>({
+      query: TestPresetDocument,
+      variables: {
+        id: params.id as string,
+      },
+    });
+
+    if (presetData.testPreset.testPreset) {
+      // We found the preset.
+      return {
+        props: {
+          locale,
+          ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])),
+          preset: presetData?.testPreset?.testPreset,
+        },
+      };
+    }
+  } catch (error) {
+    return {
+      props: {},
+      notFound: true,
+    };
+  }
 };
 
-export default withApollo({})(PracticePlayPage);
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    fallback: 'blocking',
+    paths: [],
+  };
+};
+
+export default withApollo(PracticePlayPage);

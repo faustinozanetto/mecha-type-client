@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient, ApolloLink, HttpLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
 import { onError } from '@apollo/link-error';
 import { TestPresetsResponse, UserFollowersResponse, FilteredUsersResponse } from '@generated/graphql';
 import { __BACKEND__ } from '@utils/constants';
@@ -28,24 +28,11 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
 
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: ApolloLink.from([
-      onError(({ graphQLErrors, networkError }) => {
-        if (graphQLErrors)
-          graphQLErrors.forEach(({ message, locations, path }) =>
-            console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
-          );
-        if (networkError) console.log(`[Network error]: ${networkError}. Backend is unreachable. Is it running?`);
-      }),
-      // this uses apollo-link-http under the hood, so all the options here come from that package
-      createUploadLink({
-        uri: `${__BACKEND__}/graphql`,
-        fetchOptions: {
-          mode: 'cors',
-        },
-        credentials: 'include',
-        fetch: enhancedFetch,
-      }),
-    ]),
+    link: new HttpLink({
+      uri: `${__BACKEND__}/graphql`,
+
+      credentials: 'include',
+    }),
     cache: new InMemoryCache({
       possibleTypes: {
         authenticatedItem: ['User'],

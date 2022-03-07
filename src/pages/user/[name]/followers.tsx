@@ -1,46 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { withApollo } from '@modules/core/apollo/apollo';
+import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 import LayoutCore from 'layouts/core/components/core-layout';
-import { UserFragment, useUserQuery } from 'generated/graphql';
+import { User, UserDocument, UserFragment, UserQuery, UserQueryVariables, useUserQuery } from 'generated/graphql';
 import { __URI__ } from '@utils/constants';
+import ErrorPage from 'next/error';
 import { useRouter } from 'next/router';
-import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import UserFollowersDashboard from '@components/user/pages/followers-dashboard/user-followers-dashboard';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import useAuth from '@contexts/UserContext';
+import { GetStaticPaths, GetStaticProps } from 'next';
+import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
 
-interface UserFollowersPageProps {}
+interface UserFollowersPageProps {
+  targetUser: User;
+}
 
-const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
-  const { query } = useRouter();
-  const { user: me } = useAuth();
-  const [targetUser, setTargetUser] = useState<UserFragment>();
+const UserFollowersPage: React.FC<UserFollowersPageProps> = (props) => {
+  const { targetUser } = props;
+  const router = useRouter();
+  const usernameURI = router.query.name as string;
+  const { user: loggedInUser } = useAuth();
+  const [userOwnsPage, setUserOwnsPage] = useState(false);
 
-  const { data: userData, loading: userLoading } = useUserQuery({
-    variables: {
-      where: {
-        username: query.name as string,
-      },
-    },
-  });
-
-  // Target User
+  /** Check if the current logged user matches the target user. */
   useEffect(() => {
-    if (userData?.user?.user && !userLoading) {
-      setTargetUser(userData.user.user);
+    if (loggedInUser && targetUser) {
+      setUserOwnsPage(loggedInUser.username === usernameURI);
     }
-  }, [userData]);
+  }, [targetUser, usernameURI, loggedInUser]);
 
-  /**
-   *
-   * @returns wether the user owns the edit page or not.
-   */
-  const ownsPage = (): boolean => {
-    return !userLoading && userData && targetUser && me.id === userData?.user?.user?.id;
-  };
+  // Content loading
+  if (router.isFallback) {
+    return <h1>Loading...</h1>;
+  }
 
-  if (!ownsPage()) return <h1>Forbidden</h1>;
+  // An error occurred
+  if (!targetUser || !loggedInUser) {
+    return <ErrorPage statusCode={404} />;
+  }
 
   return (
     <LayoutCore
@@ -51,16 +49,45 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = ({}) => {
         seoUrl: `${__URI__!}/user/${targetUser?.username}/followers`,
       }}
     >
-      {targetUser && <UserFollowersDashboard user={targetUser} />}
+      <UserFollowersDashboard user={targetUser} />
     </LayoutCore>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { locale } = context;
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { locale, params } = context;
+  const client = initializeApollo();
+
+  // Target user data fetch.
+  const { data: userData } = await client.query<UserQuery, UserQueryVariables>({
+    query: UserDocument,
+    variables: {
+      where: { username: params.name as string },
+    },
+  });
+
+  // Found user and return the rest of props.
+  if (userData.user.user) {
+    return {
+      props: {
+        ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])),
+
+        targetUser: userData.user.user,
+      },
+    };
+  }
+  // An error ocurred
   return {
-    props: { ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])) },
+    props: {},
+    notFound: true,
   };
 };
 
-export default withApollo({})(UserFollowersPage);
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    fallback: 'blocking',
+    paths: [],
+  };
+};
+
+export default withApollo(UserFollowersPage);
