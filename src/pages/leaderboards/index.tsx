@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { LeaderboardsDashboard } from '@components/leaderboards/leaderboards-dashboard';
 import { __URI__ } from '@utils/constants';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -28,7 +28,7 @@ const LeaderboardsPage: React.FC<LeaderboardsPageProps> = ({}) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
 
   return { props: { locale, ...(await serverSideTranslations(locale ?? 'en', ['sidebar'])) } };

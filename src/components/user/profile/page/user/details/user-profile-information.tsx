@@ -11,6 +11,7 @@ interface UserProfileStatsProps {
   targetUser: User;
   /** User followers */
   followers: UserFollowerFragment[];
+  parsedStats: UserParsedStats;
   loggedInUsername: string;
   /** Wether the current logged in user owns the user page or not */
   ownsPage: boolean;
@@ -23,12 +24,13 @@ const UserProfileInformation: React.FC<UserProfileStatsProps> = ({
   followers,
   ownsPage,
   loggedInUsername,
+  parsedStats,
   loading,
 }) => {
   return (
     <Grid templateColumns="repeat(2,1fr)" templateRows="repeat(3, auto)" gap={4}>
       <GridItem rowSpan={1} colSpan={2}>
-        <UserProfileStats user={targetUser} loading={loading} />
+        <UserProfileStats loading={loading} parsedStats={parsedStats} />
       </GridItem>
       <GridItem colSpan={[2, 2, 2, 1, 1]}>
         <UserProfileSocial followersData={followers} loading={loading} />

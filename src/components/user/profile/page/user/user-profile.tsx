@@ -4,12 +4,14 @@ import { Container } from '@chakra-ui/react';
 import UserProfileDetails from './details/user-profile-details';
 import UserProfileInformation from './details/user-profile-information';
 import { CountryEntry } from '@typings/user.types';
+import { UserParsedStats } from '@modules/core/user/user';
 
 interface IUserProfileProps {
   /** Current logged in user */
   user: User;
   /** Target user to show profile */
   targetUser: User;
+  parsedStats: UserParsedStats;
   /** Wether content is loading or not */
   loading: boolean;
   /** If the current logged in user is the same as the profile page */
@@ -18,7 +20,7 @@ interface IUserProfileProps {
   countries: CountryEntry[];
 }
 
-const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, countries }) => {
+const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, ownsPage, parsedStats, countries }) => {
   const [followers, setFollowers] = useState<UserFollowerFragment[]>([]);
 
   const {
@@ -76,6 +78,7 @@ const UserProfile: React.FC<IUserProfileProps> = ({ user, targetUser, loading, o
         loading={loading}
         targetUser={targetUser}
         ownsPage={ownsPage}
+        parsedStats={parsedStats}
         loggedInUsername={user?.username}
         followers={followers}
       />

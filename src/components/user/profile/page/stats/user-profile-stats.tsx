@@ -1,44 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, SimpleGrid, Text } from '@chakra-ui/layout';
 import { useColorModeValue } from '@chakra-ui/react';
 import { UserStatCard } from '@components/user/profile/page/stats';
-import { UserParsedStats, generateParsedStats } from '@modules/core/user/user';
+import { UserParsedStats } from '@modules/core/user/user';
 import BiBullseye from '@meronex/icons/bi/BiBullseye';
 import BiCrown from '@meronex/icons/bi/BiCrown';
 import FaKeyboard from '@meronex/icons/fa/FaKeyboard';
 import GrTest from '@meronex/icons/gr/GrTest';
-import { User, useUserTestPresetsHistoryQuery } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 
 interface UserProfileStatsProps {
-  /** User data to retrieve data from */
-  user: User;
+  parsedStats: UserParsedStats;
   /** Loading state */
   loading: boolean;
 }
 
-const UserProfileStats: React.FC<UserProfileStatsProps> = ({ user, loading }) => {
+const UserProfileStats: React.FC<UserProfileStatsProps> = ({ loading, parsedStats }) => {
   const { t } = useTranslation('user-profile');
-  const { data: testsPresetHistoryData, loading: testsPresetsHistoryLoading } = useUserTestPresetsHistoryQuery({
-    variables: {
-      input: { username: user.username },
-    },
-  });
-  const [parsedStats, setParsedStats] = useState<UserParsedStats>({
-    averageAccuracy: 0,
-    averageCPM: 0,
-    averageWPM: 0,
-    keystrokes: 0,
-    testsCompleted: 0,
-  });
-
-  // Load history data
-  useEffect(() => {
-    if (testsPresetHistoryData && testsPresetHistoryData.userTestPresetsHistory.testPresetHistory) {
-      const stats = generateParsedStats(testsPresetHistoryData.userTestPresetsHistory.testPresetHistory);
-      setParsedStats(stats);
-    }
-  }, [testsPresetHistoryData]);
 
   return (
     <Box marginTop="0.5rem" marginBottom="0.5rem">

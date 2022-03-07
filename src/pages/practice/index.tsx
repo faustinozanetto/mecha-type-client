@@ -1,17 +1,16 @@
 import React from 'react';
 import { PracticePresetSelection } from '@components/practice/selection';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/core-layout';
-import { withApollo } from '@modules/core/apollo/apollo';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import GoogleAds from '@components/google/google-ads';
-import ShakeEffect from '@components/effects/shakes/shake-effect';
+import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 
 interface PracticePageProps {}
 
-const PracticePage: React.FC<PracticePageProps> = ({}) => {
+const PracticePage: React.FC<PracticePageProps> = (props) => {
   return (
     <LayoutCore
       head={CoreLayoutHead}
@@ -28,9 +27,14 @@ const PracticePage: React.FC<PracticePageProps> = ({}) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
-  return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])),
+    },
+  };
 };
 
-export default withApollo({ ssr: false })(PracticePage);
+export default withApollo(PracticePage);

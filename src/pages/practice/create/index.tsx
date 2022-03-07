@@ -2,8 +2,7 @@ import React from 'react';
 import LayoutCore from 'layouts/core/components/core-layout';
 import { withApollo } from '@modules/core/apollo/apollo';
 import PresetCreation from '@components/practice/selection/preset-creation/preset-creation';
-import { UserFragment } from '@generated/graphql';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
@@ -28,7 +27,7 @@ const PracticePage: React.FC<PracticePageProps> = ({}) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
   return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };

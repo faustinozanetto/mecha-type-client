@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import UserProfile from '@components/user/profile/page/user/user-profile';
 import LayoutCore from 'layouts/core/components/core-layout';
-import { withApollo } from '@modules/core/apollo/apollo';
-import { User, useUserQuery } from 'generated/graphql';
-import { GetServerSideProps } from 'next';
+import { User } from 'generated/graphql';
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
-import { generateAvatarURl } from '@modules/core/user/user';
+import { generateAvatarURl, generateParsedStats, UserParsedStats } from '@modules/core/user/user';
 import { CountryEntry } from '@typings/user.types';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import useAuth from '@contexts/UserContext';
+import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
+import { gql } from '@apollo/client';
+import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
 
 interface UserPageProps {
   /** Countries data */
   countries: CountryEntry[];
+  targetUser: User;
+  parsedStats: UserParsedStats;
 }
 
-const UserPage: React.FC<UserPageProps> = ({ countries }) => {
+const UserPage: React.FC<UserPageProps> = ({ countries, targetUser, parsedStats }) => {
   const router = useRouter();
   const usernameURI = router.query.name as string;
   const { user: loggedInUser } = useAuth();
-  const [targetUser, setTargetUser] = useState<User>();
   const [userOwnsPage, setUserOwnsPage] = useState(false);
-
+  /*
   const {
     data: targetUserData,
     loading: targetUserLoading,
@@ -36,7 +39,9 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
     },
     skip: !loggedInUser || usernameURI === loggedInUser?.username,
   });
+  */
 
+  /*
   // Target User
   useEffect(() => {
     if (targetUserData?.user?.user) {
@@ -50,6 +55,7 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
       setTargetUser(loggedInUser);
     }
   }, [called, loggedInUser, usernameURI]);
+  */
 
   /** Check if the current logged user matches the target user. */
   useEffect(() => {
@@ -75,8 +81,9 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
         <UserProfile
           user={loggedInUser}
           targetUser={targetUser}
-          loading={targetUserLoading}
+          loading={false}
           ownsPage={userOwnsPage}
+          parsedStats={parsedStats}
           countries={countries}
         />
       )}
@@ -84,8 +91,103 @@ const UserPage: React.FC<UserPageProps> = ({ countries }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { locale } = context;
+export const getStaticPaths: GetStaticPaths = async () => {
+  const QUERY = gql`
+    query users($take: Int!) {
+      users(take: $take) {
+        users {
+          id
+          username
+        }
+        errors {
+          field
+          message
+        }
+      }
+    }
+  `;
+  const client = initializeApollo();
+  const { data: users } = await client.query({
+    query: QUERY,
+    variables: {
+      take: 1000,
+    },
+  });
+
+  const paths = users.users.users.map((user) => {
+    return {
+      params: { name: user.username },
+    };
+  });
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  const { locale, params } = context;
+  const userQuery = gql`
+    query user($where: UserWhereInput!) {
+      user(where: $where) {
+        user {
+          id
+          oauthId
+          username
+          description
+          avatar
+          country
+          badge
+          authProvider
+        }
+        errors {
+          field
+          message
+        }
+      }
+    }
+  `;
+  const historyQuery = gql`
+    query userTestPresetsHistory($input: UserTestPresetsHistoryInput!) {
+      userTestPresetsHistory(input: $input) {
+        testPresetHistory {
+          id
+          userId
+          testPresetId
+          wpm
+          cpm
+          accuracy
+          keystrokes
+          correctChars
+          incorrectChars
+          createdAt
+          updatedAt
+        }
+        errors {
+          field
+          message
+        }
+      }
+    }
+  `;
+  const client = initializeApollo();
+  const { data: userData } = await client.query({
+    query: userQuery,
+    variables: {
+      where: { username: params.name as string },
+    },
+  });
+  const { data: historyData } = await client.query({
+    query: historyQuery,
+    variables: {
+      input: {
+        username: params.name as string,
+      },
+    },
+  });
+  console.log(params.name);
+  console.log(historyData.userTestPresetsHistory.testPresetHistory);
   let names: CountryEntry[] = [];
 
   await fetch('https://restcountries.com/v3.1/all')
@@ -97,8 +199,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     );
 
   return {
-    props: { countries: names ?? [], ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])) },
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])),
+      countries: names ?? [],
+      targetUser: userData.user.user,
+      parsedStats: generateParsedStats(historyData.userTestPresetsHistory.testPresetHistory),
+    },
   };
 };
 
-export default withApollo({})(UserPage);
+export default withApollo(UserPage);
