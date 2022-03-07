@@ -36,7 +36,7 @@ const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
         {/* Content */}
         {error ? <Text>Error</Text> : <CoreLayoutContainer>{children}</CoreLayoutContainer>}
         {/* Footer */}
-        <Footer/>
+        <Footer />
       </Flex>
     </Grid>
   );

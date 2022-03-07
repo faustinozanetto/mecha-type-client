@@ -2,6 +2,7 @@ import React from 'react';
 import NextHead from 'next/head';
 import { __URI__ } from '@utils/constants';
 import { SUPPORTED_LOCALES } from '@modules/core/i18n/i18n';
+import { useRouter } from 'next/router';
 
 export interface CoreLayoutHeadProps {
   seoTitle?: string;
@@ -17,10 +18,11 @@ const CoreLayoutHead: React.FC<CoreLayoutHeadProps> = (props): JSX.Element => {
     seoTitle,
     seoUrl,
     seoCanonicalUrl,
-    seoImage,
+    seoImage = '/images/icons/mecha-type-icon512x512.png',
     seoDescription,
     seoFavIcon = '/images/icons/mecha-type-icon256x256.png',
   } = props;
+  const router = useRouter();
 
   return (
     <NextHead>
@@ -53,10 +55,18 @@ const CoreLayoutHead: React.FC<CoreLayoutHeadProps> = (props): JSX.Element => {
       <meta property="og:image" content={seoImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
+      <meta property="og:image:alt" content={seoTitle} />
+      <meta property="og:locale" content={router.locale} />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content="MechaType" />
       {/* Twitter */}
       <meta name="twitter:site" content={seoUrl} />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:image" content={seoImage} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:description" content={seoDescription} />
+      <meta name="twitter:title" content={seoTitle} />
+      <meta name="twitter:creator" content="@mechatype" />
     </NextHead>
   );
 };
