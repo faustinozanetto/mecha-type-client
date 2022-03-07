@@ -49,7 +49,19 @@ const flash = keyframes`
 `;
 
 const NewCaret = React.forwardRef<HTMLDivElement, NewCaretProps>((props, ref) => {
-  const { playFlashAnim, settings, ...rest } = props;
+  const {
+    playFlashAnim,
+    settings = {
+      blindMode: false,
+      typeSounds: false,
+      typeSoundsVolume: 0,
+      pauseOnError: false,
+      noBackspace: false,
+      caretStyle: CaretStyle.Line,
+      caretColor: '#ffb300',
+    },
+    ...rest
+  } = props;
   const [style, setStyle] = useState<CaretStyleType>(caretStyles[0]);
   const [color, setColor] = useState<BoxProps>();
 

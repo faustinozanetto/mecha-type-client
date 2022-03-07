@@ -15,6 +15,9 @@ import { AuthProvider } from '@contexts/UserContext';
 import mechaTheme from '@styles/theme';
 import TypingGameProvider from '@contexts/typing-game.context';
 import Script from 'next/script';
+import { DefaultSeo } from 'next-seo';
+import { __URI__ } from '@utils/constants';
+import Container from 'next/app';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -40,29 +43,55 @@ const MechaApp = (props: AppProps) => {
   }, [router.events]);
 
   return (
-    <Provider store={store}>
-      <AuthProvider>
-        <TypingGameProvider>
-          <ChakraProvider theme={mechaTheme}>
-            <Script
-              id="Adsense-id"
-              async
-              strategy="afterInteractive"
-              onError={(e) => {
-                console.error('Script failed to load', e);
-              }}
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
-                process.env.NEXT_PUBLIC_GOOGLE_ADSENSE as string
-              }`}
-              crossOrigin="anonymous"
-            />
-            <GoogleAnalytics />
-            <GlobalStyles />
-            <Component {...pageProps} me={me ?? {}} />
-          </ChakraProvider>
-        </TypingGameProvider>
-      </AuthProvider>
-    </Provider>
+    <React.Fragment>
+      <Provider store={store}>
+        <AuthProvider>
+          <TypingGameProvider>
+            <ChakraProvider theme={mechaTheme}>
+              <Script
+                id="Adsense-id"
+                async
+                strategy="afterInteractive"
+                onError={(e) => {
+                  console.error('Script failed to load', e);
+                }}
+                src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
+                  process.env.NEXT_PUBLIC_GOOGLE_ADSENSE as string
+                }`}
+                crossOrigin="anonymous"
+              />
+              <GoogleAnalytics />
+              <GlobalStyles />
+              {/* Default SEO */}
+              <DefaultSeo
+                openGraph={{
+                  type: 'website',
+                  locale: router.locale,
+                  defaultImageHeight: 512,
+                  defaultImageWidth: 512,
+                  images: [
+                    {
+                      url: 'https://via.placeholder.com/800x600',
+                      alt: 'Mecha Type | The best place for improving your typing skills',
+                      width: 800,
+                      height: 600,
+                      type: 'image/png',
+                    },
+                  ],
+                  site_name: 'Mecha Type',
+                }}
+                twitter={{
+                  site: '@mechatype',
+                  cardType: 'summary_large_image',
+                  handle: '@handle',
+                }}
+              />
+              <Component {...pageProps} me={me ?? {}} />
+            </ChakraProvider>
+          </TypingGameProvider>
+        </AuthProvider>
+      </Provider>
+    </React.Fragment>
   );
 };
 

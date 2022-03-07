@@ -16,7 +16,8 @@ export const UserFollowerCard: React.FC<UserFollowerCardProps> = ({ follower, lo
     <Flex
       as="a"
       flexDir="row"
-      backgroundColor={useColorModeValue('gray.400', 'gray.800')}
+      bg={useColorModeValue('gray.50', 'gray.900')}
+      color={useColorModeValue('gray.700', 'gray.200')}
       alignContent="flex-start"
       justifyContent="flex-start"
       alignItems="center"
