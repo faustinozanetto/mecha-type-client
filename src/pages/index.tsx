@@ -1,13 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticProps } from 'next';
 import { __URI__ } from '@utils/constants';
-
 import LandingLayout from 'layouts/landing/components/landing-layout';
 import LandingHero from '@components/landing/hero/lading-hero';
 import LandingFeatures from '@components/landing/features/landing-features';
 import LandingStats from '@components/landing/stats/lading-stats';
+import { GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface IHomeProps {
   locale: string;

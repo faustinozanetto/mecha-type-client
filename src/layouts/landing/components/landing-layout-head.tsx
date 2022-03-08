@@ -18,7 +18,7 @@ const LandingLayoutHead: React.FC<LandingLayoutHeadProps> = (props): JSX.Element
     seoTitle,
     seoUrl,
     seoCanonicalUrl,
-    seoImage = '/images/icons/mecha-type-icon512x512.png',
+    seoImage = 'https://www.1zoom.me/prev/323/322504.jpg',
     seoDescription,
     seoFavIcon = '/images/icons/mecha-type-icon256x256.png',
   } = props;

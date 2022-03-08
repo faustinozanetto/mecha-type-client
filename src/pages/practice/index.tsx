@@ -1,15 +1,16 @@
 import React from 'react';
 import { PracticePresetSelection } from '@components/practice/selection';
-import { GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/core-layout';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import GoogleAds from '@components/google/google-ads';
+import { GetStaticProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 interface PracticePageProps {}
 
 const PracticePage: React.FC<PracticePageProps> = (props) => {
+  console.log(props);
   return (
     <LayoutCore
       head={CoreLayoutHead}
@@ -28,12 +29,7 @@ const PracticePage: React.FC<PracticePageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
-
-  return {
-    props: {
-      ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])),
-    },
-  };
+  return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
 export default PracticePage;

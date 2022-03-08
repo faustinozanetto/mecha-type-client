@@ -1,12 +1,9 @@
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
-import { useLogoutMutation, useMeQuery, User } from '@generated/graphql';
-
-type ActionType = { type: 'LOGIN'; user: User } | { type: 'LOGOUT' };
+import { useMeQuery, User } from '@generated/graphql';
 
 export interface AuthContextState {
   user?: User;
   loading: boolean;
-  logout: () => void;
 }
 
 // Create context
@@ -15,10 +12,7 @@ const AuthContext = createContext<AuthContextState>({} as AuthContextState);
 // Export the provider as we need to wrap the entire app with it
 export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element => {
   const { data: userData, loading: meLoading } = useMeQuery({});
-  const [logoutMutation] = useLogoutMutation();
   const [user, setUser] = useState<User>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
 
   // Check if there is a currently active session
   // when the provider is mounted for the first time.
@@ -32,14 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
       // @ts-ignore
       setUser(userData?.me?.user);
     }
-    setLoadingInitial(false);
-  }, [meLoading]);
-
-  // Call the logout endpoint and then remove the user
-  // from the state.
-  function logout() {
-    logoutMutation().then(() => setUser(undefined));
-  }
+  }, [userData, meLoading]);
 
   // Make the provider update only when it should.
   // We only want to force re-renders if the user,
@@ -53,15 +40,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }): JSX.Element
   const memoedValue = useMemo(
     () => ({
       user,
-      loading,
-      logout,
+      loading: meLoading,
     }),
-    [user, loading]
+    [user, meLoading]
   );
 
   // We only want to render the underlying app after we
   // assert for the presence of a current user.
-  return <AuthContext.Provider value={memoedValue}>{!loadingInitial && children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={memoedValue}>{children}</AuthContext.Provider>;
 };
 
 // Let's only export the `useAuth` hook instead of the context.
