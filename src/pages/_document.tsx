@@ -40,7 +40,11 @@ class AppDocument extends Document<DocumentRenderProps> {
     const { locale }: DocumentRenderProps = this.props;
     return (
       <Html lang={locale}>
-        <Head />
+        <Head>
+          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+          <script type="text/javascript" src="/static/color-mode-fix.js" />
+        </Head>
+
         <body>
           <ColorModeScript initialColorMode={mechaTheme.config.initialColorMode} />
           <Main />
