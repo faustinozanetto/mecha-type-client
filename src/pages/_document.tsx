@@ -10,8 +10,6 @@ import Document, {
   DocumentInitialProps,
   DocumentProps,
 } from 'next/document';
-import theme from '../styles/theme';
-import mechaTheme from '../styles/theme';
 
 /**
  * Additional props depending on our App
@@ -40,13 +38,9 @@ class AppDocument extends Document<DocumentRenderProps> {
     const { locale }: DocumentRenderProps = this.props;
     return (
       <Html lang={locale}>
-        <Head>
-          {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-          <script type="text/javascript" src="/static/color-mode-fix.js" />
-        </Head>
-
+        <Head />
         <body>
-          <ColorModeScript initialColorMode={mechaTheme.config.initialColorMode} />
+          {/* <ColorModeScript initialColorMode={mechaTheme.config.initialColorMode} /> */}
           <Main />
           <NextScript />
         </body>

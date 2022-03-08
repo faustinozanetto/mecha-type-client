@@ -5,11 +5,11 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 };
 
-const mechaTheme = extendTheme({
+const mechaTheme = {
   config,
   fonts: {
     heading: 'Poppins, sans-serif',
     body: 'Poppins, sans-serif',
   },
-});
+};
 export default mechaTheme;

@@ -15,7 +15,7 @@ import { __URI__ } from '@utils/constants';
 import { useApollo } from '@modules/core/apollo/ssg-apollo';
 import { ApolloProvider } from '@apollo/client';
 import cookies from 'cookies';
-import { ChakraWrapper } from '@modules/core/chakra/chakra-wrapper';
+import { ThemeWrapper } from '@modules/core/theme/theme-wrapper';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -33,7 +33,7 @@ const MechaApp = (props: AppProps) => {
   }, [router.events]);
 
   return (
-    <ChakraWrapper reqCookies={pageProps.cookies}>
+    <ThemeWrapper>
       <ApolloProvider client={apolloClient}>
         <AuthProvider>
           <TypingGameProvider>
@@ -55,7 +55,7 @@ const MechaApp = (props: AppProps) => {
           </TypingGameProvider>
         </AuthProvider>
       </ApolloProvider>
-    </ChakraWrapper>
+    </ThemeWrapper>
   );
 };
 
