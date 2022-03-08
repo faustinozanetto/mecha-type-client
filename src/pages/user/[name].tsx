@@ -62,16 +62,14 @@ const UserPage: React.FC<UserPageProps> = ({ countries, targetUser, parsedStats 
         seoImage: generateAvatarURl(targetUser),
       }}
     >
-      {targetUser && (
-        <UserProfile
-          user={loggedInUser}
-          targetUser={targetUser}
-          loading={false}
-          ownsPage={userOwnsPage}
-          parsedStats={parsedStats}
-          countries={countries}
-        />
-      )}
+      <UserProfile
+        user={loggedInUser}
+        targetUser={targetUser}
+        loading={false}
+        ownsPage={userOwnsPage}
+        parsedStats={parsedStats}
+        countries={countries}
+      />
     </LayoutCore>
   );
 };

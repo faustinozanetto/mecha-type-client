@@ -28,7 +28,8 @@ const UserProfileStats: React.FC<UserProfileStatsProps> = ({ loading, parsedStat
         spacing="0.5rem"
         padding="0.5rem"
         borderRadius="lg"
-        backgroundColor={useColorModeValue('gray.300', 'gray.700')}
+        bg={useColorModeValue('gray.100', 'gray.700')}
+        color={useColorModeValue('gray.700', 'gray.200')}
       >
         <UserStatCard
           title={t('stats-rank')}

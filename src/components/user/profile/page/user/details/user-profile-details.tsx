@@ -40,7 +40,8 @@ const UserProfileDetails: React.FC<UserProfileDetailsProps> = ({
       padding="1rem"
       borderRadius="2xl"
       boxShadow="xl"
-      backgroundColor={useColorModeValue('gray.300', 'gray.700')}
+      bg={useColorModeValue('gray.100', 'gray.700')}
+      color={useColorModeValue('gray.700', 'gray.200')}
     >
       <Flex flexDir={['column', 'column', 'column', 'row', 'row']} justifyContent="space-between">
         {targetUser && <UserAvatar imageUrl={generateAvatarURl(targetUser)} size={150} loading={loading} />}

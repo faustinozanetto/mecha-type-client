@@ -10,11 +10,7 @@ import Document, {
   DocumentInitialProps,
   DocumentProps,
 } from 'next/document';
-import { Cookies } from '@modules/core/cookies/types/cookies.types';
 import theme from '../styles/theme';
-// eslint-disable-next-line @next/next/no-script-in-document
-import Script from 'next/script';
-import { GoogleAnalytics } from '@components/google/google-analytics';
 
 /**
  * Additional props depending on our App
@@ -30,7 +26,6 @@ type DocumentRenderProps = Props & DocumentProps;
 
 class AppDocument extends Document<DocumentRenderProps> {
   static async getInitialProps(context: DocumentContext): Promise<DocumentGetInitialPropsOutput> {
-    const { query, req } = context;
     const initialProps: DocumentInitialProps = await Document.getInitialProps(context);
     const locale = context.locale;
 

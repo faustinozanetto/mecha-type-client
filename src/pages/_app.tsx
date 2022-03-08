@@ -13,7 +13,6 @@ import { AuthProvider } from '@contexts/UserContext';
 import mechaTheme from '@styles/theme';
 import TypingGameProvider from '@contexts/typing-game.context';
 import Script from 'next/script';
-import { DefaultSeo } from 'next-seo';
 import { __URI__ } from '@utils/constants';
 import { useApollo } from '@modules/core/apollo/ssg-apollo';
 import { ApolloProvider } from '@apollo/client';

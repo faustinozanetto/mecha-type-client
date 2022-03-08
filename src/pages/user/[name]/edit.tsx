@@ -36,11 +36,6 @@ const EditUserPage: React.FC<EditUserPageProps> = (props) => {
     return <h1>Loading...</h1>;
   }
 
-  // An error occurred
-  if (!targetUser || !loggedInUser) {
-    return <ErrorPage statusCode={404} />;
-  }
-
   return (
     <LayoutCore
       headProps={{
@@ -103,6 +98,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       },
     };
   }
+
   // An error ocurred
   return {
     props: {},

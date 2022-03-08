@@ -49,7 +49,7 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ ownsPage, loggedInUser
         variables: {
           input: {
             take: testPresetsVariables.input.take,
-            skip: 3 * testPresetsVariables.input.skip,
+            skip: 3 * pageCount,
             username: testPresetsVariables.input.username,
           },
         },

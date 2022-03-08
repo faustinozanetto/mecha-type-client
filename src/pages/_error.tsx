@@ -5,13 +5,15 @@ import { __URI__ } from '@utils/constants';
 
 import LandingLayout from 'layouts/landing/components/landing-layout';
 import LandingLayoutHead from 'layouts/landing/components/landing-layout-head';
-import PageNotFound from '@components/errors/page-not-found';
+import ErrorDetails from '@components/errors/error-details';
 
-interface NotFoundPageProps {
+interface ErrorPageProps {
   locale: string;
+  statusCode: number;
 }
 
-const NotFoundPage: React.FC<NotFoundPageProps> = ({}) => {
+const ErrorPage: React.FC<ErrorPageProps> = (props) => {
+  const { statusCode } = props;
   return (
     <LandingLayout
       head={LandingLayoutHead}
@@ -22,7 +24,7 @@ const NotFoundPage: React.FC<NotFoundPageProps> = ({}) => {
         seoCanonicalUrl: __URI__,
       }}
     >
-      <PageNotFound />
+      <ErrorDetails statusCode={statusCode} />
     </LandingLayout>
   );
 };
@@ -32,4 +34,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
 };
 
-export default NotFoundPage;
+export default ErrorPage;

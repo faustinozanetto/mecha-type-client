@@ -33,7 +33,7 @@ const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
       {/* Main container */}
       <Flex flexDir="column" minHeight="100vh" justifyContent="space-between" backgroundColor={mainContainerBG}>
         {/* Content */}
-        {error ? <Text>Error</Text> : <CoreLayoutContainer>{children}</CoreLayoutContainer>}
+        <CoreLayoutContainer>{children}</CoreLayoutContainer>
         {/* Footer */}
         <Footer />
       </Flex>

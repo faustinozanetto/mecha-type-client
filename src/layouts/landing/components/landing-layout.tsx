@@ -29,7 +29,7 @@ const LandingLayout: React.FC<LandingLayoutProps> = (props): JSX.Element => {
       {/* Main container */}
       <Flex flexDir="column" minHeight="100vh">
         {/* Content */}
-        {error ? <Text>Error</Text> : <LandingLayoutContainer>{children}</LandingLayoutContainer>}
+        <LandingLayoutContainer>{children}</LandingLayoutContainer>
         {/* Footer */}
         <Footer />
       </Flex>

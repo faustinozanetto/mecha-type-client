@@ -24,11 +24,6 @@ const UserFollowersPage: React.FC<UserFollowersPageProps> = (props) => {
     return <h1>Loading...</h1>;
   }
 
-  // An error occurred
-  if ((!targetUser || !loggedInUser) && !router.isFallback) {
-    return <ErrorPage statusCode={404} />;
-  }
-
   return (
     <LayoutCore
       headProps={{

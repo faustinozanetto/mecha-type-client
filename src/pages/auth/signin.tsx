@@ -35,7 +35,7 @@ const SignIn: React.FC<PracticePageProps> = ({ providers }) => {
         minHeight="100vh"
         centerContent
       >
-        {providers && <UserSignIn providers={providers} />}
+        <UserSignIn providers={providers} />
       </Container>
     </Flex>
   );
