@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { appWithTranslation } from 'next-i18next';
 import { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
+import { ChakraProvider, cookieStorageManager, localStorageManager } from '@chakra-ui/react';
 import GlobalStyles from '@styles/global-styles';
 import * as gtag from '@modules/core/adsense/google-tag';
 import '@fontsource/poppins';
@@ -14,6 +14,8 @@ import Script from 'next/script';
 import { __URI__ } from '@utils/constants';
 import { useApollo } from '@modules/core/apollo/ssg-apollo';
 import { ApolloProvider } from '@apollo/client';
+import cookies from 'cookies';
+import { ChakraWrapper } from '@modules/core/chakra/chakra-wrapper';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -33,8 +35,8 @@ const MechaApp = (props: AppProps) => {
   return (
     <ApolloProvider client={apolloClient}>
       <AuthProvider>
-        <TypingGameProvider>
-          <ChakraProvider theme={mechaTheme}>
+        <ChakraWrapper reqCookies={pageProps.cookies}>
+          <TypingGameProvider>
             <Script
               id="Adsense-id"
               async
@@ -50,11 +52,13 @@ const MechaApp = (props: AppProps) => {
             <GoogleAnalytics />
             <GlobalStyles />
             <Component {...pageProps} />
-          </ChakraProvider>
-        </TypingGameProvider>
+          </TypingGameProvider>
+        </ChakraWrapper>
       </AuthProvider>
     </ApolloProvider>
   );
 };
+
+
 
 export default appWithTranslation(MechaApp);

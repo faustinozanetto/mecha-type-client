@@ -10,7 +10,6 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 interface PracticePageProps {}
 
 const PracticePage: React.FC<PracticePageProps> = (props) => {
-  console.log(props);
   return (
     <LayoutCore
       head={CoreLayoutHead}
