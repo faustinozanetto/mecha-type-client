@@ -11,6 +11,7 @@ import Document, {
   DocumentProps,
 } from 'next/document';
 import theme from '../styles/theme';
+import mechaTheme from '../styles/theme';
 
 /**
  * Additional props depending on our App
@@ -41,7 +42,7 @@ class AppDocument extends Document<DocumentRenderProps> {
       <Html lang={locale}>
         <Head />
         <body>
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <ColorModeScript initialColorMode={mechaTheme.config.initialColorMode} />
           <Main />
           <NextScript />
         </body>

@@ -33,9 +33,9 @@ const MechaApp = (props: AppProps) => {
   }, [router.events]);
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <AuthProvider>
-        <ChakraWrapper reqCookies={pageProps.cookies}>
+    <ChakraWrapper reqCookies={pageProps.cookies}>
+      <ApolloProvider client={apolloClient}>
+        <AuthProvider>
           <TypingGameProvider>
             <Script
               id="Adsense-id"
@@ -53,12 +53,10 @@ const MechaApp = (props: AppProps) => {
             <GlobalStyles />
             <Component {...pageProps} />
           </TypingGameProvider>
-        </ChakraWrapper>
-      </AuthProvider>
-    </ApolloProvider>
+        </AuthProvider>
+      </ApolloProvider>
+    </ChakraWrapper>
   );
 };
-
-
 
 export default appWithTranslation(MechaApp);
