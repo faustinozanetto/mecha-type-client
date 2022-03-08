@@ -3,7 +3,7 @@ import { Box, Flex, Text, Grid, useColorModeValue } from '@chakra-ui/react';
 import Sidebar from '@components/sidebar/sidebar';
 import useAuth from '@contexts/UserContext';
 import Footer from '@components/footer/footer';
-import { LandingLayoutHeadProps } from './landing-layout-head';
+import LandingLayoutHead, { LandingLayoutHeadProps } from './landing-layout-head';
 import LandingLayoutContainer from './landing-layout-container';
 import LandingNavbar from '@components/landing/navbar/landing-navbar';
 
@@ -15,7 +15,7 @@ export interface LandingLayoutProps {
 }
 
 const LandingLayout: React.FC<LandingLayoutProps> = (props): JSX.Element => {
-  const { children, head: Head, headProps, error } = props;
+  const { children, head: Head = LandingLayoutHead, headProps, error } = props;
   const { user } = useAuth();
 
   return (

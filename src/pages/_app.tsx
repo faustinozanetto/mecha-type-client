@@ -54,30 +54,6 @@ const MechaApp = (props: AppProps) => {
                 />
                 <GoogleAnalytics />
                 <GlobalStyles />
-                {/* Default SEO */}
-                <DefaultSeo
-                  openGraph={{
-                    type: 'website',
-                    locale: router.locale,
-                    defaultImageHeight: 512,
-                    defaultImageWidth: 512,
-                    images: [
-                      {
-                        url: 'https://via.placeholder.com/800x600',
-                        alt: 'Mecha Type | The best place for improving your typing skills',
-                        width: 800,
-                        height: 600,
-                        type: 'image/png',
-                      },
-                    ],
-                    site_name: 'Mecha Type',
-                  }}
-                  twitter={{
-                    site: '@mechatype',
-                    cardType: 'summary_large_image',
-                    handle: '@handle',
-                  }}
-                />
                 <Component {...pageProps} />
               </ChakraProvider>
             </TypingGameProvider>

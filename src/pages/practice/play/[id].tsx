@@ -5,11 +5,9 @@ import ErrorPage from 'next/error';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { __URI__ } from '@utils/constants';
-import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 import LayoutCore from 'layouts/core/components/core-layout';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { Flex } from '@chakra-ui/react';
-import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
 import { useRouter } from 'next/router';
 
@@ -30,8 +28,6 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
   }
   return (
     <LayoutCore
-      head={CoreLayoutHead}
-      stickyFooter={true}
       headProps={{
         seoTitle: 'Practice | Mecha Type',
         seoDescription: 'Practice play page, test your skills on a specific Preset.',
@@ -54,7 +50,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const client = initializeApollo();
 
   try {
-    const { data: presetData, networkStatus } = await client.query<TestPresetQuery, TestPresetQueryVariables>({
+    const { data: presetData } = await client.query<TestPresetQuery, TestPresetQueryVariables>({
       query: TestPresetDocument,
       variables: {
         id: params.id as string,
@@ -86,4 +82,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export default withApollo(PracticePlayPage);
+export default PracticePlayPage;

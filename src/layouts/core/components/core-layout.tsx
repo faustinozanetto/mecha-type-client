@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Flex, Text, Grid, useColorModeValue } from '@chakra-ui/react';
-import { CoreLayoutHeadProps } from './core-layout-head';
+import CoreLayoutHead, { CoreLayoutHeadProps } from './core-layout-head';
 import CoreLayoutContainer from './core-layout-container';
 import Sidebar from '@components/sidebar/sidebar';
 import useAuth from '@contexts/UserContext';
@@ -10,12 +10,11 @@ export interface LayoutCoreProps {
   children: React.ReactNode;
   head?: React.FC<CoreLayoutHeadProps>;
   headProps?: CoreLayoutHeadProps;
-  stickyFooter?: boolean;
   error?: any;
 }
 
 const CoreLayout: React.FC<LayoutCoreProps> = (props): JSX.Element => {
-  const { children, head: Head, headProps, stickyFooter = false, error } = props;
+  const { children, head: Head = CoreLayoutHead, headProps, error } = props;
   const { user } = useAuth();
   const mainContainerBG = useColorModeValue('gray.200', 'gray.800');
 

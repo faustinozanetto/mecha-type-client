@@ -6,7 +6,6 @@ import { __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/core-layout';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import GoogleAds from '@components/google/google-ads';
-import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 
 interface PracticePageProps {}
 
@@ -37,4 +36,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
   };
 };
 
-export default withApollo(PracticePage);
+export default PracticePage;

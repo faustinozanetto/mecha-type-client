@@ -1,6 +1,5 @@
 import React from 'react';
 import { PresetCreationForm } from './preset-creation-form';
-import { UserFragment } from '@generated/graphql';
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 
 interface PresetCreationProps {
@@ -20,7 +19,7 @@ const PresetCreation: React.FC<PresetCreationProps> = ({ onCreatedCallback }) =>
       width="sm"
       backgroundColor={topBg}
     >
-      <PresetCreationForm  onCreatedCallback={onCreatedCallback} />
+      <PresetCreationForm onCreatedCallback={onCreatedCallback} />
     </Flex>
   );
 };

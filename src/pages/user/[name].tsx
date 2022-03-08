@@ -17,9 +17,7 @@ import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { generateAvatarURl, generateParsedStats, UserParsedStats } from '@modules/core/user/user';
 import { CountryEntry } from '@typings/user.types';
-import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import useAuth from '@contexts/UserContext';
-import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
 
 interface UserPageProps {
@@ -54,7 +52,6 @@ const UserPage: React.FC<UserPageProps> = ({ countries, targetUser, parsedStats 
 
   return (
     <LayoutCore
-      head={CoreLayoutHead}
       headProps={{
         seoTitle: `${targetUser?.username ?? usernameURI} | Mecha Type`,
         seoDescription: `${
@@ -137,4 +134,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export default withApollo(UserPage);
+export default UserPage;
