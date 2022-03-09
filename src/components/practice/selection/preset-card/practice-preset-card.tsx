@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TestPresetFragment, TestType } from 'generated/graphql';
+import { TestContent, TestPresetFragment, TestType } from 'generated/graphql';
 import { Flex, Image, Text, HStack, Button, useColorModeValue, Wrap } from '@chakra-ui/react';
 // import Image from 'next/image';
 import { PracticePresetCardStat } from './practice-preset-card-stat';
@@ -51,11 +51,16 @@ const PracticePresetCard: React.FC<PracticePresetCardProps> = ({ presetData }) =
       <Flex flexDir="column" padding="0 1rem 0.5rem">
         {/* Top */}
         <Wrap spacing={2} justify="center">
-          <PracticePresetCardStat text={presetData?.type?.toString()!} />
-          <PracticePresetCardStat text={capitalizeFirstLetter(presetData?.language?.toLowerCase()!)} />
-          {presetData?.type === TestType.Time && <PracticePresetCardStat text={`${presetData?.time}s`} />}
-          {presetData?.type === TestType.Words && <PracticePresetCardStat text={`${presetData?.words} words`} />}
-          {presetData?.punctuated && <PracticePresetCardStat text="Punctuated" />}
+          <PracticePresetCardStat>{presetData?.type}</PracticePresetCardStat>
+          <PracticePresetCardStat>{capitalizeFirstLetter(presetData?.language?.toLowerCase())}</PracticePresetCardStat>
+          {/* {presetData?.type === TestType.Time && (
+            <PracticePresetCardStat>{`${presetData?.time}s`}</PracticePresetCardStat>
+          )} */}
+          {presetData?.type === TestType.Words && presetData.content === TestContent.Random && (
+            <PracticePresetCardStat>{`${presetData?.words} words`}</PracticePresetCardStat>
+          )}
+          {presetData?.punctuated && <PracticePresetCardStat>Punctuated</PracticePresetCardStat>}
+          {presetData?.content && <PracticePresetCardStat>{presetData.content}</PracticePresetCardStat>}
         </Wrap>
       </Flex>
       <HStack padding="0 0.75rem 0.75rem">

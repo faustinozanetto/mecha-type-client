@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TestLanguage, TestPresetWhereInput, User, useTestPresetsQuery } from 'generated/graphql';
+import { TestContent, TestLanguage, TestPresetWhereInput, User, useTestPresetsQuery } from 'generated/graphql';
 import { Flex, Container, Text, SimpleGrid, useColorModeValue, Button, VStack, useToast } from '@chakra-ui/react';
 import PracticePresetCard from './preset-card/practice-preset-card';
 import { motion } from 'framer-motion';
@@ -19,6 +19,8 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
     filterWords: false,
     punctuated: false,
     filterPunctuated: false,
+    filterContent: false,
+    content: TestContent.Random,
   });
   const { data, loading, variables, refetch, fetchMore } = useTestPresetsQuery({
     variables: { input: { take: 3, skip: 0, where: { language: TestLanguage.English } } },
@@ -36,6 +38,9 @@ export const PracticePresetSelection: React.FC<PracticePresetSelectionProps> = (
       }
       if (values.filterPunctuated) {
         parsedInput.punctuated = values.punctuated;
+      }
+      if (values.filterContent) {
+        parsedInput.content = values.content;
       }
     }
     return parsedInput;

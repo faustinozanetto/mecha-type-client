@@ -45,8 +45,8 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
     >
       <Skeleton isLoaded={!loading} height="auto">
         <Text as="h3" color={useColorModeValue('black', 'white')} fontWeight={600} fontSize="1.1rem">
-          {preset.language} | {preset?.type} |{' '}
-          {preset.type === TestType.Words ? `${preset.words} words` : `${preset.time} seconds`}
+          {preset.language} | {preset?.type} | {preset.content} |
+          {preset.type === TestType.Words ? ` ${preset.words} words` : `${preset.time} seconds`}
         </Text>
       </Skeleton>
       <Skeleton isLoaded={!loading} marginLeft={4} height="auto"></Skeleton>

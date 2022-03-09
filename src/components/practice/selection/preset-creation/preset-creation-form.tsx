@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
-import { TestLanguage, TestType, useCreateTestPresetUserMutation, UserFragment } from '@generated/graphql';
+import { TestContent, TestLanguage, TestType, useCreateTestPresetUserMutation, UserFragment } from '@generated/graphql';
 import { useRouter } from 'next/router';
 import { Flex, useToast, Text, VStack, HStack, Button } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
@@ -12,6 +12,7 @@ import useAuth from '@contexts/UserContext';
 
 interface PresetCreationFormValues {
   type: TestType;
+  content: TestContent;
   language: TestLanguage;
   words: number;
   time: number;
@@ -20,6 +21,7 @@ interface PresetCreationFormValues {
 
 const validationSchema = Yup.object().shape({
   type: Yup.mixed().oneOf([TestType.Time, TestType.Words]).required('Please provide a test type!'),
+  content: Yup.mixed().oneOf(Object.values(TestContent)).required('Please provide a test content!'),
   language: Yup.mixed().oneOf([TestLanguage.English, TestLanguage.Spanish]).required('Please provide a test language'),
   words: Yup.number()
     .min(10, 'The amount of words should be more than 10!')
@@ -43,6 +45,7 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({}) => {
   const initialFormValues: PresetCreationFormValues = {
     type: TestType.Words,
     language: TestLanguage.English,
+    content: TestContent.Random,
     words: 25,
     time: 60,
     punctuated: false,
@@ -72,6 +75,7 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({}) => {
           variables: {
             data: {
               type: values.type,
+              content: values.content,
               words: words,
               time: time,
               language: values.language,
@@ -134,6 +138,15 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({}) => {
               >
                 <option value={TestLanguage.English}>English</option>
                 <option value={TestLanguage.Spanish}>Spanish</option>
+              </FormSelectInput>
+
+              {/* Content input */}
+              <FormSelectInput name="content" label="Test Content" selectProps={{ placeholder: 'Select Content' }}>
+                {Object.values(TestContent).map((content) => (
+                  <option key={content} value={content}>
+                    {content}
+                  </option>
+                ))}
               </FormSelectInput>
 
               {/* Words input */}

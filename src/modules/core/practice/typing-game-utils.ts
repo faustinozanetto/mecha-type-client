@@ -1,4 +1,4 @@
-import { TestContent, TestPreset } from '@generated/graphql';
+import { TestContent, TestPreset, TestPresetFragment } from '@generated/graphql';
 import { wordsBank } from './word-bank';
 
 /**
@@ -93,7 +93,7 @@ export const punctuateWord = (previousWord: string, currentWord: string, index: 
  * @param presetData Test Preset data to get data from
  * @returns the string containing all the generated text
  */
-export const generateTestPresetText = (presetData: TestPreset): string => {
+export const generateTestPresetText = async (presetData: TestPresetFragment): Promise<string> => {
   let text = '';
 
   if (presetData.content === TestContent.Random) {
@@ -127,7 +127,13 @@ export const generateTestPresetText = (presetData: TestPreset): string => {
     }
   } else {
     // Fetch random quote.
-    
+    const minLenght = presetData.words * 4;
+    const maxLenght = presetData.words * 7;
+    const data = await fetch(`https://api.quotable.io/random?minLength=${minLenght}&maxLength=${maxLenght}`, {}).then(
+      (res) => res.json()
+    );
+    // Pick a randome quote.
+    text = data.content;
   }
   return text;
 };

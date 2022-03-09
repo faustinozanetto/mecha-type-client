@@ -23,9 +23,10 @@ interface PracticeGameInputProps {
   loading: boolean;
   /** Preset to take data from */
   testPreset: TestPresetFragment;
+  textContent: string;
 }
 
-export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, testPreset }) => {
+export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, textContent, testPreset }) => {
   const letterElements = useRef<HTMLDivElement>(null);
   const caretRef = useRef<HTMLDivElement>(null);
   const toast = useToast();
@@ -48,7 +49,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const {
     states: { chars, charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping },
-  } = useTypingGame(generateTestPresetText(testPreset).trimEnd(), {
+  } = useTypingGame(textContent, {
     skipCurrentWordOnSpace: false,
     pauseOnError: userSettings?.userSettings?.userSettings?.pauseOnError,
   });
