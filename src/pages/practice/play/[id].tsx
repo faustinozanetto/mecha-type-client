@@ -30,7 +30,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
     <LayoutCore
       headProps={{
         seoTitle: 'Practice | Mecha Type',
-        seoDescription: 'Practice play page, test your skills on a specific Preset.',
+        seoDescription: `Practice preset, Type: ${preset.type}, Language: ${preset.language}, Punctuated: ${preset.punctuated}`,
         seoUrl: `${__URI__}/practice/play/${preset?.id}`,
       }}
     >

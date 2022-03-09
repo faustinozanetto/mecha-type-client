@@ -4,6 +4,7 @@ fragment TestPreset on TestPreset {
   type
   time
   language
+  content
   words
   punctuated
   creatorImage

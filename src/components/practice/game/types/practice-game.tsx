@@ -14,7 +14,7 @@ import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
 import PracticeVisualLetter from '../visual/practice-visual-letter';
 import PracticeResults from '@components/practice/results/practice-results';
 import { PracticeStatsEntry } from '@typings/practice.types';
-import { generateWords } from '@modules/core/practice/typing-game-utils';
+import { generateTestPresetText } from '@modules/core/practice/typing-game-utils';
 import useAuth from '@contexts/UserContext';
 import NewCaret from '@components/practice/caret/new-caret';
 import { useTypingGameContext } from '@contexts/typing-game.context';
@@ -48,7 +48,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const {
     states: { chars, charsState, currIndex, phase, correctChar, errorChar, spaceChar, keystrokes, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping },
-  } = useTypingGame(generateWords(testPreset).trimEnd(), {
+  } = useTypingGame(generateTestPresetText(testPreset).trimEnd(), {
     skipCurrentWordOnSpace: false,
     pauseOnError: userSettings?.userSettings?.userSettings?.pauseOnError,
   });

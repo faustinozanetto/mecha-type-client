@@ -1,4 +1,4 @@
-import { TestPresetFragment } from '@generated/graphql';
+import { TestContent, TestPreset } from '@generated/graphql';
 import { wordsBank } from './word-bank';
 
 /**
@@ -93,35 +93,41 @@ export const punctuateWord = (previousWord: string, currentWord: string, index: 
  * @param presetData Test Preset data to get data from
  * @returns the string containing all the generated text
  */
-export const generateWords = (presetData: TestPresetFragment): string => {
+export const generateTestPresetText = (presetData: TestPreset): string => {
   let text = '';
-  const wordsList: string[] = [];
 
-  // TODO: add support for selecting language.
-  const language = wordsBank.filter((word) => word.language === presetData?.language?.toLowerCase())[0];
+  if (presetData.content === TestContent.Random) {
+    const wordsList: string[] = [];
 
-  // Generating random word list from words file.
-  for (let i = 0; i < presetData?.words!; i++) {
-    // Generating random word.
-    let randomWord = language.words[Math.floor(Math.random() * language.words.length)];
-    // Getting previous word
-    const previousWord = wordsList[i - 1];
-    // TODO: add support for customizing punctuation mode.
-    // eslint-disable-next-line no-unmodified-loop-condition
-    while (
-      randomWord === previousWord ||
-      (!presetData.punctuated && randomWord === 'I') ||
-      randomWord.indexOf(' ') > -1
-    ) {
-      randomWord = language.words[Math.floor(Math.random() * language.words.length)];
+    // TODO: add support for selecting language.
+    const language = wordsBank.filter((word) => word.language === presetData?.language?.toLowerCase())[0];
+
+    // Generating random word list from words file.
+    for (let i = 0; i < presetData?.words!; i++) {
+      // Generating random word.
+      let randomWord = language.words[Math.floor(Math.random() * language.words.length)];
+      // Getting previous word
+      const previousWord = wordsList[i - 1];
+      // TODO: add support for customizing punctuation mode.
+      // eslint-disable-next-line no-unmodified-loop-condition
+      while (
+        randomWord === previousWord ||
+        (!presetData.punctuated && randomWord === 'I') ||
+        randomWord.indexOf(' ') > -1
+      ) {
+        randomWord = language.words[Math.floor(Math.random() * language.words.length)];
+      }
+      // Punctuate word if enabled
+      if (presetData.punctuated) {
+        randomWord = punctuateWord(previousWord, randomWord, i, presetData?.words!);
+      }
+      wordsList.push(randomWord);
+      // Adding it to the words list.
+      text = text.concat(`${randomWord} `);
     }
-    // Punctuate word if enabled
-    if (presetData.punctuated) {
-      randomWord = punctuateWord(previousWord, randomWord, i, presetData?.words!);
-    }
-    wordsList.push(randomWord);
-    // Adding it to the words list.
-    text = text.concat(`${randomWord} `);
+  } else {
+    // Fetch random quote.
+    
   }
   return text;
 };
