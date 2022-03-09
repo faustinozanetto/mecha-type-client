@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import * as Yup from 'yup';
 import { Formik, FormikProps } from 'formik';
-import { HStack, Flex, VStack, useToast, Text } from '@chakra-ui/react';
+import { HStack, Flex, VStack, useToast, Text, SliderMark } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
-import { FormCancelButton } from '@components/forms/form-cancel-button';
-import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
+import FormCheckboxInput from '@components/ui/forms/form-checkbox-input';
 import FormSliderInput from '@components/ui/forms/form-slider-input';
 import { roundTo2 } from '@modules/core/math/math';
 import { useRouter } from 'next/router';
 import { CaretStyle, UserSettings, useUpdateUserSettingsMutation } from '@generated/graphql';
 import { HexColorPicker } from 'react-colorful';
-import { FormControl } from '@components/ui/forms/form-control';
-import { FormSelectInput } from '@components/ui/forms/form-select-input';
+import FormControl from '@components/ui/forms/form-control';
+import FormSelectInput from '@components/ui/forms/form-select-input';
 
 interface EditUserPracticeFormProps {
-  /** Callback function to call when cancel button is clicked */
-  onCancelCallback: () => void;
   userId: string;
   userSettings: UserSettings;
 }
@@ -43,11 +40,7 @@ export interface EditUserPracticeFormValues {
   typeSoundsVolume: number;
 }
 
-export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
-  userSettings,
-  userId,
-  onCancelCallback,
-}) => {
+export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({ userSettings, userId }) => {
   const toast = useToast();
   const router = useRouter();
   const [color, setColor] = useState(userSettings?.caretColor);
@@ -94,126 +87,96 @@ export const EditUserPracticeForm: React.FC<EditUserPracticeFormProps> = ({
       {(props: FormikProps<EditUserPracticeFormValues>) => {
         const { handleSubmit, setValues, values } = props;
         return (
-          <Flex as="form" flexDir="column" maxWidth="100%" my={4} px={2} onSubmit={handleSubmit as any}>
+          <Flex as="form" flexDir="column" onSubmit={handleSubmit as any}>
             {/* Form Content */}
             <VStack alignItems="flex-start" mb={4}>
-              <Text as="h2" fontSize="3xl" fontWeight={600}>
+              <Text as="h2" fontSize="4xl" fontWeight={600}>
                 Practice Settings
               </Text>
 
               {/* Blind Mode Input */}
-              <Flex flexDir="column" width="100%">
-                <Text as="p" fontSize="md" fontWeight={500}>
-                  Enable or disable all the error colors, and focus on base speed.
-                </Text>
-                <FormCheckboxInput name="blindMode" sx={{ margin: '0.25rem !important' }}>
-                  Blind Mode
-                </FormCheckboxInput>
-              </Flex>
+              <FormCheckboxInput
+                name="blindMode"
+                sx={{ margin: '0.25rem !important' }}
+                helperText="Enable or disable all the error colors, and focus on base speed."
+              >
+                Blind Mode
+              </FormCheckboxInput>
 
               {/* Pause on Error Input */}
-              <Flex flexDir="column" width="100%">
-                <Text as="p" fontSize="md" fontWeight={500}>
-                  Enable or disable pause on error when a character is typed wrong.
-                </Text>
-                <FormCheckboxInput name="pauseOnError" sx={{ margin: '0.25rem !important' }}>
-                  Pause on Error
-                </FormCheckboxInput>
-              </Flex>
+              <FormCheckboxInput
+                name="pauseOnError"
+                sx={{ margin: '0.25rem !important' }}
+                helperText=" Enable or disable pause on error when a character is typed wrong."
+              >
+                Pause on Error
+              </FormCheckboxInput>
 
               {/* No Backspace Input */}
-              <Flex flexDir="column" width="100%">
-                <Text as="p" fontSize="md" fontWeight={500}>
-                  If enabled, user will not be able to delete characters.
-                </Text>
-                <FormCheckboxInput name="noBackspace" sx={{ margin: '0.25rem !important' }}>
-                  No Backspace
-                </FormCheckboxInput>
-              </Flex>
+              <FormCheckboxInput
+                name="noBackspace"
+                sx={{ margin: '0.25rem !important' }}
+                helperText="  If enabled, user will not be able to delete characters."
+              >
+                No Backspace
+              </FormCheckboxInput>
 
               {/* Caret Customization */}
-              <Flex flexDir="column" width="100%">
-                <Text as="p" fontSize="md" fontWeight={500} mb={2}>
-                  Customize the color of the Caret in Practice mode.
-                </Text>
-                <HStack>
-                  <FormControl name="caretColor">
-                    <HexColorPicker
-                      color={color}
-                      onChange={(newColor) => {
-                        setColor(newColor);
-                        setValues({ ...values, caretColor: newColor });
-                      }}
-                    />
-                  </FormControl>
-                  <Text as="span" backgroundColor={color}>
-                    {color}
-                  </Text>
-                </HStack>
-              </Flex>
+              <FormControl name="caretColor" helperText=" Customize the color of the Caret in Practice mode.">
+                <HexColorPicker
+                  color={color}
+                  onChange={(newColor) => {
+                    setColor(newColor);
+                    setValues({ ...values, caretColor: newColor });
+                  }}
+                />
+              </FormControl>
 
               {/* Caret style */}
-              <HStack display="flex" alignItems="center" justifyContent="center">
-                <FormSelectInput
-                  name="caretStyle"
-                  label="Caret Style"
-                  selectProps={{
-                    placeholder: 'Select Style',
-                  }}
-                >
-                  {Object.values(CaretStyle).map((style, index) => {
-                    return (
-                      <option key={index} value={style}>
-                        {style}
-                      </option>
-                    );
-                  })}
-                </FormSelectInput>
-              </HStack>
+              <FormSelectInput
+                name="caretStyle"
+                label="Caret Style"
+                helperText="Select the style of the Caret in Practice mode."
+                selectProps={{
+                  placeholder: 'Select Style',
+                }}
+              >
+                {Object.values(CaretStyle).map((style, index) => {
+                  return (
+                    <option key={index} value={style}>
+                      {style}
+                    </option>
+                  );
+                })}
+              </FormSelectInput>
 
               {/* Type Sounds Input */}
-              <Flex flexDir="column" width="100%">
-                <Text as="p" fontSize="md" fontWeight={500}>
-                  If enabled, a keypress sound will be played on key press.
-                </Text>
-                <FormCheckboxInput name="typeSounds" sx={{ margin: '0.25rem !important' }}>
-                  Type Sound
-                </FormCheckboxInput>
-              </Flex>
+              <FormCheckboxInput
+                name="typeSounds"
+                helperText=" If enabled, a keypress sound will be played on key press."
+              >
+                Type Sound
+              </FormCheckboxInput>
 
               {/* Type Sounds Volume Input */}
-              <Flex flexDir="column" width="100%">
-                <Text as="p" fontSize="md" fontWeight={500}>
-                  Controls the volume of the type sounds in a scale 0.1 to 5
-                </Text>
-                <HStack width="100%">
-                  <FormSliderInput
-                    name="typeSoundsVolume"
-                    sliderProps={{
-                      min: 0.1,
-                      step: 0.0001,
-                      max: 5,
-                      defaultValue: initialFormValues?.typeSoundsVolume,
-                      onChangeStart: (value) => setTypeSoundValue(value),
-                    }}
-                    sx={{ margin: '0.25rem !important' }}
-                  >
-                    Type Sound Volume
-                  </FormSliderInput>
-                  <Text as="p" fontSize="md" fontWeight={500}>
-                    {roundTo2(typeSoundValue)}
-                  </Text>
-                </HStack>
-              </Flex>
-            </VStack>
-            {/* Submit Form */}
-            <HStack>
+              <FormSliderInput
+                name="typeSoundsVolume"
+                label="Type Sounds Volume"
+                sliderMark={true}
+                sliderProps={{
+                  min: 0.1,
+                  step: 0.0001,
+                  max: 5,
+                  defaultValue: initialFormValues?.typeSoundsVolume,
+                }}
+                // @ts-ignore
+                onChange={(value) => setTypeSoundValue(value.target.value)}
+                helperText="   Controls the volume of the type sounds in a scale 0.1 to 5"
+                sx={{ margin: '0.25rem !important' }}
+              />
               {/* Submit button */}
               <FormSubmitButton width="50%">Save Changes</FormSubmitButton>
-              <FormCancelButton width="50%" onClick={onCancelCallback}>
-                Cancel
-              </FormCancelButton>
-            </HStack>
+            </VStack>
           </Flex>
         );
       }}

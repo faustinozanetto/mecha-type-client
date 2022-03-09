@@ -1,11 +1,11 @@
-import React, { FC, ForwardedRef } from 'react';
+import React, { ForwardedRef } from 'react';
 import { Input, InputProps } from '@chakra-ui/react';
-import { BaseProps, FormControl } from './form-control';
+import FormControl, { BaseFormProps } from './form-control';
 import { useField } from 'formik';
 
-export type FormInputProps = BaseProps & { inputProps?: InputProps };
+export type FormInputProps = BaseFormProps & { inputProps?: InputProps };
 
-export const FormInput: React.FC<FormInputProps> = React.forwardRef(
+const InputControl: React.FC<FormInputProps> = React.forwardRef(
   (props: FormInputProps, ref: ForwardedRef<HTMLInputElement>) => {
     const { name, label, inputProps, ...rest } = props;
     const [field] = useField(name);
@@ -18,4 +18,6 @@ export const FormInput: React.FC<FormInputProps> = React.forwardRef(
   }
 );
 
-FormInput.displayName = 'FormInput';
+InputControl.displayName = 'InputControl';
+
+export default InputControl;

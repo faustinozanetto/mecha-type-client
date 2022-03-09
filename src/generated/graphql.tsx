@@ -577,6 +577,7 @@ export type UserSettingsUpdateInput = {
 export type UserSettingsWhereInput = {
   id?: InputMaybe<Scalars['String']>;
   userId?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
 };
 
 export type UserTestPresetsHistoryInput = {

@@ -78,7 +78,7 @@ const NewCaret = React.forwardRef<HTMLDivElement, NewCaretProps>((props, ref) =>
       setColor({ background: settings.caretColor });
     } else {
       // If hollow set color to the border
-      setColor({ border: `1.5px solid ${settings.caretColor}`, background: 'transparent' });
+      setColor({ border: `2px solid ${settings.caretColor}`, background: 'transparent' });
     }
   }, [settings.caretColor, settings.caretStyle]);
 

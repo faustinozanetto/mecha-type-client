@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-document-import-in-page */
 import React from 'react';
-import { ColorModeScript } from '@chakra-ui/react';
 import Document, {
   Html,
   Head,
@@ -36,11 +35,11 @@ class AppDocument extends Document<DocumentRenderProps> {
 
   render() {
     const { locale }: DocumentRenderProps = this.props;
+
     return (
       <Html lang={locale}>
-        <Head />
+        <Head></Head>
         <body>
-          {/* <ColorModeScript initialColorMode={mechaTheme.config.initialColorMode} /> */}
           <Main />
           <NextScript />
         </body>

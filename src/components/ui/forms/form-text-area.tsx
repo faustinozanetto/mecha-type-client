@@ -1,9 +1,9 @@
 import React from 'react';
 import { Textarea, TextareaProps } from '@chakra-ui/react';
-import { BaseProps, FormControl } from './form-control';
+import FormControl, { BaseFormProps } from './form-control';
 import { useField } from 'formik';
 
-export type FormTextAreaProps = BaseProps & { textAreaProps?: TextareaProps };
+export type FormTextAreaProps = BaseFormProps & { textAreaProps?: TextareaProps };
 
 export const FormTextArea: React.FC<FormTextAreaProps> = (props) => {
   const { name, label, textAreaProps, ...rest } = props;

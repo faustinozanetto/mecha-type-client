@@ -7,6 +7,7 @@ import { UserStatCard } from '@components/user/profile/page/stats/user-stat-card
 import { Flex, Text, SimpleGrid, Button, Box, useColorModeValue } from '@chakra-ui/react';
 import { StatDonutChart } from './charts/stat-donut-chart';
 import { PracticeStatType, PracticeStatsEntry } from '@typings/practice.types';
+import { event } from '@modules/core/adsense/google-tag';
 
 interface PracticeResultsProps {
   showStats?: boolean;
@@ -36,6 +37,10 @@ const PracticeResults: React.FC<PracticeResultsProps> = ({
   statsData,
 }) => {
   const [currentGraph, setCurrentGraph] = useState<PracticeStatType>(PracticeStatType.WPM);
+
+  const submitResultToGoogle = () => {
+
+  }
 
   return (
     <Flex

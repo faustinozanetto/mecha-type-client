@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserFragment, UserSettings } from 'generated/graphql';
-import { Flex, GridItem, Grid, useColorModeValue } from '@chakra-ui/react';
+import { Flex, GridItem, VStack, useColorModeValue, Container, HStack } from '@chakra-ui/react';
 import { UserAvatar } from '../page/user/user-avatar';
 import { EditUserProfileForm } from './edit-user-profile-form';
 import { generateAvatarURl } from '@modules/core/user/user';
@@ -25,63 +25,36 @@ interface EditUserProfileProps {
 }
 
 const EditUserProfile: React.FC<EditUserProfileProps> = ({ user, loading, countries, userSettings }) => {
-  const topBg = useColorModeValue('gray.300', 'gray.700');
-  const [settingsType, setSettingsType] = useState<SettingsEdit>(SettingsEdit.UNSET);
-
   return (
-    <>
-      {settingsType === SettingsEdit.UNSET && (
-        <EditUserProfileSelection
-          onProfileSelected={() => {
-            setSettingsType(SettingsEdit.PROFILE);
-          }}
-          onPracticeSelected={() => {
-            setSettingsType(SettingsEdit.PRACTICE);
-          }}
-        />
-      )}
-      {settingsType === SettingsEdit.PROFILE && (
-        <Grid
-          templateRows="1fr"
-          templateColumns="1fr auto"
-          padding="1rem"
-          borderRadius="2xl"
-          boxShadow="xl"
-          justifyContent="space-between"
-          backgroundColor={topBg}
-        >
-          <GridItem rowSpan={2} pr={4}>
-            <Flex flexDir="column" maxWidth="3xl">
-              <EditUserProfileForm
-                user={user}
-                countries={countries}
-                onCancelCallback={() => setSettingsType(SettingsEdit.UNSET)}
-              />
-            </Flex>
-          </GridItem>
-          <GridItem display="flex">
-            <UserAvatar imageUrl={generateAvatarURl(user)} size={150} loading={loading} />
-          </GridItem>
-        </Grid>
-      )}
-      {settingsType === SettingsEdit.PRACTICE && (
+    <Container centerContent>
+      <VStack spacing={4}>
+        {/* Profile settings. */}
         <Flex
           flexDir="column"
           padding="1rem"
           borderRadius="2xl"
           boxShadow="xl"
-          justifyContent="space-between"
-          backgroundColor={topBg}
-          width="lg"
+          width="full"
+          bg={useColorModeValue('gray.100', 'gray.700')}
+          color={useColorModeValue('gray.700', 'gray.200')}
         >
-          <EditUserPracticeForm
-            userSettings={userSettings}
-            userId={user.id}
-            onCancelCallback={() => setSettingsType(SettingsEdit.UNSET)}
-          />
+          <EditUserProfileForm user={user} countries={countries} />
         </Flex>
-      )}
-    </>
+
+        {/* Practice settings */}
+        <Flex
+          flexDir="column"
+          padding="1rem"
+          borderRadius="2xl"
+          boxShadow="xl"
+          width="full"
+          bg={useColorModeValue('gray.100', 'gray.700')}
+          color={useColorModeValue('gray.700', 'gray.200')}
+        >
+          <EditUserPracticeForm userSettings={userSettings} userId={user.id} />
+        </Flex>
+      </VStack>
+    </Container>
   );
 };
 

@@ -15,9 +15,9 @@ import {
   SimpleGrid,
 } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
-import { FormSelectInput } from '@components/ui/forms/form-select-input';
+import FormSelectInput from '@components/ui/forms/form-select-input';
 import { FormNumberInput } from '@components/ui/forms/form-number-input';
-import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
+import FormCheckboxInput from '@components/ui/forms/form-checkbox-input';
 import FormSwitchInput from '@components/ui/forms/form-switch-input';
 import { parseNumber } from '@modules/core/math/math';
 
@@ -123,15 +123,13 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValues
           return (
             <Flex as="form" flexDir="column" width="full" onSubmit={handleSubmit as any}>
               <HStack alignItems="center" justifyContent="space-between" mb={2}>
-                <Text as="h2" fontWeight={600} fontSize="2xl">
+                <Text as="h2" fontWeight={600} fontSize="3xl">
                   Search for Presets
                 </Text>
-                {/* Submit button */}
-                <FormSubmitButton width="20%">Search</FormSubmitButton>
               </HStack>
 
               {/* Form Content */}
-              <SimpleGrid columns={3} spacing={4}>
+              <SimpleGrid columns={2} spacing={4}>
                 {/* Filter Language */}
                 <Box backgroundColor={filterFieldBG} width="100%" rounded="xl" p={2}>
                   <FormControl id="language" mr={2}>
@@ -202,6 +200,10 @@ export const PracticeSearchForm: React.FC<PracticeSearchFormProps> = ({ onValues
                   </FormControl>
                 </Box>
               </SimpleGrid>
+              {/* Submit button */}
+              <FormSubmitButton width="20%" mt={4}>
+                Search
+              </FormSubmitButton>
             </Flex>
           );
         }}

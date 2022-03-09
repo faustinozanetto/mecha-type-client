@@ -8,10 +8,10 @@ import {
   NumberInputProps,
   NumberInputStepper,
 } from '@chakra-ui/react';
-import { BaseProps, FormControl } from './form-control';
+import FormControl, { BaseFormProps } from './form-control';
 import { useField, useFormikContext } from 'formik';
 
-export type FormNumberInputProps = BaseProps & {
+export type FormNumberInputProps = BaseFormProps & {
   numberInputProps?: NumberInputProps;
   showStepper?: boolean;
   children?: ReactNode;

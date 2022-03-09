@@ -1,29 +1,44 @@
 import React from 'react';
 import {
   FormControl as ChakraFormControl,
-  FormLabel,
   FormErrorMessage,
+  FormErrorMessageProps,
   FormHelperText,
-  FormControlProps,
+  FormLabel,
+  FormLabelProps,
 } from '@chakra-ui/react';
+import { FormControlProps } from '@chakra-ui/react';
 import { useField } from 'formik';
 
-export interface BaseProps extends FormControlProps {
+export interface BaseFormProps extends FormControlProps {
   name: string;
   label?: string;
+  labelProps?: FormLabelProps;
   helperText?: string;
+  helperTextProps?: FormErrorMessageProps;
+  errorMessageProps?: FormErrorMessageProps;
 }
 
-export const FormControl: React.FC<BaseProps> = (props) => {
-  const { children, name, label, helperText, ...rest } = props;
+const FormControl: React.FC<BaseFormProps> = (props) => {
+  const { children, name, label, helperText, labelProps, helperTextProps, errorMessageProps, ...rest } = props;
   const [, { error, touched }] = useField(name);
 
   return (
     <ChakraFormControl isInvalid={!!error && touched} {...rest}>
-      {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
+      {/* Label */}
+      {label && (
+        <FormLabel htmlFor={name} {...labelProps}>
+          {label}
+        </FormLabel>
+      )}
+      {/* Children */}
       {children}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {/* Error */}
+      {error && <FormErrorMessage {...errorMessageProps}>{error}</FormErrorMessage>}
+      {/* Helper text */}
+      {helperText && <FormHelperText {...helperTextProps}>{helperText}</FormHelperText>}
     </ChakraFormControl>
   );
 };
+
+export default FormControl;

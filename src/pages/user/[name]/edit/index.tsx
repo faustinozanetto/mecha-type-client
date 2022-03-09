@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import LayoutCore from 'layouts/core/components/core-layout';
 import {
   User,
-  UserDocument,
-  UserQuery,
-  UserQueryVariables,
   UserSettings,
   UserSettingsDocument,
   UserSettingsQuery,
   UserSettingsQueryVariables,
   useUserSettingsQuery,
 } from 'generated/graphql';
-import ErrorPage from 'next/error';
 import { __URI__ } from '@utils/constants';
 import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -20,54 +16,42 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import EditUserProfile from '@components/user/profile/edit/edit-user-profile';
 import useAuth from '@contexts/UserContext';
 import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
-import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
 
 interface EditUserPageProps {
   countries: CountryEntry[];
+  settings: UserSettings;
 }
 
 const EditUserPage: React.FC<EditUserPageProps> = (props) => {
-  const { countries } = props;
   const router = useRouter();
-  const { user: loggedInUser } = useAuth();
-  const [userSettings, setUserSettings] = useState<UserSettings>();
-  const { data: userSettingsData, loading: userSettingsLoading } = useUserSettingsQuery({
-    variables: {
-      input: { userId: loggedInUser?.id },
-    },
-  });
-
-  useEffect(() => {
-    if (userSettingsData) {
-      setUserSettings(userSettingsData.userSettings.userSettings);
-    }
-  }, [userSettingsData]);
+  const { countries, settings } = props;
+  const { user, loading } = useAuth();
 
   // Content loading
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
 
+  // No user
+  // if (!user && !loading) {
+  //   router.push('/auth/signin');
+  // }
+
   return (
     <LayoutCore
       headProps={{
-        seoTitle: `Editing ${loggedInUser?.username} | Mecha Type`,
-        seoDescription: `${loggedInUser?.username}´s profile page, showing their stats and more information.`,
-        seoUrl: `${__URI__!}/user/${loggedInUser?.username}/edit`,
+        seoTitle: `Editing ${user?.username} | Mecha Type`,
+        seoDescription: `${user?.username}´s profile page, showing their stats and more information.`,
+        seoUrl: `${__URI__!}/user/${user?.username}/edit`,
       }}
     >
-      <EditUserProfile
-        user={loggedInUser}
-        loading={userSettingsLoading}
-        countries={countries}
-        userSettings={userSettings}
-      />
+      {user && <EditUserProfile user={user} loading={false} countries={countries} userSettings={settings} />}
     </LayoutCore>
   );
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { locale } = context;
+  const { locale, params } = context;
   // Countries data fetch.
   let names: CountryEntry[] = [];
   await fetch('https://restcountries.com/v3.1/all')
@@ -77,12 +61,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
         names.push({ name: country.name.common, flag: country.flags.svg });
       })
     );
+  const client = initializeApollo();
 
-  // Found user and return the rest of props.
+  const { data: settingsData } = await client.query<UserSettingsQuery, UserSettingsQueryVariables>({
+    query: UserSettingsDocument,
+    variables: {
+      input: { username: params.name as string },
+    },
+  });
+
   return {
     props: {
       ...(await serverSideTranslations(locale ?? 'en', ['user-profile', 'sidebar'])),
       countries: names ?? [],
+      settings: settingsData.userSettings.userSettings,
     },
   };
 };
@@ -94,4 +86,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export default withApollo(EditUserPage);
+export default EditUserPage;

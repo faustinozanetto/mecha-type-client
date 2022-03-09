@@ -15,27 +15,37 @@ const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
-  const enhancedFetch = (url: RequestInfo, init: RequestInit) => {
-    return fetch(url, {
+  const enhancedFetch = async (
+    url: RequestInfo,
+    init: RequestInit
+  ): Promise<Response extends null | undefined ? never : Response> => {
+    return await fetch(url, {
       ...init,
       headers: {
         ...init.headers,
-        'Access-Control-Allow-Origin': '*',
         Cookie: headers?.cookie ?? '',
       },
     }).then((response) => response);
   };
 
+  const errorLink: ApolloLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) =>
+        console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+      );
+    if (networkError) console.log(`[Network error]: ${networkError}. Backend is unreachable. Is it running?`);
+  });
+
+  const httpLink = new HttpLink({
+    uri: `${__BACKEND__}/graphql`,
+    credentials: 'include',
+    // fetch: enhancedFetch,
+  });
+
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: new HttpLink({
-      uri: `${__BACKEND__}/graphql`,
-      credentials: 'include',
-    }),
+    link: httpLink ?? errorLink,
     cache: new InMemoryCache({
-      possibleTypes: {
-        authenticatedItem: ['User'],
-      },
       typePolicies: {
         Query: {
           fields: {

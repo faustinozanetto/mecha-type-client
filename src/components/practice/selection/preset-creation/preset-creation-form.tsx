@@ -5,9 +5,9 @@ import { TestContent, TestLanguage, TestType, useCreateTestPresetUserMutation, U
 import { useRouter } from 'next/router';
 import { Flex, useToast, Text, VStack, HStack, Button } from '@chakra-ui/react';
 import { FormSubmitButton } from '@components/forms/form-submit-button';
-import { FormSelectInput } from '@components/ui/forms/form-select-input';
+import FormSelectInput from '@components/ui/forms/form-select-input';
 import { FormNumberInput } from '@components/ui/forms/form-number-input';
-import { FormCheckboxInput } from '@components/ui/forms/form-checkbox-input';
+import FormCheckboxInput from '@components/ui/forms/form-checkbox-input';
 import useAuth from '@contexts/UserContext';
 
 interface PresetCreationFormValues {

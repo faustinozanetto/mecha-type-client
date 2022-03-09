@@ -13,6 +13,7 @@ function initApolloClient(initialState) {
         credentials: 'include',
         fetch,
       }),
+      credentials: 'include',
       cache: new InMemoryCache().restore(initialState || {}),
     });
   }
