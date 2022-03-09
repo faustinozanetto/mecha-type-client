@@ -1,4 +1,4 @@
-query users($take: Int!) {
+query users($take: Int) {
   users(take: $take) {
     ...UsersResponse
   }

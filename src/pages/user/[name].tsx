@@ -6,6 +6,8 @@ import {
   UserDocument,
   UserQuery,
   UserQueryVariables,
+  UsersQuery,
+  UsersQueryVariables,
   UserTestPresetsHistoryDocument,
   UserTestPresetsHistoryQuery,
   UserTestPresetsHistoryQueryVariables,
@@ -19,6 +21,7 @@ import { generateAvatarURl, generateParsedStats, UserParsedStats } from '@module
 import { CountryEntry } from '@typings/user.types';
 import useAuth from '@contexts/UserContext';
 import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
+import { gql } from '@apollo/client';
 
 interface UserPageProps {
   /** Countries data */
@@ -115,6 +118,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         targetUser: userData.user.user,
         parsedStats: generateParsedStats(historyData.userTestPresetsHistory.testPresetHistory),
       },
+      revalidate: 60,
     };
   }
 
@@ -126,9 +130,29 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const client = initializeApollo();
+
+  const QUERY = gql`
+    query users($take: Int) {
+      users(take: $take) {
+        users {
+          username
+        }
+      }
+    }
+  `;
+
+  // Fetch all users usernames.
+  const { data: usersData } = await client.query<UsersQuery, UsersQueryVariables>({
+    query: QUERY,
+    variables: {},
+  });
+
+  const names = usersData.users.users.map((user) => ({ params: { name: user.username } }));
+
   return {
-    fallback: 'blocking',
-    paths: [],
+    fallback: true,
+    paths: names,
   };
 };
 

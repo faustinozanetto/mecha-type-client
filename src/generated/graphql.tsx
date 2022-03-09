@@ -308,7 +308,7 @@ export type QueryUserTestPresetsHistoryArgs = {
 
 
 export type QueryUsersArgs = {
-  take: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export type RequestFollowUserResponse = {
@@ -833,7 +833,7 @@ export type UserFollowersQueryVariables = Exact<{
 export type UserFollowersQuery = { __typename?: 'Query', userFollowers: { __typename?: 'UserFollowersResponse', count?: number | null, acceptedRequests?: number | null, pendingRequests?: number | null, pageInfo?: { __typename?: 'UserFollowersPageInfo', startCursor?: any | null, endCursor?: any | null, hasMore?: boolean | null } | null, edges?: Array<{ __typename?: 'UserFollowerEdge', cursor?: any | null, node?: { __typename?: 'UserFollower', id: string, username: string, authProvider?: AuthProvider | null, oauthId?: string | null, avatar: string, status?: FollowStatus | null, createdAt?: any | null, updatedAt?: any | null } | null }> | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
 
 export type UsersQueryVariables = Exact<{
-  take: Scalars['Int'];
+  take?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -1905,7 +1905,7 @@ export type UserFollowersQueryHookResult = ReturnType<typeof useUserFollowersQue
 export type UserFollowersLazyQueryHookResult = ReturnType<typeof useUserFollowersLazyQuery>;
 export type UserFollowersQueryResult = Apollo.QueryResult<UserFollowersQuery, UserFollowersQueryVariables>;
 export const UsersDocument = gql`
-    query users($take: Int!) {
+    query users($take: Int) {
   users(take: $take) {
     ...UsersResponse
   }
@@ -1928,7 +1928,7 @@ export const UsersDocument = gql`
  *   },
  * });
  */
-export function useUsersQuery(baseOptions: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
       }
