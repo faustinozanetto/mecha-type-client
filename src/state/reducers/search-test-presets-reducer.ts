@@ -1,5 +1,5 @@
 import { PracticeSearchValues } from '@components/practice/selection/search-input/practice-search.form';
-import { TestLanguage } from '@generated/graphql';
+import { TestContent, TestLanguage } from '@generated/graphql';
 import { ActionType } from 'state/action-types';
 import { Action } from 'state/actions';
 
@@ -7,6 +7,8 @@ export const initialState: PracticeSearchValues = {
   filterLanguage: true,
   filterPunctuated: false,
   filterWords: false,
+  filterContent: false,
+  content: TestContent.Random,
   language: TestLanguage.English,
   punctuated: false,
   words: 20,
