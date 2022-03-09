@@ -30,7 +30,6 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
     ssrMode: typeof window === 'undefined',
     link: new HttpLink({
       uri: `${__BACKEND__}/graphql`,
-
       credentials: 'include',
     }),
     cache: new InMemoryCache({

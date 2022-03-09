@@ -10,6 +10,7 @@ function initApolloClient(initialState) {
     globalApolloClient = new ApolloClient({
       link: new HttpLink({
         uri: `${__BACKEND__}/graphql`,
+        credentials: 'include',
         fetch,
       }),
       cache: new InMemoryCache().restore(initialState || {}),

@@ -33,7 +33,7 @@ const EditUserPage: React.FC<EditUserPageProps> = (props) => {
   const [userSettings, setUserSettings] = useState<UserSettings>();
   const { data: userSettingsData, loading: userSettingsLoading } = useUserSettingsQuery({
     variables: {
-      input: { userId: loggedInUser.id },
+      input: { userId: loggedInUser?.id },
     },
   });
 
