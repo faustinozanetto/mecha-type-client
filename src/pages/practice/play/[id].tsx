@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
 import {
   TestPreset,
@@ -17,17 +17,26 @@ import { PracticeTestDetails } from '@components/practice/game/practice-test-det
 import { Flex } from '@chakra-ui/react';
 import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
 import { useRouter } from 'next/router';
-import { generateTestPresetText } from '@modules/core/practice/typing-game-utils';
 import { gql } from '@apollo/client';
+import { generateTestPresetText } from '@modules/core/practice/typing-game-utils';
 
 interface PracticePlayPageProps {
   preset: TestPreset;
-  text: string;
 }
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
-  const { preset, text } = props;
+  const { preset } = props;
   const router = useRouter();
+  const [text, setText] = useState('');
+
+  useEffect(() => {
+    // We generate the text for the practice test.
+    const getText = async () => {
+      const generated = await generateTestPresetText(preset);
+      setText(generated);
+    };
+    getText();
+  }, []);
 
   if (router.isFallback) {
     return <h1>Loading...</h1>;
@@ -49,7 +58,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
           <PracticeTestDetails loading={preset === null} practiceTest={preset} />
         </Flex>
 
-        <PracticeGameInput loading={preset === null} textContent={text} testPreset={preset} />
+        {text && <PracticeGameInput loading={preset === null} textContent={text} testPreset={preset} />}
       </Flex>
     </LayoutCore>
   );
@@ -68,16 +77,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
     });
 
     if (presetData.testPreset.testPreset) {
-      // We generate the text for the practice test.
-      const text = await generateTestPresetText(presetData.testPreset.testPreset);
-
       // We found the preset.
       return {
         props: {
           locale,
           ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])),
           preset: presetData?.testPreset?.testPreset,
-          text: text,
         },
       };
     }

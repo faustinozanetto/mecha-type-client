@@ -43,11 +43,6 @@ const UserPage: React.FC<UserPageProps> = ({ countries, targetUser, parsedStats 
     }
   }, [targetUser, usernameURI, loggedInUser]);
 
-  // Content loading
-  if (router.isFallback) {
-    return <h1>Loading...</h1>;
-  }
-
   // An error occurred
   if (!targetUser) {
     return <ErrorPage statusCode={404} />;
