@@ -13,6 +13,8 @@ import { __URI__ } from '@utils/constants';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeWrapper } from '@modules/core/theme/theme-wrapper';
 import { useApollo } from '@modules/core/apollo/ssg-apollo';
+import { Loading } from '@components/loading/loading';
+import { withApollo } from '@modules/core/apollo/apollo';
 
 const MechaApp = (props: AppProps) => {
   const { Component, pageProps } = props;
@@ -29,32 +31,35 @@ const MechaApp = (props: AppProps) => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router.events]);
-
+  console.log(user);
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <ThemeWrapper>
-      <ApolloProvider client={apolloClient}>
-        <AuthProvider>
-          <TypingGameProvider>
-            <GoogleAnalytics />
-            <Script
-              id="Adsense-id"
-              async
-              strategy="afterInteractive"
-              onError={(e) => {
-                console.error('Script failed to load', e);
-              }}
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
-                process.env.NEXT_PUBLIC_GOOGLE_ADSENSE as string
-              }`}
-              crossOrigin="anonymous"
-            />
-            <GlobalStyles />
-            <Component {...pageProps} />
-          </TypingGameProvider>
-        </AuthProvider>
-      </ApolloProvider>
+      {/* <ApolloProvider client={apolloClient}> */}
+      <AuthProvider>
+        <TypingGameProvider>
+          <GoogleAnalytics />
+          <Script
+            id="Adsense-id"
+            async
+            strategy="afterInteractive"
+            onError={(e) => {
+              console.error('Script failed to load', e);
+            }}
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${
+              process.env.NEXT_PUBLIC_GOOGLE_ADSENSE as string
+            }`}
+            crossOrigin="anonymous"
+          />
+          <GlobalStyles />
+          <Component {...pageProps} user={user} />
+        </TypingGameProvider>
+      </AuthProvider>
+      {/* </ApolloProvider> */}
     </ThemeWrapper>
   );
 };
 
-export default appWithTranslation(MechaApp);
+export default withApollo()(appWithTranslation(MechaApp));

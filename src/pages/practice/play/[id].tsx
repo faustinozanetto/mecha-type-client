@@ -40,7 +40,7 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
   const { user } = useAuth();
   const router = useRouter();
   const { data: userSettingsData, loading: userSettingsLoading } = useUserSettingsQuery({
-    variables: { input: { userId: user?.id } },
+    variables: { input: { username: user?.username } },
     ssr: true,
   });
   const [userSettings, setUserSettings] = useState<UserSettings>();
