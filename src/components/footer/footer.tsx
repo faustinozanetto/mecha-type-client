@@ -44,18 +44,14 @@ const Footer: React.FC<FooterProps> = ({}) => {
             <Link href={'#'}>About us</Link>
             <Link href={'#'}>Blog</Link>
             <Link href={'#'}>Contact us</Link>
-            <Link href={'#'}>Pricing</Link>
-            <Link href={'#'}>Testimonials</Link>
           </Stack>
           <Stack align={'flex-start'}>
             <Text fontWeight={'500'} fontSize={'xl'} mb={2}>
               Support
             </Text>
-            <Link href={'#'}>Help Center</Link>
             <Link href={'#'}>Terms of Service</Link>
             <Link href={'#'}>Legal</Link>
             <Link href={'#'}>Privacy Policy</Link>
-            <Link href={'#'}>Satus</Link>
           </Stack>
         </SimpleGrid>
       </Container>

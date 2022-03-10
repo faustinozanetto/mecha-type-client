@@ -12,7 +12,6 @@ import Script from 'next/script';
 import { __URI__ } from '@utils/constants';
 import { ApolloProvider } from '@apollo/client';
 import { ThemeWrapper } from '@modules/core/theme/theme-wrapper';
-import { Loading } from '@components/loading/loading';
 import { useApollo } from '@modules/core/apollo/ssg-apollo';
 
 const MechaApp = (props: AppProps) => {
