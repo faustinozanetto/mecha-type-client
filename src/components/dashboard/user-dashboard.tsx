@@ -3,8 +3,8 @@ import { UserFragment } from 'generated/graphql';
 import { Flex, Text, Heading, useColorModeValue, SimpleGrid, GridItem } from '@chakra-ui/react';
 import { StatLineChart } from '@components/practice/results/charts';
 import { StatDonutChart } from '@components/practice/results/charts/stat-donut-chart';
-import { PracticeStatType, PracticeStatsEntry } from '@typings/practice.types';
 import useAuth from '@contexts/UserContext';
+import { PracticeStatsEntry, PracticeStatType } from '../../typings/practice.types';
 
 interface DashboardProps {}
 
