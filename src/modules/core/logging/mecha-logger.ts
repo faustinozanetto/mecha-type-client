@@ -1,3 +1,4 @@
+import { __PROD__ } from '@utils/constants';
 import { createSimpleLogger, SimpleLogger } from '@utils/logger/simple-logger';
 
 export const createLogger = ({ fileLabel }: { fileLabel: string }): SimpleLogger => {
@@ -9,7 +10,7 @@ export const createLogger = ({ fileLabel }: { fileLabel: string }): SimpleLogger
     prefix: fileLabel,
     shouldShowTime: () => true,
     shouldPrint: () => {
-      return !(process.env.NODE_ENV === 'production' && typeof window !== 'undefined');
+      return !(__PROD__ && typeof window !== 'undefined');
     },
   });
 };

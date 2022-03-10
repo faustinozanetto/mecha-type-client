@@ -1,12 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTimer } from '@hooks/timer/useTimer';
 import { useTypingGame } from '@hooks/typing/reducer/TypeReducer';
-import {
-  TestPresetFragment,
-  useUserCreateTestPresetHistoryEntryMutation,
-  useUserSettingsQuery,
-} from '@generated/graphql';
-import { Flex, SkeletonText, useColorModeValue, useToast, Box, Skeleton } from '@chakra-ui/react';
+import { TestPresetFragment, UserSettings, useUserCreateTestPresetHistoryEntryMutation } from '@generated/graphql';
+import { Flex, SkeletonText, useColorModeValue, useToast, Box } from '@chakra-ui/react';
 import { roundTo2 } from '@modules/core/math/math';
 import { useSound } from '@modules/core/sound/use-sound-hook';
 import { SoundType } from '@modules/core/sound/types/sound.types';
@@ -14,19 +10,24 @@ import { selectRandomTypeSound } from '@modules/core/sound/sounds-manager';
 import PracticeVisualLetter from '../visual/practice-visual-letter';
 import PracticeResults from '@components/practice/results/practice-results';
 import { PracticeStatsEntry } from '@typings/practice.types';
-import { generateTestPresetText } from '@modules/core/practice/typing-game-utils';
 import useAuth from '@contexts/UserContext';
 import NewCaret from '@components/practice/caret/new-caret';
 import { useTypingGameContext } from '@contexts/typing-game.context';
 
 interface PracticeGameInputProps {
   loading: boolean;
+  userSettings: UserSettings;
   /** Preset to take data from */
   testPreset: TestPresetFragment;
   textContent: string;
 }
 
-export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, textContent, testPreset }) => {
+export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({
+  loading,
+  userSettings,
+  textContent,
+  testPreset,
+}) => {
   const letterElements = useRef<HTMLDivElement>(null);
   const caretRef = useRef<HTMLDivElement>(null);
   const toast = useToast();
@@ -39,11 +40,6 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
   const [isFocused, setIsFocused] = useState(false);
   const [typeSound, setTypeSound] = useState<SoundType>(selectRandomTypeSound());
   const [play] = useSound(typeSound?.filePath, { volume: typeSound?.volume, id: 'type-sound' });
-  const { data: userSettings, loading: userSettingsLoading } = useUserSettingsQuery({
-    ssr: true,
-    skip: user === null,
-    variables: { input: { userId: user?.id } },
-  });
   const bgColor = useColorModeValue('gray.300', 'gray.900');
 
   const {
@@ -51,7 +47,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     actions: { insertTyping, deleteTyping, resetTyping },
   } = useTypingGame(textContent, {
     skipCurrentWordOnSpace: false,
-    pauseOnError: userSettings?.userSettings?.userSettings?.pauseOnError,
+    pauseOnError: userSettings.pauseOnError,
   });
 
   // Caret cursor positioning
@@ -176,14 +172,14 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
     if (phase !== 2) {
       if (letter === 'Escape') {
         resetTyping();
-      } else if (letter === 'Backspace' && !userSettings?.userSettings?.userSettings?.noBackspace) {
+      } else if (letter === 'Backspace' && !userSettings.noBackspace) {
         deleteTyping(control);
-        if (userSettings?.userSettings?.userSettings?.typeSounds) {
+        if (userSettings.typeSounds) {
           play();
         }
       } else if (letter.length === 1) {
         insertTyping(letter);
-        if (userSettings?.userSettings?.userSettings?.typeSounds) {
+        if (userSettings.typeSounds) {
           play();
         }
       }
@@ -217,13 +213,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
       >
         <SkeletonText isLoaded={!loading && testPreset !== null} noOfLines={4}>
           {phase !== 2 && (
-            <NewCaret
-              ref={caretRef}
-              left={pos?.left}
-              top={pos?.top}
-              playFlashAnim={true}
-              settings={userSettings?.userSettings?.userSettings}
-            />
+            <NewCaret ref={caretRef} left={pos?.left} top={pos?.top} playFlashAnim={true} settings={userSettings} />
           )}
 
           {/* Words container */}
@@ -234,7 +224,7 @@ export const PracticeGameInput: React.FC<PracticeGameInputProps> = ({ loading, t
               return (
                 <PracticeVisualLetter
                   key={letter + index}
-                  shouldShowErrors={!userSettings?.userSettings?.userSettings?.blindMode}
+                  shouldShowErrors={!userSettings.blindMode}
                   correct={state === 1}
                   incorrect={state === 2}
                   highlight={false}

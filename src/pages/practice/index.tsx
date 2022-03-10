@@ -1,15 +1,17 @@
 import React from 'react';
 import { PracticePresetSelection } from '@components/practice/selection';
-import { __URI__ } from '@utils/constants';
+import { __PROD__, __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/core-layout';
 import CoreLayoutHead from 'layouts/core/components/core-layout-head';
 import GoogleAds from '@components/google/google-ads';
-import { GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-interface PracticePageProps {}
+interface PracticePageProps {
+  date: string;
+}
 
-const PracticePage: React.FC<PracticePageProps> = (props) => {
+const PracticePage: React.FC<PracticePageProps> = ({ date }) => {
   return (
     <LayoutCore
       head={CoreLayoutHead}
@@ -20,6 +22,7 @@ const PracticePage: React.FC<PracticePageProps> = (props) => {
         seoCanonicalUrl: `${__URI__}/practice`,
       }}
     >
+      <h1>created on {date}</h1>
       <PracticePresetSelection />
       <GoogleAds />
     </LayoutCore>
@@ -28,7 +31,13 @@ const PracticePage: React.FC<PracticePageProps> = (props) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { locale } = context;
-  return { props: { ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])) } };
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])),
+      date: new Date().toTimeString(),
+    },
+    revalidate: 5,
+  };
 };
 
 export default PracticePage;

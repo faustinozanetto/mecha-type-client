@@ -1,32 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { PracticeGameInput } from '@components/practice/game/types';
 import {
+  MeDocument,
+  MeQuery,
+  MeQueryVariables,
   TestPreset,
+  TestPresetAllDocument,
+  TestPresetAllQuery,
+  TestPresetAllQueryVariables,
   TestPresetDocument,
   TestPresetQuery,
   TestPresetQueryVariables,
   TestPresetsQuery,
   TestPresetsQueryVariables,
+  User,
+  UserSettings,
+  useUserSettingsQuery,
 } from 'generated/graphql';
 import ErrorPage from 'next/error';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { __URI__ } from '@utils/constants';
+import { __PROD__, __URI__ } from '@utils/constants';
 import LayoutCore from 'layouts/core/components/core-layout';
 import { PracticeTestDetails } from '@components/practice/game/practice-test-details';
 import { Flex } from '@chakra-ui/react';
 import { initializeApollo } from '@modules/core/apollo/ssg-apollo';
 import { useRouter } from 'next/router';
-import { gql } from '@apollo/client';
 import { generateTestPresetText } from '@modules/core/practice/typing-game-utils';
+import { withApollo } from '@modules/core/apollo/ssg-apollo-hoc';
+import useAuth from '@contexts/UserContext';
 
 interface PracticePlayPageProps {
   preset: TestPreset;
+  date: string;
 }
 
 const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
-  const { preset } = props;
+  const { preset, date } = props;
+  const { user } = useAuth();
   const router = useRouter();
+  const { data: userSettingsData, loading: userSettingsLoading } = useUserSettingsQuery({
+    variables: { input: { userId: user?.id } },
+    ssr: true,
+  });
+  const [userSettings, setUserSettings] = useState<UserSettings>();
   const [text, setText] = useState('');
 
   useEffect(() => {
@@ -36,15 +53,18 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
       setText(generated);
     };
     getText();
-  }, []);
+  }, [preset]);
+
+  useEffect(() => {
+    if (userSettingsData) {
+      setUserSettings(userSettingsData.userSettings.userSettings);
+    }
+  }, [userSettingsData, userSettingsLoading]);
 
   if (router.isFallback) {
     return <h1>Loading...</h1>;
   }
 
-  if (!preset) {
-    return <ErrorPage statusCode={404} />;
-  }
   return (
     <LayoutCore
       headProps={{
@@ -53,12 +73,20 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
         seoUrl: `${__URI__}/practice/play/${preset?.id}`,
       }}
     >
+      This site was generated on {date}
       <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
         <Flex flexDir="column" width="100%">
-          <PracticeTestDetails loading={preset === null} practiceTest={preset} />
+          <PracticeTestDetails loading={userSettingsLoading} practiceTest={preset} />
         </Flex>
 
-        {text && <PracticeGameInput loading={preset === null} textContent={text} testPreset={preset} />}
+        {text && userSettings && (
+          <PracticeGameInput
+            loading={userSettingsLoading}
+            userSettings={userSettings}
+            textContent={text}
+            testPreset={preset}
+          />
+        )}
       </Flex>
     </LayoutCore>
   );
@@ -83,7 +111,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
           locale,
           ...(await serverSideTranslations(locale ?? 'en', ['common', 'sidebar'])),
           preset: presetData?.testPreset?.testPreset,
+          date: new Date().toTimeString(),
         },
+        revalidate: 60,
       };
     }
   } catch (error) {
@@ -97,37 +127,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   // Fetch all presets.
   const client = initializeApollo();
-
-  const QUERY = gql`
-    query testPresets($input: TestPresetsFindInput!) {
-      testPresets(input: $input) {
-        edges {
-          node {
-            id
-          }
-        }
-      }
-    }
-  `;
-
   // TODO: Make take amount not required.
-  const { data: presetsData } = await client.query<TestPresetsQuery, TestPresetsQueryVariables>({
-    query: QUERY,
-    variables: { input: { take: 50000, skip: 0, where: {} } },
+  const { data: presetsData } = await client.query<TestPresetAllQuery, TestPresetAllQueryVariables>({
+    query: TestPresetAllDocument,
   });
 
-  if (presetsData.testPresets.edges.length > 0) {
-    const paths = presetsData.testPresets.edges.map((edge) => ({ params: { id: edge.node.id } }));
+  if (presetsData.testPresetAll.length > 0) {
+    const paths = presetsData.testPresetAll.map((edge) => ({ params: { id: edge?.id } }));
     return {
       paths,
-      fallback: false,
+      fallback: true,
     };
   }
 
   return {
-    fallback: 'blocking',
+    fallback: true,
     paths: [],
   };
 };
 
-export default PracticePlayPage;
+export default withApollo(PracticePlayPage);

@@ -8,7 +8,8 @@
   "scripts": {
     "start:dev": "ts-node --project tsconfig.server.json -r tsconfig-paths/register server/index.ts",
     "start:tunnel": "ngrok http 3000",
-    "start:prod": "cross-env NODE_ENV=production next start",
+    "start:prod": "cross-env APP_ENV=production next start",
+    "start:build:dev": "cross-env APP_ENV=development next start",
     "build": "yarn next build",
     "build:fast": "next build",
     "test": "cross-env NODE_ENV=test jest --watch",

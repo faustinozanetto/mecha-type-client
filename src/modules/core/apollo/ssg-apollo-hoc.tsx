@@ -1,5 +1,5 @@
 import { ApolloClient, ApolloProvider, from, HttpLink, InMemoryCache } from '@apollo/client';
-import { __BACKEND__ } from '@utils/constants';
+import { __BACKEND__, __PROD__ } from '@utils/constants';
 import { NextComponentType, NextPageContext } from 'next';
 
 // @ts-ignore
@@ -52,7 +52,7 @@ export function withApollo(PageComponent: NextComponentType<NextPageContext, any
   }
 
   // Set the correct displayName in development
-  if (process.env.NODE_ENV !== 'production') {
+  if (!__PROD__) {
     const displayName = PageComponent.displayName || PageComponent.name || 'Component';
 
     WithApollo.displayName = `withApollo(${displayName})`;

@@ -50,6 +50,12 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({}) => {
     time: 60,
     punctuated: false,
   };
+
+  async function handleRevalidate(presetID: string) {
+    console.log('reva');
+    await fetch(`/api/revalidate?secret=${process.env.REVALIDATE_TOKEN as string}&preset=${presetID}`);
+  }
+
   return (
     <Formik
       initialValues={initialFormValues}
@@ -102,6 +108,7 @@ export const PresetCreationForm: React.FC<PresetCreationFormProps> = ({}) => {
             status: 'success',
             position: 'bottom-right',
           });
+          await handleRevalidate(response.data.createTestPresetUser.testPreset.id);
           router.push(`/practice/play/${response.data?.createTestPresetUser?.testPreset?.id}`);
         }
       }}

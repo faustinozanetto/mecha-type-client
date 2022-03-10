@@ -24,7 +24,7 @@ export type TimeFormat = () => string;
  * This is useful when dealing with multi stages (dev, staging, production) and you want to enable logs on all stages but not for production.
  */
 export const shouldPrintFallback: ShouldPrint = (): boolean => {
-  return process.env.NODE_ENV !== 'production';
+  return process.env.APP_ENV !== 'production';
 };
 
 /**

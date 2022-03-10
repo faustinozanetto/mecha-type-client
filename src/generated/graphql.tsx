@@ -251,6 +251,7 @@ export type Query = {
   followUserStatus: FollowUserStatusResponse;
   me: UserResponse;
   testPreset: TestPresetResponse;
+  testPresetAll: Array<TestPreset>;
   testPresets: TestPresetsResponse;
   user: UserResponse;
   userFollowers: UserFollowersResponse;
@@ -777,6 +778,11 @@ export type TestPresetQueryVariables = Exact<{
 
 
 export type TestPresetQuery = { __typename?: 'Query', testPreset: { __typename?: 'TestPresetResponse', testPreset?: { __typename?: 'TestPreset', id: string, userId?: string | null, type?: TestType | null, time?: number | null, language?: TestLanguage | null, content?: TestContent | null, words?: number | null, punctuated?: boolean | null, creatorImage?: string | null, createdAt?: any | null, updatedAt?: any | null } | null, errors?: Array<{ __typename?: 'ErrorResponse', field: string, message: string }> | null } };
+
+export type TestPresetAllQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TestPresetAllQuery = { __typename?: 'Query', testPresetAll: Array<{ __typename?: 'TestPreset', id: string }> };
 
 export type TestPresetsQueryVariables = Exact<{
   input: TestPresetsFindInput;
@@ -1625,6 +1631,40 @@ export function useTestPresetLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type TestPresetQueryHookResult = ReturnType<typeof useTestPresetQuery>;
 export type TestPresetLazyQueryHookResult = ReturnType<typeof useTestPresetLazyQuery>;
 export type TestPresetQueryResult = Apollo.QueryResult<TestPresetQuery, TestPresetQueryVariables>;
+export const TestPresetAllDocument = gql`
+    query testPresetAll {
+  testPresetAll {
+    id
+  }
+}
+    `;
+
+/**
+ * __useTestPresetAllQuery__
+ *
+ * To run a query within a React component, call `useTestPresetAllQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTestPresetAllQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTestPresetAllQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTestPresetAllQuery(baseOptions?: Apollo.QueryHookOptions<TestPresetAllQuery, TestPresetAllQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TestPresetAllQuery, TestPresetAllQueryVariables>(TestPresetAllDocument, options);
+      }
+export function useTestPresetAllLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TestPresetAllQuery, TestPresetAllQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TestPresetAllQuery, TestPresetAllQueryVariables>(TestPresetAllDocument, options);
+        }
+export type TestPresetAllQueryHookResult = ReturnType<typeof useTestPresetAllQuery>;
+export type TestPresetAllLazyQueryHookResult = ReturnType<typeof useTestPresetAllLazyQuery>;
+export type TestPresetAllQueryResult = Apollo.QueryResult<TestPresetAllQuery, TestPresetAllQueryVariables>;
 export const TestPresetsDocument = gql`
     query testPresets($input: TestPresetsFindInput!) {
   testPresets(input: $input) {
