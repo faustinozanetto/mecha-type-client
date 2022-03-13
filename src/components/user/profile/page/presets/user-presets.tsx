@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { UserPresetCard } from './user-preset-card';
-import { TestPresetFragment, useTestPresetsQuery, useUserTestPresetsQuery } from '@generated/graphql';
+import { TestPresetFragment, User, useUserTestPresetsQuery } from '@generated/graphql';
 import { useTranslation } from 'next-i18next';
 import { Flex, Text, VStack, useColorModeValue, Skeleton, Button, Box } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -8,12 +8,12 @@ import { motion } from 'framer-motion';
 interface UserPresetsProps {
   /** Wether the current logged in user owns the user page or not */
   ownsPage: boolean;
-  loggedInUsername: string;
+  user: User;
   /** Wether content is loading or not */
   loading: boolean;
 }
 
-export const UserPresets: React.FC<UserPresetsProps> = ({ ownsPage, loggedInUsername, loading }) => {
+export const UserPresets: React.FC<UserPresetsProps> = ({ ownsPage, user, loading }) => {
   const { t } = useTranslation('user-profile');
   const textColor = useColorModeValue('black', 'white');
   const [pageCount, setPageCount] = useState(0);
@@ -27,7 +27,7 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ ownsPage, loggedInUser
   } = useUserTestPresetsQuery({
     variables: {
       input: {
-        username: loggedInUsername,
+        username: user.username,
         take: 3,
         skip: 0,
       },
@@ -93,12 +93,7 @@ export const UserPresets: React.FC<UserPresetsProps> = ({ ownsPage, loggedInUser
                   transition={{ duration: 0.3, delay: index * 0.15 }}
                   style={{ width: '100%' }}
                 >
-                  <UserPresetCard
-                    preset={preset}
-                    ownsPage={ownsPage}
-                    loggedInUsername={loggedInUsername}
-                    loading={loading}
-                  />
+                  <UserPresetCard preset={preset} ownsPage={ownsPage} loading={loading} />
                 </motion.div>
               );
             }

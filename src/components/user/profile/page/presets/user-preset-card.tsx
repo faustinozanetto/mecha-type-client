@@ -22,12 +22,11 @@ interface UserPresetCardProps {
   preset: TestPresetFragment;
   /** Wether the current logged in user owns the user page or not */
   ownsPage: boolean;
-  loggedInUsername: string;
   /** Wether content is loading or not */
   loading: boolean;
 }
 
-export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedInUsername, ownsPage, loading }) => {
+export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, ownsPage, loading }) => {
   const toast = useToast();
   const { user } = useAuth();
   const [copyPresetToUser] = useCopyPresetToUserMutation();
@@ -65,7 +64,7 @@ export const UserPresetCard: React.FC<UserPresetCardProps> = ({ preset, loggedIn
                 variables: {
                   input: {
                     presetId: preset.id,
-                    user: { username: loggedInUsername },
+                    user: { username: user.username },
                   },
                 },
               });

@@ -61,27 +61,23 @@ const PracticePlayPage: React.FC<PracticePlayPageProps> = (props) => {
     }
   }, [userSettingsData, userSettingsLoading]);
 
-  if (router.isFallback) {
-    return <h1>Loading...</h1>;
-  }
-
   return (
     <LayoutCore
       headProps={{
         seoTitle: 'Practice | Mecha Type',
-        seoDescription: `Practice preset, Type: ${preset.type}, Language: ${preset.language}, Punctuated: ${preset.punctuated}`,
+        seoDescription: `Practice preset, Type: ${preset?.type}, Language: ${preset?.language}, Punctuated: ${preset?.punctuated}`,
         seoUrl: `${__URI__}/practice/play/${preset?.id}`,
       }}
     >
       This site was generated on {date}
       <Flex flexDir="column" maxWidth={['xl', '2xl', '3xl', '4xl']}>
         <Flex flexDir="column" width="100%">
-          <PracticeTestDetails loading={userSettingsLoading} practiceTest={preset} />
+          <PracticeTestDetails loading={router.isFallback} practiceTest={preset} />
         </Flex>
 
         {text && userSettings && (
           <PracticeGameInput
-            loading={userSettingsLoading}
+            loading={router.isFallback}
             userSettings={userSettings}
             textContent={text}
             testPreset={preset}

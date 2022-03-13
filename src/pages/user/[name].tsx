@@ -43,31 +43,26 @@ const UserPage: React.FC<UserPageProps> = ({ countries, targetUser, parsedStats 
     }
   }, [targetUser, usernameURI, loggedInUser]);
 
-  // An error occurred
-  if (!targetUser) {
-    return <ErrorPage statusCode={404} />;
-  }
-
   return (
     <LayoutCore
       headProps={{
-        seoTitle: `${targetUser?.username ?? usernameURI} | Mecha Type`,
-        seoDescription: `${
-          targetUser?.username ?? usernameURI
-        }´s profile page, showing their stats and more information.`,
-        seoUrl: `${__URI__!}/user/${targetUser?.username}`,
+        seoTitle: `${usernameURI} | Mecha Type`,
+        seoDescription: `${usernameURI}´s profile page, showing their stats and more information.`,
+        seoUrl: `${__URI__!}/user/${usernameURI}`,
         seoCanonicalUrl: `${__URI__!}/user`,
         seoImage: generateAvatarURl(targetUser),
       }}
     >
-      <UserProfile
-        user={loggedInUser}
-        targetUser={targetUser}
-        loading={false}
-        ownsPage={userOwnsPage}
-        parsedStats={parsedStats}
-        countries={countries}
-      />
+      {targetUser && (
+        <UserProfile
+          user={loggedInUser}
+          targetUser={targetUser}
+          loading={router.isFallback}
+          ownsPage={userOwnsPage}
+          parsedStats={parsedStats}
+          countries={countries}
+        />
+      )}
     </LayoutCore>
   );
 };

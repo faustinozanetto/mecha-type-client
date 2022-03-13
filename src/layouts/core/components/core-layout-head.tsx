@@ -18,7 +18,7 @@ const CoreLayoutHead: React.FC<CoreLayoutHeadProps> = (props): JSX.Element => {
     seoTitle,
     seoUrl,
     seoCanonicalUrl,
-    seoImage = 'https://www.1zoom.me/prev/323/322504.jpg',
+    seoImage = __URI__ + '/images/icons/mecha-type-icon512x512.png',
     seoDescription,
     seoFavIcon = '/images/icons/mecha-type-icon256x256.png',
   } = props;

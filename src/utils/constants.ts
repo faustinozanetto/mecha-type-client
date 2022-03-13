@@ -13,7 +13,7 @@ export const __BACKEND__: string = __PROD__ ? 'https://mecha-type-api.herokuapp.
 /**
  * @returns the uri of the web app.
  */
-export const __URI__: string = __PROD__ ? 'https://mechatype.vercel.app' : 'http://localhost:3000';
+export const __URI__: string = __PROD__ ?  'https://mechatype.vercel.app' : 'http://localhost:3000';
 
 /**
  * @returns wether it is a server or not.

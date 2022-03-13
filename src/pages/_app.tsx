@@ -31,7 +31,6 @@ const MechaApp = (props: AppProps) => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router.events]);
-  console.log(user);
   if (loading) {
     return <Loading />;
   }

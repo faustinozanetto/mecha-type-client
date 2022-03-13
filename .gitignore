@@ -10,6 +10,10 @@
 .AppleDouble
 .LSOverride
 
+/public/robots.txt
+/public/sitemap.xml
+/public/sitemap-0.xml
+
 # Icon must end with two \r
 
 Icon
