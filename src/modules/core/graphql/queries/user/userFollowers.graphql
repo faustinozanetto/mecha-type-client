@@ -1,5 +1,0 @@
-query userFollowers($input: UserFollowersFindInput!) {
-  userFollowers(input: $input) {
-    ...UserFollowersResponse
-  }
-}

@@ -1,5 +1,0 @@
-query testPresets($input: TestPresetsFindInput!) {
-  testPresets(input: $input) {
-    ...TestPresetsResponse
-  }
-}

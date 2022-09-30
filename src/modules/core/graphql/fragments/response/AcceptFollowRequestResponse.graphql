@@ -1,6 +1,0 @@
-fragment AcceptFollowRequestResponse on AcceptFollowRequestResponse {
-  accepted
-  errors {
-    ...ErrorResponse
-  }
-}

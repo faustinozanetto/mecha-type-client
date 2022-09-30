@@ -1,8 +1,0 @@
-fragment UserSettingsResponse on UserSettingsResponse {
-  userSettings {
-    ...UserSettings
-  }
-  errors {
-    ...ErrorResponse
-  }
-}

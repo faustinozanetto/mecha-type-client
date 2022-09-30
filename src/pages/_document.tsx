@@ -1,44 +1,10 @@
-/* eslint-disable @next/next/no-document-import-in-page */
-import React from 'react';
-import Document, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext,
-  DocumentInitialProps,
-  DocumentProps,
-} from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 
-/**
- * Additional props depending on our App
- *
- * Must be returned by getInitialProps and will be available in render function
- */
-type Props = {
-  locale: string;
-};
-
-type DocumentGetInitialPropsOutput = Props & DocumentInitialProps;
-type DocumentRenderProps = Props & DocumentProps;
-
-class AppDocument extends Document<DocumentRenderProps> {
-  static async getInitialProps(context: DocumentContext): Promise<DocumentGetInitialPropsOutput> {
-    const initialProps: DocumentInitialProps = await Document.getInitialProps(context);
-    const locale = context.locale;
-
-    return {
-      ...initialProps,
-      locale,
-    };
-  }
-
+class MyDocument extends Document {
   render() {
-    const { locale }: DocumentRenderProps = this.props;
-
     return (
-      <Html lang={locale}>
-        <Head></Head>
+      <Html lang="en" className="scroll-smooth">
+        <Head />
         <body>
           <Main />
           <NextScript />
@@ -48,4 +14,4 @@ class AppDocument extends Document<DocumentRenderProps> {
   }
 }
 
-export default AppDocument;
+export default MyDocument;

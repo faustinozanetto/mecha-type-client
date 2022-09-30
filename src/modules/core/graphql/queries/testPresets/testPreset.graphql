@@ -1,5 +1,0 @@
-query testPreset($id: String!) {
-  testPreset(id: $id) {
-    ...TestPresetResponse
-  }
-}

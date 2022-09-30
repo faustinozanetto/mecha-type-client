@@ -1,6 +1,0 @@
-fragment RequestFollowUserResponse on RequestFollowUserResponse {
-  requestSent
-  errors {
-    ...ErrorResponse
-  }
-}

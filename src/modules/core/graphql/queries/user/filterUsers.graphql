@@ -1,5 +1,0 @@
-query filterUsers($input: FilterUsersInput!) {
-  filterUsers(input: $input) {
-    ...FilteredUsersResponse
-  }
-}

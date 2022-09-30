@@ -1,5 +1,0 @@
-mutation denyFollowRequest($userId: String!, $followerId: String!) {
-  denyFollowRequest(userId: $userId, followerId: $followerId) {
-    ...DenyFollowRequestResponse
-  }
-}

@@ -1,5 +1,0 @@
-query user($where: UserWhereInput!) {
-  user(where: $where) {
-    ...SimpleUserResponse
-  }
-}

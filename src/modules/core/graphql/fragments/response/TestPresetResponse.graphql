@@ -1,8 +1,0 @@
-fragment TestPresetResponse on TestPresetResponse {
-  testPreset {
-    ...TestPreset
-  }
-  errors {
-    ...ErrorResponse
-  }
-}

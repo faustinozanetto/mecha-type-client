@@ -1,5 +1,0 @@
-mutation userCreateTestPresetHistoryEntry($userId: String!, $input: CreateTestPresetHistoryInput!) {
-  userCreateTestPresetHistoryEntry(userId: $userId, input: $input) {
-    ...TestPresetHistoryResponse
-  }
-}

@@ -1,5 +1,0 @@
-mutation updateUser($where: UserWhereInput!, $data: UserUpdateInput!) {
-  updateUser(where: $where, data: $data) {
-    ...UserResponse
-  }
-}

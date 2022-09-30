@@ -1,5 +1,0 @@
-mutation createTestPreset($data: CreateTestPresetInput!) {
-  createTestPreset(data: $data) {
-    ...TestPresetResponse
-  }
-}

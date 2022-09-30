@@ -1,5 +1,0 @@
-query userTestPresetsHistory($input: UserTestPresetsHistoryInput!) {
-  userTestPresetsHistory(input: $input) {
-    ...TestPresetsHistoryResponse
-  }
-}

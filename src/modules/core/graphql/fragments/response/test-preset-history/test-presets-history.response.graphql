@@ -1,8 +1,0 @@
-fragment TestPresetsHistoryResponse on TestPresetsHistoryResponse {
-  testPresetHistory {
-    ...TestPresetHistory
-  }
-  errors {
-    ...ErrorResponse
-  }
-}

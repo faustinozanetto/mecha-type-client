@@ -1,5 +1,0 @@
-query userSettings($input: UserSettingsWhereInput!) {
-  userSettings(input: $input) {
-    ...UserSettingsResponse
-  }
-}

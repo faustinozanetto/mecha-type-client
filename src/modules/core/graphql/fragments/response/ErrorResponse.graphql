@@ -1,4 +1,0 @@
-fragment ErrorResponse on ErrorResponse {
-  field
-  message
-}
