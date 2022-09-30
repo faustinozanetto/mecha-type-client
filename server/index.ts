@@ -12,7 +12,7 @@ const logger = createLogger({
   const app = next({
     dev: !__PROD__,
     port: Number(process.env.PORT || 3000),
-    hostname: __PROD__ ? __URI__ : 'localhost',
+    hostname: 'localhost',
   });
   await app.prepare().then(() => {
     const handle = app.getRequestHandler();
