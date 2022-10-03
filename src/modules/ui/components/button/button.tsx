@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-type IButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type IButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: React.ReactNode;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'solid' | 'outline';

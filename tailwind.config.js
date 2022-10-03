@@ -40,6 +40,9 @@ module.exports = {
           900: '#312e81',
         },
       },
+      gridTemplateColumns: {
+        main: '250px 1fr',
+      },
     },
   },
   plugins: [],
