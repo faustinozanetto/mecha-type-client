@@ -3,12 +3,16 @@ import React from 'react';
 
 export type IButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   children?: React.ReactNode;
+  /** Size of the button, defaults to md */
   size?: 'sm' | 'md' | 'lg';
+  /** Variant of the button, defaults to solid */
   variant?: 'solid' | 'outline';
+  leftIcon?: JSX.Element;
+  rightIcon?: JSX.Element;
 };
 
 const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) => {
-  const { children, size = 'md', variant = 'solid', ...rest } = props;
+  const { children, leftIcon, rightIcon, size = 'md', variant = 'solid', ...rest } = props;
 
   const buttonSizeVariants = (): string => {
     switch (size) {
@@ -34,14 +38,16 @@ const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) =>
   };
 
   const buttonStyles = clsx(
-    'rounded-lg text-base font-semibold focus:outline-none focus:ring-4 ',
+    'rounded-lg inline-flex space-x-2 items-center text-base font-semibold focus:outline-none focus:ring-4 ',
     buttonSizeVariants(),
     buttonVariants()
   );
 
   return (
     <button className={buttonStyles} ref={ref} {...rest}>
+      {leftIcon && leftIcon}
       {children}
+      {rightIcon && rightIcon}
     </button>
   );
 });

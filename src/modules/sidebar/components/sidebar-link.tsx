@@ -4,7 +4,9 @@ import Link from 'next/link';
 import React from 'react';
 
 interface ISidebarLinkProps extends IButtonProps {
+  /** Path to navigate when interacted. */
   href: string;
+  isCollapsed: boolean;
 }
 
 const SidebarLink: React.FC<ISidebarLinkProps> = (props) => {
@@ -12,7 +14,9 @@ const SidebarLink: React.FC<ISidebarLinkProps> = (props) => {
 
   return (
     <Link href={href}>
-      <Button {...rest}>{children}</Button>
+      <Button aria-label={`${children} Link`} {...rest}>
+        <span> {children}</span>
+      </Button>
     </Link>
   );
 };

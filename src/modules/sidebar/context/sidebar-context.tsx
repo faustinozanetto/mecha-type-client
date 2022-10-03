@@ -1,4 +1,4 @@
-import { createContext, useCallback, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 interface ISidebarContextProps {
   isCollapsed: boolean;
@@ -27,6 +27,10 @@ const SidebarProvider: React.FC<ISidebarProviderProps> = ({ children }) => {
   }, []);
 
   return <SidebarContext.Provider value={{ isCollapsed, toggle }}>{children}</SidebarContext.Provider>;
+};
+
+export const useSidebarContext = () => {
+  return useContext<ISidebarContextProps>(SidebarContext);
 };
 
 export default SidebarProvider;

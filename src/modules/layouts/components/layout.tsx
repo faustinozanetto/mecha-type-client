@@ -1,4 +1,5 @@
 import Sidebar from '@modules/sidebar/components/sidebar';
+import SidebarProvider from '@modules/sidebar/context/sidebar-context';
 import React from 'react';
 
 import LayoutHead from './layout-head';
@@ -17,7 +18,9 @@ const Layout: React.FC<ILayoutProps> = (props) => {
       <LayoutHead {...headProps} />
 
       {/* Sidebar */}
-      <Sidebar />
+      <SidebarProvider>
+        <Sidebar />
+      </SidebarProvider>
 
       {/* Content */}
       <div className="flex flex-col p-4 sm:p-6 md:p-8">
