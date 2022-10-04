@@ -2,15 +2,13 @@ import { trpc } from '@lib/trpc';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Layout from '@modules/layouts/components/layout';
 import Button from '@modules/ui/components/button/button';
-import React, { useState } from 'react';
+import React from 'react';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
 const Home: React.FC = ({}) => {
-  const [num, setNumber] = useState<number>();
-  trpc.randomNumber.useSubscription(undefined, {
-    onData(n) {
-      setNumber(n);
-    },
-  });
+  const helloNoArgs = trpc.hello.useQuery();
+  const { data: session } = useSession();
 
   return (
     <Layout
@@ -20,10 +18,11 @@ const Home: React.FC = ({}) => {
     >
       <Button>Mecha Type</Button>
       <Button variant="outline">Mecha Type</Button>
-      <h1>
-        {' '}
-        Here&apos;s a random number from a sub: {num} <br />
-      </h1>
+      <li>
+        helloNoArgs ({helloNoArgs.status}): <pre>{JSON.stringify(helloNoArgs.data, null, 2)}</pre>
+      </li>
+      {JSON.stringify(session, null, 2)}
+      {session?.user?.image && <Image src={session?.user?.image} width={200} height={200} layout="responsive" />}
       <ReactQueryDevtools initialIsOpen={false} />
     </Layout>
   );

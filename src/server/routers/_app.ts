@@ -2,24 +2,23 @@
  * This file contains the root router of your tRPC-backend
  */
 import { t } from '../trpc';
-import { observable } from '@trpc/server/observable';
-import { clearInterval } from 'timers';
+import { z } from 'zod';
 
 export const appRouter = t.router({
-  healthcheck: t.procedure.query(() => {
-    return 'yay';
-  }),
-
-  randomNumber: t.procedure.subscription(() => {
-    return observable<number>((emit) => {
-      const int = setInterval(() => {
-        emit.next(Math.random());
-      }, 500);
-      return () => {
-        clearInterval(int);
+  hello: t.procedure
+    // using zod schema to validate and infer input values
+    .input(
+      z
+        .object({
+          text: z.string().nullish(),
+        })
+        .nullish()
+    )
+    .query(({ input }) => {
+      return {
+        greeting: `hello ${input?.text ?? 'world'}`,
       };
-    });
-  }),
+    }),
 });
 
 export type AppRouter = typeof appRouter;

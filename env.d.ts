@@ -3,9 +3,8 @@ declare namespace NodeJS {
     PORT: number;
     BUILD_VERSION: string;
     HOST: string;
-    ANALYZE: boolean;
-    BACKEND_URL: string;
-    PRODUCTION_URL: string;
-    GOOGLE_ANALYTICS_ID: string;
+    DISCORD_CLIENT_ID: string;
+    DISCORD_CLIENT_SECRET: string;
+    AUTH_SECRET: string;
   }
 }

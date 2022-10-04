@@ -6,7 +6,6 @@
     "resolveJsonModule": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "strict": true,
     "alwaysStrict": true,
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
@@ -34,6 +33,7 @@
     "noEmit": true,
     "isolatedModules": true,
     "incremental": true,
+    "strict": true,
 
     "baseUrl": "./",
     "paths": {

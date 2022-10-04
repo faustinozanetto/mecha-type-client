@@ -6,7 +6,7 @@ module.exports = {
     dirs: ['.'],
   },
   images: {
-    domains: [],
+    domains: ['cdn.discordapp.com'],
   },
   publicRuntimeConfig: {
     // Will be available on both server and client
