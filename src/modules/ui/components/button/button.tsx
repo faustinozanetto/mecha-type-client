@@ -23,9 +23,9 @@ const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) =>
       case 'md':
         return 'px-5 py-2.5 text-md';
       case 'lg':
-        return 'px-10 py-3.5 text-lg';
+        return 'px-7 py-3 text-xl';
       default:
-        return 'py-3 px-2.5 text-bas';
+        return 'py-3 px-2.5 text-base';
     }
   }, [size]);
 

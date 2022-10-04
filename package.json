@@ -22,20 +22,26 @@
     "eslint": "next lint --fix --dir src",
     "prettier": "prettier -l \"src/**/*.{js,jsx,md,ts,tsx}\"",
     "lint": "yarn prettier && yarn eslint",
-    "migrate:reset": "prisma migrate reset",
-    "migrate:create": "prisma migrate dev --create-only",
-    "migrate:dev": "prisma migrate dev",
-    "migrate:deploy": "prisma migrate deploy",
-    "prisma:generate": "prisma generate",
-    "security:audit": "yarn audit",
-    "graphql-gen": "graphql-codegen --config codegen.yml"
+    "prisma:migrate:reset": "prisma migrate reset",
+    "prisma:migrate:create": "prisma migrate dev --create-only",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "prisma:generate": "prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^4.4.0",
+    "@trpc/client": "^9.27.4",
+    "@trpc/next": "^9.27.4",
+    "@trpc/react": "^9.27.4",
+    "@trpc/server": "^9.27.4",
     "clsx": "^1.2.1",
     "cssnano": "^5.1.13",
     "next": "^12.3.1",
+    "next-auth": "^4.12.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "superjson": "^1.10.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@testing-library/react": "^13.4.0",
@@ -62,9 +68,10 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
-    "tailwindcss": "^3.1.8",
     "postcss": "^8.4.17",
     "prettier": "^2.7.1",
+    "prisma": "^4.4.0",
+    "tailwindcss": "^3.1.8",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   }

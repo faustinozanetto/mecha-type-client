@@ -15,7 +15,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
 
   return (
     <div
-      className="grid min-h-screen overflow-hidden subpixel-antialiased transition-all"
+      className="grid min-h-screen overflow-hidden subpixel-antialiased"
       style={{
         gridTemplateColumns: isCollapsed ? '80px 1fr' : 'auto 1fr',
       }}

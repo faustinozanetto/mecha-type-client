@@ -12,6 +12,7 @@ const Sidebar: React.FC = () => {
   const { isCollapsed, toggle, setIsCollapsed } = useSidebarContext();
   const isSmallDevice = useMediaQuery('(min-width: 768px');
 
+  // Automatically collapse or not the sidebar if device is small or not.
   useEffect(() => {
     setIsCollapsed(!isSmallDevice);
   }, [isSmallDevice]);
