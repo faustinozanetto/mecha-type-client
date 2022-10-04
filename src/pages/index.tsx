@@ -1,5 +1,4 @@
 import { trpc } from '@lib/trpc';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import Layout from '@modules/layouts/components/layout';
 import Button from '@modules/ui/components/button/button';
 import React from 'react';
@@ -22,8 +21,7 @@ const Home: React.FC = ({}) => {
         helloNoArgs ({user.status}): <pre>{JSON.stringify(user.data, null, 2)}</pre>
       </li>
       {JSON.stringify(session, null, 2)}
-      {session?.user?.image && <Image src={session?.user?.image} width={200} height={200} layout="responsive" />}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {session?.user?.image && <Image src={session?.user?.image} width={300} height={300} />}
     </Layout>
   );
 };
