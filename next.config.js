@@ -8,6 +8,11 @@ module.exports = {
   images: {
     domains: [],
   },
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    APP_URL: process.env.APP_URL,
+    WS_URL: process.env.WS_URL,
+  },
   swcMinify: true,
   poweredByHeader: false,
   trailingSlash: true,
