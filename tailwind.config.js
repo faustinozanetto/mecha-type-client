@@ -41,7 +41,7 @@ module.exports = {
         },
       },
       gridTemplateColumns: {
-        main: '250px 1fr',
+        main: 'auto 1fr',
       },
     },
   },

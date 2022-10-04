@@ -3,10 +3,12 @@ import { createContext, useCallback, useContext, useMemo, useState } from 'react
 interface ISidebarContextProps {
   isCollapsed: boolean;
   toggle: () => void;
+  setIsCollapsed: (newCollapsed: boolean) => void;
 }
 const initialState: ISidebarContextProps = {
   isCollapsed: false,
   toggle: () => {},
+  setIsCollapsed: (_: boolean) => {},
 };
 
 const SidebarContext = createContext<ISidebarContextProps>(initialState);
@@ -26,7 +28,15 @@ const SidebarProvider: React.FC<ISidebarProviderProps> = ({ children }) => {
     setCollapsed((prev) => !prev);
   }, []);
 
-  return <SidebarContext.Provider value={{ isCollapsed, toggle }}>{children}</SidebarContext.Provider>;
+  const changeCollapsed = useCallback((newCollapsed: boolean) => {
+    setCollapsed(newCollapsed);
+  }, []);
+
+  return (
+    <SidebarContext.Provider value={{ isCollapsed, toggle, setIsCollapsed: changeCollapsed }}>
+      {children}
+    </SidebarContext.Provider>
+  );
 };
 
 export const useSidebarContext = () => {

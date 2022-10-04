@@ -1,5 +1,5 @@
 import Sidebar from '@modules/sidebar/components/sidebar';
-import SidebarProvider from '@modules/sidebar/context/sidebar-context';
+import { useSidebarContext } from '@modules/sidebar/context/sidebar-context';
 import React from 'react';
 
 import LayoutHead from './layout-head';
@@ -11,16 +11,20 @@ interface ILayoutProps {
 
 const Layout: React.FC<ILayoutProps> = (props) => {
   const { children, headProps } = props;
+  const { isCollapsed } = useSidebarContext();
 
   return (
-    <div className="grid min-h-screen grid-cols-main overflow-hidden subpixel-antialiased transition-all">
+    <div
+      className="grid min-h-screen overflow-hidden subpixel-antialiased transition-all"
+      style={{
+        gridTemplateColumns: isCollapsed ? '80px 1fr' : 'auto 1fr',
+      }}
+    >
       {/* Head */}
       <LayoutHead {...headProps} />
 
       {/* Sidebar */}
-      <SidebarProvider>
-        <Sidebar />
-      </SidebarProvider>
+      <Sidebar />
 
       {/* Content */}
       <div className="flex flex-col p-4 sm:p-6 md:p-8">

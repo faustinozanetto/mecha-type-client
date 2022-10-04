@@ -1,24 +1,56 @@
+import useMediaQuery from '@hooks/use-media-query';
 import MechaTypeLogo from '@modules/branding/components/mecha-type-logo';
+import MechaTypeLogoInitials from '@modules/branding/components/mecha-type-logo-initials';
 import Button from '@modules/ui/components/button/button';
-import React, { memo } from 'react';
+import clsx from 'clsx';
+import React, { memo, useEffect } from 'react';
 import { useSidebarContext } from '../context/sidebar-context';
 
 import SidebarLink from './sidebar-link';
 
 const Sidebar: React.FC = () => {
-  const { isCollapsed, toggle } = useSidebarContext();
+  const { isCollapsed, toggle, setIsCollapsed } = useSidebarContext();
+  const isSmallDevice = useMediaQuery('(min-width: 768px');
 
-  const handleSidebarCollapse = () => {
-    toggle();
-  };
+  useEffect(() => {
+    setIsCollapsed(!isSmallDevice);
+  }, [isSmallDevice]);
 
   return (
     <aside className="float-left flex h-full flex-col space-y-4 bg-primary-800 p-4 text-white">
       {/* Logo */}
-      <MechaTypeLogo />
-      <Button onClick={handleSidebarCollapse}>collapse</Button>
+      <div className={clsx('flex flex-row', isCollapsed ? '' : 'space-x-2')}>
+        {isCollapsed ? <MechaTypeLogoInitials /> : <MechaTypeLogo />}
+        {/* Only show collapse button when device is bigger than md. */}
+        {(!isCollapsed || isSmallDevice) && (
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={toggle}
+            style={{
+              color: 'white',
+            }}
+            leftIcon={
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
+                />
+              </svg>
+            }
+          ></Button>
+        )}
+      </div>
       {/* Links */}
-      <nav className="flex w-full grow flex-col space-y-2">
+      <nav className={clsx('flex grow flex-col space-y-2', !isCollapsed && 'w-full')}>
         <SidebarLink
           href="/"
           isCollapsed={isCollapsed}
@@ -41,7 +73,26 @@ const Sidebar: React.FC = () => {
         >
           Home
         </SidebarLink>
-        <SidebarLink href="/dashboard" isCollapsed={isCollapsed}>
+        <SidebarLink
+          href="/dashboard"
+          isCollapsed={isCollapsed}
+          leftIcon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 13.5V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 010 3m0-3a1.5 1.5 0 000 3m0 9.75V10.5"
+              />
+            </svg>
+          }
+        >
           Dashboard
         </SidebarLink>
         <SidebarLink
