@@ -1,6 +1,8 @@
 import { AUTH_SECRET, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from '@modules/auth/utils/constants';
 import NextAuth, { NextAuthOptions } from 'next-auth';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import DiscordProvider from 'next-auth/providers/discord';
+import { prisma } from '@server/context';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -12,10 +14,12 @@ export const authOptions: NextAuthOptions = {
 
   // Session Configuration
   session: {
-    strategy: 'jwt',
+    strategy: 'database',
     maxAge: 30 * 24 * 60 * 60,
     updateAge: 24 * 60 * 60,
   },
+
+  adapter: PrismaAdapter(prisma),
 
   jwt: {
     maxAge: 60 * 60 * 24 * 30,

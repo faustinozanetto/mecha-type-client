@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
 const Home: React.FC = ({}) => {
-  const helloNoArgs = trpc.hello.useQuery();
+  const user = trpc.users.user.useQuery({ username: 'Retrosen' });
   const { data: session } = useSession();
 
   return (
@@ -19,7 +19,7 @@ const Home: React.FC = ({}) => {
       <Button>Mecha Type</Button>
       <Button variant="outline">Mecha Type</Button>
       <li>
-        helloNoArgs ({helloNoArgs.status}): <pre>{JSON.stringify(helloNoArgs.data, null, 2)}</pre>
+        helloNoArgs ({user.status}): <pre>{JSON.stringify(user.data, null, 2)}</pre>
       </li>
       {JSON.stringify(session, null, 2)}
       {session?.user?.image && <Image src={session?.user?.image} width={200} height={200} layout="responsive" />}
