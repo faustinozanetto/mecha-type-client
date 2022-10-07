@@ -1,6 +1,7 @@
+import useMediaQuery from '@hooks/use-media-query';
 import Sidebar from '@modules/sidebar/components/sidebar';
 import SidebarProvider from '@modules/sidebar/context/sidebar-context';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import LayoutHead from './layout-head';
 
@@ -11,12 +12,20 @@ interface ILayoutProps {
 
 const Layout: React.FC<ILayoutProps> = (props) => {
   const { children, headProps } = props;
+  const isMediumDevice = useMediaQuery('(max-width: 768px');
+  const isSmallDevice = useMediaQuery('(max-width: 380px');
+
+  const layoutGridColumns = useMemo(() => {
+    if (isSmallDevice) return '1fr';
+    if (isMediumDevice) return 'auto 1fr';
+    return 'auto 1fr';
+  }, [isMediumDevice, isSmallDevice]);
 
   return (
     <div
-      className="grid min-h-screen grid-cols-2 overflow-hidden subpixel-antialiased"
+      className="grid min-h-screen overflow-hidden subpixel-antialiased"
       style={{
-        gridTemplateColumns: 'auto 1fr',
+        gridTemplateColumns: layoutGridColumns,
       }}
     >
       {/* Head */}

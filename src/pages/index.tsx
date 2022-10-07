@@ -4,9 +4,11 @@ import Button from '@modules/ui/components/button/button';
 import React from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
+import { useThemeContext } from '@modules/theme/context/theme-context';
 
 const Home: React.FC = ({}) => {
   const user = trpc.users.user.useQuery({ username: 'Retrosen' });
+  const { theme, change } = useThemeContext();
   const { data: session } = useSession();
 
   return (
@@ -15,8 +17,10 @@ const Home: React.FC = ({}) => {
         title: 'Home | Mecha Type',
       }}
     >
-      <Button>Mecha Type</Button>
-      <Button variant="outline">Mecha Type</Button>
+      <h1 className="text-black dark:text-white">TESTING</h1>
+      Current theme {theme}
+      <Button onClick={() => change('dark')}>Dark</Button>
+      <Button onClick={() => change('light')}>Light</Button>
       <li>
         helloNoArgs ({user.status}): <pre>{JSON.stringify(user.data, null, 2)}</pre>
       </li>

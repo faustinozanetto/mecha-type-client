@@ -2,16 +2,16 @@ import type { IButtonProps } from '@modules/ui/components/button/button';
 import Button from '@modules/ui/components/button/button';
 import Link from 'next/link';
 import React from 'react';
+import { useSidebarContext } from '../context/sidebar-context';
 
-interface ISidebarLinkProps extends IButtonProps {
+export interface ISidebarLinkProps extends IButtonProps {
   /** Path to navigate when interacted. */
   href: string;
-  /** Wether the sidebar is collapsed or not. */
-  isCollapsed: boolean;
 }
 
 const SidebarLink: React.FC<ISidebarLinkProps> = (props) => {
-  const { href, isCollapsed, children, ...rest } = props;
+  const { href, children, ...rest } = props;
+  const { isCollapsed } = useSidebarContext();
 
   return (
     <Link href={href}>
