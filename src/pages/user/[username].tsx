@@ -1,5 +1,6 @@
 import { trpc } from '@lib/trpc';
-import Layout from '@modules/layouts/components/layout';
+import Layout from '@modules/layouts/core/components/layout';
+
 import UserProfile from '@modules/profile/components/user-profile';
 import { useRouter } from 'next/router';
 import React from 'react';

@@ -1,4 +1,3 @@
-import useLoggedUser from '@hooks/use-logged-user';
 import React from 'react';
 import SidebarLink from '../sidebar-link';
 
@@ -9,11 +8,10 @@ interface ISidebarUserDetailsProps {
 
 const SidebarUserDetails: React.FC<ISidebarUserDetailsProps> = (props) => {
   const { isCollapsed } = props;
-  const { user, isLoggedIn } = useLoggedUser();
 
   return (
     <div className="flex grow-0 flex-col">
-      {!isLoggedIn && (
+      {/*       {!isLoggedIn && (
         <SidebarLink
           href="/auth/signin"
           isCollapsed={isCollapsed}
@@ -63,7 +61,7 @@ const SidebarUserDetails: React.FC<ISidebarUserDetailsProps> = (props) => {
             Sign Out
           </SidebarLink>
         </>
-      )}
+      )} */}
     </div>
   );
 };

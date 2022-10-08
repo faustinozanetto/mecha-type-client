@@ -1,10 +1,11 @@
 import { trpc } from '@lib/trpc';
-import Layout from '@modules/layouts/components/layout';
+
 import Button from '@modules/ui/components/button/button';
 import React from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useThemeContext } from '@modules/theme/context/theme-context';
+import Layout from '@modules/layouts/core/components/layout';
 
 const Home: React.FC = ({}) => {
   const user = trpc.users.user.useQuery({ username: 'Retrosen' });

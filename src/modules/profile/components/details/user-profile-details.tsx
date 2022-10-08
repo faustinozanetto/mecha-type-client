@@ -12,16 +12,16 @@ const UserProfileDetails: React.FC<IUserProfileDetailsProps> = (props) => {
   if (!user.id) return <>Loading</>;
 
   return (
-    <div className="flex flex-col items-center p-4 rounded-lg drop-shadow-2xl bg-primary-400 xs:items-start xs:flex-row xs:space-x-4">
+    <div className="flex flex-col items-center p-4 rounded-lg drop-shadow-2xl text-white bg-background-dark dark:text-black dark:bg-background-light xs:items-start xs:flex-row xs:space-x-4">
       {/* User Image */}
       <Image src={user.image!} className="rounded-lg" width={150} height={150} layout="fixed" />
 
       {/*  User Content */}
       <div className="flex flex-col text-center items-center xs:items-start">
         {/* Name */}
-        <h2 className="text-white font-bold text-3xl">{user.name}</h2>
+        <h2 className="font-bold text-3xl">{user.name}</h2>
         {/* Description */}
-        <p className="text-white text-xl">{user.description}</p>
+        <p className="text-xl">{user.description}</p>
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import useMediaQuery from '@hooks/use-media-query';
 import MechaTypeLogo from '@modules/branding/components/mecha-type-logo';
+import MechaTypeLogoInitials from '@modules/branding/components/mecha-type-logo-initials';
+import ThemeToggler from '@modules/theme/components/theme-toggle';
 import clsx from 'clsx';
 import React, { memo, useEffect } from 'react';
 import { useSidebarContext } from '../context/sidebar-context';
@@ -102,12 +104,7 @@ const Sidebar: React.FC = () => {
   }, [isMediumDevice]);
 
   // Is device is smaller than xs, show a floating button to togle the sidebar.
-  if (isSmallDevice)
-    return (
-      <div className="fixed top-0 left-0 p-2 z-10">
-        <SidebarToggleButton />
-      </div>
-    );
+  if (isSmallDevice) return null;
 
   return (
     <aside
@@ -118,9 +115,12 @@ const Sidebar: React.FC = () => {
     >
       {/* Logo & Toggler */}
       <div className={clsx('flex items-center justify-center', isCollapsed ? '' : 'space-x-2')}>
+        {/* Show big logo when not collapsed */}
         {!isCollapsed && <MechaTypeLogo />}
+        {/* Show initials logo when device is small and not collapsed */}
+        {isMediumDevice && <MechaTypeLogoInitials />}
         {/* Only show collapse button when device is bigger than md. */}
-        {(!isCollapsed || !isSmallDevice) && <SidebarToggleButton />}
+        {!isMediumDevice && <SidebarToggleButton />}
       </div>
       {/* Links */}
       <nav className={clsx('flex grow flex-col space-y-2', !isCollapsed && 'w-full')}>
@@ -132,6 +132,8 @@ const Sidebar: React.FC = () => {
           );
         })}
       </nav>
+
+      <ThemeToggler />
 
       {/* User Information  */}
       <SidebarUserDetails isCollapsed={isCollapsed} />

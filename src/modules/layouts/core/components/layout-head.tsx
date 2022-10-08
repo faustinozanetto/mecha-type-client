@@ -1,7 +1,7 @@
+import React from 'react';
 import Head from 'next/head';
-import React, { memo } from 'react';
 
-interface ILayoutHeadProps {
+export interface CoreLayoutHeadProps {
   title?: string;
   description?: string;
   image?: string;
@@ -9,13 +9,15 @@ interface ILayoutHeadProps {
   canonicalUrl?: string;
 }
 
-const LayoutHead: React.FC<ILayoutHeadProps> = (props) => {
+const CoreLayoutHead: React.FC<CoreLayoutHeadProps> = (props): JSX.Element => {
   const { title, description, image, url, canonicalUrl } = props;
 
   return (
     <Head>
       <title>{title}</title>
       {/* Manifest */}
+      <link rel="manifest" href="/manifest.json" />
+      <meta name="robots" content="follow, index" />
       <link rel="manifest" href="/manifest.json" />
       {/* Base */}
       <meta charSet="UTF-8" />
@@ -51,4 +53,4 @@ const LayoutHead: React.FC<ILayoutHeadProps> = (props) => {
   );
 };
 
-export default memo(LayoutHead);
+export default CoreLayoutHead;

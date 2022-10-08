@@ -1,4 +1,4 @@
-import Layout from '@modules/layouts/components/layout';
+import Layout from '@modules/layouts/core/components/layout';
 import Button from '@modules/ui/components/button/button';
 import Link from 'next/link';
 import React from 'react';
