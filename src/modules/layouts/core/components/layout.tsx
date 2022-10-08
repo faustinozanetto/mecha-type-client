@@ -13,7 +13,7 @@ interface ILayoutProps {
 const Layout: React.FC<ILayoutProps> = (props) => {
   const { children, headProps } = props;
   const isMediumDevice = useMediaQuery('(max-width: 768px');
-  const isSmallDevice = useMediaQuery('(max-width: 380px');
+  const isSmallDevice = useMediaQuery('(max-width: 400px');
 
   const layoutGridColumns = useMemo(() => {
     if (isSmallDevice) return '1fr';
@@ -37,7 +37,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
       </SidebarProvider>
 
       {/* Content */}
-      <div className="flex flex-col p-4 sm:p-8 md:p-12">
+      <div className="flex flex-col bg-bg p-4 sm:p-8 md:p-12">
         {/* Children */}
         {children}
       </div>

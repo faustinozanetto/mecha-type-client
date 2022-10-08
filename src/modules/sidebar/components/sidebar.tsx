@@ -96,7 +96,7 @@ const SIDEBAR_LINKS: React.ComponentPropsWithoutRef<typeof SidebarLink>[] = [
 const Sidebar: React.FC = () => {
   const { isCollapsed, setIsCollapsed } = useSidebarContext();
   const isMediumDevice = useMediaQuery('(max-width: 768px');
-  const isSmallDevice = useMediaQuery('(max-width: 380px');
+  const isSmallDevice = useMediaQuery('(max-width: 400px');
 
   // Automatically collapse or not the sidebar if device is small or not.
   useEffect(() => {

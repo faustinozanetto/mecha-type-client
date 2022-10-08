@@ -31,7 +31,10 @@ module.exports = {
         caret: 'rgb(var(--caret-color) / <alpha-value>)',
         font: 'rgb(var(--font-color) / <alpha-value>)',
         bg: 'rgb(var(--bg-color) / <alpha-value>)',
-        text: '#1f2937',
+        text: {
+          light: '#000',
+          dark: '#fff',
+        },
         background: {
           light: '#f1f5f9',
           dark: '#1e293b',

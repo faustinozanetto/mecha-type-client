@@ -21,7 +21,13 @@ const TypingGame: React.FC = () => {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
-  return <TypingInput ref={inputRef} text={list} time={'20'} />;
+  return (
+    <section className="flex flex-col space-y-2">
+      {/* Title */}
+      <h2 className="text-3xl font-bold text-text-white dark:text-text-dark">Typing Test</h2>
+      <TypingInput ref={inputRef} text={list} time={'20'} />
+    </section>
+  );
 };
 
 export default TypingGame;

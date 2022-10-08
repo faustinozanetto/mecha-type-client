@@ -46,6 +46,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
     }
   }, [currIndex]);
 
+  // Reset state when time or text changes
   useEffect(() => {
     setValue('');
     setMargin(0);
@@ -100,14 +101,12 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   };
 
   return (
-    <div className="relative w-full p-4 bg-bg rounded-xl">
-      <span className="absolute left-0 -top-[3.25rem] z-40 text-4xl text-fg/80">{timeLeft}</span>
-
+    <div className="relative w-full p-4 rounded-xl">
       <div
-        className={clsx('relative z-40 h-[140px] w-full text-2xl outline-none')}
+        className={clsx('relative z-40 h-[160px] w-full text-2xl outline-none')}
         onClick={() => {
           if (ref != null && typeof ref !== 'function') {
-            ref?.current?.focus();
+            ref.current?.focus();
           }
           setIsFocused(true);
         }}
@@ -161,6 +160,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
             { 'opacity-40 blur-[8px]': !isFocused }
           )}
         >
+          {/* Letters */}
           <div
             ref={letterElements}
             style={
@@ -174,43 +174,17 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
             }
           >
             {text.split('').map((letter, index) => {
-              const state = charsState[index];
+              const state = charsState[index] || 0;
               return (
                 <Letter key={letter + index} letterState={state}>
                   {letter}
                 </Letter>
               );
-              /*  return (
-                <span
-                  key={letter + index}
-                  className={`${color} ${state === 0 && index < currIndex && 'border-b-2 border-hl text-hl'}`}
-                >
-                  {letter}
-                </span>
-              ); */
             })}
           </div>
         </div>
+        {/* Caret */}
         {isFocused ? <Caret pos={pos} currIndex={currIndex} phase={phase} /> : null}
-      </div>
-      <div className="relative z-40 mt-4 flex w-full flex-col flex-wrap items-center justify-center gap-4 text-sm">
-        {phase === 2 && startTime && endTime ? (
-          <div className="grid grid-rows-3 items-center gap-4 rounded-lg px-4 py-1 text-xl font-bold sm:flex">
-            <span className="text-4xl">
-              {Math.round(((60 / duration) * correctChar) / 5)}
-              <span className="text-base">WPM</span>
-            </span>{' '}
-            <span className="text-4xl">
-              {duration}
-              <span className="text-2xl">s</span>
-            </span>
-            <span className="relative text-4xl">
-              {(((correctChar - errorChar) / (currIndex + 1)) * 100).toFixed(2)}%
-              <span className="absolute -bottom-4 right-1 text-sm">ACCURACY</span>
-            </span>
-          </div>
-        ) : null}
-        <div className="flex gap-4"></div>
       </div>
     </div>
   );
