@@ -10,7 +10,7 @@ function useMediaQuery(query: string): boolean {
     return false;
   };
 
-  const [matches, setMatches] = useState<boolean>(getMatches(query));
+  const [matches, setMatches] = useState<boolean>();
 
   function handleChange() {
     setMatches(getMatches(query));
@@ -36,7 +36,6 @@ function useMediaQuery(query: string): boolean {
         matchMedia.removeEventListener('change', handleChange);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
 
   return matches;

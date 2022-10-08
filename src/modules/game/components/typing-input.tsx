@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useTypingGame from 'react-typing-game-hook';
 import Caret from './caret';
+import Letter from './letter';
 
 interface ITypingInputProps {
   text: string;
@@ -17,7 +18,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   const {
     states: { charsState, currIndex, phase, correctChar, errorChar, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping, endTyping },
-  } = useTypingGame(text, { skipCurrentWordOnSpace: false });
+  } = useTypingGame(text, { skipCurrentWordOnSpace: false, pauseOnError: false });
 
   const [margin, setMargin] = useState(0);
   const [value, setValue] = useState('');
@@ -99,7 +100,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   };
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full p-4 bg-bg rounded-xl">
       <span className="absolute left-0 -top-[3.25rem] z-40 text-4xl text-fg/80">{timeLeft}</span>
 
       <div
@@ -174,15 +175,19 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
           >
             {text.split('').map((letter, index) => {
               const state = charsState[index];
-              const color = state === 0 ? 'text-font' : state === 1 ? 'text-fg' : 'text-hl border-b-2 border-hl';
               return (
+                <Letter key={letter + index} letterState={state}>
+                  {letter}
+                </Letter>
+              );
+              /*  return (
                 <span
                   key={letter + index}
                   className={`${color} ${state === 0 && index < currIndex && 'border-b-2 border-hl text-hl'}`}
                 >
                   {letter}
                 </span>
-              );
+              ); */
             })}
           </div>
         </div>

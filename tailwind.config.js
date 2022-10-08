@@ -26,10 +26,11 @@ module.exports = {
         '7xl': '5rem',
       },
       colors: {
-        bg: 'rgb(var(--bg-color) / <alpha-value>)',
+        correct: 'rgb(var(--correct-color) / <alpha-value>)',
+        wrong: 'rgb(var(--wrong-color) / <alpha-value>)',
+        caret: 'rgb(var(--caret-color) / <alpha-value>)',
         font: 'rgb(var(--font-color) / <alpha-value>)',
-        hl: 'rgb(var(--hl-color) / <alpha-value>)',
-        fg: 'rgb(var(--fg-color) / <alpha-value>)',
+        bg: 'rgb(var(--bg-color) / <alpha-value>)',
         text: '#1f2937',
         background: {
           light: '#f1f5f9',

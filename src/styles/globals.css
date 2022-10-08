@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,500;0,600;1,400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,4 +10,10 @@
   --caret-color: 247 236 222;
   --correct-color: 233 218 193;
   --wrong-color: 247 236 222;
+}
+
+@layer base {
+  body {
+    font-family: 'Poppins';
+  }
 }

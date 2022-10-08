@@ -1,11 +1,26 @@
-import React from 'react';
+import clsx from 'clsx';
+import React, { memo } from 'react';
 
 interface ILetterProps {
   children?: React.ReactNode;
+  letterState: number;
 }
 
 const Letter: React.FC<ILetterProps> = (props) => {
-  const { children } = props;
+  const { children, letterState } = props;
 
-  return <span className={clsx()}>{children}</span>;
+  return (
+    <span
+      className={clsx(
+        'border-b-2 text-font',
+        letterState === 2 ? 'border-wrong' : '',
+        letterState === 1 ? 'border-correct text-correct' : '',
+        letterState === 0 ? 'border-none' : ''
+      )}
+    >
+      {children}
+    </span>
+  );
 };
+
+export default memo(Letter);

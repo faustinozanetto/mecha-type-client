@@ -18,7 +18,7 @@ const Caret: React.FC<ICaretProps> = (props) => {
         left: pos.top < 0 ? -2 : pos.left,
         top: pos.top < 0 ? 2 : pos.top + 2,
       }}
-      className={clsx('absolute inline transition-all text-hl', {
+      className={clsx('absolute inline transition-all text-caret', {
         '-mt-[2px]': currIndex === -1,
         'animate-blink': phase === 0,
       })}

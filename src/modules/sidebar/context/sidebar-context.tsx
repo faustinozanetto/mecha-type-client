@@ -32,11 +32,16 @@ const SidebarProvider: React.FC<ISidebarProviderProps> = ({ children }) => {
     setCollapsed(newCollapsed);
   }, []);
 
-  return (
-    <SidebarContext.Provider value={{ isCollapsed, toggle, setIsCollapsed: changeCollapsed }}>
-      {children}
-    </SidebarContext.Provider>
+  const memoizedValue = useMemo<ISidebarContextProps>(
+    () => ({
+      isCollapsed,
+      toggle,
+      setIsCollapsed: changeCollapsed,
+    }),
+    [isCollapsed, toggle, changeCollapsed]
   );
+
+  return <SidebarContext.Provider value={memoizedValue}>{children}</SidebarContext.Provider>;
 };
 
 export const useSidebarContext = () => {
