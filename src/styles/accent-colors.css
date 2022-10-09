@@ -13,3 +13,11 @@
   --correct-color: 233 218 193;
   --wrong-color: 247 236 222;
 }
+
+.orange {
+  --bg-color: 27 26 23;
+  --font-color: 74 69 76;
+  --caret-color: 201 201 201;
+  --correct-color: 245 136 64;
+  --wrong-color: 201 201 201;
+}

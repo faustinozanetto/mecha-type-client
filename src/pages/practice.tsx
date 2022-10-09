@@ -27,6 +27,13 @@ const Practice: React.FC = ({}) => {
       >
         Plain
       </Button>
+      <Button
+        onClick={() => {
+          dispatch({ type: 'SET_ACCENT_COLORS', payload: 'orange' });
+        }}
+      >
+        Orange
+      </Button>
       <TypingGame />
     </Layout>
   );

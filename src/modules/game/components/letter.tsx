@@ -12,8 +12,8 @@ const Letter: React.FC<ILetterProps> = (props) => {
   return (
     <span
       className={clsx(
-        'border-b-2 text-font',
-        letterState === 2 ? 'border-wrong' : '',
+        'border-b-4 text-font',
+        letterState === 2 ? 'border-font' : '',
         letterState === 1 ? 'border-correct text-correct' : '',
         letterState === 0 ? 'border-none' : ''
       )}
