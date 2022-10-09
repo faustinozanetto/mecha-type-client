@@ -1,0 +1,15 @@
+.plain {
+  --bg-color: 238 238 238;
+  --font-color: 127 132 135;
+  --caret-color: 65 63 66;
+  --correct-color: 75 75 75;
+  --wrong-color: 65 63 66;
+}
+
+.vintage {
+  --bg-color: 55 125 113;
+  --font-color: 148 180 159;
+  --caret-color: 247 236 222;
+  --correct-color: 233 218 193;
+  --wrong-color: 247 236 222;
+}

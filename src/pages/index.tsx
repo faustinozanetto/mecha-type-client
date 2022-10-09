@@ -6,11 +6,13 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import { useThemeContext } from '@modules/theme/context/theme-context';
 import Layout from '@modules/layouts/core/components/layout';
+import { usePreferencesContext } from '@modules/preferences/context/preferences-context';
 
 const Home: React.FC = ({}) => {
   const user = trpc.users.user.useQuery({ username: 'Retrosen' });
   const { theme, change } = useThemeContext();
   const { data: session } = useSession();
+  const { dispatch } = usePreferencesContext();
 
   return (
     <Layout
@@ -18,7 +20,13 @@ const Home: React.FC = ({}) => {
         title: 'Home | Mecha Type',
       }}
     >
-      <h1 className="text-black dark:text-white">TESTING</h1>
+      <Button
+        onClick={() => {
+          dispatch({ type: 'SET_ACCENT_COLORS', payload: 'kaki' });
+        }}
+      >
+        TESTING
+      </Button>
       Current theme {theme}
       <Button onClick={() => change('dark')}>Dark</Button>
       <Button onClick={() => change('light')}>Light</Button>
