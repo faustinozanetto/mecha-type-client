@@ -16,12 +16,4 @@
   body {
     font-family: 'Poppins';
   }
-
-  .default {
-    --bg-color: 55 125 113;
-    --font-color: 148 180 159;
-    --caret-color: 247 236 222;
-    --correct-color: 233 218 193;
-    --wrong-color: 247 236 222;
-  }
 }

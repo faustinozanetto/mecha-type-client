@@ -25,7 +25,7 @@ const TypingGame: React.FC = () => {
     <section className="flex flex-col space-y-2">
       {/* Title */}
       <h2 className="text-3xl font-bold text-text-white dark:text-text-dark">Typing Test</h2>
-      <TypingInput ref={inputRef} text={list} time={'20'} />
+      <TypingInput ref={inputRef} text={list} time={40} />
     </section>
   );
 };

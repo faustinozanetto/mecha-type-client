@@ -1,11 +1,17 @@
-import { Action, Preferences } from './types';
+import { ActionType, Preferences, PreferencesActions } from './types';
 
-const reducer = (state: Preferences, action: Action): Preferences => {
+const reducer = (state: Preferences, action: PreferencesActions): Preferences => {
   switch (action.type) {
-    case 'SET_ACCENT_COLORS': {
+    case ActionType.SET_ACCENT_COLORS: {
       return {
         ...state,
-        accentColors: action.payload,
+        accentColors: action.payload.accentColors,
+      };
+    }
+    case ActionType.SET_PAUSE_ON_ERRORS: {
+      return {
+        ...state,
+        pauseOnErrors: action.payload.pauseOnErrors,
       };
     }
     default:

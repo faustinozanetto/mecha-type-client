@@ -1,10 +1,12 @@
 import { createContext, useContext, useReducer } from 'react';
 import reducer from './reducer/reducer';
-import { Preferences, Action } from './reducer/types';
+import { Preferences, PreferencesActions } from './reducer/types';
 
 interface IPreferencesContextProps {
+  /** State of the preferences context */
   state: Preferences;
-  dispatch: React.Dispatch<Action>;
+  /** Dispatch function to modify state via actions. */
+  dispatch: React.Dispatch<PreferencesActions>;
 }
 
 const PreferencesContext = createContext<IPreferencesContextProps>({} as IPreferencesContextProps);
@@ -15,9 +17,9 @@ interface IPreferencesProviderProps {
 
 const PreferencesProvider: React.FC<IPreferencesProviderProps> = (props) => {
   const { children } = props;
-
   const [state, dispatch] = useReducer(reducer, {
-    accentColors: 'vintage',
+    accentColors: 'plain',
+    pauseOnErrors: false,
   });
 
   return <PreferencesContext.Provider value={{ state, dispatch }}>{children}</PreferencesContext.Provider>;

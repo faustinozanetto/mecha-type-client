@@ -6,32 +6,32 @@ import Letter from './letter';
 
 interface ITypingInputProps {
   text: string;
-  time: string;
+  time: number;
 }
 
 const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ text, time }, ref) => {
-  const [duration, setDuration] = useState(0);
-  const [isFocused, setIsFocused] = useState(false);
+  const [duration, setDuration] = useState<number>(0);
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const letterElements = useRef<HTMLDivElement>(null);
-  const [timeLeft, setTimeLeft] = useState(parseInt(time));
+
+  const [timeLeft, setTimeLeft] = useState<number>(time);
 
   const {
     states: { charsState, currIndex, phase, correctChar, errorChar, startTime, endTime },
     actions: { insertTyping, deleteTyping, resetTyping, endTyping },
   } = useTypingGame(text, { skipCurrentWordOnSpace: false, pauseOnError: false });
 
-  const [margin, setMargin] = useState(0);
-  const [value, setValue] = useState('');
+  const [currentRow, setCurrentRow] = useState<number>(0);
+  const [value, setValue] = useState<string>('');
 
   // set cursor
   const pos = useMemo(() => {
     if (currIndex !== -1 && letterElements.current) {
       const spanref = letterElements.current.children[currIndex] as HTMLSpanElement;
-
       const left = spanref.offsetLeft + spanref.offsetWidth - 2;
       const top = spanref.offsetTop - 2;
       if (top > 60) {
-        setMargin((margin) => margin + 1);
+        setCurrentRow((prev) => prev + 1);
         return {
           left,
           top: top / 2,
@@ -49,8 +49,8 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   // Reset state when time or text changes
   useEffect(() => {
     setValue('');
-    setMargin(0);
-    setTimeLeft(parseInt(time));
+    setCurrentRow(0);
+    setTimeLeft(time);
     endTyping();
     resetTyping();
   }, [text, time]);
@@ -64,7 +64,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
             clearInterval(timerInterval);
             endTyping();
           }
-          return parseInt(time) - Math.floor((Date.now() - startTime) / 1000);
+          return time - Math.floor((Date.now() - startTime) / 1000);
         });
       }
     }, 1000);
@@ -100,10 +100,29 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
     }
   };
 
+  /**
+   * Handles the change in the input element.
+   * @param event of the input onChange method.
+   */
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((prev) => {
+      if (prev.length > event.target.value.length) {
+        handleKeyDown('Backspace', false);
+      } else {
+        handleKeyDown(event.target.value.slice(-1), false);
+      }
+      return event.target.value;
+    });
+  };
+
   return (
     <div className="relative w-full p-4 rounded-xl">
+      <span className="text-3xl text-fg/80">
+        {timeLeft}
+        <span className="text-2xl">s left</span>
+      </span>
       <div
-        className={clsx('relative z-40 h-[160px] w-full text-2xl outline-none')}
+        className="relative z-40 h-[160px] w-full text-2xl outline-none"
         onClick={() => {
           if (ref != null && typeof ref !== 'function') {
             ref.current?.focus();
@@ -119,16 +138,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           value={value}
-          onChange={(e) => {
-            setValue((prev) => {
-              if (prev.length > e.target.value.length) {
-                handleKeyDown('Backspace', false);
-              } else {
-                handleKeyDown(e.target.value.slice(-1), false);
-              }
-              return e.target.value;
-            });
-          }}
+          onChange={handleInputChange}
           onKeyDown={(e) => {
             if (e.ctrlKey) return;
             if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) e.preventDefault();
@@ -150,9 +160,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
             { 'text-fg opacity-100 ': !isFocused }
           )}
         >
-          Click
-          {/* <BsCursorFill className="mx-2 scale-x-[-1]" /> */}
-          or press any key to focus
+          Click or press any key to focus
         </span>
         <div
           className={clsx(
@@ -163,15 +171,10 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
           {/* Letters */}
           <div
             ref={letterElements}
-            style={
-              margin > 0
-                ? {
-                    marginTop: -(margin * 39),
-                  }
-                : {
-                    marginTop: 0,
-                  }
-            }
+            className={clsx('transition-[margin] duration-300')}
+            style={{
+              marginTop: currentRow > 0 ? currentRow * -40 : 0,
+            }}
           >
             {text.split('').map((letter, index) => {
               const state = charsState[index] || 0;

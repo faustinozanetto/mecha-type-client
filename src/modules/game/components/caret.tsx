@@ -23,7 +23,7 @@ const Caret: React.FC<ICaretProps> = (props) => {
         'animate-blink': phase === 0,
       })}
     >
-      {phase === 2 ? <div className="group relative z-40"></div> : '|'}
+      {phase !== 2 && '|'}
     </span>
   );
 };
