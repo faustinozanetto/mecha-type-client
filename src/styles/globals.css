@@ -16,4 +16,8 @@
   body {
     font-family: 'Poppins';
   }
+
+  .skeleton * {
+    visibility: hidden;
+  }
 }

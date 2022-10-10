@@ -10,15 +10,18 @@ import { Session } from 'next-auth';
 import { getSession } from 'next-auth/react';
 import ThemeProvider from '@modules/theme/context/theme-context';
 import PreferencesProvider from '@modules/preferences/context/preferences-context';
+import UserProfileProvider from '@modules/profile/context/user-profile-context';
 
 const MechaApp: AppType<{ session: Session | null }> = ({ Component, pageProps }) => {
   return (
     <ThemeProvider>
       <PreferencesProvider>
-        <AuthWrapper session={pageProps.session}>
-          <Component {...pageProps} />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </AuthWrapper>
+        <UserProfileProvider>
+          <AuthWrapper session={pageProps.session}>
+            <Component {...pageProps} />
+            <ReactQueryDevtools initialIsOpen={false} />
+          </AuthWrapper>
+        </UserProfileProvider>
       </PreferencesProvider>
     </ThemeProvider>
   );
