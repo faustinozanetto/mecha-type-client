@@ -45,8 +45,11 @@ model User {
   image         String?
   description   String?
   country       String?
-  accounts      Account[]
-  sessions      Session[]
+
+  typingTestEntries TypingTestEntry[]
+
+  accounts Account[]
+  sessions Session[]
 }
 
 model VerificationToken {
@@ -55,4 +58,21 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model TypingTestEntry {
+  id String @id @default(cuid())
+
+  wpm            Float @default(0)
+  cpm            Float @default(0)
+  accuracy       Float @default(0)
+  keystrokes     Float @default(0)
+  correctChars   Float @default(0)
+  incorrectChars Float @default(0)
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

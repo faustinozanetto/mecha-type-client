@@ -1,3 +1,6 @@
+import { trpc } from '@lib/trpc';
+import { TypingTestEntry } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useRef, useState } from 'react';
 import TypingInput from './typing-input';
 
@@ -5,6 +8,8 @@ const TypingGame: React.FC = () => {
   const [list, setList] = useState<string>(
     'might true tape major write city vote another push blood argue back secure good honest instead Christmas take early income how value blue line even paint club person middle hate character space boy around rule floor serious one awful picture marry hope prepare left equal small add safe period student south kid park further print green young fit jesus interest staff common give before judge absolute love quite whether file girl item please foot strike oppose programme attend home minute appear '
   );
+
+  const createTestEntry = trpc.typingTestEntries.create.useMutation();
 
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const buttonRef = useRef() as React.MutableRefObject<HTMLButtonElement>;
@@ -21,11 +26,21 @@ const TypingGame: React.FC = () => {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
+
+  const handleTestFinished = async (
+    typingTestEntry: Omit<TypingTestEntry, 'createdAt' | 'updatedAt' | 'userId' | 'id'>
+  ) => {
+    await createTestEntry.mutateAsync({
+      ...typingTestEntry,
+      userId: 'cl8tlf6su0000ie8gq5otkk0m',
+    });
+  };
+
   return (
     <section className="flex flex-col space-y-2">
       {/* Title */}
       <h2 className="text-3xl font-bold text-text-white dark:text-text-dark">Typing Test</h2>
-      <TypingInput ref={inputRef} text={list} time={40} />
+      <TypingInput ref={inputRef} text={list} time={20} onFinished={handleTestFinished} />
     </section>
   );
 };

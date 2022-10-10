@@ -1,0 +1,18 @@
+-- CreateTable
+CREATE TABLE "TypingTestEntry" (
+    "id" TEXT NOT NULL,
+    "wpm" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "cpm" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "accuracy" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "keystrokes" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "correctChars" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "incorrectChars" DOUBLE PRECISION NOT NULL DEFAULT 0,
+    "userId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TypingTestEntry_pkey" PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "TypingTestEntry" ADD CONSTRAINT "TypingTestEntry_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

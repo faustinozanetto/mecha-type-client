@@ -17,16 +17,18 @@ const Image: React.FC<IImageProps> = (props) => {
 
   return (
     <Skeleton className={className} isLoaded={imageLoaded}>
-      <NextImage
-        className={className}
-        src={src}
-        alt={alt}
-        height={height}
-        width={width}
-        layout={layout || 'responsive'}
-        onLoadingComplete={handleImagedLoaded}
-        {...rest}
-      />
+      {src && (
+        <NextImage
+          className={className}
+          src={src}
+          alt={alt}
+          height={height}
+          width={width}
+          layout={layout || 'responsive'}
+          onLoadingComplete={handleImagedLoaded}
+          {...rest}
+        />
+      )}
     </Skeleton>
   );
 };

@@ -2,10 +2,11 @@ import { trpc } from '@lib/trpc';
 import Layout from '@modules/layouts/core/components/layout';
 
 import UserProfile from '@modules/profile/components/user-profile';
-import UserProfileProvider, { useUserProfileContext } from '@modules/profile/context/user-profile-context';
+import { useUserProfileContext } from '@modules/profile/context/user-profile-context';
 import { ActionType } from '@modules/profile/context/reducer/types';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { User } from '@prisma/client';
 
 const UserProfilePage: React.FC = ({}) => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const UserProfilePage: React.FC = ({}) => {
     dispatch({
       type: ActionType.SET_USER,
       payload: {
-        user: user.data,
+        user: user.data as User,
       },
     });
   }, [user.data]);

@@ -21,10 +21,6 @@ export const authOptions: NextAuthOptions = {
 
   adapter: PrismaAdapter(prisma),
 
-  jwt: {
-    maxAge: 60 * 60 * 24 * 30,
-  },
-
   pages: {
     signIn: '/auth/signin',
   },

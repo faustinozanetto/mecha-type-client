@@ -1,3 +1,4 @@
+import { TypingTestEntry } from '@prisma/client';
 import clsx from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useTypingGame from 'react-typing-game-hook';
@@ -7,9 +8,10 @@ import Letter from './letter';
 interface ITypingInputProps {
   text: string;
   time: number;
+  onFinished: (typingTestEntry: Omit<TypingTestEntry, 'createdAt' | 'updatedAt' | 'userId' | 'id'>) => void;
 }
 
-const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ text, time }, ref) => {
+const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ text, time, onFinished }, ref) => {
   const [duration, setDuration] = useState<number>(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const letterElements = useRef<HTMLDivElement>(null);
@@ -80,6 +82,14 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
     if (phase === 2 && endTime && startTime) {
       const dur = Math.floor((endTime - startTime) / 1000);
       setDuration(dur);
+      onFinished({
+        wpm: Math.round(((60 / dur) * correctChar) / 5),
+        cpm: Math.round((60 / dur) * correctChar),
+        keystrokes: 0,
+        correctChars: correctChar,
+        incorrectChars: errorChar,
+        accuracy: (correctChar / (correctChar + errorChar)) * 100,
+      });
     } else {
       setDuration(0);
     }
