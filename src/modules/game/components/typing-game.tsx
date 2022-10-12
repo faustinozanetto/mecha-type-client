@@ -1,7 +1,6 @@
-import { trpc } from '@lib/trpc';
-import { TypingTestEntry } from '@prisma/client';
-import { useSession } from 'next-auth/react';
-import React, { useEffect, useRef, useState } from 'react';
+import {trpc} from '@lib/trpc';
+import {TypingTestEntry} from '@prisma/client';
+import React, {useEffect, useRef, useState} from 'react';
 import TypingInput from './typing-input';
 
 const TypingGame: React.FC = () => {
@@ -40,7 +39,7 @@ const TypingGame: React.FC = () => {
     <section className="flex flex-col space-y-2">
       {/* Title */}
       <h2 className="text-3xl font-bold text-text-white dark:text-text-dark">Typing Test</h2>
-      <TypingInput ref={inputRef} text={list} time={20} onFinished={handleTestFinished} />
+      <TypingInput ref={inputRef} text={list} time={20} onFinished={handleTestFinished}/>
     </section>
   );
 };
