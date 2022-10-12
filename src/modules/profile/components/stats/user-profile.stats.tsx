@@ -7,7 +7,7 @@ import UserStatCard from './user-stat-card';
 const statsTypes: Omit<React.ComponentPropsWithoutRef<typeof UserStatCard>, 'value' | 'isLoading'>[] = [
   {
     type: EUserStatType.TESTS_COMPLETED,
-    backgroundColor: 'bg-purple-500',
+    backgroundColor: 'bg-accent-alt',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +27,7 @@ const statsTypes: Omit<React.ComponentPropsWithoutRef<typeof UserStatCard>, 'val
   },
   {
     type: EUserStatType.AVERAGE_CPM,
-    backgroundColor: 'bg-pink-500',
+    backgroundColor: 'bg-sidebar',
     icon: (
       <svg
         stroke="currentColor"
@@ -46,7 +46,7 @@ const statsTypes: Omit<React.ComponentPropsWithoutRef<typeof UserStatCard>, 'val
   },
   {
     type: EUserStatType.AVERAGE_WPM,
-    backgroundColor: 'bg-pink-500',
+    backgroundColor: 'bg-sidebar',
     icon: (
       <svg
         stroke="currentColor"
@@ -65,7 +65,7 @@ const statsTypes: Omit<React.ComponentPropsWithoutRef<typeof UserStatCard>, 'val
   },
   {
     type: EUserStatType.KEYSTROKES,
-    backgroundColor: 'bg-purple-500',
+    backgroundColor: 'bg-accent-alt',
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +91,7 @@ const UserProfileStats: React.FC<IUserProfileStatsProps> = () => {
   const { state } = useUserProfileContext();
 
   return (
-    <div className="flex flex-col space-y-2 rounded-lg bg-background p-4 text-white drop-shadow-2xl sm:space-y-4">
+    <div className="flex flex-col space-y-2 rounded-lg bg-accent p-4 text-white drop-shadow-2xl sm:space-y-4">
       <h2 className="text-3xl font-semibold">Stats</h2>
       {/* Stats Grid */}
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2">

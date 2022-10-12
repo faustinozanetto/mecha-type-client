@@ -13,7 +13,7 @@ const UserProfilePage: React.FC = () => {
   const router = useRouter();
   const { dispatch } = useUserProfileContext();
   const usernameQuery = router.query.username as string;
-  const { status, data } = trpc.users.user.useQuery({ username: usernameQuery });
+  const { status, data } = trpc.users.user.useQuery({ username: usernameQuery }, {});
 
   useEffect(() => {
     const defaultStats: UserStats = new Map<EUserStatType, string>();

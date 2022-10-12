@@ -1,12 +1,17 @@
 import wordSet from '@data/wordset.json';
 import useGenerateText from '@modules/game/hooks/use-generate-text';
-import React, { useEffect, useRef } from 'react';
+import type { TypingTestEntry } from '@prisma/client';
+import dynamic from 'next/dynamic';
+import React, { useEffect, useRef, useState } from 'react';
 
 import TypingInput from './typing-input';
 
-const TypingGame: React.FC = () => {
-  const { generatedText } = useGenerateText(wordSet.words, 40);
+const TypingResults = dynamic(() => import('./results/typing-results'));
 
+const TypingGame: React.FC = () => {
+  const { generatedText } = useGenerateText(wordSet.words, 200);
+  const [finishedGame, setFinishedGame] = useState<boolean>(false);
+  const [finishedResults, setFinishedResults] = useState<TypingTestEntry>({} as TypingTestEntry);
   // const createTestEntry = trpc.typingTestEntries.create.useMutation();
 
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -25,19 +30,19 @@ const TypingGame: React.FC = () => {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  /*
   const handleTestFinished = async (
     typingTestEntry: Omit<TypingTestEntry, 'createdAt' | 'updatedAt' | 'userId' | 'id'>
   ) => {
+    setFinishedGame(true);
+    setFinishedResults((prev) => Object.assign(prev, { ...typingTestEntry }));
+  };
 
-    await createTestEntry.mutateAsync({
-      ...typingTestEntry,
-      userId: 'cl8tlf6su0000ie8gq5otkk0m',
-    });
-
-  }; */
-
-  return <TypingInput ref={inputRef} text={generatedText} time={20} onFinished={() => {}} />;
+  return (
+    <>
+      <TypingInput ref={inputRef} text={generatedText} time={20} onFinished={handleTestFinished} />
+      {finishedGame && <TypingResults results={finishedResults} />}
+    </>
+  );
 };
 
 export default TypingGame;

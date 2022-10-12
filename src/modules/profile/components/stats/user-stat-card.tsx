@@ -21,14 +21,14 @@ const UserStatCard: React.FC<IUserStatCardProps> = (props) => {
 
   return (
     <div className={clsx('flex flex-row items-center rounded-lg p-2 text-sm sm:text-base', backgroundColor)}>
-      <Skeleton isLoaded={!isLoading}>
+      <Skeleton className="rounded-md" isLoaded={!isLoading}>
         <div className="rounded-lg bg-white p-3 text-black sm:p-4">{icon}</div>
       </Skeleton>
-      <div className="ml-2.5 flex flex-1 flex-col space-y-2">
-        <Skeleton isLoaded={!isLoading}>
+      <div className={clsx('ml-2.5 flex flex-1 flex-col', isLoading && 'space-y-2')}>
+        <Skeleton className="rounded-md" isLoaded={!isLoading}>
           <span className="text-lg font-bold text-white">{value}</span>
         </Skeleton>
-        <Skeleton isLoaded={!isLoading}>
+        <Skeleton className="rounded-md" isLoaded={!isLoading}>
           <span className="text-white">{type}</span>
         </Skeleton>
       </div>

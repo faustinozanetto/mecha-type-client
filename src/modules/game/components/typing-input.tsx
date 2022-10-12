@@ -126,15 +126,9 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   };
 
   return (
-    <div className="relative w-full rounded-xl py-4">
-      <div className="flex w-full items-center justify-end text-3xl">
-        <span className="text-3xl text-letter-wrong">
-          {timeLeft}
-          <span className="text-2xl">s left</span>
-        </span>
-      </div>
+    <div className="relative w-full max-w-[950px] rounded-xl py-4">
       <div
-        className="relative z-40 h-[160px] w-full text-2xl outline-none"
+        className="relative z-40 h-[140px] w-full text-2xl outline-none"
         onClick={() => {
           if (ref != null && typeof ref !== 'function') {
             ref.current?.focus();
@@ -184,9 +178,15 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
           <div
             ref={letterElements}
             className={clsx('transition-[margin] duration-300')}
-            style={{
-              marginTop: currentRow > 0 ? currentRow * -40 : 0,
-            }}
+            style={
+              currentRow > 0
+                ? {
+                    marginTop: -(currentRow * 39),
+                  }
+                : {
+                    marginTop: 0,
+                  }
+            }
           >
             {text.split('').map((letter, index) => {
               const state = charsState[index] || 0;

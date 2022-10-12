@@ -1,20 +1,20 @@
 .aether {
-  --accent-color: 207 107 221; /*sub-color*/
-  --accent-alt-color: 41 33 54; /*sub-alt-color*/
-  --background-color: 16 24 32; /*bg-color*/
-  --sidebar-color: 19 18 19;
-  --caret-color: 238 218 234; /*caret-color*/
-  --text-color: 238 218 234; /*text-color*/
-  --letter-color: 207 107 221; /*sub-color*/
-  --letter-correct-color: 238 218 234; /*caret-color*/
-  --letter-wrong-color: 255 82 83; /*error-color*/
+  --accent-color: #cf6bdd; /*sub-color*/
+  --accent-alt-color: #292136; /*sub-alt-color*/
+  --background-color: #101820; /*bg-color*/
+  --sidebar-color: #131213;
+  --caret-color: #eedaea; /*caret-color*/
+  --text-color: #eedaea; /*text-color*/
+  --letter-color: #cf6bdd; /*sub-color*/
+  --letter-correct-color: #eedaea; /*caret-color*/
+  --letter-wrong-color: #ff5253; /*error-color*/
 }
 
 .blueberry {
   --accent-color: #92a4be; /*sub-color*/
   --accent-alt-color: #c1c7df; /*sub-alt-color*/
   --background-color: #dae0f5; /*bg-color*/
-  --sidebar-color: #98988E;
+  --sidebar-color: #98988e;
   --caret-color: #df4576; /*caret-color*/
   --text-color: #678198; /*text-color*/
   --letter-color: #92a4be; /*sub-color*/
@@ -26,7 +26,7 @@
   --accent-color: #495755; /*sub-color*/
   --accent-alt-color: #72908d; /*sub-alt-color*/
   --background-color: #7b9c98; /*bg-color*/
-  --sidebar-color: #5E7E63;
+  --sidebar-color: #5e7e63;
   --caret-color: #abc6c4; /*caret-color*/
   --text-color: #eaf1f3; /*text-color*/
   --letter-color: #495755; /*sub-color*/
