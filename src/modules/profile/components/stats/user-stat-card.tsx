@@ -1,6 +1,6 @@
+import type { EUserStatType } from '@typedefs/mecha-types';
+import clsx from 'clsx';
 import React from 'react';
-import clsx from "clsx";
-import { EUserStatType } from '@typedefs/mecha-types';
 
 interface IUserStatCardProps {
   /** Icon to display in the card */
@@ -14,18 +14,17 @@ interface IUserStatCardProps {
 }
 
 const UserStatCard: React.FC<IUserStatCardProps> = (props) => {
-  const { icon, type, value, backgroundColor='bg-purple-500' } = props;
+  const { icon, type, value, backgroundColor = 'bg-purple-500' } = props;
 
-  return  (
-    <div className={clsx("flex flex-row p-2 text-sm items-center rounded-lg sm:text-base", backgroundColor)}>
-      <div className="bg-white p-3 rounded-lg text-black sm:p-4">
-        {icon}
-      </div>
-      <div className="flex flex-1 flex-col ml-2.5">
-        <span className="font-bold text-white text-lg">{value}</span>
+  return (
+    <div className={clsx('flex flex-row items-center rounded-lg p-2 text-sm sm:text-base', backgroundColor)}>
+      <div className="rounded-lg bg-white p-3 text-black sm:p-4">{icon}</div>
+      <div className="ml-2.5 flex flex-1 flex-col">
+        <span className="text-lg font-bold text-white">{value}</span>
         <span className="text-white">{type}</span>
       </div>
-    </div>)
+    </div>
+  );
 };
 
 export default UserStatCard;

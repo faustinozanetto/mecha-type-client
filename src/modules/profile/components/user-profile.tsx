@@ -1,5 +1,5 @@
-import { User } from '@prisma/client';
 import React from 'react';
+
 import UserProfileDetails from './details/user-profile-details';
 import UserProfileStats from './stats/user-profile.stats';
 

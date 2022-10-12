@@ -1,23 +1,35 @@
-.plain {
-  --bg-color: 238 238 238;
-  --font-color: 127 132 135;
-  --caret-color: 65 63 66;
-  --correct-color: 75 75 75;
-  --wrong-color: 65 63 66;
+.aether {
+  --accent-color: 207 107 221; /*sub-color*/
+  --accent-alt-color: 41 33 54; /*sub-alt-color*/
+  --background-color: 16 24 32; /*bg-color*/
+  --sidebar-color: 19 18 19;
+  --caret-color: 238 218 234; /*caret-color*/
+  --text-color: 238 218 234; /*text-color*/
+  --letter-color: 207 107 221; /*sub-color*/
+  --letter-correct-color: 238 218 234; /*caret-color*/
+  --letter-wrong-color: 255 82 83; /*error-color*/
 }
 
-.vintage {
-  --bg-color: 55 125 113;
-  --font-color: 148 180 159;
-  --caret-color: 247 236 222;
-  --correct-color: 233 218 193;
-  --wrong-color: 247 236 222;
+.blueberry {
+  --accent-color: #92a4be; /*sub-color*/
+  --accent-alt-color: #c1c7df; /*sub-alt-color*/
+  --background-color: #dae0f5; /*bg-color*/
+  --sidebar-color: #98988E;
+  --caret-color: #df4576; /*caret-color*/
+  --text-color: #678198; /*text-color*/
+  --letter-color: #92a4be; /*sub-color*/
+  --letter-correct-color: #678198; /*caret-color*/
+  --letter-wrong-color: #df4576; /*error-color*/
 }
 
-.orange {
-  --bg-color: 27 26 23;
-  --font-color: 74 69 76;
-  --caret-color: 201 201 201;
-  --correct-color: 245 136 64;
-  --wrong-color: 201 201 201;
+.botanic {
+  --accent-color: #495755; /*sub-color*/
+  --accent-alt-color: #72908d; /*sub-alt-color*/
+  --background-color: #7b9c98; /*bg-color*/
+  --sidebar-color: #5E7E63;
+  --caret-color: #abc6c4; /*caret-color*/
+  --text-color: #eaf1f3; /*text-color*/
+  --letter-color: #495755; /*sub-color*/
+  --letter-correct-color: #abc6c4; /*caret-color*/
+  --letter-wrong-color: #f6c9b4; /*error-color*/
 }

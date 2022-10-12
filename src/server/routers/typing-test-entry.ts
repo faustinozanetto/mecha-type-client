@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { t } from '../trpc';
 
 const typingTestEntries = t.router({
@@ -30,26 +31,27 @@ const typingTestEntries = t.router({
       return typingTestEntry;
     }),
   find: t.procedure
-  .input(
-    z.object({
-      id:z.string()
-    })
-    ).query(async ({ input, ctx }) => {
-      return await ctx.prisma.typingTestEntry.findFirst({
-      where: {
-        id: input.id
-      }
-    });
-  }),
-  findByUser: t.procedure.input(z.object({userId:z.string()})).query(async ({input,ctx}) => {
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      return ctx.prisma.typingTestEntry.findFirst({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+  findByUser: t.procedure.input(z.object({ userId: z.string() })).query(async ({ input, ctx }) => {
     const testEntries = await ctx.prisma.typingTestEntry.findMany({
       where: {
-        userId:input.userId
-      }
-    })
+        userId: input.userId,
+      },
+    });
 
     return testEntries;
-  })
+  }),
 });
 
 export default typingTestEntries;

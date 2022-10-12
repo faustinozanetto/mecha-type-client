@@ -1,8 +1,9 @@
-import {User} from '@prisma/client';
-import {createContext, useReducer, useContext} from 'react';
+import type { User } from '@prisma/client';
+import type { EUserStatType } from '@typedefs/mecha-types';
+import { createContext, useContext, useReducer } from 'react';
+
 import reducer from './reducer/reducer';
-import {UserProfile, UserProfileActions} from './reducer/types';
-import {EUserStatType} from "@typedefs/mecha-types";
+import type { UserProfile, UserProfileActions } from './reducer/types';
 
 interface IUserProfileContextProps {
   /** State of the user profile context */
@@ -18,14 +19,14 @@ interface IUserProfileProviderProps {
 }
 
 const UserProfileProvider: React.FC<IUserProfileProviderProps> = (props) => {
-  const {children} = props;
+  const { children } = props;
   const [state, dispatch] = useReducer(reducer, {
     user: {} as User,
     userLoading: false,
-    userStats: new Map<EUserStatType, string>()
+    userStats: new Map<EUserStatType, string>(),
   });
 
-  return <UserProfileContext.Provider value={{state, dispatch}}>{children}</UserProfileContext.Provider>;
+  return <UserProfileContext.Provider value={{ state, dispatch }}>{children}</UserProfileContext.Provider>;
 };
 
 export const useUserProfileContext = () => {

@@ -1,7 +1,8 @@
-import { TypingTestEntry } from '@prisma/client';
+import type { TypingTestEntry } from '@prisma/client';
 import clsx from 'clsx';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import useTypingGame from 'react-typing-game-hook';
+
 import Caret from './caret';
 import Letter from './letter';
 
@@ -12,7 +13,7 @@ interface ITypingInputProps {
 }
 
 const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ text, time, onFinished }, ref) => {
-  const [duration, setDuration] = useState<number>(0);
+  const [, setDuration] = useState<number>(0);
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const letterElements = useRef<HTMLDivElement>(null);
 
@@ -40,12 +41,11 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
         };
       }
       return { left, top };
-    } else {
-      return {
-        left: -2,
-        top: 2,
-      };
     }
+    return {
+      left: -2,
+      top: 2,
+    };
   }, [currIndex]);
 
   // Reset state when time or text changes
@@ -61,8 +61,8 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   useEffect(() => {
     const timerInterval = setInterval(() => {
       if (startTime) {
-        setTimeLeft((timeLeft) => {
-          if (timeLeft === 1) {
+        setTimeLeft((left) => {
+          if (left === 1) {
             clearInterval(timerInterval);
             endTyping();
           }
@@ -77,7 +77,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
     return () => clearInterval(timerInterval);
   }, [startTime, phase]);
 
-  //set WPM
+  // set WPM
   useEffect(() => {
     if (phase === 2 && endTime && startTime) {
       const dur = Math.floor((endTime - startTime) / 1000);
@@ -95,11 +95,11 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
     }
   }, [phase, startTime, endTime, ref]);
 
-  //handle key presses
+  // handle key presses
   const handleKeyDown = (letter: string, control: boolean) => {
     if (letter === 'Backspace') {
       const spanref = letterElements?.current?.children[currIndex] as HTMLSpanElement;
-      const top = spanref?.offsetTop - 2;
+      const top = (spanref?.offsetTop || 0) - 2;
 
       if (top < 0) {
         return;
@@ -126,13 +126,15 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   };
 
   return (
-    <div className="relative w-full p-4 rounded-xl">
-      <span className="text-3xl text-fg/80">
-        {timeLeft}
-        <span className="text-2xl">s left</span>
-      </span>
+    <div className="relative w-full rounded-xl py-4">
+      <div className="flex w-full items-center justify-end text-3xl">
+        <span className="text-3xl text-letter-wrong">
+          {timeLeft}
+          <span className="text-2xl">s left</span>
+        </span>
+      </div>
       <div
-        className="relative z-40 h-[160px] w-full text-2xl outline-none"
+        className="relative z-40 h-[170px] w-full text-2xl outline-none"
         onClick={() => {
           if (ref != null && typeof ref !== 'function') {
             ref.current?.focus();
@@ -167,7 +169,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
         <span
           className={clsx(
             'absolute z-20 flex h-full w-full cursor-default items-center justify-center text-base opacity-0 transition-all duration-200',
-            { 'text-fg opacity-100 ': !isFocused }
+            { 'opacity-100 ': !isFocused }
           )}
         >
           Click or press any key to focus
@@ -197,10 +199,12 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
           </div>
         </div>
         {/* Caret */}
-        {isFocused ? <Caret pos={pos} currIndex={currIndex} phase={phase} /> : null}
+        {isFocused && <Caret pos={pos} currIndex={currIndex} phase={phase} />}
       </div>
     </div>
   );
 });
+
+TypingInput.displayName = 'TypingInput';
 
 export default TypingInput;

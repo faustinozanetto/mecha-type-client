@@ -1,4 +1,5 @@
-import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
+import type { DocumentContext } from 'next/document';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -10,7 +11,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en" className="scroll-smooth">
         <Head />
-        <body className="bg-background-light dark:bg-background-dark">
+        <body className="bg-background">
           <Main />
           <NextScript />
         </body>

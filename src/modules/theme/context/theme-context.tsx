@@ -22,7 +22,7 @@ const ThemeProvider: React.FC<IThemeProviderProps> = (props) => {
 
   const change = useCallback((newTheme: IThemeContextProps['theme']) => {
     setTheme((prev) => {
-      const documentElement = document.documentElement;
+      const { documentElement } = document;
 
       // Remove classlist theme from the document element.
       if (documentElement) {

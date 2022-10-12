@@ -1,6 +1,7 @@
 import { createContext, useContext, useReducer } from 'react';
+
 import reducer from './reducer/reducer';
-import { Preferences, PreferencesActions } from './reducer/types';
+import type { Preferences, PreferencesActions } from './reducer/types';
 
 interface IPreferencesContextProps {
   /** State of the preferences context */
@@ -18,7 +19,7 @@ interface IPreferencesProviderProps {
 const PreferencesProvider: React.FC<IPreferencesProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, {
-    accentColors: 'orange',
+    accentColors: 'blueberry',
     pauseOnErrors: false,
   });
 

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 
 // from https://usehooks-ts.com/react-hook/use-media-query
 function useMediaQuery(query: string): boolean {
-  const getMatches = (query: string): boolean => {
+  const getMatches = (q: string): boolean => {
     // Prevents SSR issues
     if (typeof window !== 'undefined') {
-      return window.matchMedia(query).matches;
+      return window.matchMedia(q).matches;
     }
     return false;
   };

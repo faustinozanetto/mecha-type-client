@@ -1,4 +1,4 @@
-import { Session } from 'next-auth';
+import type { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import React from 'react';
 

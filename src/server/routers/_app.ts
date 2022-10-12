@@ -7,7 +7,7 @@ import usersRouter from './users';
 
 export const appRouter = t.router({
   users: usersRouter,
-  typingTestEntries: typingTestEntries,
+  typingTestEntries,
 });
 
 export type AppRouter = typeof appRouter;

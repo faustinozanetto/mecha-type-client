@@ -1,5 +1,4 @@
 import React from 'react';
-import SidebarLink from '../sidebar-link';
 
 interface ISidebarUserDetailsProps {
   /** Wether the sidebar is collapsed or not. */
@@ -7,7 +6,7 @@ interface ISidebarUserDetailsProps {
 }
 
 const SidebarUserDetails: React.FC<ISidebarUserDetailsProps> = (props) => {
-  const { isCollapsed } = props;
+  const {} = props;
 
   return (
     <div className="flex grow-0 flex-col">

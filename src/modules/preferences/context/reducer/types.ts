@@ -1,4 +1,4 @@
-import { ActionMap } from '@typedefs/mecha-types';
+import type { ActionMap } from '@typedefs/mecha-types';
 
 export type Preferences = {
   accentColors: string;

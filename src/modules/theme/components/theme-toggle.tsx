@@ -1,5 +1,6 @@
-import React from 'react';
 import Button from '@modules/ui/components/button/button';
+import React from 'react';
+
 import { useThemeContext } from '../context/theme-context';
 
 const ThemeToggler: React.FC = () => {
@@ -14,7 +15,7 @@ const ThemeToggler: React.FC = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"
@@ -31,7 +32,7 @@ const ThemeToggler: React.FC = () => {
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="w-6 h-6"
+        className="h-6 w-6"
       >
         <path
           strokeLinecap="round"

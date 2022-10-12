@@ -1,5 +1,5 @@
-import { User } from '@prisma/client';
-import { ActionMap, UserStats } from '@typedefs/mecha-types';
+import type { User } from '@prisma/client';
+import type { ActionMap, UserStats } from '@typedefs/mecha-types';
 
 export type UserProfile = {
   user: User;
@@ -10,7 +10,7 @@ export type UserProfile = {
 export enum ActionType {
   SET_USER,
   SET_USER_LOADING,
-  SET_USER_STATS
+  SET_USER_STATS,
 }
 
 type UserProfilePayload = {
@@ -21,8 +21,8 @@ type UserProfilePayload = {
     userLoading: boolean;
   };
   [ActionType.SET_USER_STATS]: {
-    userStats:UserStats;
-  }
+    userStats: UserStats;
+  };
 };
 
 export type UserProfileActions = ActionMap<UserProfilePayload>[keyof ActionMap<UserProfilePayload>];

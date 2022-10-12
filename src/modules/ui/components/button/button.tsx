@@ -32,15 +32,15 @@ const Button = React.forwardRef<HTMLButtonElement, IButtonProps>((props, ref) =>
   const buttonVariants = useMemo(() => {
     switch (variant) {
       case 'outline':
-        return 'text-primary-800 border border-2 border-primary-700 focus:ring-primary-300 hover:bg-primary-800 hover:border-primary-500 hover:text-white';
+        return 'text-text border border-2 border-accent-alt focus:ring-accent-alt hover:bg-accent hover:border-accent hover:text-white';
       case 'solid':
       default:
-        return 'bg-primary-200 text-primary-800 hover:bg-primary-300 focus:ring-primary-300';
+        return 'bg-accent-alt text-text hover:bg-accent focus:ring-accent-alt';
     }
   }, [variant]);
 
   const buttonStyles = clsx(
-    'rounded-lg inline-flex space-x-2 items-center text-base font-semibold focus:outline-none focus:ring-4 ',
+    'inline-flex items-center space-x-2 rounded-lg text-base font-semibold focus:outline-none focus:ring-4 ',
     buttonSizeVariants,
     buttonVariants
   );

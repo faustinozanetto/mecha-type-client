@@ -1,8 +1,9 @@
 import { AUTH_SECRET, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET } from '@modules/auth/utils/constants';
-import NextAuth, { NextAuthOptions } from 'next-auth';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import DiscordProvider from 'next-auth/providers/discord';
 import { prisma } from '@server/context';
+import type { NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
+import DiscordProvider from 'next-auth/providers/discord';
 
 export const authOptions: NextAuthOptions = {
   providers: [

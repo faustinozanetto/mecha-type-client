@@ -6,14 +6,14 @@ interface ISkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Skeleton = React.forwardRef<HTMLDivElement, ISkeletonProps>((props, ref) => {
-  const { isLoaded, className, style, children, ...rest } = props;
+  const { isLoaded, className, children, ...rest } = props;
 
   return (
     <div
       ref={ref}
       className={clsx(
         className || '',
-        !isLoaded && 'skeleton animate-pulse bg-clip-padding cursor-default bg-gray-300'
+        !isLoaded && 'skeleton animate-pulse cursor-default bg-gray-300 bg-clip-padding'
       )}
       {...rest}
     >
@@ -21,5 +21,7 @@ const Skeleton = React.forwardRef<HTMLDivElement, ISkeletonProps>((props, ref) =
     </div>
   );
 });
+
+Skeleton.displayName = 'Skeleton';
 
 export default Skeleton;

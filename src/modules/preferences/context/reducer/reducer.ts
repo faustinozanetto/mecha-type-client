@@ -1,4 +1,5 @@
-import { ActionType, Preferences, PreferencesActions } from './types';
+import type { Preferences, PreferencesActions } from './types';
+import { ActionType } from './types';
 
 const reducer = (state: Preferences, action: PreferencesActions): Preferences => {
   switch (action.type) {

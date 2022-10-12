@@ -1,5 +1,6 @@
 import Button from '@modules/ui/components/button/button';
 import React from 'react';
+
 import { useSidebarContext } from '../context/sidebar-context';
 
 const SidebarToggleButton: React.FC = () => {
@@ -20,7 +21,7 @@ const SidebarToggleButton: React.FC = () => {
           viewBox="0 0 24 24"
           strokeWidth={1.5}
           stroke="currentColor"
-          className="w-6 h-6"
+          className="h-6 w-6"
         >
           <path
             strokeLinecap="round"

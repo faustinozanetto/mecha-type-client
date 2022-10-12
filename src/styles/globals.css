@@ -5,11 +5,15 @@
 @tailwind utilities;
 
 :root {
-  --bg-color: 55 125 113;
-  --font-color: 148 180 159;
-  --caret-color: 247 236 222;
-  --correct-color: 233 218 193;
-  --wrong-color: 247 236 222;
+  --accent-color: 207 107 221;
+  --accent-alt-color: 41 33 54;
+  --background-color: 16 24 32;
+  --sidebar-color: 19 18 19;
+  --caret-color: 238 218 234;
+  --text-color: 238 218 234;
+  --letter-color: 207 107 221;
+  --letter-correct-color: 238 218 234;
+  --letter-wrong-color: 255 82 83;
 }
 
 @layer base {

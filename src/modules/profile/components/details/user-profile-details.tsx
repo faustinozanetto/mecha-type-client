@@ -1,7 +1,7 @@
-import React from 'react';
+import { useUserProfileContext } from '@modules/profile/context/user-profile-context';
 import Image from '@modules/ui/components/image/image';
 import Skeleton from '@modules/ui/components/skeleton/skeleton';
-import { useUserProfileContext } from '@modules/profile/context/user-profile-context';
+import React from 'react';
 
 interface IUserProfileDetailsProps {}
 
@@ -9,22 +9,23 @@ const UserProfileDetails: React.FC<IUserProfileDetailsProps> = () => {
   const { state } = useUserProfileContext();
 
   return (
-    <div className="flex flex-col items-center p-4 rounded-lg drop-shadow-2xl text-white bg-background-dark dark:text-black dark:bg-background-light xs:items-start xs:flex-row xs:space-x-4">
+    <div className="flex flex-col items-center rounded-lg bg-accent p-4 text-white drop-shadow-2xl xs:flex-row xs:items-start xs:space-x-4">
       {/* User Image */}
       <Image
         src={state.user?.image!}
+        alt={`${state.user.name} Image`}
         isImageLoading={state.userLoading}
-        className="w-50 rounded-2xl"
+        className="rounded-2xl"
         layout="fixed"
         width={150}
         height={150}
       />
 
       {/*  User Content */}
-      <div className="flex flex-col text-center items-center space-y-2 xs:items-start">
+      <div className="flex flex-col items-center space-y-2 text-center xs:items-start">
         {/* Name */}
         <Skeleton isLoaded={!state.userLoading}>
-          <h2 className="font-bold text-3xl">{state.user?.name}</h2>
+          <h2 className="text-3xl font-bold">{state.user?.name}</h2>
         </Skeleton>
         {/* Description */}
         <Skeleton isLoaded={!state.userLoading}>

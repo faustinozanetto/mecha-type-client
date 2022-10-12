@@ -3,7 +3,7 @@ import { usePreferencesContext } from '@modules/preferences/context/preferences-
 import Sidebar from '@modules/sidebar/components/sidebar';
 import SidebarProvider from '@modules/sidebar/context/sidebar-context';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import LayoutHead from './layout-head';
 
@@ -26,7 +26,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
 
   return (
     <div
-      className={clsx('grid min-h-screen overflow-hidden subpixel-antialiased', state.accentColors)}
+      className={clsx('grid min-h-screen overflow-hidden subpixel-antialiased', state?.accentColors)}
       style={{
         gridTemplateColumns: layoutGridColumns(),
       }}
@@ -40,7 +40,7 @@ const Layout: React.FC<ILayoutProps> = (props) => {
       </SidebarProvider>
 
       {/* Content */}
-      <div className="flex flex-col bg-bg p-4 sm:p-8 md:p-12">
+      <div className="flex flex-col bg-background p-4 sm:p-8 md:p-12">
         {/* Children */}
         {children}
       </div>
