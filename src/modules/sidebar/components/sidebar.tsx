@@ -1,8 +1,8 @@
 import useMediaQuery from '@hooks/use-media-query';
 import MechaTypeLogo from '@modules/branding/components/mecha-type-logo';
 import MechaTypeLogoInitials from '@modules/branding/components/mecha-type-logo-initials';
-import ThemeToggler from '@modules/theme/components/theme-toggle';
 import clsx from 'clsx';
+import { useSession } from 'next-auth/react';
 import React, { memo, useEffect } from 'react';
 
 import { useSidebarContext } from '../context/sidebar-context';
@@ -94,6 +94,7 @@ const SIDEBAR_LINKS: React.ComponentPropsWithoutRef<typeof SidebarLink>[] = [
 ];
 
 const Sidebar: React.FC = () => {
+  const { data: session, status } = useSession();
   const { isCollapsed, setIsCollapsed } = useSidebarContext();
   const isMediumDevice = useMediaQuery('(max-width: 768px');
   const isSmallDevice = useMediaQuery('(max-width: 400px');
@@ -133,32 +134,32 @@ const Sidebar: React.FC = () => {
         })}
       </nav>
 
-      <ThemeToggler />
-
       {/* User Information  */}
-      <SidebarUserDetails isCollapsed={isCollapsed} />
+      {session?.user?.name && <SidebarUserDetails user={session.user} />}
 
-      <SidebarLink
-        href="/api/auth/signin"
-        leftIcon={
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="h-6 w-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-            />
-          </svg>
-        }
-      >
-        Sign In
-      </SidebarLink>
+      {status === 'unauthenticated' && (
+        <SidebarLink
+          href="/api/auth/signin"
+          leftIcon={
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="h-6 w-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+              />
+            </svg>
+          }
+        >
+          Sign In
+        </SidebarLink>
+      )}
     </aside>
   );
 };

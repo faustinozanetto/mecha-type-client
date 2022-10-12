@@ -9,13 +9,11 @@ import { EUserStatType } from '@typedefs/mecha-types';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
-const UserProfilePage: React.FC = ({}) => {
+const UserProfilePage: React.FC = () => {
   const router = useRouter();
   const { dispatch } = useUserProfileContext();
-  const user = trpc.users.user.useQuery(
-    { username: router.query.username as string },
-    { retry: router.query.username !== undefined }
-  );
+  const usernameQuery = router.query.username as string;
+  const { status, data } = trpc.users.user.useQuery({ username: usernameQuery });
 
   useEffect(() => {
     const defaultStats: UserStats = new Map<EUserStatType, string>();
@@ -27,7 +25,7 @@ const UserProfilePage: React.FC = ({}) => {
     dispatch({
       type: ActionType.SET_USER,
       payload: {
-        user: user.data as User,
+        user: data as User,
       },
     });
     dispatch({
@@ -36,17 +34,17 @@ const UserProfilePage: React.FC = ({}) => {
         userStats: defaultStats,
       },
     });
-  }, [user.data]);
+  }, [data]);
 
   useEffect(() => {
-    if (user.status === 'success') {
+    if (status === 'success') {
       dispatch({
         type: ActionType.SET_USER_LOADING,
         payload: {
           userLoading: false,
         },
       });
-    } else {
+    } else if (status === 'loading') {
       dispatch({
         type: ActionType.SET_USER_LOADING,
         payload: {
@@ -54,7 +52,7 @@ const UserProfilePage: React.FC = ({}) => {
         },
       });
     }
-  }, [user.status]);
+  }, [status]);
 
   return (
     <Layout

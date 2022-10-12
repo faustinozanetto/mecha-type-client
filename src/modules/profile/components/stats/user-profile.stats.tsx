@@ -4,7 +4,7 @@ import React from 'react';
 
 import UserStatCard from './user-stat-card';
 
-const statsTypes: Omit<React.ComponentPropsWithoutRef<typeof UserStatCard>, 'value'>[] = [
+const statsTypes: Omit<React.ComponentPropsWithoutRef<typeof UserStatCard>, 'value' | 'isLoading'>[] = [
   {
     type: EUserStatType.TESTS_COMPLETED,
     backgroundColor: 'bg-purple-500',
@@ -103,6 +103,7 @@ const UserProfileStats: React.FC<IUserProfileStatsProps> = () => {
               value={state?.userStats?.get(type.type) || ''}
               icon={type.icon}
               backgroundColor={type.backgroundColor}
+              isLoading={state.userLoading}
             />
           );
         })}

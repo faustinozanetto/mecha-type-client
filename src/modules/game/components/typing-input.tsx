@@ -134,7 +134,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
         </span>
       </div>
       <div
-        className="relative z-40 h-[170px] w-full text-2xl outline-none"
+        className="relative z-40 h-[160px] w-full text-2xl outline-none"
         onClick={() => {
           if (ref != null && typeof ref !== 'function') {
             ref.current?.focus();

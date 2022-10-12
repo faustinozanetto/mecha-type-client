@@ -1,3 +1,4 @@
+import Skeleton from '@modules/ui/components/skeleton/skeleton';
 import type { EUserStatType } from '@typedefs/mecha-types';
 import clsx from 'clsx';
 import React from 'react';
@@ -11,17 +12,25 @@ interface IUserStatCardProps {
   value: string;
   /** Optional, modify background color of the card */
   backgroundColor?: string;
+  /** Wether content is loading or not */
+  isLoading: boolean;
 }
 
 const UserStatCard: React.FC<IUserStatCardProps> = (props) => {
-  const { icon, type, value, backgroundColor = 'bg-purple-500' } = props;
+  const { icon, type, value, isLoading, backgroundColor = 'bg-purple-500' } = props;
 
   return (
     <div className={clsx('flex flex-row items-center rounded-lg p-2 text-sm sm:text-base', backgroundColor)}>
-      <div className="rounded-lg bg-white p-3 text-black sm:p-4">{icon}</div>
-      <div className="ml-2.5 flex flex-1 flex-col">
-        <span className="text-lg font-bold text-white">{value}</span>
-        <span className="text-white">{type}</span>
+      <Skeleton isLoaded={!isLoading}>
+        <div className="rounded-lg bg-white p-3 text-black sm:p-4">{icon}</div>
+      </Skeleton>
+      <div className="ml-2.5 flex flex-1 flex-col space-y-2">
+        <Skeleton isLoaded={!isLoading}>
+          <span className="text-lg font-bold text-white">{value}</span>
+        </Skeleton>
+        <Skeleton isLoaded={!isLoading}>
+          <span className="text-white">{type}</span>
+        </Skeleton>
       </div>
     </div>
   );
