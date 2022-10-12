@@ -46,7 +46,8 @@
       "@state/*": ["src/state/*"],
       "@hooks/*": ["src/hooks/*"],
       "@server/*": ["src/server/*"],
-      "@types/*": ["src/typedefs/*"]
+      "@types/*": ["src/typedefs/*"],
+      "@data/*":["src/data/*"]
     }
   },
   "types": ["node"],

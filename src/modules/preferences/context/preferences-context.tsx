@@ -18,7 +18,7 @@ interface IPreferencesProviderProps {
 const PreferencesProvider: React.FC<IPreferencesProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, {
-    accentColors: 'plain',
+    accentColors: 'orange',
     pauseOnErrors: false,
   });
 

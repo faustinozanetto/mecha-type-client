@@ -1,4 +1,4 @@
-import { ActionType, UserProfile, UserProfileActions } from './types';
+import {ActionType, UserProfile, UserProfileActions} from './types';
 
 const reducer = (state: UserProfile, action: UserProfileActions): UserProfile => {
   switch (action.type) {
@@ -13,6 +13,12 @@ const reducer = (state: UserProfile, action: UserProfileActions): UserProfile =>
         ...state,
         userLoading: action.payload.userLoading,
       };
+    }
+    case ActionType.SET_USER_STATS: {
+      return {
+        ...state,
+        userStats: action.payload.userStats,
+      }
     }
     default:
       throw new Error('Unknown action type');

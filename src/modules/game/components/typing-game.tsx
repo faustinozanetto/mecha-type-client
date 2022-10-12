@@ -1,12 +1,12 @@
 import {trpc} from '@lib/trpc';
 import {TypingTestEntry} from '@prisma/client';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import TypingInput from './typing-input';
+import wordSet from '@data/wordset.json'
+import useGenerateText from "@modules/game/hooks/use-generate-text";
 
 const TypingGame: React.FC = () => {
-  const [list, setList] = useState<string>(
-    'might true tape major write city vote another push blood argue back secure good honest instead Christmas take early income how value blue line even paint club person middle hate character space boy around rule floor serious one awful picture marry hope prepare left equal small add safe period student south kid park further print green young fit jesus interest staff common give before judge absolute love quite whether file girl item please foot strike oppose programme attend home minute appear '
-  );
+  const {generatedText} = useGenerateText(wordSet.words, 40);
 
   const createTestEntry = trpc.typingTestEntries.create.useMutation();
 
@@ -39,7 +39,7 @@ const TypingGame: React.FC = () => {
     <section className="flex flex-col space-y-2">
       {/* Title */}
       <h2 className="text-3xl font-bold text-text-white dark:text-text-dark">Typing Test</h2>
-      <TypingInput ref={inputRef} text={list} time={20} onFinished={handleTestFinished}/>
+      <TypingInput ref={inputRef} text={generatedText} time={20} onFinished={handleTestFinished}/>
     </section>
   );
 };
