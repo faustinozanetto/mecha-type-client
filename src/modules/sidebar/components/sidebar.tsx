@@ -1,6 +1,9 @@
 import useMediaQuery from '@hooks/use-media-query';
 import MechaTypeLogo from '@modules/branding/components/mecha-type-logo';
 import MechaTypeLogoInitials from '@modules/branding/components/mecha-type-logo-initials';
+import { usePreferencesContext } from '@modules/preferences/context/preferences-context';
+import { ActionType } from '@modules/preferences/context/reducer/types';
+import Button from '@modules/ui/components/button/button';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import React, { memo, useEffect } from 'react';
@@ -95,6 +98,7 @@ const SIDEBAR_LINKS: React.ComponentPropsWithoutRef<typeof SidebarLink>[] = [
 
 const Sidebar: React.FC = () => {
   const { data: session, status } = useSession();
+  const { dispatch } = usePreferencesContext();
   const { isCollapsed, setIsCollapsed } = useSidebarContext();
   const isMediumDevice = useMediaQuery('(max-width: 768px');
   const isSmallDevice = useMediaQuery('(max-width: 400px');
@@ -103,6 +107,15 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     setIsCollapsed(isMediumDevice);
   }, [isMediumDevice]);
+
+  const handlePreferencesMenuOpen = () => {
+    dispatch({
+      type: ActionType.SET_PREFERENCES_MENU_OPEN,
+      payload: {
+        open: true,
+      },
+    });
+  };
 
   // Is device is smaller than xs, show a floating button to togle the sidebar.
   if (isSmallDevice) return null;
@@ -133,6 +146,8 @@ const Sidebar: React.FC = () => {
           );
         })}
       </nav>
+
+      <Button onClick={handlePreferencesMenuOpen}>Preferences</Button>
 
       {/* User Information  */}
       {session?.user?.name && <SidebarUserDetails user={session.user} />}

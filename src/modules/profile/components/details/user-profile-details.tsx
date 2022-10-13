@@ -13,7 +13,7 @@ const UserProfileDetails: React.FC<IUserProfileDetailsProps> = () => {
     <div className="flex flex-col items-center rounded-lg bg-accent p-4 text-white drop-shadow-2xl xs:flex-row xs:items-start xs:space-x-4">
       {/* User Image */}
       <Skeleton className="rounded-md" isLoaded={!state.userLoading}>
-        {state?.user.image && (
+        {state?.user?.image && (
           <Image
             src={state.user.image}
             alt={`${state?.user?.name!} Image`}

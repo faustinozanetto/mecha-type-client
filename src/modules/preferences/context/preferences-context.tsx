@@ -1,7 +1,7 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 
 import reducer from './reducer/reducer';
-import type { Preferences, PreferencesActions } from './reducer/types';
+import { ActionType, Preferences, PreferencesActions } from './reducer/types';
 
 interface IPreferencesContextProps {
   /** State of the preferences context */
@@ -21,7 +21,22 @@ const PreferencesProvider: React.FC<IPreferencesProviderProps> = (props) => {
   const [state, dispatch] = useReducer(reducer, {
     accentColors: 'blueberry',
     pauseOnErrors: false,
+    menuOpen: false,
   });
+
+  // Initialize state from local storage
+  useEffect(() => {
+    if (typeof window !== undefined) {
+      const accentColors = window.localStorage.getItem('accentColors');
+      if (accentColors)
+        dispatch({
+          type: ActionType.SET_ACCENT_COLORS,
+          payload: {
+            accentColors,
+          },
+        });
+    }
+  }, []);
 
   return <PreferencesContext.Provider value={{ state, dispatch }}>{children}</PreferencesContext.Provider>;
 };

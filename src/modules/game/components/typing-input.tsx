@@ -126,7 +126,7 @@ const TypingInput = React.forwardRef<HTMLInputElement, ITypingInputProps>(({ tex
   };
 
   return (
-    <div className="relative w-full max-w-[950px] rounded-xl py-4">
+    <div className="relative w-full rounded-xl py-4">
       <div
         className="relative z-40 h-[140px] w-full text-2xl outline-none"
         onClick={() => {

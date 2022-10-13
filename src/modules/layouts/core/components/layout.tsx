@@ -1,4 +1,5 @@
 import useMediaQuery from '@hooks/use-media-query';
+import PreferencesMenu from '@modules/preferences/components/preferences-menu';
 import { usePreferencesContext } from '@modules/preferences/context/preferences-context';
 import Sidebar from '@modules/sidebar/components/sidebar';
 import SidebarProvider from '@modules/sidebar/context/sidebar-context';
@@ -36,14 +37,17 @@ const Layout: React.FC<ILayoutProps> = (props) => {
 
       {/* Sidebar */}
       <SidebarProvider>
-        <Sidebar />{' '}
+        <Sidebar />
       </SidebarProvider>
 
       {/* Content */}
       <div className="flex flex-col bg-background p-4 sm:p-8 md:p-12">
         {/* Children */}
-        {children}
+        <main className="container mx-auto">{children}</main>
       </div>
+
+      {/* Preferences Menu */}
+      <PreferencesMenu />
 
       {/* Footer */}
       {/* <Footer /> */}

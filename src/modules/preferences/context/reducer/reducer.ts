@@ -3,7 +3,14 @@ import { ActionType } from './types';
 
 const reducer = (state: Preferences, action: PreferencesActions): Preferences => {
   switch (action.type) {
+    case ActionType.SET_PREFERENCES_MENU_OPEN: {
+      return {
+        ...state,
+        menuOpen: action.payload.open,
+      };
+    }
     case ActionType.SET_ACCENT_COLORS: {
+      window.localStorage.setItem('accentColors', action.payload.accentColors);
       return {
         ...state,
         accentColors: action.payload.accentColors,
